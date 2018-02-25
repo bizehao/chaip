@@ -34,6 +34,9 @@ public class RainfallServiceImpl implements RainfallService {
         now.setTime(date);
         now.set(Calendar.HOUR_OF_DAY, 8);
         int requestDay = now.get(Calendar.DATE);//用户请求的日
+        int requesMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
+        int requesYear =now.get(Calendar.YEAR);//用户请求年份
+        System.out.println("用户请求-*-年："+requesYear+"月："+requesMonth+"日："+requestDay);
         beginTime = now.getTime();
         endTime = DateUtils.getDateAfter(beginTime, 1);
         System.out.println(beginTime + "," + endTime);
@@ -42,7 +45,9 @@ public class RainfallServiceImpl implements RainfallService {
         now.setTime(currentDate);
         int currentHour = now.get(Calendar.HOUR_OF_DAY);//当前时
         int currentDay = now.get(Calendar.DATE);//当前日
-
+        int currentMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
+        int currentYear =now.get(Calendar.YEAR);//用户请求年份
+        System.out.println("当前时间-*-年："+currentYear+"月："+currentMonth+"日："+currentDay);
         System.out.println("数量" + rainfalls.size());
 
         if (rainfalls != null && rainfalls.size() > 0) {
@@ -134,7 +139,8 @@ public class RainfallServiceImpl implements RainfallService {
             pptnGson.setEightDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(8.0));
 
             Map<Object, Object> map = new LinkedHashMap<>();
-            if (requestDay == currentDay - 1) { //当前日期未发生,将未发生的数据更改  requestDay == currentDay
+            //
+            if (requestDay == currentDay - 1&& requesMonth==currentMonth && requesYear==currentYear ) { //当前日期未发生,将未发生的数据更改  requestDay == currentDay
                 Double cishi = (double) currentHour;
                 for (Double na = 9.0; na <= 23; na++) {
                     if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
@@ -153,7 +159,8 @@ public class RainfallServiceImpl implements RainfallService {
                 for (Double nb = cishi+2; nb < 9; nb++) {
                     map.put(nb, " ");
                 }
-            } else if (requestDay == currentDay) {
+                //&& requesMonth==currentMonth && requesYear==currentYear
+            } else if (requestDay == currentDay && requesMonth==currentMonth && requesYear==currentYear ) {
                 Double cishi = (double) currentHour;
                 if(cishi == 23){
                     for (Double na = 9.0; na <= 23; na++) {
