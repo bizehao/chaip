@@ -148,15 +148,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcel a = rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist);
-        /*for(int i=0; i<a.getDayRainList().size(); i++){
-            System.out.println(a.getDayRainList().get(i).getAdnm());
-            Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
-            System.out.println(map.size());
-            for (Map.Entry<String, Double> entry : map.entrySet()) {
-                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            }
-        }*/
+        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0);
         return new JsonResult(a);
     }
     //旬雨量
@@ -166,11 +158,6 @@ public class RealtimeRainfallController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
-
-        dateStr="2017-07-11";
-        stcdOrStnm="30906330,";
-        systemTypes="11,12,";
-        adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -212,7 +199,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0);
         for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -277,7 +264,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0);
         return new JsonResult(a);
     }
     //年雨量
@@ -333,7 +320,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0);
         return new JsonResult(a);
     }
 
@@ -390,7 +377,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0);
         return new JsonResult(a);
     }
 }
