@@ -92,6 +92,24 @@
                     }
                 })
             });
+            $("#skss").click(function () {
+                //水库实时
+                $.ajax({
+                    url: 'services/realtime/rsvrfall/getrsvrbyitem',
+                    data: {"dateS":0,
+                        "dateE":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
         })
     </script>
 </head>
@@ -107,5 +125,6 @@
     <a  href="services/realtime/rainfallexcel/getrainbyxunbyexcel">旬数据</a>
     <a  href="services/realtime/rainfallexcel/getrainbymonthbyexcel">月数据</a>
     <a  href="services/realtime/rainfallexcel/getrainbyyearbyexcel">年数据</a>
+    <button id="skss"> 水库实时 </button>
 </body>
 </html>
