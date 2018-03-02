@@ -136,8 +136,8 @@ public class RealtimeRsvrfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
