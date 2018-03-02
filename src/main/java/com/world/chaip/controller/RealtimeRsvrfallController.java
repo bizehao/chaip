@@ -91,7 +91,7 @@ public class RealtimeRsvrfallController {
     }
 
     //水库 (专业)
-    @GetMapping("getrsvrbyzhuanye")
+    @GetMapping(" ")
     public JsonResult GetRsvrByZhuanYe(
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
