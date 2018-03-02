@@ -8,23 +8,23 @@ import java.util.List;
 public class DayRsvr {
 
     //汛期等级
-    private int fstp;
+    private String fstp;
 
     private List<RsvrZhuanYe> rsvrZhuanYeList;
 
     public DayRsvr() {
     }
 
-    public DayRsvr(int fstp, List<RsvrZhuanYe> rsvrZhuanYeList) {
+    public DayRsvr(String fstp, List<RsvrZhuanYe> rsvrZhuanYeList) {
         this.fstp = fstp;
         this.rsvrZhuanYeList = rsvrZhuanYeList;
     }
 
-    public int getFstp() {
+    public String getFstp() {
         return fstp;
     }
 
-    public void setFstp(int fstp) {
+    public void setFstp(String fstp) {
         this.fstp = fstp;
     }
 

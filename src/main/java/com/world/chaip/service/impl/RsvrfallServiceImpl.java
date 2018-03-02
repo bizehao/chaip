@@ -39,7 +39,15 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         }
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
         DayRsvr dayRsvr = new DayRsvr();
-        dayRsvr.setFstp(fstp);
+        if(fstp==1){
+            dayRsvr.setFstp("主汛期");
+        }else if(fstp==2){
+            dayRsvr.setFstp("后汛期");
+        }else if(fstp==3){
+            dayRsvr.setFstp("过渡期");
+        }else{
+            dayRsvr.setFstp("其它");
+        }
         dayRsvr.setRsvrZhuanYeList(rainfalls);
         return dayRsvr;
     }
