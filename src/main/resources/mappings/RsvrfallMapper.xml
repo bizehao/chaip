@@ -84,7 +84,6 @@
           on
             a.stcd=k.stcd
         <where>
-            a.sttp like '%R%' and n.ZFL='1'
             <trim prefixOverrides="and|or">
                 <if test="adcd != null and adcd.size() > 0">
                     and a.addvcd IN
@@ -116,6 +115,7 @@
                     </foreach>
                 </if>
             </trim>
+            a.sttp like '%R%' and n.ZFL='1'
         </where>
         ) m
         left join
