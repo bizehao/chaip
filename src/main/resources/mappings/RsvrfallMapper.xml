@@ -72,7 +72,7 @@
           m.stnm,d.*,m.zfl
         from
           (select
-            a.stcd,a.stnm,a.sttp,n.ZFL ,k.*
+            a.stnm,a.sttp,n.ZFL ,k.*
           from
             ST_STBPRP_B a
           left join
