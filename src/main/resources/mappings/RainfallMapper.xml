@@ -113,7 +113,7 @@
 		) st
         LEFT join
 		(
-		select * from st_pptn_r m
+		select * from pptn=${pptn} m
 		<where>
 			<![CDATA[
 				m.tm=#{Time} and m.dyp is NOT NULL
@@ -185,7 +185,7 @@
 		on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from ST_PPTN_R where
+		from pptn=${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
@@ -253,7 +253,7 @@
         on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from ST_PPTN_R where
+		from pptn=${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
@@ -321,7 +321,7 @@
         on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from ST_PPTN_R where
+		from pptn=${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
@@ -379,11 +379,11 @@
 		) st
 		left join (
 		select count(drp) num, STCD
-		from ST_PPTN_R where
+		from pptn=${pptn} where
 		tm between #{beginTime} and #{endTime}
 		and dyp is NULL group by STCD) pt
 		on st.STCD = pt.STCD
-		left join (select stcd, drp from ST_PPTN_R where tm=#{NowTime}) qt on st.STCD = qt.STCD
+		left join (select stcd, drp from pptn=${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
 		ORDER BY ADNM
 	</select>
 </mapper>
