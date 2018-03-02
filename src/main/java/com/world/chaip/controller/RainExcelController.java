@@ -997,7 +997,7 @@ public class RainExcelController extends HttpServlet{
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
     }
-    @GetMapping(value="rainXbyyear")
+    @GetMapping(value="rainXbyyearzy")
     public JsonResult rainXbyYearZY(){
         return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbyyearbyexcelzy");
     }

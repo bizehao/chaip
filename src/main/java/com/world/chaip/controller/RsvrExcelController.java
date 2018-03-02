@@ -2,6 +2,7 @@ package com.world.chaip.controller;
 
 import com.world.chaip.business.ExportExcel;
 import com.world.chaip.entity.DaybyHourRainfall;
+import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.service.RsvrfallService;
@@ -131,7 +132,7 @@ public class RsvrExcelController {
     }
 
     //水库 (专业)
-    @GetMapping("getrsvrbyzhuanyebyexcel")
+    /*@GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
             HttpServletResponse response,
             @RequestParam("dateS")String dateStart,
@@ -186,7 +187,7 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rsvr> a = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
+        DayRsvr a = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
         String[] rowsName = new String[]{"序号","水系","库名","站号","时间","水位(m)","蓄水量(亿m³)","出库流量(m³/s)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -220,7 +221,7 @@ public class RsvrExcelController {
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
         rsvrXbyItem();
-    }
+    }*/
 
     //水库 (专业)
     @GetMapping("rsvrXbyzhuanye")

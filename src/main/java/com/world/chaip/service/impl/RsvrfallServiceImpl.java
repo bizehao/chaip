@@ -1,9 +1,11 @@
 package com.world.chaip.service.impl;
 
 import com.world.chaip.entity.DaybyHourRainfall;
+import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrXunQi;
+import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.mapper.RsvrfallMapper;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
@@ -29,14 +31,17 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 
     //水库 (专业)
     @Override
-    public List<Rsvr> getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         int fstp =  getRsverXunQi(dateS);
         int fstp1 =  getRsverXunQi(dateE);
         if(fstp >= fstp1){
             fstp = fstp1;
         }
-        List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
-        return null;
+        List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
+        DayRsvr dayRsvr = new DayRsvr();
+        dayRsvr.setFstp(fstp);
+        dayRsvr.setRsvrZhuanYeList(rainfalls);
+        return dayRsvr;
     }
 
     public int getRsverXunQi(Date time){

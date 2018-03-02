@@ -1,6 +1,7 @@
 package com.world.chaip.controller;
 
 import com.world.chaip.entity.DaybyHourRainfall;
+import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.service.RainfallService;
@@ -145,7 +146,7 @@ public class RealtimeRsvrfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rsvr> a = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
+        DayRsvr a = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         return new JsonResult(a);
     }
 }
