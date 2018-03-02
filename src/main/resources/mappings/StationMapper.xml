@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.world.chaip.mapper.StationMapper">
+	<select id="selectAll" resultType="com.world.chaip.entity.baseinfo.StationDetail">
+		select stcd,stnm from st_stbprp_b
+	</select>
+    <!-- 获取市县 -->
+    <select id="getCity" resultType="com.world.chaip.entity.report.City">
+        SELECT
+        ADCD, ADNM
+        FROM
+        DC_AD_B
+    </select>
+    <!-- 根据市县获取相应的站点信息 -->
+    <select id="getStations" resultType="com.world.chaip.entity.report.Stations">
+        SELECT
+        STCD, STNM
+        FROM
+        ST_STBPRP_B
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and ADDVCD IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                AND STTP = #{sttp}
+            </trim>
+        </where>
+    </select>
+    <!-- 获取站类信息 -->
+    <select id="getTyid" resultType="com.world.chaip.entity.report.Tyid">
+        SELECT
+        typeID, NAME
+        FROM
+        DJ_TYID
+    </select>
+</mapper>

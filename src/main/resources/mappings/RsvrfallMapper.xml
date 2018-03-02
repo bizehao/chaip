@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.world.chaip.mapper.RsvrfallMapper">
+	<!-- 水库查询 实时 -->
+	<select id="getRsvrByTerm" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and  STTP like '%R%'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, rz,w,otq from ST_RSVR_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from ST_RSVR_R
+        <where>
+            <![CDATA[
+				tm>#{beginTime} and tm<=#{endTime}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+	</select>
+
+	<!-- 水库查询 专业报表-->
+	<select id="getRsvrByZhaunYe" resultType="com.world.chaip.entity.report.Rsvr">
+        select
+          m.stnm,d.*,m.zfl
+        from
+          (select
+            a.stcd,a.stnm,a.sttp,n.ZFL ,k.*
+          from
+            ST_STBPRP_B a
+          left join
+            ST_STSMTASK_B n
+          on
+            a.stcd=n.stcd
+          left join
+            DJ_EXP k
+          on
+            a.stcd=k.stcd
+        <where>
+            a.sttp like '%R%' and n.ZFL='1'
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and a.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and a.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or a.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (a.stcd = ${stcdOrStnm[0]} or a.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and k.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+            </trim>
+        </where>
+        ) m
+        left join
+        (select
+          b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP
+        from
+          RP_RSVR_R b
+        inner join (
+        select
+          stcd,MAX(TM)TM from RP_RSVR_R
+        <where>
+            TM &lt;= #{time} group by stcd
+        </where>
+        ) c
+        on
+          b.stcd = c.stcd
+        and
+          b.TM = c.TM
+        left join
+          RP_RSVRFCCH_B e
+        on
+          c.stcd=e.stcd
+        left join
+        (select
+          stcd,FSLTDZ,FSLTDW,FSTP
+        from
+          RP_RSVRFSR_B
+        <where>
+            FSTP = #{fstp}
+        </where>
+        ) f
+        on
+          b.stcd = f.stcd
+        ) d
+        on
+          m.stcd=d.stcd
+	</select>
+
+    <!-- 水库汛期查询 -->
+    <select id="getRsvrFS" resultType="com.world.chaip.entity.report.RsvrXunQi">
+        select
+            top 1 convert(int,BGMD) AS BGMD,convert(int,EDMD) as EDMD
+        from RP_RSVRFSR_B
+        <where>
+            stcd in
+            (select
+                STCD
+            from
+                ST_STBPRP_B
+            <where>
+                STCD in(
+                select
+                    STCD
+                from
+                    RP_RSVRFCCH_B)
+                and STTP like '%R%')
+                and FSTP = #{fstp}
+            </where>
+        </where>
+
+    </select>
+</mapper>

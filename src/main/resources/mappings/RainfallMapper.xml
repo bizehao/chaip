@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.world.chaip.mapper.RainfallMapper">
+	<!-- 逐时降雨量查询 -->
+	<select id="selectByTm" resultType="com.world.chaip.entity.Rainfall">
+		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,drp,adnm from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+        INNER JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        inner join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+				</if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+				and STTP = 'P'
+			</trim>
+		</where>
+		) st 
+		inner join 
+		(
+		select * from st_pptn_r m
+		<where>
+			<![CDATA[
+				m.tm>#{beginTime} and m.tm<=#{endTime} and m.drp is NOT NULL
+			]]>				
+		</where>
+		)PP
+		on ST.STCD=PP.STCD
+	</select>
+
+	<!-- 逐日降雨量查询 -->
+	<select id="selectByDate" resultType="com.world.chaip.entity.Rainfall">
+		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,dyp,adnm from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+        LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+        LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+                and STTP = 'P'
+			</trim>
+		</where>
+		) st
+        LEFT join
+		(
+		select * from st_pptn_r m
+		<where>
+			<![CDATA[
+				m.tm=#{Time} and m.dyp is NOT NULL
+			]]>
+		</where>
+		)PP
+		on ST.STCD=PP.STCD ORDER BY ADNM
+	</select>
+
+	<!-- 逐旬降雨量查询 -->
+	<select id="selectByXun" resultType="com.world.chaip.entity.Rainfall">
+		select st.stcd,st.stnm,st.name,accp,adnm,num from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		INNER JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		inner join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		inner join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				and STTP = 'P'
+			</trim>
+		</where>
+		) st
+		left join
+		(
+		select * from ST_PSTAT_R m
+		<where>
+			<![CDATA[
+				m.IDTM=#{Time}
+				and m.sttdrcd = '4'
+			]]>
+		</where>
+		)PP
+		on ST.STCD=PP.STCD
+		left join (
+		select count(*) num, STCD
+		from ST_PPTN_R where
+		tm between #{beginTime} and #{Time}
+		and dyp is NOT NULL group by STCD) pt
+		on st.STCD = pt.STCD
+		ORDER BY ADNM
+	</select>
+	<!-- 逐月降雨量查询 实时-->
+    <select id="selectByMonth" resultType="com.world.chaip.entity.Rainfall">
+        select st.stcd,st.stnm,st.name,ACCP,adnm,num from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        INNER JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        inner join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+				and STTP = 'P'
+            </trim>
+        </where>
+        ) st
+        left join
+        (
+        select * from ST_PSTAT_R m
+        <where>
+            <![CDATA[
+				m.IDTM=#{Time}
+				and m.sttdrcd = '5'
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+		left join (
+		select count(*) num, STCD
+		from ST_PPTN_R where
+		tm between #{beginTime} and #{Time}
+		and dyp is NOT NULL group by STCD) pt
+		on st.STCD = pt.STCD
+		ORDER BY ADNM
+    </select>
+	<!-- 逐年降雨量查询 -->
+	<select id="selectByYear" resultType="com.world.chaip.entity.Rainfall">
+        select st.stcd,st.stnm,st.name,ACCP,adnm,num from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        INNER JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        inner join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+				and STTP = 'P'
+            </trim>
+        </where>
+        ) st
+        left join
+        (
+        select * from ST_PSTAT_R m
+        <where>
+            <![CDATA[
+				m.IDTM=#{Time}
+				and m.sttdrcd = '6'
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+		left join (
+		select count(*) num, STCD
+		from ST_PPTN_R where
+		tm between #{beginTime} and #{Time}
+		and dyp is NOT NULL group by STCD) pt
+		on st.STCD = pt.STCD
+		ORDER BY ADNM
+	</select>
+
+	<!-- 降雨量查询 时段-->
+	<select id="selectByTmss" resultType="com.world.chaip.entity.Rainfall">
+		select st.stcd,st.stnm,st.name,adnm,num,qt.drp from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		INNER JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		inner join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		inner join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd = ${stcdOrStnm[0]} or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				and STTP = 'P'
+			</trim>
+		</where>
+		) st
+		left join (
+		select count(drp) num, STCD
+		from ST_PPTN_R where
+		tm between #{beginTime} and #{endTime}
+		and dyp is NULL group by STCD) pt
+		on st.STCD = pt.STCD
+		left join (select stcd, drp from ST_PPTN_R where tm=#{NowTime}) qt on st.STCD = qt.STCD
+		ORDER BY ADNM
+	</select>
+</mapper>

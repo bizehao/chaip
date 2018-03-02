@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#zhushi").click(function () {
+                //逐时
+               $.ajax({
+                   url: 'services/realtime/rainfall/getrainbyhour',
+                   data: {"date":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                   success:function (result) {
+                       var data = result.data;
+                       alert('成功');
+                   },
+                   error:function () {
+                        alert('失败')
+                   }
+               });
+            });
+            $("#ri").click(function () {
+                //日
+                $.ajax({
+                    url: 'services/realtime/rainfall/getrainbydate',
+                    data: {"date":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                        console.log(data);
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
+            $("#xun").click(function () {
+                //旬
+                $.ajax({
+                    url: 'services/realtime/rainfall/getrainbyxun',
+                    data: {"date":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
+            $("#yue").click(function () {
+                //月
+                $.ajax({
+                    url: 'services/realtime/rainfall/getrainbymonth',
+                    data: {"date":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
+            $("#nian").click(function () {
+                //年
+                $.ajax({
+                    url: 'services/realtime/rainfall/getrainbyyear',
+                    data: {"date":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <button id="zhushi"> 逐时数据 </button>
+    <button id="ri"> 日数据 </button>
+    <button id="xun"> 旬数据 </button>
+    <button id="yue"> 月数据 </button>
+    <button id="nian"> 年数据 </button>
+    <br/><br/><br/>
+    <a  href="services/realtime/rainfallexcel/getrainbyhourbyexcel">逐时数据</a>
+    <a  href="services/realtime/rainfallexcel/getrainbydatebyexcel">日数据</a>
+    <a  href="services/realtime/rainfallexcel/getrainbyxunbyexcel">旬数据</a>
+    <a  href="services/realtime/rainfallexcel/getrainbymonthbyexcel">月数据</a>
+    <a  href="services/realtime/rainfallexcel/getrainbyyearbyexcel">年数据</a>
+</body>
+</html>

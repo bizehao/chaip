@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.world.chaip.mapper.ReportMapper">
+	<!-- 水库水情统计 -->
+	<select id="getRsvrByTerm" resultType="com.world.chaip.entity.report.Rsvr">
+		select 
+			a.stcd, stnm, hnnm, tm, rz, w, otq 
+		from 
+			ST_RSVR_R a 
+		inner join 
+			ST_STBPRP_B b 
+		on 
+			a.STCD = b.STCD 
+		inner join 
+			dbo.DJ_EXP c 
+		on 
+			a.STCD = c.stcd
+		inner join
+			DC_AD_B d
+		on
+			b.ADDVCD = d.ADCD
+		where 
+			b.sttp = 'RR' 
+		and 
+			a.TM between #{tm1} and #{tm2}
+		and 
+			a.stcd=#{stcd}
+		and 
+			c.type= #{type} 
+		and 
+			d.ADCD=#{city}
+	</select>
+	<!-- 河道水情统计 -->
+	<select id="getRiverByTerm" resultType="com.world.chaip.entity.report.River">
+		select 
+			a.stcd, adnm, stnm, rvnm, tm, z, msamt, q 
+		from 
+			ST_RIVER_R a 
+		inner join 
+			ST_STBPRP_B b 
+		on 
+			a.STCD = b.STCD 
+		inner join 
+			dbo.DJ_EXP c 
+		on 
+			a.STCD = c.stcd  
+		inner join 
+			DC_AD_B d 
+		on 
+			b.ADDVCD = d.ADCD 
+		where 
+			a.TM between #{tm1} and  #{tm2} 
+		and 
+			a.stcd=#{stcd} 
+		and 
+			c.type= #{type}  
+		and 
+			d.ADCD=#{city}
+	</select>
+	<!-- 降雨量统计 按时段 -->
+	<select id="getPptnByTerm" resultType="com.world.chaip.entity.report.Pptn">
+		select
+		a.stcd, adnm, stnm, name, tm, drp
+		from
+		ST_PPTN_R a
+		inner join
+		ST_STBPRP_B b
+		on
+		a.STCD = b.STCD
+		inner join
+		dbo.DJ_EXP c
+		on
+		a.STCD = c.stcd
+		inner join
+		DJ_TYID e
+		on
+		c.type = e.typeID
+		inner join
+		DC_AD_B d
+		on
+		b.ADDVCD = d.ADCD
+		where
+		a.TM &gt; #{tm1} and a.TM &lt;= #{tm2}
+		and
+		a.stcd=#{stcd}
+		OR
+		stnm LIKE #{stcd}
+		and
+		c.type= #{type}
+		and
+		d.ADCD=#{city}
+		and
+		INTV != NULL
+	</select>
+    <!-- 降雨量统计 按日 -->
+    <select id="getPptnByDate" resultType="com.world.chaip.entity.report.Pptn">
+        select
+        a.stcd, adnm, stnm, name, tm, DYP
+        from
+        ST_PPTN_R a
+        inner join
+        ST_STBPRP_B b
+        on
+        a.STCD = b.STCD
+        inner join
+        dbo.DJ_EXP c
+        on
+        a.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        inner join
+        DC_AD_B d
+        on
+        b.ADDVCD = d.ADCD
+        where
+        a.TM &gt; #{tm1} and a.TM &lt;= #{tm2}
+        and
+        <trim prefixOverrides="and|or">
+            <if test="stcd!=null">
+                and a.stcd=#{stcd}
+            </if>
+            <if test="stnm!=null">
+                and stnm like '%${stnm}%'
+            </if>
+        </trim>
+        and
+        c.lx= #{type}
+        and
+        d.ADCD=#{city}
+        and
+        INTV is NULL
+    </select>
+	<!-- 获取市县 -->
+	<select id="getCity" resultType="com.world.chaip.entity.report.City">
+		SELECT
+			ADCD, ADNM
+		FROM
+			DC_AD_B
+	</select>
+	<!-- 根据市县获取相应的站点信息 -->
+	<select id="getStations" resultType="com.world.chaip.entity.report.Stations">
+		SELECT
+			STCD, STNM
+		FROM
+			ST_STBPRP_B
+		WHERE
+			ADDVCD = #{adcd}
+	</select>
+	<!-- 获取站类信息 -->
+	<select id="getTyid" resultType="com.world.chaip.entity.report.Tyid">
+		SELECT
+			typeID, NAME
+		FROM
+			DJ_TYID
+	</select>
+</mapper>
