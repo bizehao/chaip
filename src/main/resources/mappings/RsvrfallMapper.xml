@@ -67,7 +67,7 @@
 	</select>
 
 	<!-- 水库查询 专业报表-->
-	<select id="getRsvrByZhaunYe" resultType="com.world.chaip.entity.report.Rsvr">
+	<select id="getRsvrByZhaunYe" resultType="com.world.chaip.entity.report.RsvrZhuanYe">
         select
           m.stnm,d.*,m.zfl
         from

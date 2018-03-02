@@ -1,7 +1,9 @@
 package com.world.chaip.service;
 
+import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrXunQi;
+import com.world.chaip.entity.report.RsvrZhuanYe;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,6 @@ public interface RsvrfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Rsvr> getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 
 }

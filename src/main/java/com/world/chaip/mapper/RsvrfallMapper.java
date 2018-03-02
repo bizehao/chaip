@@ -1,10 +1,9 @@
 package com.world.chaip.mapper;
 
-import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrXunQi;
+import com.world.chaip.entity.report.RsvrZhuanYe;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -37,7 +36,7 @@ public interface RsvrfallMapper {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Rsvr> getRsvrByZhaunYe(
+	List<RsvrZhuanYe> getRsvrByZhaunYe(
 			@Param("time") Date time,
 			@Param("fstp") int fstp,
 			@Param("adcd") List<String> adcd,
