@@ -4,7 +4,7 @@ spring:
   datasource:
     type: com.mchange.v2.c3p0.ComboPooledDataSource
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;DatabaseName=chaip00
+    url: jdbc:sqlserver://localhost:1433;DatabaseName=chaip
     username: sa
     password: sasa
 
