@@ -49,6 +49,6 @@ public interface RsvrfallMapper {
 	 * @param fstp
 	 * @return
 	 */
-	List<RsvrXunQi> getRsvrFS(
+	RsvrXunQi getRsvrFS(
 			@Param("fstp") int fstp);
 }

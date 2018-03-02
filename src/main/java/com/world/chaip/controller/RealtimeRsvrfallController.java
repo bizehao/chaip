@@ -35,7 +35,11 @@ public class RealtimeRsvrfallController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
-
+        dateStart="2017-06-02 08";
+        dateEnd="2017-06-04 12";
+        systemTypes="11,12,";
+        adcd="X";
+        stcdOrStnm="X";
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
         System.out.println("县域"+adcd);
@@ -77,8 +81,8 @@ public class RealtimeRsvrfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -136,8 +140,8 @@ public class RealtimeRsvrfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
