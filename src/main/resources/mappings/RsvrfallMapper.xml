@@ -115,7 +115,7 @@
                     </foreach>
                 </if>
             </trim>
-            a.sttp like '%R%' and n.ZFL='1'
+            and a.sttp like '%R%' and n.ZFL='1'
         </where>
         ) m
         left join
