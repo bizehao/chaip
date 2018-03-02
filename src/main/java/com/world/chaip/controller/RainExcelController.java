@@ -37,17 +37,11 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐时表
     @GetMapping("getrainbyhourbyexcel")
-    public void exportRainByHour(HttpServletResponse response
-                       /*@RequestParam("date")String dateStr,
+    public void exportRainByHour(HttpServletResponse response,
+                       @RequestParam("date")String dateStr,
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
-                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2017-06-04";
-        String stcdOrStnm="30905000,";
-        String systemTypes="11,";
-        String adcd="X";
-
+                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -109,7 +103,6 @@ public class RainExcelController extends HttpServlet{
             }
 
             dataList.add(objects);
-            /*System.out.println(Arrays.toString(objects));*/
         }
         //处理时间
         Date beginTime=null;
@@ -138,16 +131,11 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response
-                       /*@RequestParam("date")String dateStr,
+    public void exportRainByDate(HttpServletResponse response,
+                       @RequestParam("date")String dateStr,
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
-                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2017-06-03";
-        String stcdOrStnm="X";
-        String systemTypes="X";
-        String adcd="X";
+                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -281,16 +269,11 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐旬表
     @GetMapping("getrainbyxunbyexcel")
-    public void exportRainByXun(HttpServletResponse response
-                                 /*@RequestParam("date")String dateStr,
+    public void exportRainByXun(HttpServletResponse response,
+                                 @RequestParam("date")String dateStr,
                                  @RequestParam(name="adcd",required=false)String adcd,
                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2017-07-11";
-        String stcdOrStnm="X";
-        String systemTypes="X";
-        String adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582，";
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -357,16 +340,11 @@ public class RainExcelController extends HttpServlet{
     }
     //导出逐月表
     @GetMapping("getrainbymonthbyexcel")
-    public void exportRainByMonth(HttpServletResponse response
-                                /*@RequestParam("date")String dateStr,
+    public void exportRainByMonth(HttpServletResponse response,
+                                @RequestParam("date")String dateStr,
                                 @RequestParam(name="adcd",required=false)String adcd,
                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2017-08-01";
-        String stcdOrStnm="X";
-        String systemTypes="X";
-        String adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582，";
+                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -438,16 +416,11 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐年表
     @GetMapping("getrainbyyearbyexcel")
-    public void exportRainByYear(HttpServletResponse response
-                                /*@RequestParam("date")String dateStr,
+    public void exportRainByYear(HttpServletResponse response,
+                                @RequestParam("date")String dateStr,
                                 @RequestParam(name="adcd",required=false)String adcd,
                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2018-01-01";
-        String stcdOrStnm="30905000,";
-        String systemTypes="11,12,";
-        String adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -524,18 +497,12 @@ public class RainExcelController extends HttpServlet{
 
     //导出时段表
     @GetMapping("getrainbytimebyexcel")
-    public void exportRainByTime(HttpServletResponse response
-                                /*@RequestParam("dateS")String dateStart,
+    public void exportRainByTime(HttpServletResponse response,
+                                @RequestParam("dateS")String dateStart,
                                 @RequestParam("dateE")String dateEnd,
                                 @RequestParam(name="adcd",required=false)String adcd,
                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStart="2018-01-01";
-        String dateEnd="2018-01-01";
-        String stcdOrStnm="30905000,";
-        String systemTypes="11,12,";
-        String adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
