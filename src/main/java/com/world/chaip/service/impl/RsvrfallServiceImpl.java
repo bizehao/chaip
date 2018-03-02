@@ -7,6 +7,7 @@ import com.world.chaip.entity.report.RsvrXunQi;
 import com.world.chaip.mapper.RsvrfallMapper;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         endTime= now.getTime();
         List<RsvrXunQi> xunQiList = rsvrfallMapper.getRsvrFS(1);
 
-        List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(time, fstp, adcd,systemTypes,stcdOrStnm);
-        return rainfalls;
+        /*List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(time, fstp, adcd,systemTypes,stcdOrStnm);*/
+        return null;
     }
 }
