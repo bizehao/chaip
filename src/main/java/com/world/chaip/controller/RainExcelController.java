@@ -177,8 +177,8 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
 
-        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,1);
-        List<Object> b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist);
+        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
+        List<Object> b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         /*for(int i=0; i<a.getDayRainList().size(); i++){
             System.out.println(a.getDayRainList().get(i).getAdnm());
             Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
@@ -314,7 +314,7 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
         String title = "旬雨量统计报表";
         String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
         //处理List<Object[]>;
@@ -386,7 +386,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
 
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
         String title = "月雨量统计报表";
         String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
         //处理List<Object[]>;
@@ -461,7 +461,7 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
         for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -545,7 +545,7 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,1);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
         for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -634,6 +634,460 @@ public class RainExcelController extends HttpServlet{
             }
         }
         return dataList;
+    }
+
+    //导出逐日表(专业)
+    @GetMapping("getrainbydatebyexcelzy")
+    public void exportRainByDateZY(HttpServletResponse response,
+                                 @RequestParam("date")String dateStr,
+                                 @RequestParam(name="adcd",required=false)String adcd,
+                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            System.out.println("stcdOrStnm"+stcdOrStnm);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        List<Object> b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
+        /*for(int i=0; i<a.getDayRainList().size(); i++){
+            System.out.println(a.getDayRainList().get(i).getAdnm());
+            Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
+            System.out.println(map.size());
+            for (Map.Entry<String, Double> entry : map.entrySet()) {
+                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+            }
+        }*/
+        String title = "日雨量统计报表";
+        String[] rowsName = new String[]{"序号","县名","站名","雨量","站名","雨量","站名","雨量","站名","雨量","站名","雨量"};
+        List<Object[]> dataList = new ArrayList<Object[]>();
+        Object[] objects = null;
+        int xuhao = 0;
+        for (int i=0; i<a.getDayRainList().size(); i++){
+            xuhao++;
+            DayRainExcel.DayRain item = a.getDayRainList().get(i);
+            objects = new Object[rowsName.length];
+            objects[0] = xuhao;
+            objects[1] = item.getAdnm();
+            Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
+            int j = 0;
+            int m = 0;
+            int k = 0;
+            for (Map.Entry<String, Double> entry : map.entrySet()) {
+                j=j+2;
+                m=j+1;
+                k++;
+                if(j<=10){
+                    objects[j] = entry.getKey();
+                    objects[m] = entry.getValue();
+                }
+                if(j==10 || k==map.size()){
+                    dataList.add(objects);
+
+                }
+                if(j>10 && map.size()>=5){
+                    xuhao++;
+                    objects = new Object[rowsName.length];
+                    objects[0] = xuhao;
+                    objects[1] = null;
+                    j = 0;
+                    j=j+2;
+                    m=j+1;
+                    objects[j] = entry.getKey();
+                    objects[m] = entry.getValue();
+                    if(k==map.size()){
+                        dataList.add(objects);
+                    }
+                }
+            }
+        }
+        objects = new Object[12];
+        objects[0] = "超过100毫米的有：";
+        objects[1] = b.get(0)+"站";
+        objects[2] = "超过50毫米的有：";
+        objects[3] = b.get(1)+"站";
+        objects[4] = "超过30毫米的有：";
+        objects[5] = b.get(2)+"站";
+        objects[6] = "最大的是";
+        objects[7] = b.get(3)+"站";
+        objects[8] = "次大点的是";
+        objects[9] = b.get(4)+"站";
+        objects[10] = "再次大点的是";
+        objects[11] = b.get(5)+"站";
+        dataList.add(objects);
+        //处理时间
+        Date beginTime=null;
+        Date endTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String begin = formatter.format(beginTime);
+        String end = formatter.format(endTime);
+        String time ="时间："+ begin+"-"+end;
+        System.out.println(time);
+        //导出Excel公共方法调用
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();
+    }
+    @GetMapping(value="rainXbydatezy")
+    public JsonResult rainXbyDateZY(){
+        return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbydatebyexcelzy");
+    }
+
+    //导出逐旬表(专业)
+    @GetMapping("getrainbyxunbyexcelzy")
+    public void exportRainByXunZY(HttpServletResponse response,
+                                @RequestParam("date")String dateStr,
+                                @RequestParam(name="adcd",required=false)String adcd,
+                                @RequestParam(name="systemTypes",required=false)String systemTypes,
+                                @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            System.out.println("stcdOrStnm"+stcdOrStnm);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String title = "旬雨量统计报表";
+        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        //处理List<Object[]>;
+        List<Object[]> dataList = conExcel(a, rowsName);
+        //处理时间
+        Date Time=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String begin = formatter.format(Time);
+        String time ="时间："+ begin;
+        System.out.println(time);
+        //导出Excel公共方法调用
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();
+    }
+    @GetMapping(value="rainXbyxunzy")
+    public JsonResult rainXbyXunZY(){
+        return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbyxunbyexcelzy");
+    }
+    //导出逐月表
+    @GetMapping("getrainbymonthbyexcelzy")
+    public void exportRainByMonthZY(HttpServletResponse response,
+                                  @RequestParam("date")String dateStr,
+                                  @RequestParam(name="adcd",required=false)String adcd,
+                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
+                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            System.out.println("stcdOrStnm"+stcdOrStnm);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String title = "月雨量统计报表";
+        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        //处理List<Object[]>;
+        List<Object[]> dataList = conExcel(a, rowsName);
+        //处理时间
+        Date beginTime=null;
+        Date endTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String begin = formatter.format(beginTime);
+        String end = formatter.format(endTime);
+        String time ="时间："+ begin+"-"+end;
+        System.out.println(time);
+        //导出Excel公共方法调用
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();
+    }
+    @GetMapping(value="rainXbymonthzy")
+    public JsonResult rainXbyMonthZY(){
+        return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbymonthbyexcelzy");
+    }
+
+    //导出逐年表
+    @GetMapping("getrainbyyearbyexcelzy")
+    public void exportRainByYearZY(HttpServletResponse response,
+                                 @RequestParam("date")String dateStr,
+                                 @RequestParam(name="adcd",required=false)String adcd,
+                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            System.out.println("stcdOrStnm"+stcdOrStnm);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        for(int i=0; i<a.getDayRainXList().size(); i++){
+            System.out.println(a.getDayRainXList().get(i).getAdnm());
+            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
+            System.out.println(map.size());
+            for (int p=0; p<map.size();p++){
+                Object[] om = map.get(p);
+                System.out.println(Arrays.toString(om));
+            }
+        }
+        String title = "年雨量统计报表";
+        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        //处理List<Object[]>;
+        List<Object[]> dataList = conExcel(a, rowsName);
+        //处理时间
+        Date beginTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+        String begin = formatter.format(beginTime);
+        String time ="时间："+ begin;
+        System.out.println(time);
+        //导出Excel公共方法调用
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();
+    }
+    @GetMapping(value="rainXbyyear")
+    public JsonResult rainXbyYearZY(){
+        return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbyyearbyexcelzy");
+    }
+
+    //导出时段表
+    @GetMapping("getrainbytimebyexcelzy")
+    public void exportRainByTimeZT(HttpServletResponse response,
+                                 @RequestParam("dateS")String dateStart,
+                                 @RequestParam("dateE")String dateEnd,
+                                 @RequestParam(name="adcd",required=false)String adcd,
+                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            System.out.println("stcdOrStnm"+stcdOrStnm);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date dateS = null;
+        Date dateE = null;
+        try {
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        for(int i=0; i<a.getDayRainXList().size(); i++){
+            System.out.println(a.getDayRainXList().get(i).getAdnm());
+            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
+            System.out.println(map.size());
+            for (int p=0; p<map.size();p++){
+                Object[] om = map.get(p);
+                System.out.println(Arrays.toString(om));
+            }
+        }
+        String title = "时段雨量统计报表";
+        String[] rowsName = new String[]{"序号","县名","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量"};
+        //处理List<Object[]>;
+        List<Object[]> dataList = conExcel(a, rowsName);
+        //处理时间
+        Date beginTime=null;
+        Date endTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        System.out.println("这个的颠三倒四"+dateS);
+        System.out.println(dateE);
+        now.setTime(dateS);
+        beginTime=now.getTime();
+        now.setTime(dateE);
+        endTime= now.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String begin = formatter.format(beginTime);
+        String end = formatter.format(endTime);
+        String time ="时间："+ begin+"-"+end;
+        //导出Excel公共方法调用
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();
+    }
+    @GetMapping(value="rainXbytimezy")
+    public JsonResult rainXbyTimeZY(){
+        return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbytimebyexcelzy");
     }
 
 }

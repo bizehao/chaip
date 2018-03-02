@@ -148,7 +148,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0);
+        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
     //旬雨量
@@ -199,7 +199,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -264,7 +264,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
     //年雨量
@@ -320,7 +320,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
 
@@ -377,7 +377,294 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0);
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        return new JsonResult(a);
+    }
+
+    //日雨量（专业）
+    @GetMapping("getrainbydatezy")
+    public JsonResult getRainByDateZY(
+            @RequestParam("date")String dateStr,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        dateStr="2017-06-04";
+        stcdOrStnm="X";
+        systemTypes="X";
+        adcd="X";
+
+        System.out.println("时间"+dateStr);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+        if(adcd.equals("X")){
+            adcdlist = null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        return new JsonResult(a);
+    }
+    //旬雨量（专业）
+    @GetMapping("getrainbyxunzy")
+    public JsonResult getRainByXunZY(
+            @RequestParam("date")String dateStr,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        System.out.println("时间"+dateStr);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+        if(adcd.equals("X")){
+            adcdlist = null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        for(int i=0; i<a.getDayRainXList().size(); i++){
+            System.out.println(a.getDayRainXList().get(i).getAdnm());
+            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
+            System.out.println(map.size());
+            for (int p=0; p<map.size();p++){
+                Object[] om = map.get(p);
+                System.out.println(Arrays.toString(om));
+            }
+        }
+        return new JsonResult(a);
+    }
+    //月雨量
+    @GetMapping("getrainbymonthzy")
+    public JsonResult getRainByMonthZY(
+            @RequestParam("date")String dateStr,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        dateStr="2017-06-04";
+        stcdOrStnm="X";
+        systemTypes="X";
+        adcd="X";
+
+        System.out.println("时间"+dateStr);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+        if(adcd.equals("X")){
+            adcdlist = null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        return new JsonResult(a);
+    }
+    //年雨量
+    @GetMapping("getrainbyyearzy")
+    public JsonResult getRainByYearZY(
+            @RequestParam("date")String dateStr,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        dateStr="2017-06-04";
+        stcdOrStnm="X";
+        systemTypes="X";
+        adcd="X";
+
+        System.out.println("时间"+dateStr);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+        if(adcd.equals("X")){
+            adcdlist = null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date date = null;
+        try {
+            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        return new JsonResult(a);
+    }
+
+    //时段雨量
+    @GetMapping("getrainbytimezy")
+    public JsonResult getRainByTimeZY(
+            @RequestParam("dateS")String dateStart,
+            @RequestParam("dateE")String dateEnd,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        System.out.println("开始时间"+dateStart);
+        System.out.println("结束时间"+dateEnd);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+        if(adcd.equals("X")){
+            adcdlist = null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date dateS = null;
+        Date dateE = null;
+        try {
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
 }

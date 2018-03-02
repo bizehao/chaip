@@ -31,7 +31,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid);
+	Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 	/**
 	 * 逐旬雨量统计
 	 * @param date 日期
@@ -40,7 +40,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid);
+	Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 	/**
 	 * 逐月雨量统计
 	 * @param date 日期
@@ -49,7 +49,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid);
+	Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 	/**
 	 * 逐年雨量统计
 	 * @param date 日期
@@ -58,7 +58,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid);
+	Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 
 	/**
 	 * 时段雨量统计
@@ -69,7 +69,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid);
+	Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -80,44 +80,42 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<Object> getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
-	 * 逐旬雨量统计
+	 * 逐旬雨量计算
 	 * @param date 日期
 	 * @param adcd 测站编码
 	 * @param systemTypes
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<Object> getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
-	 * 逐月雨量统计
+	 * 逐月雨量计算
 	 * @param date 日期
 	 * @param adcd 测站编码
 	 * @param systemTypes
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<Object> getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
-	 * 逐年雨量统计
+	 * 逐年雨量计算
 	 * @param date 日期
 	 * @param adcd 测站编码
 	 * @param systemTypes
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
-
+	List<Object> getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
-	 * 处理集合排序
-	 */
-	List<Object> coonPC(List<Rainfall> rList);
-
-	/**
-	 * 处理旬月年
-	 * @param rainfalls
+	 * 时段雨量计算
+	 * @param dateS
+	 * @param dateE
+	 * @param adcd
+	 * @param systemTypes
+	 * @param stcdOrStnm
 	 * @return
 	 */
-	DayRainExcelX getXYN(List<Rainfall> rainfalls);
+	Object getDaybyTimeJS(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 }
