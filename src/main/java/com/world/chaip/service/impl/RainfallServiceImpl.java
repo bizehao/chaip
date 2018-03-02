@@ -192,6 +192,14 @@ public class RainfallServiceImpl implements RainfallService {
 		int hour = now.get(Calendar.HOUR_OF_DAY);
 		now.set(year,month,day,hour,0,0);
 		Date NowTime = now.getTime();
+		//开始时间
+		now.setTime(dateS);
+		now.set(Calendar.MINUTE,0);
+		dateS = now.getTime();
+		//结束时间
+		now.setTime(dateE);
+		now.set(Calendar.MINUTE,0);
+		dateE = now.getTime();
 		List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm);
 		if(cid == 0){
 			return list;

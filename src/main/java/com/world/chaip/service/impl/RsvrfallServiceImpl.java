@@ -46,13 +46,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
+        List<RsvrXunQi> xunQiList = rsvrfallMapper.getRsvrFS(1);
 
         List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(time, fstp, adcd,systemTypes,stcdOrStnm);
         return rainfalls;
-    }
-
-    @Override
-    public List<RsvrXunQi> getRsvrFS(int fstp) {
-        return rsvrfallMapper.getRsvrFS(fstp);
     }
 }

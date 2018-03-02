@@ -329,7 +329,7 @@
 	</select>
 
 	<!-- 降雨量查询 时段-->
-	<select id="selectByTmss" resultType="com.world.chaip.entity.Rainfall">
+	<select id="selectByTime" resultType="com.world.chaip.entity.Rainfall">
 		select st.stcd,st.stnm,st.name,adnm,num,qt.drp from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
 		INNER JOIN

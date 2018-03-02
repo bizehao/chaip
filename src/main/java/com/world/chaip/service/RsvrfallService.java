@@ -33,10 +33,5 @@ public interface RsvrfallService {
 	 * @return
 	 */
 	List<Rsvr> getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
-	/**
-	 * 查询汛期
-	 * @param fstp
-	 * @return
-	 */
-	List<RsvrXunQi> getRsvrFS(int fstp);
+
 }
