@@ -26,6 +26,8 @@ public class ChaipApplicationTests {
 
 	@Test
 	public void contextLoads1() {
-
+		String a="abcdefghi";
+		CharSequence b = a.subSequence(2,5);
+		System.out.println(b);
 	}
 }
