@@ -37,7 +37,22 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         if(fstp >= fstp1){
             fstp = fstp1;
         }
+        double level = 0;
+        List<String> levelList = null;
+        String levelS = null;
+        int jilu = 0;
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
+        for(int i=0; i<rainfalls.size(); i++){
+            if(rainfalls.get(i).getRz() >= rainfalls.get(i).getFsltdz()){
+                jilu++;
+                level = rainfalls.get(i).getRz() - rainfalls.get(i).getFsltdz();
+                levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+level+"米";
+                levelList.add(levelS);
+            }
+        }
+        String head = "目前有"+jilu+"处水库水位超过汛限水位";
+        levelList.add(0,head);
+
         DayRsvr dayRsvr = new DayRsvr();
         if(fstp==1){
             dayRsvr.setFstp("主汛期");
@@ -49,6 +64,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             dayRsvr.setFstp("其它");
         }
         dayRsvr.setRsvrZhuanYeList(rainfalls);
+        dayRsvr.setLevelList(levelList);
         return dayRsvr;
     }
 

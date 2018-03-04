@@ -20,7 +20,7 @@ public class RsvrZhuanYe {
     //汛期水位
     private double fsltdz;
 
-    //库容
+    //汛限库容
     private double fsltdw;
 
     //水位
