@@ -113,7 +113,7 @@
 		) st
         LEFT join
 		(
-		select * from pptn=${pptn} m
+		select * from ${pptn} m
 		<where>
 			<![CDATA[
 				m.tm=#{Time} and m.dyp is NOT NULL
@@ -185,7 +185,7 @@
 		on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from pptn=${pptn} where
+		from ${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
@@ -253,7 +253,7 @@
         on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from pptn=${pptn} where
+		from ${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
@@ -321,7 +321,7 @@
         on ST.STCD=PP.STCD
 		left join (
 		select count(*) num, STCD
-		from pptn=${pptn} where
+		from ${pptn} where
 		tm between #{beginTime} and #{Time}
 		and dyp is NOT NULL group by STCD) pt
 		on st.STCD = pt.STCD
