@@ -73,7 +73,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             dayRsvr.setFstp("其它");
         }
         dayRsvr.setRsvrZhuanYeList(rainfalls);
-        dayRsvr.setLevelList(levelList);
+        dayRsvr.setLevels(head);
         return dayRsvr;
     }
 

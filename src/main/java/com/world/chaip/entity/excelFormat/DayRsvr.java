@@ -12,15 +12,15 @@ public class DayRsvr {
     //汛期数据
     private List<RsvrZhuanYe> rsvrZhuanYeList;
     //汛期报告
-    private List<String> levelList;
+    private String levels;
 
     public DayRsvr() {
     }
 
-    public DayRsvr(String fstp, List<RsvrZhuanYe> rsvrZhuanYeList, List<String> levelList) {
+    public DayRsvr(String fstp, List<RsvrZhuanYe> rsvrZhuanYeList, String levels) {
         this.fstp = fstp;
         this.rsvrZhuanYeList = rsvrZhuanYeList;
-        this.levelList = levelList;
+        this.levels = levels;
     }
 
     public String getFstp() {
@@ -39,11 +39,11 @@ public class DayRsvr {
         this.rsvrZhuanYeList = rsvrZhuanYeList;
     }
 
-    public List<String> getLevelList() {
-        return levelList;
+    public String getLevels() {
+        return levels;
     }
 
-    public void setLevelList(List<String> levelList) {
-        this.levelList = levelList;
+    public void setLevels(String levels) {
+        this.levels = levels;
     }
 }
