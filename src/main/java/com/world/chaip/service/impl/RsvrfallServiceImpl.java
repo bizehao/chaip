@@ -53,6 +53,13 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             }
         }
         String head = "目前有"+jilu+"处水库水位超过汛限水位";
+        if(levelList.size()>0){
+            for(int i=0; i<levelList.size(); i++){
+                head+="其中"+levelList.get(i)+",";
+            }
+            head.substring(head.length());
+            head+="。";
+        }
         levelList.add(0,head);
 
         DayRsvr dayRsvr = new DayRsvr();
