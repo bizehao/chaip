@@ -148,7 +148,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
     //旬雨量
@@ -199,16 +199,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
-        for(int i=0; i<a.getDayRainXList().size(); i++){
-            System.out.println(a.getDayRainXList().get(i).getAdnm());
-            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
-            System.out.println(map.size());
-            for (int p=0; p<map.size();p++){
-                Object[] om = map.get(p);
-                System.out.println(Arrays.toString(om));
-            }
-        }
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
     //月雨量
@@ -264,7 +255,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
     //年雨量
@@ -320,7 +311,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
 
@@ -377,7 +368,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
         return new JsonResult(a);
     }
 
@@ -435,7 +426,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
     //旬雨量（专业）
@@ -486,16 +477,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
-        for(int i=0; i<a.getDayRainXList().size(); i++){
-            System.out.println(a.getDayRainXList().get(i).getAdnm());
-            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
-            System.out.println(map.size());
-            for (int p=0; p<map.size();p++){
-                Object[] om = map.get(p);
-                System.out.println(Arrays.toString(om));
-            }
-        }
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
     //月雨量
@@ -551,7 +533,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
     //年雨量
@@ -607,7 +589,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
 
