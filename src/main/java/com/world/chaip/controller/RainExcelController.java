@@ -508,6 +508,12 @@ public class RainExcelController extends HttpServlet{
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
+        System.out.println("这儿00"+dateStart);
+        System.out.println("这儿00"+dateEnd);
+        System.out.println(adcd);
+        System.out.println(systemTypes);
+        System.out.println(stcdOrStnm);
+
         if(adcd.equals("X")){
             adcdlist=null;
         }else {
@@ -540,8 +546,8 @@ public class RainExcelController extends HttpServlet{
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -845,7 +851,7 @@ public class RainExcelController extends HttpServlet{
     public JsonResult rainXbyXunZY(){
         return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbyxunbyexcelzy");
     }
-    //导出逐月表
+    //导出逐月表(专业)
     @GetMapping("getrainbymonthbyexcelzy")
     public void exportRainByMonthZY(HttpServletResponse response,
                                   @RequestParam("date")String dateStr,
@@ -921,7 +927,7 @@ public class RainExcelController extends HttpServlet{
         return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbymonthbyexcelzy");
     }
 
-    //导出逐年表
+    //导出逐年表(专业)
     @GetMapping("getrainbyyearbyexcelzy")
     public void exportRainByYearZY(HttpServletResponse response,
                                  @RequestParam("date")String dateStr,
@@ -1002,7 +1008,7 @@ public class RainExcelController extends HttpServlet{
         return new JsonResult("http://192.168.1.63:8080/services/realtime/rainfallexcel/getrainbyyearbyexcelzy");
     }
 
-    //导出时段表
+    //导出时段表(专业)
     @GetMapping("getrainbytimebyexcelzy")
     public void exportRainByTimeZT(HttpServletResponse response,
                                  @RequestParam("dateS")String dateStart,
@@ -1010,6 +1016,9 @@ public class RainExcelController extends HttpServlet{
                                  @RequestParam(name="adcd",required=false)String adcd,
                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+
+        System.out.println("开始"+dateStart);
+        System.out.println("结束"+dateEnd);
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -1047,8 +1056,6 @@ public class RainExcelController extends HttpServlet{
         Date dateS = null;
         Date dateE = null;
         try {
-            System.out.println(dateStart+"00000000000");
-            System.out.println(dateEnd+"00000000000");
             dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
             dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
