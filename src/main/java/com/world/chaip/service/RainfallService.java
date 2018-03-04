@@ -9,8 +9,8 @@ import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
 
 /**
- * 
- * @author LIUWY
+ * 实时和专业
+ * @author BZH
  *
  */
 public interface RainfallService {

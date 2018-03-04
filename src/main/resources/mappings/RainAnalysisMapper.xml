@@ -4,7 +4,7 @@
 
     <!-- 汛期降雨量分析对比表 -->
     <select id="getRainXQCompared" resultType="com.world.chaip.entity.Rainfall">
-        select st.stcd,st.stnm,st.name,adnm,isnull(num,0) num,isnull(qt.drp,0) drp from
+        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong drp from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         INNER JOIN
         DJ_AD ad
@@ -51,25 +51,14 @@
             </trim>
         </where>
         ) st
-        left join ((
-        select count(drp) numSix, STCD
-        from RP_PPTN_R where
-        tm between #{beginTime1} and #{endTime1}
-        and dyp > 0 ) six on six.STCD = st.STCD
-        left join ( select count(drp) numSeven, STCD
-        from RP_PPTN_R where
-        tm between #{beginTime2} and #{endTime2}
-        and dyp > 0 ) seven on seven.STCD = st.STCD
-        left join (select count(drp) numEight, STCD    6.02 7.01   7.02 8.01
-        from RP_PPTN_R where
-        tm between #{beginTime3} and #{endTime3}
-        and dyp > 0 ) eight on eight.STCD = st.STCD
-        left join (select count(drp) numNine, STCD
-        from RP_PPTN_R where
-        tm between #{beginTime4} and #{endTime4}
-        and dyp > 0 ) nine on nine.STCD = st.STCD
-        group by STCD) pt
-        on st.STCD = pt.STCD
+        left join (
+        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by STCD ) six on six.STCD = st.STCD
+        left join (
+        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group by STCD ) seven on seven.STCD = st.STCD
+        left join (
+        select sum(dyp) numEight, STCD  from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
+        left join (
+        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
         left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
         ORDER BY ADNM
     </select>
