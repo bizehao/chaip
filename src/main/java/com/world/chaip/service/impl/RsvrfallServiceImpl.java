@@ -13,6 +13,7 @@ import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             if(rainfalls.get(i).getRz() >= rainfalls.get(i).getFsltdz()){
                 jilu++;
                 level = rainfalls.get(i).getRz() - rainfalls.get(i).getFsltdz();
-                levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+level+"米";
+                levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
                 levelList.add(levelS);
             }
         }
