@@ -115,7 +115,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE %Z%
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '31'
             </trim>
         </where>
         ) st
@@ -182,7 +182,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE %Z%  and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'  and c.dq = '32'
             </trim>
         </where>
         ) st
