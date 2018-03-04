@@ -367,10 +367,20 @@ public class RainfallServiceImpl implements RainfallService {
 				return new Double(b).compareTo(new Double(a));
 			}
 		});
+        String one = "";
+        String two = "";
+        String three = "";
 		System.out.println("最大"+list.get(0).getDyp());
-		String one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+(list.get(0).getDyp()==null?0:list.get(0).getDyp())+"毫米";
-		String two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+(list.get(1).getDyp()==null?0:list.get(1).getDyp())+"毫米";
-		String three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+(list.get(2).getDyp()==null?0:list.get(2).getDyp())+"毫米";
+		if(list.size()==1){
+            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+(list.get(0).getDyp()==null?0:list.get(0).getDyp())+"毫米";
+        }else if(list.size()==2){
+            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+(list.get(0).getDyp()==null?0:list.get(0).getDyp())+"毫米";
+            two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+(list.get(1).getDyp()==null?0:list.get(1).getDyp())+"毫米";
+        }else{
+            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+(list.get(0).getDyp()==null?0:list.get(0).getDyp())+"毫米";
+            two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+(list.get(1).getDyp()==null?0:list.get(1).getDyp())+"毫米";
+            three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+(list.get(2).getDyp()==null?0:list.get(2).getDyp())+"毫米";
+        }
 		System.out.println("超过100的:"+hundred);
 		System.out.println("超过50的:"+Fifty);
 		System.out.println("超过30的:"+Thirty);
