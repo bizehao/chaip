@@ -36,7 +36,7 @@
                             </foreach>
                         </when>
                         <otherwise>
-                            and (b.stcd = '${stcdOrStnm[0]}' or b.stnm like '%'${stcdOrStnm[0]}'%')
+                            and (b.stcd = '${stcdOrStnm[0]}' or b.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
                 </if>
@@ -104,7 +104,7 @@
                             </foreach>
                         </when>
                         <otherwise>
-                            and (a.stcd = '${stcdOrStnm[0]}' or a.stnm like '%'${stcdOrStnm[0]}'%')
+                            and (a.stcd like '%${stcdOrStnm[0]}%' or a.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
                 </if>
