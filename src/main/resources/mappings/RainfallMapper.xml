@@ -3,7 +3,7 @@
 <mapper namespace="com.world.chaip.mapper.RainfallMapper">
 	<!-- 逐时降雨量查询 -->
 	<select id="selectByTm" resultType="com.world.chaip.entity.Rainfall">
-		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,drp,adnm from
+		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,isnull(drp,0) drp,adnm from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
         INNER JOIN
         DJ_AD ad
@@ -64,7 +64,7 @@
 
 	<!-- 逐日降雨量查询 -->
 	<select id="selectByDate" resultType="com.world.chaip.entity.Rainfall">
-		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,dyp,adnm from
+		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,isnull(dyp,0) dyp,adnm from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
 		LEFT JOIN
 		DJ_AD ad
