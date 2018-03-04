@@ -78,8 +78,6 @@ public class RainfallServiceImpl implements RainfallService {
 					tempItem.setLttd(rainfalls.get(i).getLttd());
 					tempItem.setName(rainfalls.get(i).getName());
 					tempItem.setAdnm(rainfalls.get(i).getAdnm());
-                    System.out.println(rainfalls.get(i).getTm());
-                    System.out.println(rainfalls.get(i).getDrp());
                     tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
 					daybyHourRainfall.getData().add(tempItem);
 					/*tempItem.setDyp(dyp);*/
