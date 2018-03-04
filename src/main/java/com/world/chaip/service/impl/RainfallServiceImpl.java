@@ -187,12 +187,18 @@ public class RainfallServiceImpl implements RainfallService {
 	public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
 		Calendar now =  Calendar.getInstance();
 		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH + 1);
-		int day = now.get(Calendar.DAY_OF_MONTH);
+		int month = now.get(Calendar.MONTH);
+		int day = now.get(Calendar.DATE);
 		int hour = now.get(Calendar.HOUR_OF_DAY);
 		now.set(year,month,day,hour,0,0);
-		Date NowTime = now.getTime();
-		//开始时间
+		now.set(Calendar.MILLISECOND,0);
+        System.out.println(year);
+        System.out.println(month);
+        System.out.println(day);
+        System.out.println(hour);
+        Date NowTime = now.getTime();
+        System.out.println(NowTime);
+        //开始时间
 		now.setTime(dateS);
 		now.set(Calendar.MINUTE,0);
 		dateS = now.getTime();
