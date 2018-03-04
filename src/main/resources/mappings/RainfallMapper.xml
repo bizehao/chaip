@@ -51,8 +51,8 @@
 				and PFL = 1
 			</trim>
 		</where>
-		) st 
-		Left join 
+		) st
+        inner join
 		(
 		select * from st_pptn_r m
 		<where>
