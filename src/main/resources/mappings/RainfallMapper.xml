@@ -390,7 +390,7 @@
 		</where>
 		) st
 		left join (
-		select count(drp) num, STCD
+		select sum(drp) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{endTime}
 		and dyp is NULL group by STCD) pt

@@ -54,19 +54,19 @@
         left join ((
         select count(drp) numSix, STCD
         from RP_PPTN_R where
-        tm between #{beginTime} and #{endTime}
+        tm between #{beginTime1} and #{endTime1}
         and dyp > 0 ) six on six.STCD = st.STCD
         left join ( select count(drp) numSeven, STCD
         from RP_PPTN_R where
-        tm between #{beginTime} and #{endTime}
+        tm between #{beginTime2} and #{endTime2}
         and dyp > 0 ) seven on seven.STCD = st.STCD
-        left join (select count(drp) numEight, STCD
+        left join (select count(drp) numEight, STCD    6.02 7.01   7.02 8.01
         from RP_PPTN_R where
-        tm between #{beginTime} and #{endTime}
+        tm between #{beginTime3} and #{endTime3}
         and dyp > 0 ) eight on eight.STCD = st.STCD
         left join (select count(drp) numNine, STCD
         from RP_PPTN_R where
-        tm between #{beginTime} and #{endTime}
+        tm between #{beginTime4} and #{endTime4}
         and dyp > 0 ) nine on nine.STCD = st.STCD
         group by STCD) pt
         on st.STCD = pt.STCD
