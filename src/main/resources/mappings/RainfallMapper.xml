@@ -125,7 +125,7 @@
 
 	<!-- 逐旬降雨量查询 -->
 	<select id="selectByXun" resultType="com.world.chaip.entity.Rainfall">
-		select st.stcd,st.stnm,st.name,accp,adnm,isnull(num,0) num from
+		select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
 		INNER JOIN
 		DJ_AD ad
@@ -193,7 +193,7 @@
 	</select>
 	<!-- 逐月降雨量查询 实时-->
     <select id="selectByMonth" resultType="com.world.chaip.entity.Rainfall">
-        select st.stcd,st.stnm,st.name,ACCP,adnm,isnull(num,0) num from
+        select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         INNER JOIN
         DJ_AD ad
@@ -261,7 +261,7 @@
     </select>
 	<!-- 逐年降雨量查询 -->
 	<select id="selectByYear" resultType="com.world.chaip.entity.Rainfall">
-        select st.stcd,st.stnm,st.name,ACCP,adnm,isnull(num,0) num from
+        select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         INNER JOIN
         DJ_AD ad
