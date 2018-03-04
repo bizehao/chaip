@@ -57,12 +57,14 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int tmInt = 0;
         Calendar now = Calendar.getInstance();
         now.setTime(time);
-        int month = now.get(Calendar.MONTH);
+        int month = now.get(Calendar.MONTH)+1;
         int day = now.get(Calendar.DAY_OF_MONTH);
+        System.out.println(month);
+        System.out.println(day);
         if(day<=9){
             tmString = month+"0"+day;
         }else{
-            tmString = String.valueOf(month+day);
+            tmString = String.valueOf(month)+String.valueOf(day);
         }
         tmInt = Integer.parseInt(tmString);
         RsvrXunQi rsvrXunQi = null;
@@ -70,14 +72,22 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int xqJS = 0;
         for(int i=1; i<=4; i++){
             rsvrXunQi = rsvrfallMapper.getRsvrFS(i);
+            System.out.println(rsvrXunQi);
             if(rsvrXunQi != null){
                 xqKS = Integer.parseInt(rsvrXunQi.getBGMD());
                 xqJS = Integer.parseInt(rsvrXunQi.getEDMD());
+                System.out.println("============");
+                System.out.println(xqKS);
+                System.out.println(xqJS);
+                System.out.println(tmInt);
+                System.out.println("============");
                 if(tmInt >= xqKS && tmInt <= xqJS){
+                    System.out.println("进入"+i);
                     return i;
                 }
             }
         }
+        System.out.println("最后");
         return 4;
     }
 }
