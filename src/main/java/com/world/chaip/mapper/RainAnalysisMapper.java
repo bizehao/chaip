@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface RainAnalysisMapper {
 
-    List<Rainfall> getRainXQCompared(@Param("Time") Date Time,
+    List<Rainfall> getRainXQCompared(@Param("beginTime") Date beginTime,
+                                     @Param("endTime") Date endTime,
                                      @Param("adcd") List<String> adcd,
                                      @Param("systemTypes") List<String> systemTypes,
-                                     @Param("stcdOrStnm") List<String> stcdOrStnm,
-                                     @Param("pptn") String pptn);
+                                     @Param("stcdOrStnm") List<String> stcdOrStnm);
 }

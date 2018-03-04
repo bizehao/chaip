@@ -5,13 +5,15 @@
 	<select id="selectByTm" resultType="com.world.chaip.entity.Rainfall">
 		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,isnull(drp,0) drp,adnm from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
-        INNER JOIN
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+        Left JOIN
         DJ_AD ad
         ON b.ADDVCD = ad.ADCD
-        inner join
+        Left join
         DJ_EXP c
         on b.STCD = c.stcd
-        inner join
+        Left join
         DJ_TYID e
         on
         c.lx = e.typeID
@@ -46,11 +48,11 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-				and STTP = 'P'
+				and PFL = 1
 			</trim>
 		</where>
 		) st 
-		inner join 
+		Left join 
 		(
 		select * from st_pptn_r m
 		<where>
@@ -66,6 +68,8 @@
 	<select id="selectByDate" resultType="com.world.chaip.entity.Rainfall">
 		select st.stcd,st.stnm,st.name,st.lgtd,st.lttd,tm,isnull(dyp,0) dyp,adnm from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
 		LEFT JOIN
 		DJ_AD ad
 		ON b.ADDVCD = ad.ADCD
@@ -107,7 +111,7 @@
 						#{systemTypes}
 					</foreach>
 				</if>
-                and STTP = 'P'
+                and PFL = 1
 			</trim>
 		</where>
 		) st
@@ -127,13 +131,15 @@
 	<select id="selectByXun" resultType="com.world.chaip.entity.Rainfall">
 		select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
-		INNER JOIN
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		Left JOIN
 		DJ_AD ad
 		ON b.ADDVCD = ad.ADCD
-		inner join
+		Left join
 		DJ_EXP c
 		on b.STCD = c.stcd
-		inner join
+		Left join
 		DJ_TYID e
 		on
 		c.lx = e.typeID
@@ -168,7 +174,7 @@
 						#{systemTypes}
 					</foreach>
 				</if>
-				and STTP = 'P'
+				and PFL = 1
 			</trim>
 		</where>
 		) st
@@ -195,13 +201,15 @@
     <select id="selectByMonth" resultType="com.world.chaip.entity.Rainfall">
         select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
-        INNER JOIN
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+        Left JOIN
         DJ_AD ad
         ON b.ADDVCD = ad.ADCD
-        inner join
+        Left join
         DJ_EXP c
         on b.STCD = c.stcd
-        inner join
+        Left join
         DJ_TYID e
         on
         c.lx = e.typeID
@@ -236,7 +244,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-				and STTP = 'P'
+				and PFL = 1
             </trim>
         </where>
         ) st
@@ -263,13 +271,15 @@
 	<select id="selectByYear" resultType="com.world.chaip.entity.Rainfall">
         select st.stcd,st.stnm,st.name,isnull(accp,0) accp,adnm,isnull(num,0) num from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
-        INNER JOIN
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+        Left JOIN
         DJ_AD ad
         ON b.ADDVCD = ad.ADCD
-        inner join
+        Left join
         DJ_EXP c
         on b.STCD = c.stcd
-        inner join
+        Left join
         DJ_TYID e
         on
         c.lx = e.typeID
@@ -304,7 +314,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-				and STTP = 'P'
+				and PFL = 1
             </trim>
         </where>
         ) st
@@ -332,13 +342,15 @@
 	<select id="selectByTime" resultType="com.world.chaip.entity.Rainfall">
 		select st.stcd,st.stnm,st.name,adnm,isnull(num,0) num,isnull(qt.drp,0) drp from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
-		INNER JOIN
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		Left JOIN
 		DJ_AD ad
 		ON b.ADDVCD = ad.ADCD
-		inner join
+		Left join
 		DJ_EXP c
 		on b.STCD = c.stcd
-		inner join
+		Left join
 		DJ_TYID e
 		on
 		c.lx = e.typeID
@@ -373,7 +385,7 @@
 						#{systemTypes}
 					</foreach>
 				</if>
-				and STTP = 'P'
+				and PFL = 1
 			</trim>
 		</where>
 		) st

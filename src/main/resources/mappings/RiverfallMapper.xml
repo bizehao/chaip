@@ -5,6 +5,8 @@
 	<select id="getRiverByTerm" resultType="com.world.chaip.entity.report.River">
 		select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
 		(select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
 		LEFT JOIN
 		DJ_AD ad
 		ON b.ADDVCD = ad.ADCD
@@ -46,7 +48,7 @@
 						#{systemTypes}
 					</foreach>
 				</if>
-                and  STTP like '%Z%'
+                and ZFL = 1 and STTP LIKE %Z%
 			</trim>
 		</where>
 		) st
@@ -70,6 +72,8 @@
     <select id="getRiverByBen" resultType="com.world.chaip.entity.report.River">
         select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
         LEFT JOIN
         DJ_AD ad
         ON b.ADDVCD = ad.ADCD
@@ -111,7 +115,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and  STTP like '%Z%' and c.dq = '31'
+                and ZFL = 1 and STTP LIKE %Z%
             </trim>
         </where>
         ) st
@@ -135,6 +139,8 @@
     <select id="getRiverByWai" resultType="com.world.chaip.entity.report.River">
         select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
         LEFT JOIN
         DJ_AD ad
         ON b.ADDVCD = ad.ADCD
@@ -176,7 +182,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and  STTP like '%Z%' and c.dq = '31'
+                and ZFL = 1 and STTP LIKE %Z%  and c.dq = '31'
             </trim>
         </where>
         ) st

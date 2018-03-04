@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.world.chaip.mapper.RainAnalysisMapper">
+
+    <!-- 汛期降雨量分析对比表 -->
+    <select id="getRainXQCompared" resultType="com.world.chaip.entity.Rainfall">
+        select st.stcd,st.stnm,st.name,adnm,isnull(num,0) num,isnull(qt.drp,0) drp from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        INNER JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        inner join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and STTP = 'P'
+            </trim>
+        </where>
+        ) st
+        left join ((
+        select count(drp) numSix, STCD
+        from RP_PPTN_R where
+        tm between #{beginTime} and #{endTime}
+        and dyp > 0 ) six on six.STCD = st.STCD
+        left join ( select count(drp) numSeven, STCD
+        from RP_PPTN_R where
+        tm between #{beginTime} and #{endTime}
+        and dyp > 0 ) seven on seven.STCD = st.STCD
+        left join (select count(drp) numEight, STCD
+        from RP_PPTN_R where
+        tm between #{beginTime} and #{endTime}
+        and dyp > 0 ) eight on eight.STCD = st.STCD
+        left join (select count(drp) numNine, STCD
+        from RP_PPTN_R where
+        tm between #{beginTime} and #{endTime}
+        and dyp > 0 ) nine on nine.STCD = st.STCD
+        group by STCD) pt
+        on st.STCD = pt.STCD
+        left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
+        ORDER BY ADNM
+    </select>
+</mapper>
