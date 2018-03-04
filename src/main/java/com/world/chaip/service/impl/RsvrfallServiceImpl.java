@@ -13,6 +13,7 @@ import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,8 +39,8 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             fstp = fstp1;
         }
         double level = 0;
-        List<String> levelList = null;
-        String levelS = null;
+        List<String> levelList = new ArrayList<>();
+        String levelS = "";
         int jilu = 0;
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
         for(int i=0; i<rainfalls.size(); i++){
@@ -75,8 +76,6 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         now.setTime(time);
         int month = now.get(Calendar.MONTH)+1;
         int day = now.get(Calendar.DAY_OF_MONTH);
-        System.out.println(month);
-        System.out.println(day);
         if(day<=9){
             tmString = month+"0"+day;
         }else{
@@ -88,22 +87,14 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int xqJS = 0;
         for(int i=1; i<=4; i++){
             rsvrXunQi = rsvrfallMapper.getRsvrFS(i);
-            System.out.println(rsvrXunQi);
             if(rsvrXunQi != null){
                 xqKS = Integer.parseInt(rsvrXunQi.getBGMD());
                 xqJS = Integer.parseInt(rsvrXunQi.getEDMD());
-                System.out.println("============");
-                System.out.println(xqKS);
-                System.out.println(xqJS);
-                System.out.println(tmInt);
-                System.out.println("============");
                 if(tmInt >= xqKS && tmInt <= xqJS){
-                    System.out.println("进入"+i);
                     return i;
                 }
             }
         }
-        System.out.println("最后");
         return 4;
     }
 }

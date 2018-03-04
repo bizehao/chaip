@@ -379,11 +379,11 @@
 		) st
 		left join (
 		select count(drp) num, STCD
-		from pptn=${pptn} where
+		from ${pptn} where
 		tm between #{beginTime} and #{endTime}
 		and dyp is NULL group by STCD) pt
 		on st.STCD = pt.STCD
-		left join (select stcd, drp from pptn=${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
+		left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
 		ORDER BY ADNM
 	</select>
 </mapper>

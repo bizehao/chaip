@@ -611,7 +611,7 @@ public class RealtimeRainfallController {
         return new JsonResult(a);
     }
 
-    //时段雨量
+    //时段雨量(专业)
     @GetMapping("getrainbytimezy")
     public JsonResult getRainByTimeZY(
             @RequestParam("dateS")String dateStart,
@@ -664,7 +664,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
         return new JsonResult(a);
     }
 }
