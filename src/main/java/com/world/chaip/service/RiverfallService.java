@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 
- * @author LIUWY
+ * 实时和专业
+ * @author BZH
  *
  */
 public interface RiverfallService {

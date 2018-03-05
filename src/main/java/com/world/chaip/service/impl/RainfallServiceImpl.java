@@ -296,7 +296,6 @@ public class RainfallServiceImpl implements RainfallService {
 	@Override
 	public List<Object> getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
 		Date Time=null;
-		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
 		Calendar now = Calendar.getInstance();
 		now.setTime(date);
 		now.set(Calendar.HOUR_OF_DAY, 8);
