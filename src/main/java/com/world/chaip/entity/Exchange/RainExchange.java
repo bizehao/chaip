@@ -15,4 +15,73 @@ public class RainExchange {
     private double numNine;
     //汛期降雨量6-9月
     private double zong;
+
+    public RainExchange() {
+    }
+
+    public RainExchange(String stcd, String stnm, double numSix, double numSeven, double numEight, double numNine, double zong) {
+        this.stcd = stcd;
+        this.stnm = stnm;
+        this.numSix = numSix;
+        this.numSeven = numSeven;
+        this.numEight = numEight;
+        this.numNine = numNine;
+        this.zong = zong;
+    }
+
+    public String getStcd() {
+        return stcd;
+    }
+
+    public void setStcd(String stcd) {
+        this.stcd = stcd;
+    }
+
+    public String getStnm() {
+        return stnm;
+    }
+
+    public void setStnm(String stnm) {
+        this.stnm = stnm;
+    }
+
+    public double getNumSix() {
+        return numSix;
+    }
+
+    public void setNumSix(double numSix) {
+        this.numSix = numSix;
+    }
+
+    public double getNumSeven() {
+        return numSeven;
+    }
+
+    public void setNumSeven(double numSeven) {
+        this.numSeven = numSeven;
+    }
+
+    public double getNumEight() {
+        return numEight;
+    }
+
+    public void setNumEight(double numEight) {
+        this.numEight = numEight;
+    }
+
+    public double getNumNine() {
+        return numNine;
+    }
+
+    public void setNumNine(double numNine) {
+        this.numNine = numNine;
+    }
+
+    public double getZong() {
+        return zong;
+    }
+
+    public void setZong(double zong) {
+        this.zong = zong;
+    }
 }

@@ -4,7 +4,7 @@
 
     <!-- 汛期降雨量分析对比表 -->
     <select id="getRainXQCompared" resultType="com.world.chaip.entity.Rainfall">
-        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong drp from
+        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         INNER JOIN
         DJ_AD ad
@@ -59,6 +59,67 @@
         select sum(dyp) numEight, STCD  from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
         left join (
         select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
+        left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
+        ORDER BY ADNM
+    </select>
+
+    <!-- 汛期降雨量分析对比表 -->
+    <select id="getRainXQCLCompared" resultType="com.world.chaip.entity.Rainfall">
+        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        INNER JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        inner join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        inner join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and STTP = 'P'
+            </trim>
+        </where>
+        ) st
+        left join (
+        select MYMAVP numSix, STCD from RP_PDMMYAV_S where month = 6 group by STCD ) six on six.STCD = st.STCD
+        left join (
+        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where month = 7 group by STCD ) seven on seven.STCD = st.STCD
+        left join (
+        select MYMAVP numEight, STCD  from RP_PDMMYAV_S where month = 8 group by STCD ) eight on eight.STCD = st.STCD
+        left join (
+        select MYMAVP numNine, STCD from RP_PDMMYAV_S where month = 9 group by STCD ) nine on nine.STCD = st.STCD
         left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
         ORDER BY ADNM
     </select>

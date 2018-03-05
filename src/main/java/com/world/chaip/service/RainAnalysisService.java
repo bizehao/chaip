@@ -21,9 +21,6 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<RainExchange> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes,
+    List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes,
                                          List<String> stcdOrStnm);
-
-    List<RainExchange> getRainXQ(Calendar time, List<String> adcd, List<String> systemTypes,
-                                 List<String> stcdOrStnm);
 }

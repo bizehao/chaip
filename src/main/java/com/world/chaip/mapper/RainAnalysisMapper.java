@@ -20,4 +20,8 @@ public interface RainAnalysisMapper {
                                          @Param("adcd") List<String> adcd,
                                          @Param("systemTypes") List<String> systemTypes,
                                          @Param("stcdOrStnm") List<String> stcdOrStnm);
+
+    List<RainExchange> getRainXQCLCompared(@Param("adcd") List<String> adcd,
+                                         @Param("systemTypes") List<String> systemTypes,
+                                         @Param("stcdOrStnm") List<String> stcdOrStnm);
 }
