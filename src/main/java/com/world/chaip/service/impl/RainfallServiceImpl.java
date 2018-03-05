@@ -350,7 +350,7 @@ public class RainfallServiceImpl implements RainfallService {
 				Fifty++;
 			}
 			if(dyp >= 30){
-				Fifty++;
+                Thirty++;
 			}
 		}
 		Collections.sort(list, new Comparator<Rainfall>() {

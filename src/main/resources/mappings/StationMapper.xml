@@ -14,9 +14,11 @@
     <!-- 根据市县获取相应的站点信息 -->
     <select id="getStations" resultType="com.world.chaip.entity.report.Stations">
         SELECT
-        STCD, STNM
+        b.STCD, b.STNM
         FROM
-        ST_STBPRP_B
+        ST_STBPRP_B b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
         <where>
             <trim prefixOverrides="and|or">
                 <if test="adcd != null and adcd.size() > 0">
@@ -25,7 +27,7 @@
                         #{adcd}
                     </foreach>
                 </if>
-                AND STTP = #{sttp}
+                AND PFL = 1
             </trim>
         </where>
     </select>

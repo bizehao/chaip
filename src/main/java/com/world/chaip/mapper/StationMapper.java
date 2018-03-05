@@ -26,7 +26,7 @@ public interface StationMapper {
      * @param adcd
      * @return
      */
-    List<Stations> getStations(@Param("adcd") List<String> adcd, @Param("sttp") String sttp);
+    List<Stations> getStations(@Param("adcd") List<String> adcd);
 
     /**
      * 获取站类信息

@@ -37,10 +37,8 @@ public class StationController {
     //获取站点
     @GetMapping("getstations")
     public JsonResult getStations(
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String sttp) {
+            @RequestParam(name="adcd",required=false)String adcd) {
         System.out.println("县域编号"+adcd);
-        System.out.println("类型"+sttp);
 
         List<String> adcdlist = new ArrayList<String>();
         if(adcd.equals("X")){
@@ -53,7 +51,7 @@ public class StationController {
             }
         }
 
-        List<Stations> a = stationService.getStations(adcdlist,sttp);
+        List<Stations> a = stationService.getStations(adcdlist);
         return new JsonResult(a);
     }
 

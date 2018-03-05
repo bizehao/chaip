@@ -22,7 +22,7 @@ public interface StationService {
      * @param adcd
      * @return
      */
-    List<Stations> getStations(List<String> adcd, String sttp);
+    List<Stations> getStations(List<String> adcd);
     /**
      * 获取站类信息
      * @return

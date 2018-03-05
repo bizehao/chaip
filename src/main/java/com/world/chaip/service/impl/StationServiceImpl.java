@@ -30,8 +30,8 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<Stations> getStations(List<String> adcd, String sttp) {
-        return stationMapper.getStations(adcd, sttp);
+    public List<Stations> getStations(List<String> adcd) {
+        return stationMapper.getStations(adcd);
     }
 
     @Override
