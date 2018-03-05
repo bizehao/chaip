@@ -23,4 +23,7 @@ public interface RainAnalysisService {
      */
     List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes,
                                          List<String> stcdOrStnm);
+
+    List<Object[]> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes,
+                                      List<String> stcdOrStnm);
 }
