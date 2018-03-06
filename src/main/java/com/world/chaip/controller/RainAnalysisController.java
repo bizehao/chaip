@@ -73,7 +73,7 @@ public class RainAnalysisController {
     }
 
     //年逐月降雨量
-    @GetMapping("rainxqanalysis")
+    @GetMapping("rainnqyanalysis")
     public JsonResult getRainAnalysisNZY(
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
