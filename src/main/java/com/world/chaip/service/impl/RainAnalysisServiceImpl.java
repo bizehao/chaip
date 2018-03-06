@@ -5,6 +5,7 @@ import com.world.chaip.mapper.RainAnalysisMapper;
 import com.world.chaip.service.RainAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.jws.Oneway;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,9 +107,39 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         end2.setTime(endTime);
         end2.set(Calendar.YEAR, -1);
         List<RainExchange> list2 = getRainRY(begin2, end2, adcd, systemTypes, stcdOrStnm);
-
-
-        return null;
+        List<Double> dList = getRainPYCL(beginTime, endTime, adcd, systemTypes, stcdOrStnm);
+        List<Object[]> obList = new ArrayList<>();
+        Object[] objects = null;
+        int length = list1.size();
+        double chaqu = 0;
+        double chachang = 0;
+        for(int i=0; i<length; i++){
+            objects = new Object[6];
+            objects[0] = list1.get(i).getStnm();
+            objects[1] = list1.get(i).getZong();
+            objects[2] = list2.get(i).getZong();
+            objects[3] = dList.get(i);
+            chaqu = list1.get(i).getZong()-list2.get(i).getZong();
+            if(chaqu==0){
+                objects[4] = 0+"%";
+            }
+            if(chaqu>0){
+                objects[4] = "多"+new DecimalFormat("#0.00").format(chaqu/list2.get(i).getZong())+"%";
+            }else{
+                objects[4] = "少"+new DecimalFormat("#0.00").format(-chaqu/list2.get(i).getZong())+"%";
+            }
+            chachang = list1.get(i).getZong()-dList.get(i);
+            if(chachang==0){
+                objects[5] = 0+"%";
+            }
+            if(chaqu>0){
+                objects[5] = "多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i))+"%";
+            }else{
+                objects[5] = "少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i))+"%";
+            }
+            obList.add(objects);
+        }
+        return obList;
     }
 
     //处理汛期降雨量的时间
@@ -272,6 +303,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
                 timeTwelveBegin,timeTwelveEnd, timeNineEnd,adcd,systemTypes,stcdOrStnm);
     }
 
+    //处理任意日降雨量的时间及结果
     public List<RainExchange> getRainRY(Calendar beginTime, Calendar endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         beginTime.set(Calendar.HOUR_OF_DAY, 8);
         Date beginDate = beginTime.getTime();
@@ -280,4 +312,46 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<RainExchange> list = mapper.getRainRYCompared(beginDate, endDate, adcd, systemTypes, stcdOrStnm);
         return list;
     }
+
+    //处理任意日降雨量的常量数据
+    public List<Double> getRainPYCL(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm){
+        List<Double> dList = null;
+        int length = 0;
+        Calendar tm = Calendar.getInstance();
+        tm.setTime(beginTime);
+        int beginMonth = tm.get(Calendar.MONTH)+1;
+        int beginDate = tm.get(Calendar.DATE);
+        tm.setTime(endTime);
+        int endMonth = tm.get(Calendar.MONTH)+1;
+        int endDate = tm.get(Calendar.DATE);
+        if(endMonth-beginMonth==1){
+            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,1,0);
+            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate, adcd, systemTypes, stcdOrStnm,2,0);
+            length = list1.size();
+            dList = new ArrayList<>();
+            for(int i=0; i<length; i++){
+                dList.add(list1.get(i).getZong()+list2.get(i).getZong());
+            }
+            return dList;
+        }else if(endMonth-beginMonth==0){
+            List<RainExchange> list3 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,3,endDate);
+            length = list3.size();
+            dList = new ArrayList<>();
+            for(int i=0; i<length; i++){
+                dList.add(list3.get(i).getZong());
+            }
+            return dList;
+        }else{
+            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,1,0);
+            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate, adcd, systemTypes, stcdOrStnm,2,0);
+            List<RainExchange> list0 = mapper.getRainRYCLCompared(beginMonth, endMonth, adcd, systemTypes, stcdOrStnm,0,0);
+            length = list1.size();
+            dList = new ArrayList<>();
+            for(int i=0; i<length; i++){
+                dList.add(list1.get(i).getZong()+list2.get(i).getZong()+list0.get(i).getZong());
+            }
+            return dList;
+        }
+    }
+
 }

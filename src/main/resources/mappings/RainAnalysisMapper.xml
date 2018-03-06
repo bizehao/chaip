@@ -404,7 +404,18 @@
         left join (
         select sum(MYDAVP) zong, STCD
         from RP_PDDMYAV_S where
-        tm between #{beginTime} and #{endTime}
+        <if test="sign == 0">
+            MNTH >= #{beginTime} and MNTH &lt;= #{endTime}
+        </if>
+        <if test="sign == 1">
+            MNTH = #{beginTime} and DAY >= #{endTime}
+        </if>
+        <if test="sign == 2">
+            MNTH = #{beginTime} and DAY &lt;= #{endTime}
+        </if>
+        <if test="sign == 3">
+            MNTH = #{beginTime} and DAY > #{endTime} and DAY &lt; #{isendTime}
+        </if>
         and MYDAVP > 0 group by STCD) pt
         on st.STCD = pt.STCD
         ORDER BY ADNM

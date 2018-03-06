@@ -68,10 +68,12 @@ public interface RainAnalysisMapper {
                                          @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     //任意常量日降雨量
-    List<RainExchange> getRainRYCLCompared(@Param("beginTime") Date beginTime,
-                                           @Param("endTime") Date endTime,
+    List<RainExchange> getRainRYCLCompared(@Param("beginTime") int beginTime,
+                                           @Param("endTime") int endTime,
                                            @Param("adcd") List<String> adcd,
                                            @Param("systemTypes") List<String> systemTypes,
-                                           @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                           @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                           @Param("sign") int sign,
+                                           @Param("isendTime") int isendTime);
 
 }
