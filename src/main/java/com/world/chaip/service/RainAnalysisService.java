@@ -3,6 +3,7 @@ package com.world.chaip.service;
 import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.entity.Rainfall;
 
+import javax.jws.Oneway;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,27 @@ public interface RainAnalysisService {
     List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes,
                                          List<String> stcdOrStnm);
 
+    /**
+     * 年逐月降雨量分析对比
+     * @param time
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
     List<Object[]> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes,
                                       List<String> stcdOrStnm);
+
+    /**
+     * 任意日降雨量分析对比
+     * @param beginTime
+     * @param endTime
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<Object[]> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes,
+                                     List<String> stcdOrStnm);
+
 }

@@ -91,6 +91,26 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         return nzylist;
     }
 
+    //任意日降雨量分析对比
+    @Override
+    public List<Object[]> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+        Calendar begin1 = Calendar.getInstance();
+        begin1.setTime(beginTime);
+        Calendar end1 = Calendar.getInstance();
+        end1.setTime(endTime);
+        List<RainExchange> list1 = getRainRY(begin1, end1, adcd, systemTypes, stcdOrStnm);
+        Calendar begin2 = Calendar.getInstance();
+        begin2.setTime(beginTime);
+        begin2.set(Calendar.YEAR, -1);
+        Calendar end2 = Calendar.getInstance();
+        end2.setTime(endTime);
+        end2.set(Calendar.YEAR, -1);
+        List<RainExchange> list2 = getRainRY(begin2, end2, adcd, systemTypes, stcdOrStnm);
+
+
+        return null;
+    }
+
     //处理汛期降雨量的时间
     public List<RainExchange> getRainXQ(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //六月
@@ -250,5 +270,14 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
                 timeFourBegin,timeFourEnd,timeFiveBegin,timeFiveEnd,timeSixBegin,timeSixEnd,timeSevenBegin,timeSevenEnd,
                 timeEightBegin,timeEightEnd,timeNineBegin,timeTenBegin,timeTenEnd,timeElevenBegin,timeElevenEnd,
                 timeTwelveBegin,timeTwelveEnd, timeNineEnd,adcd,systemTypes,stcdOrStnm);
+    }
+
+    public List<RainExchange> getRainRY(Calendar beginTime, Calendar endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+        beginTime.set(Calendar.HOUR_OF_DAY, 8);
+        Date beginDate = beginTime.getTime();
+        endTime.set(Calendar.HOUR_OF_DAY, 8);
+        Date endDate = endTime.getTime();
+        List<RainExchange> list = mapper.getRainRYCompared(beginDate, endDate, adcd, systemTypes, stcdOrStnm);
+        return list;
     }
 }
