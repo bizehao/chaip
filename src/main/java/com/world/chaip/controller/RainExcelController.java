@@ -894,7 +894,7 @@ public class RainExcelController extends HttpServlet{
         }
         Date date = null;
         try {
-            date = DateUtils.parse(dateStr, "yyyy-MM-dd");
+            date = DateUtils.parse(dateStr, "yyyy-MM");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -906,17 +906,13 @@ public class RainExcelController extends HttpServlet{
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
         Date beginTime=null;
-        Date endTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.MONTH, -1);
         beginTime=now.getTime();
-        endTime=DateUtils.getDateAfter(beginTime, 1);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
@@ -1080,8 +1076,6 @@ public class RainExcelController extends HttpServlet{
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
-        System.out.println("这个的颠三倒四"+dateS);
-        System.out.println(dateE);
         now.setTime(dateS);
         beginTime=now.getTime();
         now.setTime(dateE);
