@@ -33,7 +33,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<Object[]> xqList = new ArrayList<>();
         for(int i=0; i<length; i++){
             xq = new Object[16];
-            xq[0] = list1.get(i).getStnm();
+            xq[0] = list1.get(i).getAdnm();
             xq[1] = list1.get(i).getNumSix();
             xq[2] = list1.get(i).getNumSeven();
             xq[3] = list1.get(i).getNumEight();
@@ -68,7 +68,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<Object[]> nzylist = new ArrayList<>();
         for(int i=0; i<length; i++){
             object = new Object[19];
-            object[0] = list1.get(i).getStnm();
+            object[0] = list1.get(i).getAdnm();
             object[1] = list1.get(i).getNumOne();
             object[2] = list1.get(i).getNumThree();
             object[3] = list1.get(i).getNumFour();
@@ -115,7 +115,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         double chachang = 0;
         for(int i=0; i<length; i++){
             objects = new Object[6];
-            objects[0] = list1.get(i).getStnm();
+            objects[0] = list1.get(i).getAdnm();
             objects[1] = list1.get(i).getZong();
             objects[2] = list2.get(i).getZong();
             objects[3] = dList.get(i);

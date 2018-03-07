@@ -4,7 +4,10 @@
 
     <!-- 汛期降雨量分析对比表 -->
     <select id="getRainXQCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong from
+        SELECT adnm, SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0)
+        numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0))
+        as zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -30,11 +33,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -54,19 +59,27 @@
         </where>
         ) st
         left join (
-        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by STCD ) six on six.STCD = st.STCD
+        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by
+        STCD ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group by STCD ) seven on seven.STCD = st.STCD
+        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group
+        by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numEight, STCD  from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
+        select sum(dyp) numEight, STCD from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group
+        by STCD ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
-        ORDER BY ADNM
+        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by
+        STCD ) nine on nine.STCD = st.STCD
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 汛期常量降雨量 -->
     <select id="getRainXQCLCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0)) as zong from
+        SELECT adnm, SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM
+        (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0)
+        numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0))
+        as zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -92,11 +105,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -120,16 +135,21 @@
         left join (
         select MYMAVP numSeven, STCD from RP_PDMMYAV_S where month = 7 group by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numEight, STCD  from RP_PDMMYAV_S where month = 8 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numEight, STCD from RP_PDMMYAV_S where month = 8 group by STCD ) eight on eight.STCD = st.STCD
         left join (
         select MYMAVP numNine, STCD from RP_PDMMYAV_S where month = 9 group by STCD ) nine on nine.STCD = st.STCD
-        ORDER BY ADNM
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 年逐月分析对比表 -->
     <select id="getRainNZYCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(numOne,0) numOne,isnull(numTwo,0) numTwo,isnull(numThree,0) numThree,
-        isnull(numFour,0) numFour, isnull(numFive,0) numFive,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,
+        SELECT adnm, SUM (numOne) numOne, SUM (numTwo) numTwo, SUM (numThree) numThree, SUM (numFour) numFour, SUM (numFive) numFive,
+        SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (numTen) numTen,
+        SUM (numEleven) numEleven, SUM (numTwelve) numTwelve,SUM (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(numOne,0) numOne,isnull(numTwo,0) numTwo,isnull(numThree,0)
+        numThree,
+        isnull(numFour,0) numFour, isnull(numFive,0) numFive,isnull(numSix,0) numSix,isnull(numSeven,0)
+        numSeven,isnull(numEight,0) numEight,
         isnull(numNine,0) numNine,isnull(numTen,0) numTen,isnull(numEleven,0) numEleven, isnull(numTwelve,0) numTwelve,
         (isnull(numOne,0)+isnull(numTwo,0)+isnull(numThree,0)+isnull(numFour,0)+isnull(numFive,0)+isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+
         isnull(numNine,0)+isnull(numTen,0)+isnull(numEleven,0)+isnull(numTwelve,0)) as zong from
@@ -158,11 +178,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -182,36 +204,55 @@
         </where>
         ) st
         left join (
-        select sum(dyp) numOne, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by STCD ) six on six.STCD = st.STCD
+        select sum(dyp) numOne, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by
+        STCD ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numTwo, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group by STCD ) seven on seven.STCD = st.STCD
+        select sum(dyp) numTwo, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group by
+        STCD ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numThree, STCD  from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
+        select sum(dyp) numThree, STCD from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group
+        by STCD ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numFour, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
+        select sum(dyp) numFour, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by
+        STCD ) nine on nine.STCD = st.STCD
         left join (
-        select sum(dyp) numFive, STCD from RP_PPTN_R where tm between #{beginTime5} and #{endTime5} and dyp > 0 group by STCD ) six on six.STCD = st.STCD
+        select sum(dyp) numFive, STCD from RP_PPTN_R where tm between #{beginTime5} and #{endTime5} and dyp > 0 group by
+        STCD ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime6} and #{endTime6} and dyp > 0 group by STCD ) seven on seven.STCD = st.STCD
+        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime6} and #{endTime6} and dyp > 0 group by
+        STCD ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numSeven, STCD  from RP_PPTN_R where tm between #{beginTime7} and #{endTime7} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
+        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime7} and #{endTime7} and dyp > 0 group
+        by STCD ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numEight, STCD from RP_PPTN_R where tm between #{beginTime8} and #{endTime8} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
+        select sum(dyp) numEight, STCD from RP_PPTN_R where tm between #{beginTime8} and #{endTime8} and dyp > 0 group
+        by STCD ) nine on nine.STCD = st.STCD
         left join (
-        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime9} and #{endTime9} and dyp > 0 group by STCD ) six on six.STCD = st.STCD
+        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime9} and #{endTime9} and dyp > 0 group by
+        STCD ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numTen, STCD from RP_PPTN_R where tm between #{beginTime10} and #{endTime10} and dyp > 0 group by STCD ) seven on seven.STCD = st.STCD
+        select sum(dyp) numTen, STCD from RP_PPTN_R where tm between #{beginTime10} and #{endTime10} and dyp > 0 group
+        by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numEleven, STCD  from RP_PPTN_R where tm between #{beginTime11} and #{endTime11} and dyp > 0 group by STCD ) eight on eight.STCD = st.STCD
+        select sum(dyp) numEleven, STCD from RP_PPTN_R where tm between #{beginTime11} and #{endTime11} and dyp > 0
+        group by STCD ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numTwelve, STCD from RP_PPTN_R where tm between #{beginTime12} and #{endTime12} and dyp > 0 group by STCD ) nine on nine.STCD = st.STCD
-        ORDER BY ADNM
+        select sum(dyp) numTwelve, STCD from RP_PPTN_R where tm between #{beginTime12} and #{endTime12} and dyp > 0
+        group by STCD ) nine on nine.STCD = st.STCD
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 年逐月常量降雨量 -->
     <select id="getRainNZYCLCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(numOne,0) numOne,isnull(numTwo,0) numTwo,isnull(numThree,0) numThree,
-        isnull(numFour,0) numFour, isnull(numFive,0) numFive,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0) numEight,
+        SELECT adnm, SUM (numOne) numOne, SUM (numTwo) numTwo, SUM (numThree) numThree, SUM (numFour) numFour, SUM
+        (numFive) numFive,
+        SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (numTen)
+        numTen,
+        SUM (numEleven) numEleven, SUM (numTwelve) numTwelve,SUM (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(numOne,0) numOne,isnull(numTwo,0) numTwo,isnull(numThree,0)
+        numThree,
+        isnull(numFour,0) numFour, isnull(numFive,0) numFive,isnull(numSix,0) numSix,isnull(numSeven,0)
+        numSeven,isnull(numEight,0) numEight,
         isnull(numNine,0) numNine,isnull(numTen,0) numTen,isnull(numEleven,0) numEleven, isnull(numTwelve,0) numTwelve,
         (isnull(numOne,0)+isnull(numTwo,0)+isnull(numThree,0)+isnull(numFour,0)+isnull(numFive,0)+isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+
         isnull(numNine,0)+isnull(numTen,0)+isnull(numEleven,0)+isnull(numTwelve,0)) as zong from
@@ -240,11 +281,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -268,7 +311,7 @@
         left join (
         select MYMAVP numTwo, STCD from RP_PDMMYAV_S where month = 2 group by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numThree, STCD  from RP_PDMMYAV_S where month = 3 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numThree, STCD from RP_PDMMYAV_S where month = 3 group by STCD ) eight on eight.STCD = st.STCD
         left join (
         select MYMAVP numFour, STCD from RP_PDMMYAV_S where month = 4 group by STCD ) nine on nine.STCD = st.STCD
         left join (
@@ -276,7 +319,7 @@
         left join (
         select MYMAVP numSix, STCD from RP_PDMMYAV_S where month = 6 group by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numSeven, STCD  from RP_PDMMYAV_S where month = 7 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where month = 7 group by STCD ) eight on eight.STCD = st.STCD
         left join (
         select MYMAVP numEight, STCD from RP_PDMMYAV_S where month = 8 group by STCD ) nine on nine.STCD = st.STCD
         left join (
@@ -284,15 +327,16 @@
         left join (
         select MYMAVP numTen, STCD from RP_PDMMYAV_S where month = 10 group by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numEleven, STCD  from RP_PDMMYAV_S where month = 11 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numEleven, STCD from RP_PDMMYAV_S where month = 11 group by STCD ) eight on eight.STCD = st.STCD
         left join (
         select MYMAVP numTwelve, STCD from RP_PDMMYAV_S where month = 12 group by STCD ) nine on nine.STCD = st.STCD
-        ORDER BY ADNM
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 任意日降雨量查询 -->
     <select id="getRainRYCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from
+        select adnm, SUM (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -318,11 +362,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -347,12 +393,13 @@
         tm between #{beginTime} and #{endTime}
         and dyp > 0 group by STCD) pt
         on st.STCD = pt.STCD
-        ORDER BY ADNM
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 任意日降雨量查询 -->
     <select id="getRainRYCLCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from
+        select adnm, SUM (zong) zong FROM
+        (select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -378,11 +425,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -418,6 +467,6 @@
         </if>
         and MYDAVP > 0 group by STCD) pt
         on st.STCD = pt.STCD
-        ORDER BY ADNM
+        ) he GROUP BY ADNM
     </select>
 </mapper>
