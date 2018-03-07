@@ -1,5 +1,6 @@
 package com.world.chaip.controller;
 
+import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.service.RainAnalysisService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
@@ -75,7 +76,7 @@ public class RainAnalysisController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Object[]> a = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
+        List<XunQi> a = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
         return new JsonResult(a);
     }
 

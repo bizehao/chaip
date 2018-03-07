@@ -41,6 +41,22 @@
                             and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
+<<<<<<< HEAD
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+                and ZFL = 1 and STTP LIKE '%Z%'
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select A.STCD, A.TM, z,msamt,q,A.wptn from ST_RIVER_R A
+=======
                 </if>
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and c.lx IN
@@ -55,6 +71,7 @@
         LEFT JOIN
         (
         select A.STCD, A.TM, z,msamt,q,A.wptn from ST_RIVER_R A
+>>>>>>> origin/master
         INNER JOIN
         (select STCD, max(tm)tm from ST_RIVER_R
         <where>

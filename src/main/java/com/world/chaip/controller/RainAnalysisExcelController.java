@@ -1,6 +1,7 @@
 package com.world.chaip.controller;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.service.RainAnalysisService;
 import com.world.chaip.util.DateUtils;
@@ -74,13 +75,13 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Object[]> dataList = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
+        List<XunQi> dataList = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
         String title = time+"年全省及各市年降雨量分析比较表";
         String[] rowsName = new String[]{"市名","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
-        ex.export();
+        /*ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);*/
+        /*ex.export();*/
     }
 
     @GetMapping(value="rainxqXbytime")

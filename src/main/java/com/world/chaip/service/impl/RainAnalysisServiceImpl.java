@@ -1,6 +1,7 @@
 package com.world.chaip.service.impl;
 
 import com.world.chaip.entity.Exchange.RainExchange;
+import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.mapper.RainAnalysisMapper;
 import com.world.chaip.service.RainAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     RainAnalysisMapper mapper;
     //汛期降雨量
     @Override
-    public List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) { ;
+    public List<XunQi> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();
         now.setTime(time);
         List<RainExchange> list1 = getRainXQ(now,adcd,systemTypes,stcdOrStnm);
@@ -32,26 +33,26 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<RainExchange> list2 = getRainXQ(now,adcd,systemTypes,stcdOrStnm);
         List<RainExchange> list3 = mapper.getRainXQCLCompared(adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
-        Object[] xq = null;
-        List<Object[]> xqList = new ArrayList<>();
+        XunQi xq = null;
+        List<XunQi> xqList = new ArrayList<>();
         for(int i=0; i<length; i++){
-            xq = new Object[16];
-            xq[0] = list1.get(i).getAdnm();
-            xq[1] = list1.get(i).getNumSix();
-            xq[2] = list1.get(i).getNumSeven();
-            xq[3] = list1.get(i).getNumEight();
-            xq[4] = list1.get(i).getNumNine();
-            xq[5] = list1.get(i).getZong();
-            xq[6] = new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list2.get(i).getNumSix())/list2.get(i).getNumSix()*100)+"%";
-            xq[7] = new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list2.get(i).getNumSeven())/list2.get(i).getNumSeven()*100)+"%";
-            xq[8] = new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list2.get(i).getNumEight())/list2.get(i).getNumEight()*100)+"%";
-            xq[9] = new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list2.get(i).getNumNine())/list2.get(i).getNumNine()*100)+"%";
-            xq[10] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%";
-            xq[11] = new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list3.get(i).getNumSix())/list3.get(i).getNumSix()*100)+"%";
-            xq[12] = new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list3.get(i).getNumSeven())/list3.get(i).getNumSeven()*100)+"%";
-            xq[13] = new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list3.get(i).getNumEight())/list3.get(i).getNumEight()*100)+"%";
-            xq[14] = new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list3.get(i).getNumNine())/list3.get(i).getNumNine()*100)+"%";
-            xq[15] =  new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list3.get(i).getZong()*100)+"%";
+            xq = new XunQi();
+            xq.setStnm(list1.get(i).getAdnm());
+            xq.setJxqSix(list1.get(i).getNumSix());
+            xq.setJxqSeven(list1.get(i).getNumSeven());
+            xq.setJxqEight(list1.get(i).getNumEight());
+            xq.setJxqNine(list1.get(i).getNumNine());
+            xq.setJxqSix_Nine(list1.get(i).getZong());
+            xq.setQxqSix(new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list2.get(i).getNumSix())/list2.get(i).getNumSix()*100)+"%");
+            xq.setQxqSeven(new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list2.get(i).getNumSeven())/list2.get(i).getNumSeven()*100)+"%");
+            xq.setQxqEight(new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list2.get(i).getNumEight())/list2.get(i).getNumEight()*100)+"%");
+            xq.setQxqNine(new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list2.get(i).getNumNine())/list2.get(i).getNumNine()*100)+"%");
+            xq.setQxqSix_Nine(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%");
+            xq.setCxqSix(new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list3.get(i).getNumSix())/list3.get(i).getNumSix()*100)+"%");
+            xq.setCxqSeven(new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list3.get(i).getNumSeven())/list3.get(i).getNumSeven()*100)+"%");
+            xq.setCxqEight(new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list3.get(i).getNumEight())/list3.get(i).getNumEight()*100)+"%");
+            xq.setCxqNine(new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list3.get(i).getNumNine())/list3.get(i).getNumNine()*100)+"%");
+            xq.setCxqSix_Nine(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list3.get(i).getZong()*100)+"%");
             xqList.add(xq);
         }
         return xqList;
