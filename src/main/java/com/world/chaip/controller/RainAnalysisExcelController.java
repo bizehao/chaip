@@ -78,7 +78,7 @@ public class RainAnalysisExcelController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
         String title = time+"年全省及各市年降雨量分析比较表";
-        String[] rowsName = new String[]{"站名","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
+        String[] rowsName = new String[]{"市名","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
     }
@@ -142,7 +142,7 @@ public class RainAnalysisExcelController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
         String title = time+"年河北省各市逐月及年降雨量分析比较表";
-        String[] rowsName = new String[]{"站名","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月",
+        String[] rowsName = new String[]{"市名","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月",
                 "降雨量","今年","常年","今年","常年","今年","常年"};
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();

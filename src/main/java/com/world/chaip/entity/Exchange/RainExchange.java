@@ -2,10 +2,8 @@ package com.world.chaip.entity.Exchange;
 
 public class RainExchange {
 
-    //测站编号
-    private String stcd;
-    //测站名称
-    private String stnm;
+    //县域名称
+    private String adnm;
     //汛期降雨量1月
     private double numOne;
     //汛期降雨量2月
@@ -36,11 +34,10 @@ public class RainExchange {
     public RainExchange() {
     }
 
-    public RainExchange(String stcd, String stnm, double numOne, double numTwo, double numThree, double numFour,
-                        double numFive, double numSix, double numSeven, double numEight, double numNine, double numTen,
-                        double numEleven, double numTwelve, double zong) {
-        this.stcd = stcd;
-        this.stnm = stnm;
+    public RainExchange(String adnm, double numOne, double numTwo, double numThree, double numFour, double numFive,
+                        double numSix, double numSeven, double numEight, double numNine, double numTen, double numEleven,
+                        double numTwelve, double zong) {
+        this.adnm = adnm;
         this.numOne = numOne;
         this.numTwo = numTwo;
         this.numThree = numThree;
@@ -56,20 +53,12 @@ public class RainExchange {
         this.zong = zong;
     }
 
-    public String getStcd() {
-        return stcd;
+    public String getAdnm() {
+        return adnm;
     }
 
-    public void setStcd(String stcd) {
-        this.stcd = stcd;
-    }
-
-    public String getStnm() {
-        return stnm;
-    }
-
-    public void setStnm(String stnm) {
-        this.stnm = stnm;
+    public void setAdnm(String adnm) {
+        this.adnm = adnm;
     }
 
     public double getNumOne() {
