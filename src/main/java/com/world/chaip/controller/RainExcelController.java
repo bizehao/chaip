@@ -246,17 +246,14 @@ public class RainExcelController extends HttpServlet{
         dataList.add(objects);
         //处理时间
         Date beginTime=null;
-        Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.DATE, 1);
         beginTime=now.getTime();
-        endTime=DateUtils.getDateAfter(beginTime, 1);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
@@ -324,12 +321,19 @@ public class RainExcelController extends HttpServlet{
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        int ri = now.get(Calendar.DATE);
+        String xun = null;
+        if(ri==11){
+            xun="上旬";
+        }else if(ri==21){
+            xun="中旬";
+        }else{
+            xun="下旬";
+        }
         Time=now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         String begin = formatter.format(Time);
-        String time ="时间："+ begin;
-        System.out.println(time);
+        String time ="时间："+ begin+""+xun;
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
@@ -393,17 +397,13 @@ public class RainExcelController extends HttpServlet{
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
         Date beginTime=null;
-        Date endTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.MONTH, -1);
         beginTime=now.getTime();
-        endTime=DateUtils.getDateAfter(beginTime, 1);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
@@ -476,14 +476,8 @@ public class RainExcelController extends HttpServlet{
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
-        Date beginTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-        Calendar now = Calendar.getInstance();
-        now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
-        beginTime=now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -576,7 +570,7 @@ public class RainExcelController extends HttpServlet{
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
@@ -759,17 +753,14 @@ public class RainExcelController extends HttpServlet{
         dataList.add(objects);
         //处理时间
         Date beginTime=null;
-        Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        now.set(Calendar.DATE, 1);
         beginTime=now.getTime();
-        endTime=DateUtils.getDateAfter(beginTime, 1);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
@@ -837,12 +828,19 @@ public class RainExcelController extends HttpServlet{
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
+        int ri = now.get(Calendar.DATE);
+        String xun = null;
+        if(ri==11){
+            xun="上旬";
+        }else if(ri==21){
+            xun="中旬";
+        }else{
+            xun="下旬";
+        }
         Time=now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         String begin = formatter.format(Time);
-        String time ="时间："+ begin;
-        System.out.println(time);
+        String time ="时间："+ begin+""+xun;
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
@@ -985,14 +983,8 @@ public class RainExcelController extends HttpServlet{
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
-        Date beginTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-        Calendar now = Calendar.getInstance();
-        now.setTime(date);
-        now.set(Calendar.HOUR_OF_DAY, 8);
-        beginTime=now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -1080,7 +1072,7 @@ public class RainExcelController extends HttpServlet{
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
