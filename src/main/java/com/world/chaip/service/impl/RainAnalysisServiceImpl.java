@@ -4,6 +4,8 @@ import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.mapper.RainAnalysisMapper;
 import com.world.chaip.service.RainAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jca.cci.CciOperationNotSupportedException;
+import org.springframework.stereotype.Service;
 
 import javax.jws.Oneway;
 import java.text.DecimalFormat;
@@ -15,13 +17,14 @@ import java.util.List;
 /**
  * 汛期降雨量  交换库
  */
+@Service
 public class RainAnalysisServiceImpl implements RainAnalysisService {
 
     @Autowired
     RainAnalysisMapper mapper;
     //汛期降雨量
     @Override
-    public List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<Object[]> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) { ;
         Calendar now = Calendar.getInstance();
         now.setTime(time);
         List<RainExchange> list1 = getRainXQ(now,adcd,systemTypes,stcdOrStnm);

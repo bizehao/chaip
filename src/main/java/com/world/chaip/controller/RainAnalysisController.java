@@ -3,6 +3,7 @@ package com.world.chaip.controller;
 import com.world.chaip.service.RainAnalysisService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("services/realtime/rainanalysisfall")
 public class RainAnalysisController {
 
+    @Autowired
     private RainAnalysisService service;
 
     //汛期降雨量
@@ -27,10 +29,15 @@ public class RainAnalysisController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
+        /*dateStr="2018";
+        adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+        systemTypes="11,12,";
+        stcdOrStnm="12,";*/
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();

@@ -137,10 +137,10 @@ public class RainExcelController extends HttpServlet{
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
-        dateStr="2017-07-21";
+        /*dateStr="2017-07-21";
         adcd = "X";
         systemTypes = "X";
-        stcdOrStnm = "X";
+        stcdOrStnm = "X";*/
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
