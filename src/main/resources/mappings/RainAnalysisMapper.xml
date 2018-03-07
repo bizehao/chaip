@@ -135,10 +135,10 @@
         left join (
         select MYMAVP numSeven, STCD from RP_PDMMYAV_S where MNTH = 7 group by STCD,MYMAVP ) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numEight, STCD from RP_PDMMYAV_S where month = 8 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numEight, STCD  from RP_PDMMYAV_S where MNTH = 8 group by STCD,MYMAVP ) eight on eight.STCD = st.STCD
         left join (
-        select MYMAVP numNine, STCD from RP_PDMMYAV_S where month = 9 group by STCD ) nine on nine.STCD = st.STCD
-        ) he GROUP BY ADNM
+        select MYMAVP numNine, STCD from RP_PDMMYAV_S where MNTH = 9 group by STCD,MYMAVP ) nine on nine.STCD = st.STCD
+        ORDER BY ADNM
     </select>
 
     <!-- 年逐月分析对比表 -->
