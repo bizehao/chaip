@@ -3,10 +3,11 @@ package com.world.chaip.mapper;
 import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.entity.Rainfall;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public interface RainAnalysisMapper {
 
     //汛期今年 往年查询
