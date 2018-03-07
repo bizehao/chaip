@@ -5,6 +5,7 @@ import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
+import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
@@ -132,7 +133,7 @@ public class RsvrExcelController {
     }
 
     //水库 (专业)
-    /*@GetMapping("getrsvrbyzhuanyebyexcel")
+    @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
             HttpServletResponse response,
             @RequestParam("dateS")String dateStart,
@@ -187,22 +188,24 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRsvr a = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
+        DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"序号","水系","库名","站号","时间","水位(m)","蓄水量(亿m³)","出库流量(m³/s)"};
+        String[] rowsName = new String[]{"水库名称","总库容","库名","站号","时间","水位(m)","蓄水量(亿m³)","出库流量(m³/s)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
+        List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
         for (int i=0; i<a.size(); i++){
-            Rsvr item = a.get(i);
+            RsvrZhuanYe item = a.get(i);
             objects = new Object[rowsName.length];
             objects[0] = i+1;
-            objects[1] = item.getHnnm();
-            objects[2] = item.getStnm();
-            objects[3] = item.getStcd();
-            objects[4] = item.getTm();
+            objects[1] = item.getStnm();
+            objects[2] = item.getTtcp();
+            objects[3] = item.getFsltdz();
+            objects[4] = item.getFsltdw();
             objects[5] = item.getRz();
             objects[6] = item.getW();
-            objects[7] = item.getOtq();
+            objects[7] = item.getInq();
+            objects[8] = item.getOtq();
             dataList.add(objects);
         }
         Date beginTime=null;
@@ -221,7 +224,7 @@ public class RsvrExcelController {
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
         rsvrXbyItem();
-    }*/
+    }
 
     //水库 (专业)
     @GetMapping("rsvrXbyzhuanye")
