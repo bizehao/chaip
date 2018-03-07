@@ -138,7 +138,7 @@
         select MYMAVP numEight, STCD  from RP_PDMMYAV_S where MNTH = 8 group by STCD,MYMAVP ) eight on eight.STCD = st.STCD
         left join (
         select MYMAVP numNine, STCD from RP_PDMMYAV_S where MNTH = 9 group by STCD,MYMAVP ) nine on nine.STCD = st.STCD
-        ORDER BY ADNM
+        ) he GROUP BY ADNM
     </select>
 
     <!-- 年逐月分析对比表 -->
