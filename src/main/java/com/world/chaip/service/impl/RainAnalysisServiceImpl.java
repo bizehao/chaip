@@ -43,21 +43,26 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             xq.setJxqEight(list1.get(i).getNumEight());
             xq.setJxqNine(list1.get(i).getNumNine());
             xq.setJxqSix_Nine(list1.get(i).getZong());
-            xq.setQxqSix(new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list2.get(i).getNumSix())/list2.get(i).getNumSix()*100)+"%");
-            xq.setQxqSeven(new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list2.get(i).getNumSeven())/list2.get(i).getNumSeven()*100)+"%");
-            xq.setQxqEight(new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list2.get(i).getNumEight())/list2.get(i).getNumEight()*100)+"%");
-            xq.setQxqNine(new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list2.get(i).getNumNine())/list2.get(i).getNumNine()*100)+"%");
-            xq.setQxqSix_Nine(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%");
-            xq.setCxqSix(new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list3.get(i).getNumSix())/list3.get(i).getNumSix()*100)+"%");
-            xq.setCxqSeven(new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list3.get(i).getNumSeven())/list3.get(i).getNumSeven()*100)+"%");
-            xq.setCxqEight(new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list3.get(i).getNumEight())/list3.get(i).getNumEight()*100)+"%");
-            xq.setCxqNine(new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list3.get(i).getNumNine())/list3.get(i).getNumNine()*100)+"%");
-            xq.setCxqSix_Nine(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list3.get(i).getZong()*100)+"%");
+            xq.setQxqSix(suan(list2.get(i).getNumSix())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list2.get(i).getNumSix())/list2.get(i).getNumSix()*100)+"%");
+            xq.setQxqSeven(suan(list2.get(i).getNumSeven())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list2.get(i).getNumSeven())/list2.get(i).getNumSeven()*100)+"%");
+            xq.setQxqEight(suan(list2.get(i).getNumEight())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list2.get(i).getNumEight())/list2.get(i).getNumEight()*100)+"%");
+            xq.setQxqNine(suan(list2.get(i).getNumNine())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list2.get(i).getNumNine())/list2.get(i).getNumNine()*100)+"%");
+            xq.setQxqSix_Nine(suan(list2.get(i).getZong())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%");
+            xq.setCxqSix(suan(list3.get(i).getNumSix())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list3.get(i).getNumSix())/list3.get(i).getNumSix()*100)+"%");
+            xq.setCxqSeven(suan(list3.get(i).getNumSeven())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list3.get(i).getNumSeven())/list3.get(i).getNumSeven()*100)+"%");
+            xq.setCxqEight(suan(list3.get(i).getNumEight())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list3.get(i).getNumEight())/list3.get(i).getNumEight()*100)+"%");
+            xq.setCxqNine(suan(list3.get(i).getNumNine())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list3.get(i).getNumNine())/list3.get(i).getNumNine()*100)+"%");
+            xq.setCxqSix_Nine(suan(list3.get(i).getZong())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list3.get(i).getZong()*100)+"%");
             xqList.add(xq);
         }
         return xqList;
     }
-
+    public int suan(double num){
+        if(num == 0){
+            return 0;
+        }
+        return 1;
+    }
     //年逐月降雨量分析对比
     @Override
     public List<Object[]> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
