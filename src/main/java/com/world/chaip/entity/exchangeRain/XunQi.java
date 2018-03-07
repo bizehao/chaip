@@ -1,10 +1,12 @@
 package com.world.chaip.entity.exchangeRain;
 
+import java.io.Serializable;
+
 /**
  * 汛期降雨量映射表
  */
-public class XunQi {
-
+public class XunQi implements Serializable {
+    
     //测站名称
     private String stnm;
 

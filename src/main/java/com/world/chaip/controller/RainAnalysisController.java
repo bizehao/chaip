@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +25,8 @@ public class RainAnalysisController {
     private RainAnalysisService service;
 
     //汛期降雨量
-    @GetMapping("rainxqanalysis")
-    public JsonResult getRainAnalysisXQ(
+    @GetMapping(value = "rainxqanalysis", produces = "application/json;charset=UTF-8")
+    public JsonResult getRainAnalysisXQ (
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
@@ -77,6 +79,7 @@ public class RainAnalysisController {
             e.printStackTrace();
         }
         List<XunQi> a = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
+        /*res.setCharacterEncoding(set);*/
         return new JsonResult(a);
     }
 
