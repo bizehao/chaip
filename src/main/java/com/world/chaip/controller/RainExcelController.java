@@ -249,14 +249,8 @@ public class RainExcelController extends HttpServlet{
         objects[11] = b.get(5)+"站";
         dataList.add(objects);
         //处理时间
-        Date beginTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-        Calendar now = Calendar.getInstance();
-        now.setTime(date);
-        now.set(Calendar.DATE, 1);
-        beginTime=now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -721,7 +715,7 @@ public class RainExcelController extends HttpServlet{
                     objects[j] = entry.getKey();
                     objects[m] = entry.getValue();
                 }
-                if(j==10 || k==map.size()){
+                if(j==10 || (k==map.size() && j!=12 )){
                     dataList.add(objects);
 
                 }
@@ -756,14 +750,9 @@ public class RainExcelController extends HttpServlet{
         objects[11] = b.get(5)+"站";
         dataList.add(objects);
         //处理时间
-        Date beginTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-        Calendar now = Calendar.getInstance();
-        now.setTime(date);
-        now.set(Calendar.DATE, 1);
-        beginTime=now.getTime();
+        //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
