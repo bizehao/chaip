@@ -143,7 +143,7 @@ public class RealtimeRiverfallController {
         return new JsonResult(a);
     }
 
-    //本区河道
+    //外区河道
     @GetMapping("getriverbywai")
     public JsonResult GetRiverByWai(
             @RequestParam("dateS")String dateStart,
@@ -199,6 +199,65 @@ public class RealtimeRiverfallController {
             e.printStackTrace();
         }
         List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist);
+        return new JsonResult(a);
+    }
+
+    //河道水情分析
+    @GetMapping("getriverbyanalysis")
+    public JsonResult GetRiverByAnalysis(
+            @RequestParam("dateS")String dateStart,
+            @RequestParam("dateE")String dateEnd,
+            @RequestParam(name="adcd",required=false)String adcd,
+            @RequestParam(name="systemTypes",required=false)String systemTypes,
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+
+        List<String> adcdlist = new ArrayList<String>();
+        List<String> typelist = new ArrayList<String>();
+        List<String> stcdlist = new ArrayList<String>();
+
+        System.out.println("开始时间"+dateStart);
+        System.out.println("结束时间"+dateEnd);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+
+        if(adcd.equals("X")){
+            adcdlist=null;
+        }else {
+            adcd = adcd.substring(0, adcd.length() - 1);
+            String[] temp = adcd.split(",");
+            for(int i = 0; i<temp.length; i++){
+                adcdlist.add(temp[i]);
+            }
+        }
+
+        if(systemTypes.equals("X")){
+            typelist=null;
+        }else{
+            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+            String[] sytemp = systemTypes.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                typelist.add(sytemp[i]);
+            }
+        }
+        if(stcdOrStnm.equals("X")){
+            stcdlist=null;
+        }else{
+            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+            String[] sytemp = stcdOrStnm.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                stcdlist.add(sytemp[i]);
+            }
+        }
+        Date dateS = null;
+        Date dateE = null;
+        try {
+            dateS = DateUtils.parse(dateStart, "yyyy-MM");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<River> a = riverfallService.getRiverByAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
         return new JsonResult(a);
     }
 

@@ -43,4 +43,14 @@ public interface RiverfallService {
      */
     List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 
+	/**
+	 * 河道水情分析
+	 * @param dateS
+	 * @param dateE
+	 * @param adcd
+	 * @param systemTypes
+	 * @param stcdOrStnm
+	 * @return
+	 */
+	List<River> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 }
