@@ -144,9 +144,9 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
                     arbitrarilyDay.setSamePeriodCompareQu(0+"%");
                 }
                 if(chaqu>0){
-                    arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.00").format(chaqu/list2.get(i).getZong())+"%");
+                    arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.0").format(chaqu/list2.get(i).getZong()*100)+"%");
                 }else{
-                    arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.00").format(-chaqu/list2.get(i).getZong())+"%");
+                    arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.0").format(-chaqu/list2.get(i).getZong()*100)+"%");
                 }
             }else{
                 arbitrarilyDay.setSamePeriodCompareQu("100%");
@@ -157,9 +157,9 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
                     arbitrarilyDay.setSamePeriodCompareChang(0+"%");
                 }
                 if(chaqu>0){
-                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i)*100)+"%");
+                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.0").format(chaqu/dList.get(i)*100)+"%");
                 }else{
-                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i)*100)+"%");
+                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.0").format(-chaqu/dList.get(i)*100)+"%");
                 }
             }else{
                 arbitrarilyDay.setSamePeriodCompareChang("100%");
