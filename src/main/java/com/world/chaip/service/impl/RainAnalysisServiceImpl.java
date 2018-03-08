@@ -43,25 +43,27 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             xq.setJxqEight(list1.get(i).getNumEight());
             xq.setJxqNine(list1.get(i).getNumNine());
             xq.setJxqSix_Nine(list1.get(i).getZong());
-            xq.setQxqSix(suan(list2.get(i).getNumSix())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list2.get(i).getNumSix())/list2.get(i).getNumSix()*100)+"%");
-            xq.setQxqSeven(suan(list2.get(i).getNumSeven())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list2.get(i).getNumSeven())/list2.get(i).getNumSeven()*100)+"%");
-            xq.setQxqEight(suan(list2.get(i).getNumEight())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list2.get(i).getNumEight())/list2.get(i).getNumEight()*100)+"%");
-            xq.setQxqNine(suan(list2.get(i).getNumNine())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list2.get(i).getNumNine())/list2.get(i).getNumNine()*100)+"%");
-            xq.setQxqSix_Nine(suan(list2.get(i).getZong())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%");
-            xq.setCxqSix(suan(list3.get(i).getNumSix())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSix()-list3.get(i).getNumSix())/list3.get(i).getNumSix()*100)+"%");
-            xq.setCxqSeven(suan(list3.get(i).getNumSeven())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumSeven()-list3.get(i).getNumSeven())/list3.get(i).getNumSeven()*100)+"%");
-            xq.setCxqEight(suan(list3.get(i).getNumEight())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumEight()-list3.get(i).getNumEight())/list3.get(i).getNumEight()*100)+"%");
-            xq.setCxqNine(suan(list3.get(i).getNumNine())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getNumNine()-list3.get(i).getNumNine())/list3.get(i).getNumNine()*100)+"%");
-            xq.setCxqSix_Nine(suan(list3.get(i).getZong())==0?"100%":new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list3.get(i).getZong()*100)+"%");
+            xq.setQxqSix(suan(list2.get(i).getNumSix(), list1.get(i).getNumSix()));
+            xq.setQxqSeven(suan(list2.get(i).getNumSeven(), list1.get(i).getNumSeven()));
+            xq.setQxqEight(suan(list2.get(i).getNumEight(), list1.get(i).getNumEight()));
+            xq.setQxqNine(suan(list2.get(i).getNumNine(), list1.get(i).getNumNine()));
+            xq.setQxqSix_Nine(suan(list2.get(i).getZong(), list1.get(i).getZong()));
+            xq.setCxqSix(suan(list3.get(i).getNumSix(), list1.get(i).getNumSix()));
+            xq.setCxqSeven(suan(list3.get(i).getNumSeven(), list1.get(i).getNumSeven()));
+            xq.setCxqEight(suan(list3.get(i).getNumEight(), list1.get(i).getNumEight()));
+            xq.setCxqNine(suan(list3.get(i).getNumNine(), list1.get(i).getNumNine()));
+            xq.setCxqSix_Nine(suan(list3.get(i).getZong(), list1.get(i).getZong()));
             xqList.add(xq);
         }
         return xqList;
     }
-    public int suan(double num){
-        if(num == 0){
-            return 0;
+    //计算值
+    public String suan(double num1, double num2){
+        if(num1 == 0){
+            return "100%";
+        }else{
+            return new DecimalFormat("#0.000").format((num2-num1)/num1*100)+"%";
         }
-        return 1;
     }
     //年逐月降雨量分析对比
     @Override
@@ -92,8 +94,8 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             object[12] = list1.get(i).getZong();
             object[13] = list2.get(i).getZong();
             object[14] = list3.get(i).getZong();
-            object[15] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong());
-            object[16] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list2.get(i).getZong());
+            object[15] = new DecimalFormat("#0.000").format(list1.get(i).getZong()-list2.get(i).getZong());
+            object[16] = new DecimalFormat("#0.000").format(list1.get(i).getZong()-list3.get(i).getZong());
             object[17] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%";
             object[18] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list2.get(i).getZong()*100)+"%";
             nzylist.add(object);
