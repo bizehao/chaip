@@ -127,15 +127,15 @@
         </where>
         ) st
         left join (
-        select MYMAVP numSix, STCD from RP_PDMMYAV_S where MNTH = 6 group by STCD,MYMAVP ) six on six.STCD = st.STCD
+        select MYMAVP numSix, STCD from RP_PDMMYAV_S where MNTH = 6 and PRDTP = 4 group by STCD,MYMAVP ) six on six.STCD = st.STCD
         left join (
-        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where MNTH = 7 group by STCD,MYMAVP ) seven on seven.STCD =
+        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where MNTH = 7 and PRDTP = 4 group by STCD,MYMAVP ) seven on seven.STCD =
         st.STCD
         left join (
-        select MYMAVP numEight, STCD from RP_PDMMYAV_S where MNTH = 8 group by STCD,MYMAVP ) eight on eight.STCD =
+        select MYMAVP numEight, STCD from RP_PDMMYAV_S where MNTH = 8 and PRDTP = 4 group by STCD,MYMAVP ) eight on eight.STCD =
         st.STCD
         left join (
-        select MYMAVP numNine, STCD from RP_PDMMYAV_S where MNTH = 9 group by STCD,MYMAVP ) nine on nine.STCD = st.STCD
+        select MYMAVP numNine, STCD from RP_PDMMYAV_S where MNTH = 9 and PRDTP = 4 group by STCD,MYMAVP ) nine on nine.STCD = st.STCD
         ) he GROUP BY ADNM
     </select>
 
