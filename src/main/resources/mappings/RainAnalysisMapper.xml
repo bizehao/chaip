@@ -59,17 +59,13 @@
         </where>
         ) st
         left join (
-        select ACCP numSix, STCD from RP_PSTAT_R where IDTM = #{endTime1} and STTDRCD = 5 group by
-        STCD ) six on six.STCD = st.STCD
+        select ACCP numSix, STCD from RP_PSTAT_R where IDTM = #{endTime1} and STTDRCD = 5 ) six on six.STCD = st.STCD
         left join (
-        select ACCP numSeven, STCD from RP_PSTAT_R where IDTM = #{endTime2} and STTDRCD = 5 group
-        by STCD ) seven on seven.STCD = st.STCD
+        select ACCP numSeven, STCD from RP_PSTAT_R where IDTM = #{endTime2} and STTDRCD = 5 ) seven on seven.STCD = st.STCD
         left join (
-        select ACCP numEight, STCD from RP_PSTAT_R where IDTM = #{endTime3} and STTDRCD = 5 group
-        by STCD ) eight on eight.STCD = st.STCD
+        select ACCP numEight, STCD from RP_PSTAT_R where IDTM = #{endTime3} and STTDRCD = 5 ) eight on eight.STCD = st.STCD
         left join (
-        select ACCP numNine, STCD from RP_PSTAT_R where IDTM = #{endTime4} and STTDRCD = 5 group by
-        STCD ) nine on nine.STCD = st.STCD
+        select ACCP numNine, STCD from RP_PSTAT_R where IDTM = #{endTime4} and STTDRCD = 5 ) nine on nine.STCD = st.STCD
         ) he GROUP BY ADNM
     </select>
 
