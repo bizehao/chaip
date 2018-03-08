@@ -116,7 +116,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<RainExchange> list1 = getRainRY(begin1, end1, adcd, systemTypes, stcdOrStnm);
         Calendar begin2 = Calendar.getInstance();
         begin2.setTime(beginTime);
-        begin2.set(Calendar.YEAR, -1);
+        begin2.add(Calendar.YEAR, -1);
         Calendar end2 = Calendar.getInstance();
         end2.setTime(endTime);
         end2.set(Calendar.YEAR, -1);
