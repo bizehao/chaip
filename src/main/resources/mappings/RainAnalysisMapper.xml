@@ -202,41 +202,41 @@
         </where>
         ) st
         left join (
-        select sum(dyp) numOne, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by
-        STCD ) six on six.STCD = st.STCD
+        select ACCP numOne, STCD from RP_PSTAT_R where IDTM = #{endTime1} and STTDRCD = 5
+        ) one on one.STCD = st.STCD
         left join (
-        select sum(dyp) numTwo, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group by
-        STCD ) seven on seven.STCD = st.STCD
+        select ACCP numTwo, STCD from RP_PSTAT_R where IDTM = #{endTime2} and STTDRCD = 5
+        ) two on two.STCD = st.STCD
         left join (
-        select sum(dyp) numThree, STCD from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group
-        by STCD ) eight on eight.STCD = st.STCD
+        select ACCP numThree, STCD from RP_PSTAT_R where IDTM = #{endTime3} and STTDRCD = 5
+        ) three on three.STCD = st.STCD
         left join (
-        select sum(dyp) numFour, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by
-        STCD ) nine on nine.STCD = st.STCD
+        select ACCP numFour, STCD from RP_PSTAT_R where IDTM = #{endTime4} and STTDRCD = 5
+        ) four on four.STCD = st.STCD
         left join (
-        select sum(dyp) numFive, STCD from RP_PPTN_R where tm between #{beginTime5} and #{endTime5} and dyp > 0 group by
-        STCD ) six on six.STCD = st.STCD
+        select ACCP numFive, STCD from RP_PSTAT_R where IDTM = #{endTime5} and STTDRCD = 5
+        ) five on five.STCD = st.STCD
         left join (
-        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime6} and #{endTime6} and dyp > 0 group by
-        STCD ) seven on seven.STCD = st.STCD
+        select ACCP numSix, STCD from RP_PSTAT_R where IDTM = #{endTime6} and STTDRCD = 5
+        ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime7} and #{endTime7} and dyp > 0 group
-        by STCD ) eight on eight.STCD = st.STCD
+        select ACCP numSeven, STCD from RP_PSTAT_R where IDTM = #{endTime7} and STTDRCD = 5
+        ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numEight, STCD from RP_PPTN_R where tm between #{beginTime8} and #{endTime8} and dyp > 0 group
-        by STCD ) nine on nine.STCD = st.STCD
+        select ACCP numEight, STCD from RP_PSTAT_R where IDTM = #{endTime8} and STTDRCD = 5
+        ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime9} and #{endTime9} and dyp > 0 group by
-        STCD ) six on six.STCD = st.STCD
+        select ACCP numNine, STCD from RP_PSTAT_R where IDTM = #{endTime9} and STTDRCD = 5
+        ) nine on nine.STCD = st.STCD
         left join (
-        select sum(dyp) numTen, STCD from RP_PPTN_R where tm between #{beginTime10} and #{endTime10} and dyp > 0 group
-        by STCD ) seven on seven.STCD = st.STCD
+        select ACCP numTen, STCD from RP_PSTAT_R where IDTM = #{endTime10} and STTDRCD = 5
+        ) ten on ten.STCD = st.STCD
         left join (
-        select sum(dyp) numEleven, STCD from RP_PPTN_R where tm between #{beginTime11} and #{endTime11} and dyp > 0
-        group by STCD ) eight on eight.STCD = st.STCD
+        select ACCP numEleven, STCD from RP_PSTAT_R where IDTM = #{endTime11} and STTDRCD = 5
+        ) eleven on eleven.STCD = st.STCD
         left join (
-        select sum(dyp) numTwelve, STCD from RP_PPTN_R where tm between #{beginTime12} and #{endTime12} and dyp > 0
-        group by STCD ) nine on nine.STCD = st.STCD
+        select ACCP numTwelve, STCD from RP_PSTAT_R where IDTM = #{endTime12} and STTDRCD = 5
+        ) twelve on twelve.STCD = st.STCD
         ) he GROUP BY ADNM
     </select>
 
@@ -305,29 +305,29 @@
         </where>
         ) st
         left join (
-        select MYMAVP numOne, STCD from RP_PDMMYAV_S where month = 1 group by STCD ) six on six.STCD = st.STCD
+        select MYMAVP numOne, STCD from RP_PDMMYAV_S where MNTH = 1 and PRDTP = 4  group by STCD,MYMAVP ) one on one.STCD = st.STCD
         left join (
-        select MYMAVP numTwo, STCD from RP_PDMMYAV_S where month = 2 group by STCD ) seven on seven.STCD = st.STCD
+        select MYMAVP numTwo, STCD from RP_PDMMYAV_S where MNTH = 2 and PRDTP = 4 group by STCD,MYMAVP ) two on two.STCD = st.STCD
         left join (
-        select MYMAVP numThree, STCD from RP_PDMMYAV_S where month = 3 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numThree, STCD from RP_PDMMYAV_S where MNTH = 3 and PRDTP = 4 group by STCD,MYMAVP ) three on three.STCD = st.STCD
         left join (
-        select MYMAVP numFour, STCD from RP_PDMMYAV_S where month = 4 group by STCD ) nine on nine.STCD = st.STCD
+        select MYMAVP numFour, STCD from RP_PDMMYAV_S where MNTH = 4 and PRDTP = 4 group by STCD,MYMAVP ) four on four.STCD = st.STCD
         left join (
-        select MYMAVP numFive, STCD from RP_PDMMYAV_S where month = 5 group by STCD ) six on six.STCD = st.STCD
+        select MYMAVP numFive, STCD from RP_PDMMYAV_S where MNTH = 5 and PRDTP = 4 group by STCD,MYMAVP ) five on five.STCD = st.STCD
         left join (
-        select MYMAVP numSix, STCD from RP_PDMMYAV_S where month = 6 group by STCD ) seven on seven.STCD = st.STCD
+        select SUM (MYMAVP) numSix, STCD from RP_PDMMYAV_S where MNTH = 6 and PRDTP = 4 group by STCD,MYMAVP ) six on six.STCD = st.STCD
         left join (
-        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where month = 7 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numSeven, STCD from RP_PDMMYAV_S where MNTH = 7 and PRDTP = 4 group by STCD ,MYMAVP) seven on seven.STCD = st.STCD
         left join (
-        select MYMAVP numEight, STCD from RP_PDMMYAV_S where month = 8 group by STCD ) nine on nine.STCD = st.STCD
+        select MYMAVP numEight, STCD from RP_PDMMYAV_S where MNTH = 8 and PRDTP = 4 group by STCD,MYMAVP ) eight on eight.STCD = st.STCD
         left join (
-        select MYMAVP numNine, STCD from RP_PDMMYAV_S where month = 9 group by STCD ) six on six.STCD = st.STCD
+        select MYMAVP numNine, STCD from RP_PDMMYAV_S where MNTH = 9 and PRDTP = 4 group by STCD,MYMAVP ) nine on nine.STCD = st.STCD
         left join (
-        select MYMAVP numTen, STCD from RP_PDMMYAV_S where month = 10 group by STCD ) seven on seven.STCD = st.STCD
+        select MYMAVP numTen, STCD from RP_PDMMYAV_S where MNTH = 10 and PRDTP = 4 group by STCD,MYMAVP ) ten on ten.STCD = st.STCD
         left join (
-        select MYMAVP numEleven, STCD from RP_PDMMYAV_S where month = 11 group by STCD ) eight on eight.STCD = st.STCD
+        select MYMAVP numEleven, STCD from RP_PDMMYAV_S where MNTH = 11  and PRDTP = 4 group by STCD,MYMAVP ) eleven on eleven.STCD = st.STCD
         left join (
-        select MYMAVP numTwelve, STCD from RP_PDMMYAV_S where month = 12 group by STCD ) nine on nine.STCD = st.STCD
+        select MYMAVP numTwelve, STCD from RP_PDMMYAV_S where MNTH = 12 and PRDTP = 4  group by STCD ,MYMAVP) twelve on twelve.STCD = st.STCD
         ) he GROUP BY ADNM
     </select>
 

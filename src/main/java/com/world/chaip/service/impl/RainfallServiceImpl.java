@@ -90,7 +90,7 @@ public class RainfallServiceImpl implements RainfallService {
 	//日降雨量
 	@Override
 	public Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
-		Date beginTime=null;
+        Date beginTime=null;
 		Date endTime=null;
 		Calendar now = Calendar.getInstance();
 		now.setTime(date);

@@ -74,7 +74,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         Calendar now = Calendar.getInstance();
         now.setTime(time);
         List<RainExchange> list1 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
-        now.set(Calendar.YEAR, -1);
+        now.add(Calendar.YEAR, -2);
         List<RainExchange> list2 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
         List<RainExchange> list3 = mapper.getRainNZYCLCompared(adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
@@ -84,6 +84,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             yearAndMonthRain = new YearAndMonthRain();
             yearAndMonthRain.setAdnm(list1.get(i).getAdnm());
             yearAndMonthRain.setNumOne(list1.get(i).getNumOne());
+            yearAndMonthRain.setNumTwo(list1.get(i).getNumTwo());
             yearAndMonthRain.setNumThree(list1.get(i).getNumThree());
             yearAndMonthRain.setNumFour(list1.get(i).getNumFour());
             yearAndMonthRain.setNumFive(list1.get(i).getNumFive());
@@ -193,119 +194,71 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     //处理年逐月降雨量的时间
     public List<RainExchange> getRainNZY(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //一月
-        now.set(Calendar.MONTH,0);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeOneBegin = now.getTime();
         now.set(Calendar.MONTH,1);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeOneEnd = now.getTime();
         //二月
-        now.set(Calendar.MONTH,1);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeTwoBegin = now.getTime();
         now.set(Calendar.MONTH,2);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeTwoEnd = now.getTime();
         //三月
-        now.set(Calendar.MONTH,2);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeThreeBegin = now.getTime();
         now.set(Calendar.MONTH,3);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeThreeEnd = now.getTime();
         //四月
-        now.set(Calendar.MONTH,3);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeFourBegin = now.getTime();
         now.set(Calendar.MONTH,4);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeFourEnd = now.getTime();
         //五月
-        now.set(Calendar.MONTH,4);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeFiveBegin = now.getTime();
         now.set(Calendar.MONTH,5);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeFiveEnd = now.getTime();
         //六月
-        now.set(Calendar.MONTH,5);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeSixBegin = now.getTime();
         now.set(Calendar.MONTH,6);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSixEnd = now.getTime();
         //七月
-        now.set(Calendar.MONTH,6);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeSevenBegin = now.getTime();
         now.set(Calendar.MONTH,7);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSevenEnd = now.getTime();
         //八月
-        now.set(Calendar.MONTH,7);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeEightBegin = now.getTime();
         now.set(Calendar.MONTH,8);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeEightEnd = now.getTime();
         //九月
-        now.set(Calendar.MONTH,8);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeNineBegin = now.getTime();
         now.set(Calendar.MONTH,9);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeNineEnd = now.getTime();
         //十月
-        now.set(Calendar.MONTH,9);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeTenBegin = now.getTime();
         now.set(Calendar.MONTH,10);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeTenEnd = now.getTime();
         //十一月
-        now.set(Calendar.MONTH,10);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeElevenBegin = now.getTime();
         now.set(Calendar.MONTH,11);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeElevenEnd = now.getTime();
         //十二月
-        now.set(Calendar.MONTH,11);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeTwelveBegin = now.getTime();
-        now.set(Calendar.YEAR, 1);
+        now.add(Calendar.YEAR, 1);
         now.set(Calendar.MONTH,0);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeTwelveEnd = now.getTime();
 
-        return mapper.getRainNZYCompared(timeOneBegin,timeOneEnd,timeTwoBegin,timeTwoEnd,timeThreeBegin,timeThreeEnd,
-                timeFourBegin,timeFourEnd,timeFiveBegin,timeFiveEnd,timeSixBegin,timeSixEnd,timeSevenBegin,timeSevenEnd,
-                timeEightBegin,timeEightEnd,timeNineBegin,timeTenBegin,timeTenEnd,timeElevenBegin,timeElevenEnd,
-                timeTwelveBegin,timeTwelveEnd, timeNineEnd,adcd,systemTypes,stcdOrStnm);
+        return mapper.getRainNZYCompared(timeOneEnd,timeTwoEnd,timeThreeEnd,
+                timeFourEnd,timeFiveEnd,timeSixEnd,timeSevenEnd,
+                timeEightEnd,timeNineEnd,timeTenEnd,timeElevenEnd,
+                timeTwelveEnd,adcd,systemTypes,stcdOrStnm);
     }
 
     //处理任意日降雨量的时间及结果

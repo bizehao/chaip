@@ -134,13 +134,19 @@ public class RainExcelController extends HttpServlet{
     public void exportRainByDate(HttpServletResponse response,
                        @RequestParam("date")String dateStr,
                        @RequestParam(name="adcd",required=false)String adcd,
-                       @RequestParam(name="systemTypes",required=false)String systemTypes,
+                       @RequestParam(name="systemType",required=false)String systemTypes,
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         /*dateStr="2017-07-21";
         adcd = "X";
         systemTypes = "X";
         stcdOrStnm = "X";*/
+
+        System.out.println("时间"+dateStr);
+        System.out.println("县域"+adcd);
+        System.out.println("站类型////"+systemTypes);
+        System.out.println("站号"+stcdOrStnm);
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
