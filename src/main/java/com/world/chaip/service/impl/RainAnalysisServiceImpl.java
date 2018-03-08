@@ -62,7 +62,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         if(num1 == 0){
             return "100%";
         }else{
-            return new DecimalFormat("#0.000").format((num2-num1)/num1*100)+"%";
+            return new DecimalFormat("#0.00").format((num2-num1)/num1*100)+"%";
         }
     }
     //年逐月降雨量分析对比
