@@ -394,7 +394,7 @@
         ) he GROUP BY ADNM
     </select>
 
-    <!-- 任意日降雨量查询 -->
+    <!-- 任意常量日降雨量查询 -->
     <select id="getRainRYCLCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
         select adnm, SUM (zong) zong FROM
         (select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from

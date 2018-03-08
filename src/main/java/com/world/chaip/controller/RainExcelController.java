@@ -134,7 +134,7 @@ public class RainExcelController extends HttpServlet{
     public void exportRainByDate(HttpServletResponse response,
                        @RequestParam("date")String dateStr,
                        @RequestParam(name="adcd",required=false)String adcd,
-                       @RequestParam(name="systemType",required=false)String systemTypes,
+                       @RequestParam(name="systemTypes",required=false)String systemTypes,
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         /*dateStr="2017-07-21";

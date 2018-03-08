@@ -138,7 +138,7 @@ public class RainAnalysisController {
         return new JsonResult(a);
     }
 
-    //年逐月降雨量
+    //任意日降雨量
     @GetMapping("rainryanalysis")
     public JsonResult getRainAnalysisRY(
             @RequestParam("dateS")String dateStr,
@@ -148,6 +148,7 @@ public class RainAnalysisController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
         System.out.println("时间"+dateStr);
+        System.out.println("时间"+dateEnd);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
@@ -185,8 +186,8 @@ public class RainAnalysisController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStr, "yyyy");
-            dateE = DateUtils.parse(dateEnd, "yyyy");
+            dateS = DateUtils.parse(dateStr, "yyyy-MM-dd");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }

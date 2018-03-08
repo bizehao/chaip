@@ -112,15 +112,19 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     public List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar begin1 = Calendar.getInstance();
         begin1.setTime(beginTime);
+        begin1.add(Calendar.DATE,1);
         Calendar end1 = Calendar.getInstance();
         end1.setTime(endTime);
+        end1.add(Calendar.DATE,1);
         List<RainExchange> list1 = getRainRY(begin1, end1, adcd, systemTypes, stcdOrStnm);
         Calendar begin2 = Calendar.getInstance();
         begin2.setTime(beginTime);
+        begin2.add(Calendar.DATE,1);
         begin2.add(Calendar.YEAR, -1);
         Calendar end2 = Calendar.getInstance();
         end2.setTime(endTime);
-        end2.set(Calendar.YEAR, -1);
+        end2.add(Calendar.DATE,1);
+        end2.add(Calendar.YEAR, -1);
         List<RainExchange> list2 = getRainRY(begin2, end2, adcd, systemTypes, stcdOrStnm);
         List<Double> dList = getRainPYCL(beginTime, endTime, adcd, systemTypes, stcdOrStnm);
         List<ArbitrarilyDay> obList = new ArrayList<>();
@@ -153,9 +157,9 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
                     arbitrarilyDay.setSamePeriodCompareChang(0+"%");
                 }
                 if(chaqu>0){
-                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i))+"%");
+                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i)*100)+"%");
                 }else{
-                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i))+"%");
+                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i)*100)+"%");
                 }
             }else{
                 arbitrarilyDay.setSamePeriodCompareChang("100%");
