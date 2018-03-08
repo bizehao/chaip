@@ -45,6 +45,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             xq.setJxqEight(list1.get(i).getNumEight());
             xq.setJxqNine(list1.get(i).getNumNine());
             xq.setJxqSix_Nine(list1.get(i).getZong());
+            xq.setJxqSix_Nine_Compare(suan(list1.get(i).getNumNine(), list1.get(i).getNumSix()));
             xq.setQxqSix(suan(list2.get(i).getNumSix(), list1.get(i).getNumSix()));
             xq.setQxqSeven(suan(list2.get(i).getNumSeven(), list1.get(i).getNumSeven()));
             xq.setQxqEight(suan(list2.get(i).getNumEight(), list1.get(i).getNumEight()));

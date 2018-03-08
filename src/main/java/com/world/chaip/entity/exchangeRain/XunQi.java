@@ -20,6 +20,8 @@ public class XunQi implements Serializable {
     private double jxqNine;
     //今6-9月
     private double jxqSix_Nine;
+    //今6-9月的对比
+    private String jxqSix_Nine_Compare;
 
     //去6月
     private String qxqSix;
@@ -46,15 +48,17 @@ public class XunQi implements Serializable {
     public XunQi() {
     }
 
-    public XunQi(String stnm, double jxqSix, double jxqSeven, double jxqEight, double jxqNine, double jxqSix_Nine,
-                 String qxqSix, String qxqSeven, String qxqEight, String qxqNine, String qxqSix_Nine, String cxqSix,
-                 String cxqSeven, String cxqEight, String cxqNine, String cxqSix_Nine) {
+    public XunQi(String stnm, double jxqSix, double jxqSeven, double jxqEight, double jxqNine,
+                 double jxqSix_Nine, String jxqSix_Nine_Compare, String qxqSix, String qxqSeven,
+                 String qxqEight, String qxqNine, String qxqSix_Nine, String cxqSix, String cxqSeven,
+                 String cxqEight, String cxqNine, String cxqSix_Nine) {
         this.stnm = stnm;
         this.jxqSix = jxqSix;
         this.jxqSeven = jxqSeven;
         this.jxqEight = jxqEight;
         this.jxqNine = jxqNine;
         this.jxqSix_Nine = jxqSix_Nine;
+        this.jxqSix_Nine_Compare = jxqSix_Nine_Compare;
         this.qxqSix = qxqSix;
         this.qxqSeven = qxqSeven;
         this.qxqEight = qxqEight;
@@ -193,5 +197,13 @@ public class XunQi implements Serializable {
 
     public void setCxqSix_Nine(String cxqSix_Nine) {
         this.cxqSix_Nine = cxqSix_Nine;
+    }
+
+    public String getJxqSix_Nine_Compare() {
+        return jxqSix_Nine_Compare;
+    }
+
+    public void setJxqSix_Nine_Compare(String jxqSix_Nine_Compare) {
+        this.jxqSix_Nine_Compare = jxqSix_Nine_Compare;
     }
 }
