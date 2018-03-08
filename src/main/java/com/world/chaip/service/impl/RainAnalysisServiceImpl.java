@@ -2,6 +2,7 @@ package com.world.chaip.service.impl;
 
 import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.entity.exchangeRain.XunQi;
+import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
 import com.world.chaip.mapper.RainAnalysisMapper;
 import com.world.chaip.service.RainAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     }
     //年逐月降雨量分析对比
     @Override
-    public List<Object[]> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<YearAndMonthRain> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();
         now.setTime(time);
         List<RainExchange> list1 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
@@ -75,30 +76,30 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<RainExchange> list2 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
         List<RainExchange> list3 = mapper.getRainNZYCLCompared(adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
-        Object[] object = null;
-        List<Object[]> nzylist = new ArrayList<>();
+        YearAndMonthRain yearAndMonthRain = null;
+        List<YearAndMonthRain> nzylist = new ArrayList<>();
         for(int i=0; i<length; i++){
-            object = new Object[19];
-            object[0] = list1.get(i).getAdnm();
-            object[1] = list1.get(i).getNumOne();
-            object[2] = list1.get(i).getNumThree();
-            object[3] = list1.get(i).getNumFour();
-            object[4] = list1.get(i).getNumFive();
-            object[5] = list1.get(i).getNumSix();
-            object[6] = list1.get(i).getNumSeven();
-            object[7] = list1.get(i).getNumEight();
-            object[8] = list1.get(i).getNumNine();
-            object[9] = list1.get(i).getNumTen();
-            object[10] = list1.get(i).getNumEleven();
-            object[11] = list1.get(i).getNumTwelve();
-            object[12] = list1.get(i).getZong();
-            object[13] = list2.get(i).getZong();
-            object[14] = list3.get(i).getZong();
-            object[15] = new DecimalFormat("#0.000").format(list1.get(i).getZong()-list2.get(i).getZong());
-            object[16] = new DecimalFormat("#0.000").format(list1.get(i).getZong()-list3.get(i).getZong());
-            object[17] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list2.get(i).getZong()*100)+"%";
-            object[18] = new DecimalFormat("#0.000").format((list1.get(i).getZong()-list3.get(i).getZong())/list2.get(i).getZong()*100)+"%";
-            nzylist.add(object);
+            yearAndMonthRain = new YearAndMonthRain();
+            yearAndMonthRain.setAdnm(list1.get(i).getAdnm());
+            yearAndMonthRain.setNumOne(list1.get(i).getNumOne());
+            yearAndMonthRain.setNumThree(list1.get(i).getNumThree());
+            yearAndMonthRain.setNumFour(list1.get(i).getNumFour());
+            yearAndMonthRain.setNumFive(list1.get(i).getNumFive());
+            yearAndMonthRain.setNumSix(list1.get(i).getNumSix());
+            yearAndMonthRain.setNumSeven(list1.get(i).getNumSeven());
+            yearAndMonthRain.setNumEight(list1.get(i).getNumEight());
+            yearAndMonthRain.setNumNine(list1.get(i).getNumNine());
+            yearAndMonthRain.setNumTen(list1.get(i).getNumTen());
+            yearAndMonthRain.setNumEleven(list1.get(i).getNumEleven());
+            yearAndMonthRain.setNumTwelve(list1.get(i).getNumTwelve());
+            yearAndMonthRain.setJinYearZong(list1.get(i).getZong());
+            yearAndMonthRain.setQuYearZong(list2.get(i).getZong());
+            yearAndMonthRain.setChangYearZong(list3.get(i).getZong());
+            yearAndMonthRain.setCompareQu(Double.parseDouble(new DecimalFormat("#0.000").format(list1.get(i).getZong()-list2.get(i).getZong())));
+            yearAndMonthRain.setCompareChang(Double.parseDouble((new DecimalFormat("#0.000").format(list1.get(i).getZong()-list3.get(i).getZong()))));
+            yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong(), list1.get(i).getZong()));
+            yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong(), list1.get(i).getZong()));
+            nzylist.add(yearAndMonthRain);
         }
         return nzylist;
     }

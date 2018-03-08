@@ -3,6 +3,7 @@ package com.world.chaip.service;
 import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.exchangeRain.XunQi;
+import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
 
 import javax.jws.Oneway;
 import java.util.Calendar;
@@ -34,8 +35,8 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<Object[]> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes,
-                                      List<String> stcdOrStnm);
+    List<YearAndMonthRain> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes,
+                                              List<String> stcdOrStnm);
 
     /**
      * 任意日降雨量分析对比
