@@ -167,22 +167,22 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     //处理汛期降雨量的时间
     public List<RainExchange> getRainXQ(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //六月
-        now.set(Calendar.MONTH,7);
+        now.set(Calendar.MONTH,6);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSixEnd = now.getTime();
         //七月
-        now.set(Calendar.MONTH,8);
+        now.set(Calendar.MONTH,7);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSevenEnd = now.getTime();
         //八月
-        now.set(Calendar.MONTH,9);
+        now.set(Calendar.MONTH,8);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeEightEnd = now.getTime();
         //九月
-        now.set(Calendar.MONTH,10);
+        now.set(Calendar.MONTH,9);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeNineEnd = now.getTime();
