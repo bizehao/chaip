@@ -2,6 +2,9 @@ package com.world.chaip.entity.exchangeRain;
 
 import com.world.chaip.entity.Exchange.RainExchange;
 
+/**
+ * 年逐月降雨量
+ */
 public class YearAndMonthRain extends RainExchange{
 
     //今年总降雨量

@@ -1,6 +1,7 @@
 package com.world.chaip.controller;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
 import com.world.chaip.entity.report.River;
@@ -209,7 +210,7 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Object[]> dataList = service.getRainRYCompared(dateS,dateE,adcdlist, typelist,stcdlist);
+        List<ArbitrarilyDay> dataList = service.getRainRYCompared(dateS,dateE,adcdlist, typelist,stcdlist);
         SimpleDateFormat formYear = new SimpleDateFormat("yyyy");
         String year = formYear.format(dateS);
         Calendar tm = Calendar.getInstance();
@@ -222,8 +223,8 @@ public class RainAnalysisExcelController {
         String time = monthS+"月"+dayS+"日"+""+"至"+""+monthE+"月"+dayE+"日";
         String title = year+"年河北省降雨量分析比较表";
         String[] rowsName = new String[]{"市名",time,"去年同期","常年同期","去年同期比较","常年同期比较"};
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
-        ex.export();
+        /*ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ex.export();*/
     }
 
     @GetMapping(value="rainryXbytime")

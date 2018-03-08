@@ -59,16 +59,16 @@
         </where>
         ) st
         left join (
-        select sum(dyp) numSix, STCD from RP_PPTN_R where tm between #{beginTime1} and #{endTime1} and dyp > 0 group by
+        select ACCP numSix, STCD from RP_PSTAT_R where IDTM = #{endTime1} and STTDRCD = 5 group by
         STCD ) six on six.STCD = st.STCD
         left join (
-        select sum(dyp) numSeven, STCD from RP_PPTN_R where tm between #{beginTime2} and #{endTime2} and dyp > 0 group
+        select ACCP numSeven, STCD from RP_PSTAT_R where IDTM = #{endTime2} and STTDRCD = 5 group
         by STCD ) seven on seven.STCD = st.STCD
         left join (
-        select sum(dyp) numEight, STCD from RP_PPTN_R where tm between #{beginTime3} and #{endTime3} and dyp > 0 group
+        select ACCP numEight, STCD from RP_PSTAT_R where IDTM = #{endTime3} and STTDRCD = 5 group
         by STCD ) eight on eight.STCD = st.STCD
         left join (
-        select sum(dyp) numNine, STCD from RP_PPTN_R where tm between #{beginTime4} and #{endTime4} and dyp > 0 group by
+        select ACCP numNine, STCD from RP_PSTAT_R where IDTM = #{endTime4} and STTDRCD = 5 group by
         STCD ) nine on nine.STCD = st.STCD
         ) he GROUP BY ADNM
     </select>

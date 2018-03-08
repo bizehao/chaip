@@ -1,6 +1,7 @@
 package com.world.chaip.service.impl;
 
 import com.world.chaip.entity.Exchange.RainExchange;
+import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
 import com.world.chaip.mapper.RainAnalysisMapper;
@@ -106,7 +107,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
 
     //任意日降雨量分析对比
     @Override
-    public List<Object[]> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar begin1 = Calendar.getInstance();
         begin1.setTime(beginTime);
         Calendar end1 = Calendar.getInstance();
@@ -120,36 +121,44 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         end2.set(Calendar.YEAR, -1);
         List<RainExchange> list2 = getRainRY(begin2, end2, adcd, systemTypes, stcdOrStnm);
         List<Double> dList = getRainPYCL(beginTime, endTime, adcd, systemTypes, stcdOrStnm);
-        List<Object[]> obList = new ArrayList<>();
-        Object[] objects = null;
+        List<ArbitrarilyDay> obList = new ArrayList<>();
+        ArbitrarilyDay arbitrarilyDay = null;
         int length = list1.size();
         double chaqu = 0;
         double chachang = 0;
         for(int i=0; i<length; i++){
-            objects = new Object[6];
-            objects[0] = list1.get(i).getAdnm();
-            objects[1] = list1.get(i).getZong();
-            objects[2] = list2.get(i).getZong();
-            objects[3] = dList.get(i);
+            arbitrarilyDay = new ArbitrarilyDay();
+            arbitrarilyDay.setAdnm(list1.get(i).getAdnm());
+            arbitrarilyDay.setoDay_oDay(list1.get(i).getZong());
+            arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong());
+            arbitrarilyDay.setSamePeriodChang(dList.get(i));
             chaqu = list1.get(i).getZong()-list2.get(i).getZong();
-            if(chaqu==0){
-                objects[4] = 0+"%";
-            }
-            if(chaqu>0){
-                objects[4] = "多"+new DecimalFormat("#0.00").format(chaqu/list2.get(i).getZong())+"%";
+            if(list2.get(i).getZong()>0){
+                if(chaqu==0){
+                    arbitrarilyDay.setSamePeriodCompareQu(0+"%");
+                }
+                if(chaqu>0){
+                    arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.00").format(chaqu/list2.get(i).getZong())+"%");
+                }else{
+                    arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.00").format(-chaqu/list2.get(i).getZong())+"%");
+                }
             }else{
-                objects[4] = "少"+new DecimalFormat("#0.00").format(-chaqu/list2.get(i).getZong())+"%";
+                arbitrarilyDay.setSamePeriodCompareQu("100%");
             }
             chachang = list1.get(i).getZong()-dList.get(i);
-            if(chachang==0){
-                objects[5] = 0+"%";
-            }
-            if(chaqu>0){
-                objects[5] = "多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i))+"%";
+            if(dList.get(i)>0){
+                if(chachang==0){
+                    arbitrarilyDay.setSamePeriodCompareChang(0+"%");
+                }
+                if(chaqu>0){
+                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.00").format(chaqu/dList.get(i))+"%");
+                }else{
+                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i))+"%");
+                }
             }else{
-                objects[5] = "少"+new DecimalFormat("#0.00").format(-chaqu/dList.get(i))+"%";
+                arbitrarilyDay.setSamePeriodCompareChang("100%");
             }
-            obList.add(objects);
+            obList.add(arbitrarilyDay);
         }
         return obList;
     }
@@ -157,44 +166,27 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     //处理汛期降雨量的时间
     public List<RainExchange> getRainXQ(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //六月
-        now.set(Calendar.MONTH,6);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeSixBegin = now.getTime();
         now.set(Calendar.MONTH,7);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSixEnd = now.getTime();
         //七月
-        now.set(Calendar.MONTH,7);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeSevenBegin = now.getTime();
         now.set(Calendar.MONTH,8);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeSevenEnd = now.getTime();
         //八月
-        now.set(Calendar.MONTH,8);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeEightBegin = now.getTime();
         now.set(Calendar.MONTH,9);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeEightEnd = now.getTime();
         //九月
-        now.set(Calendar.MONTH,9);
-        now.set(Calendar.DATE,2);
-        now.set(Calendar.HOUR_OF_DAY,8);
-        Date timeNineBegin = now.getTime();
         now.set(Calendar.MONTH,10);
         now.set(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeNineEnd = now.getTime();
 
-        return mapper.getRainXQCompared(timeSixBegin,timeSixEnd,timeSevenBegin,timeSevenEnd,timeEightBegin,timeEightEnd,timeNineBegin,
-                timeNineEnd,adcd,systemTypes,stcdOrStnm);
+        return mapper.getRainXQCompared(timeSixEnd,timeSevenEnd,timeEightEnd,timeNineEnd,adcd,systemTypes,stcdOrStnm);
     }
 
     //处理年逐月降雨量的时间

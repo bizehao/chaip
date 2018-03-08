@@ -2,6 +2,7 @@ package com.world.chaip.service;
 
 import com.world.chaip.entity.Exchange.RainExchange;
 import com.world.chaip.entity.Rainfall;
+import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
 
@@ -47,7 +48,7 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<Object[]> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes,
-                                     List<String> stcdOrStnm);
+    List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes,
+                                           List<String> stcdOrStnm);
 
 }

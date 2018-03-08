@@ -11,13 +11,9 @@ import java.util.List;
 public interface RainAnalysisMapper {
 
     //汛期今年 往年查询
-    List<RainExchange> getRainXQCompared(@Param("beginTime1") Date beginTime1,
-                                         @Param("endTime1") Date endTime1,
-                                         @Param("beginTime2") Date beginTime2,
+    List<RainExchange> getRainXQCompared(@Param("endTime1") Date endTime1,
                                          @Param("endTime2") Date endTime2,
-                                         @Param("beginTime3") Date beginTime3,
                                          @Param("endTime3") Date endTime3,
-                                         @Param("beginTime4") Date beginTime4,
                                          @Param("endTime4") Date endTime4,
                                          @Param("adcd") List<String> adcd,
                                          @Param("systemTypes") List<String> systemTypes,
@@ -58,8 +54,8 @@ public interface RainAnalysisMapper {
 
     //年逐月常量查询
     List<RainExchange> getRainNZYCLCompared(@Param("adcd") List<String> adcd,
-                                           @Param("systemTypes") List<String> systemTypes,
-                                           @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                            @Param("systemTypes") List<String> systemTypes,
+                                            @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     //任意日降雨量
     List<RainExchange> getRainRYCompared(@Param("beginTime") Date beginTime,
