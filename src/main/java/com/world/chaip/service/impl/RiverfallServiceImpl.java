@@ -91,7 +91,7 @@ public class RiverfallServiceImpl implements RiverfallService {
             RiverExchange river = rainfalls.get(i);
             riverExchange = new RiverExchange();
             riverExchange.setStcd(river.getStcd());
-            riverExchange.setRvnm(river.getRvnm());
+            riverExchange.setRvnm(river.getRvnm()==null?"":river.getRvnm());
             riverExchange.setStnm(river.getStnm());
             riverExchange.setAvgQ(Double.parseDouble(new DecimalFormat("#0.00").format(river.getSumQ()/day/24/3600)));
             riverExchange.setSumQ(river.getSumQ());
