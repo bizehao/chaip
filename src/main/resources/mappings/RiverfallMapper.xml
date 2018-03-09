@@ -267,7 +267,7 @@
     </select>
 
     <!-- 河道水情获取最大时期 -->
-    <select id="s" resultType="String">
+    <select id="getRiverMaxTime" resultType="String">
         select
           MAX(tm)
         from
