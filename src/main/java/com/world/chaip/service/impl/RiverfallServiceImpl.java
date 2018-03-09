@@ -96,32 +96,41 @@ public class RiverfallServiceImpl implements RiverfallService {
             riverExchange.setSumQ(river.getSumQ());
             riverExchange.setMaxQ(river.getMaxQ());
             String time1 = riverfallMapper.getRiverMaxTime(dateS,dateE,river.getStcd(),1,river.getMaxQ());
-            Calendar m = Calendar.getInstance();
             Date dateQ = null;
             int month = 0;
             int date = 0;
-            try {
-                dateQ = DateUtils.parse(time1, "yyyy-MM-dd");
-                m.setTime(dateQ);
-                month = m.get(Calendar.MONTH)+1;
-                date = m.get(Calendar.DATE);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            Calendar m = Calendar.getInstance();
+            if(time1 != null){
+                try {
+                    dateQ = DateUtils.parse(time1, "yyyy-MM-dd");
+                    m.setTime(dateQ);
+                    month = m.get(Calendar.MONTH)+1;
+                    date = m.get(Calendar.DATE);
+                    riverExchange.setMaxQTime(month+"月"+date+"日");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                riverExchange.setMaxQTime("");
             }
-            riverExchange.setMaxQTime(month+"月"+date+"日");
             riverExchange.setMaxQ(river.getMaxZ());
             Date dateZ = null;
             String time2 = riverfallMapper.getRiverMaxTime(dateS,dateE,river.getStcd(),0,river.getMaxQ());
-            try {
-                dateZ = DateUtils.parse(time1, "yyyy-MM-dd");
-                m.setTime(dateZ);
-                month = m.get(Calendar.MONTH)+1;
-                date = m.get(Calendar.DATE);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if(time2 != null){
+                try {
+                    dateZ = DateUtils.parse(time2, "yyyy-MM-dd");
+                    m.setTime(dateZ);
+                    month = m.get(Calendar.MONTH)+1;
+                    date = m.get(Calendar.DATE);
+                    riverExchange.setMaxZTime(month+"月"+date+"日");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                riverExchange.setMaxZTime("");
             }
-            riverExchange.setMaxZTime(month+"月"+date+"日");
+            list.add(riverExchange);
         }
-        return null;
+        return list;
     }
 }

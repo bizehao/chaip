@@ -273,10 +273,12 @@
         from
           RP_RIVER_R
         where
-        <if test="sign==0">
+        <if test="sign == 0">
             z=#{max}
         </if>
+        <if test="sign == 1">
             q=#{max}
+        </if>
         and
           stcd = #{stcd}
         and
