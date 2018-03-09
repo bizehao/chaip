@@ -1,6 +1,7 @@
 package com.world.chaip.service;
 
 import com.world.chaip.entity.DaybyHourRainfall;
+import com.world.chaip.entity.Exchange.RiverExchange;
 import com.world.chaip.entity.report.River;
 
 import java.util.Date;
@@ -52,5 +53,5 @@ public interface RiverfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<River> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 }

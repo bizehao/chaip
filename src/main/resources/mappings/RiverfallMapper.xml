@@ -203,8 +203,8 @@
     </select>
 
     <!-- 河道水情分析对比-->
-    <select id="getRiverByAnalysis" resultType="com.world.chaip.entity.report.River">
-        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q from
+    <select id="getRiverByAnalysis" resultType="com.world.chaip.entity.Exchange.RiverExchange">
+        select st.stcd,st.stnm,st.rvnm,adnm,z maxZ,q maxQ,(isnull(sq,0)) sumQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -255,7 +255,7 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, A.TM, MAX (z) z,SUM (isnull(q,0)) q, MAX (q) from RP_RIVER_R A
+        select A.STCD,MAX (z) z,MAX (q) q,SUM (isnull(q,0)) sq from RP_RIVER_R A
         <where>
             <![CDATA[
 				tm>=#{beginTime} and tm<=#{endTime}
@@ -264,5 +264,24 @@
         group by stcd
         )PP
         on ST.STCD=PP.STCD
+    </select>
+
+    <!-- 河道水情获取最大时期 -->
+    <select id="s" resultType="String">
+        select
+          MAX(tm)
+        from
+          RP_RIVER_R
+        where
+        <if test="sign==0">
+            z=#{max}
+        </if>
+            q=#{max}
+        and
+          stcd = #{stcd}
+        and
+          <![CDATA[
+				tm>=#{beginTime} and tm<=#{endTime}
+			]]>;
     </select>
 </mapper>

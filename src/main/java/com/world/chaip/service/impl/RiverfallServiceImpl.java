@@ -1,6 +1,7 @@
 package com.world.chaip.service.impl;
 
 import com.world.chaip.entity.DaybyHourRainfall;
+import com.world.chaip.entity.Exchange.RiverExchange;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.mapper.RainfallMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +23,7 @@ public class RiverfallServiceImpl implements RiverfallService {
     @Autowired
     private RiverfallMapper riverfallMapper;
 
-
+    //实时 河道
     @Override
     public List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         /*Date beginTime=null;
@@ -36,6 +38,7 @@ public class RiverfallServiceImpl implements RiverfallService {
         return rainfalls;
     }
 
+    //本区 河道
     @Override
     public List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         /*Date beginTime=null;
@@ -50,6 +53,7 @@ public class RiverfallServiceImpl implements RiverfallService {
         return rainfalls;
     }
 
+    //外区河道
     @Override
     public List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
 
@@ -57,10 +61,21 @@ public class RiverfallServiceImpl implements RiverfallService {
         return rainfalls;
     }
 
+    //河道水情分析
     @Override
-    public List<River> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
-        List<River> rainfalls=riverfallMapper.getRiverByAnalysis(dateS,dateE,adcd,systemTypes,stcdOrStnm);
-        List<Object[]> list = new ArrayList<>();
+    public List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+        Calendar tm = Calendar.getInstance();
+        tm.setTime(dateS);
+        tm.set(Calendar.DATE, 2);
+        tm.set(Calendar.HOUR_OF_DAY,8);
+        dateS = tm.getTime();
+        tm.setTime(dateE);
+        tm.add(Calendar.MONTH,1);
+        tm.set(Calendar.DATE, 1);
+        tm.set(Calendar.HOUR_OF_DAY,8);
+        dateE = tm.getTime();
+        List<RiverExchange> rainfalls=riverfallMapper.getRiverByAnalysis(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        List<RiverExchange> list = new ArrayList<>();
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         int monthS = now.get(Calendar.MONTH);
@@ -71,16 +86,41 @@ public class RiverfallServiceImpl implements RiverfallService {
             now.set(Calendar.MONTH,monthS);
             day+=now.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
-        Object[] objects = null;
+        RiverExchange riverExchange = null;
         for(int i=0; i<rainfalls.size(); i++){
-            River river = rainfalls.get(i);
-            objects = new Object[9];
-            objects[0] = i+1;
-            objects[1] = river.getRvnm();
-            objects[2] = river.getStnm();
-            objects[3] = new DecimalFormat("#0.00").format(river.getQ()/day/24/3600);
-            objects[4] = river.getZ();
-            objects[5] = river.getTm();
+            RiverExchange river = rainfalls.get(i);
+            riverExchange = new RiverExchange();
+            riverExchange.setRvnm(river.getRvnm());
+            riverExchange.setStnm(river.getStnm());
+            riverExchange.setAvgQ(Double.parseDouble(new DecimalFormat("#0.00").format(river.getSumQ()/day/24/3600)));
+            riverExchange.setSumQ(river.getSumQ());
+            riverExchange.setMaxQ(river.getMaxQ());
+            String time1 = riverfallMapper.getRiverMaxTime(dateS,dateE,river.getStcd(),1,river.getMaxQ());
+            Calendar m = Calendar.getInstance();
+            Date dateQ = null;
+            int month = 0;
+            int date = 0;
+            try {
+                dateQ = DateUtils.parse(time1, "yyyy-MM-dd");
+                m.setTime(dateQ);
+                month = m.get(Calendar.MONTH)+1;
+                date = m.get(Calendar.DATE);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            riverExchange.setMaxQTime(month+"月"+date+"日");
+            riverExchange.setMaxQ(river.getMaxZ());
+            Date dateZ = null;
+            String time2 = riverfallMapper.getRiverMaxTime(dateS,dateE,river.getStcd(),0,river.getMaxQ());
+            try {
+                dateZ = DateUtils.parse(time1, "yyyy-MM-dd");
+                m.setTime(dateZ);
+                month = m.get(Calendar.MONTH)+1;
+                date = m.get(Calendar.DATE);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            riverExchange.setMaxZTime(month+"月"+date+"日");
         }
         return null;
     }
