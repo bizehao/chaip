@@ -212,11 +212,11 @@ public class RealtimeRiverfallController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
-        adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+        /*adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
         dateStart="2017-01";
         dateEnd="2017-06";
         systemTypes="11,12,";
-        stcdOrStnm="X";
+        stcdOrStnm="X";*/
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
