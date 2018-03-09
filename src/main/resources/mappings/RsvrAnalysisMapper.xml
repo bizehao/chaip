@@ -1,4 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
+    
+    <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,tm,e.name,HNNM,RZ,W,OTQ from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and sttp like '%R%' and ZFL='1'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, rz,w,otq from ST_RSVR_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from ST_RSVR_R
+        <where>
+            <![CDATA[
+				tm>#{beginTime} and tm<=#{endTime}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
 </mapper>
