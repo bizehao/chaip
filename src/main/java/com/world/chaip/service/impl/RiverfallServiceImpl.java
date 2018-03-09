@@ -93,7 +93,7 @@ public class RiverfallServiceImpl implements RiverfallService {
             riverExchange.setStcd(river.getStcd());
             riverExchange.setRvnm(river.getRvnm()==null?"":river.getRvnm());
             riverExchange.setStnm(river.getStnm());
-            riverExchange.setAvgQ(Double.parseDouble(new DecimalFormat("#0.00").format(river.getSumQ()/day/24/3600)));
+            riverExchange.setAvgQ(Double.parseDouble(new DecimalFormat("#0.00").format(river.getSumQ()/day/24/3600*100000000)));
             riverExchange.setSumQ(Double.parseDouble(new DecimalFormat("#0.000").format(river.getSumQ())));
             riverExchange.setMaxQ(Double.parseDouble(new DecimalFormat("#0.000").format(river.getMaxQ())));
             String time1 = riverfallMapper.getRiverMaxTime(dateS,dateE,river.getStcd(),1,river.getMaxQ());
