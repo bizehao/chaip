@@ -119,11 +119,12 @@
         ) st
         LEFT JOIN
         (
-        select STCD,MAX (z) z,tm from RP_RIVER_R
-        WHERE TM = (SELECT MAX (Z) from RP_RIVER_R
+        select STCD,MAX (z) z,tm from RP_RIVER_R v
+        WHERE Z = (SELECT MAX (Z) from RP_RIVER_R
         <where>
+            v.stcd = stcd
             <![CDATA[
-				tm>=#{beginTime} and tm<=#{endTime}
+				and tm>=#{beginTime} and tm<=#{endTime}
 			]]>
         </where>)
         group by stcd
@@ -185,11 +186,12 @@
         ) st
         LEFT JOIN
         (
-        select STCD,MAX (q) q,tm from RP_RIVER_R
-        WHERE TM = (SELECT MAX (Z) from RP_RIVER_R
+        select STCD,MAX (q) q,tm from RP_RIVER_R v
+        WHERE TM = (SELECT MAX (Q) from RP_RIVER_R
         <where>
+            v.stcd = stcd
             <![CDATA[
-				tm>=#{beginTime} and tm<=#{endTime}
+				and tm>=#{beginTime} and tm<=#{endTime}
 			]]>
         </where>)
         group by stcd

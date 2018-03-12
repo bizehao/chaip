@@ -23,14 +23,15 @@ public class Rsvr {
 	private double w;
 	//出库流量
 	private double otq;
+	//出库流量
+	private double inq;
 	
 	public Rsvr() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Rsvr(String stcd, String stnm, String hnnm, String tm, double rz, double w, double otq) {
-		super();
+	public Rsvr(String stcd, String stnm, String hnnm, String tm, double rz, double w, double otq, double inq) {
 		this.stcd = stcd;
 		this.stnm = stnm;
 		this.hnnm = hnnm;
@@ -38,6 +39,7 @@ public class Rsvr {
 		this.rz = rz;
 		this.w = w;
 		this.otq = otq;
+		this.inq = inq;
 	}
 
 	public String getStcd() {
@@ -96,6 +98,11 @@ public class Rsvr {
 		this.otq = otq;
 	}
 
-	
-	
+	public double getInq() {
+		return inq;
+	}
+
+	public void setInq(double inq) {
+		this.inq = inq;
+	}
 }

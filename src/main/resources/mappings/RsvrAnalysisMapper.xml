@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
-    
+    <!--  水库水情分析表 -->
     <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
         select st.stcd,st.stnm,tm,e.name,HNNM,RZ,W,OTQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b

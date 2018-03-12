@@ -30,4 +30,12 @@ public interface RsvrAnalysisMapper {
                                       @Param("adcd") List<String> adcd,
                                       @Param("systemTypes") List<String> systemTypes,
                                       @Param("stcdOrStnm") List<String> stcdOrStnm);
+
+    List<Rsvr> getRsvrFeaturesAnalysis(@Param("beginTime") Date beginTime,
+                                      @Param("endTime") Date endTime,
+                                      @Param("adcd") List<String> adcd,
+                                      @Param("systemTypes") List<String> systemTypes,
+                                      @Param("stcdOrStnm") List<String> stcdOrStnm);
+
+
 }
