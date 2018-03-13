@@ -27,20 +27,28 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         int beginMonth = tm.get(Calendar.MONTH);
         tm.setTime(dateE);
         int endMonth = tm.get(Calendar.MONTH);
-        Date time = null;
+        Date beginTime = null;
+        Date endTime = null;
         int day = 0;
         double avq = 0;
         int countDay = 0;
         List<RiverExchange> list = new ArrayList<>();
         List<Double> alist = new ArrayList<>();
         RiverExchange riverExchange = null;
+        List<Double> liuliang = null;
+        List<List<Double>> jiheList = new ArrayList<>();
         for(int month = beginMonth; month<=endMonth; month++){
+            liuliang = new ArrayList<>();
             tm.set(Calendar.MONTH, month);
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
-            time = tm.getTime();
+            beginTime = tm.getTime();
+            tm.set(Calendar.MONTH, month+1);
+            tm.set(Calendar.DATE, 1);
+            tm.set(Calendar.HOUR_OF_DAY, 8);
+            endTime = tm.getTime();
             day = tm.getActualMaximum(Calendar.DAY_OF_MONTH);
-            List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(time,adcd,systemTypes,stcdOrStnm);
+            List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
             for(int i=0; i<riverByAnalysis.size(); i++){
                 if(month == beginMonth){
                     RiverExchange river = riverByAnalysis.get(i);
@@ -50,12 +58,14 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
                     riverExchange.setStnm(river.getStnm());
                     list.add(riverExchange);
                 }
-                avq += riverByAnalysis.get(i).getAvgQ()*day;
-                if(month == endMonth){
-                    alist.add(avq);
-                }
-                countDay+=day;
+                liuliang.add(riverByAnalysis.get(i).getAvgQ()*day);
             }
+            countDay+=day;
+            jiheList.add(liuliang);
+        }
+        for(int i = 0; i<jiheList.size(); i++){
+            liuliang = jiheList.get(i);
+
         }
         //最大水位 流量 及 时间
         Calendar maxtm = Calendar.getInstance();

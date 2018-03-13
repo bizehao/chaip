@@ -57,7 +57,7 @@
         select A.STCD,AVQ from RP_RVAV_R A
         <where>
             <![CDATA[
-				IDTM=#{Time}
+				IDTM > #{beginTime} AND IDTM <= #{endTime}
 				and A.STTDRCD=5
 			]]>
         </where>

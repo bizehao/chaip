@@ -11,26 +11,27 @@ import java.util.List;
 public interface RiverAnalysisMapper {
     /**
      * 河道水情分析
-     * @param Time
+     * @param beginTime
+     * @param endTime
      * @param adcd
      * @param systemTypes
      * @param stcdOrStnm
      * @return
      */
-    List<RiverExchange> getRiverByAnalysis(
-            @Param("Time") Date Time,
-            @Param("adcd") List<String> adcd,
-            @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+    List<RiverExchange> getRiverByAnalysis(@Param("beginTime") Date beginTime,
+                                           @Param("endTime") Date endTime,
+                                           @Param("adcd") List<String> adcd,
+                                           @Param("systemTypes") List<String> systemTypes,
+                                           @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     /**
      * 获取最大水位流量和日期
      * @return
      */
     List<RiverExchange> getRiverByMaxQZ(@Param("beginTime") Date beginTime,
-                                       @Param("endTime") Date endTime,
-                                       @Param("adcd") List<String> adcd,
-                                       @Param("systemTypes") List<String> systemTypes,
-                                       @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                        @Param("endTime") Date endTime,
+                                        @Param("adcd") List<String> adcd,
+                                        @Param("systemTypes") List<String> systemTypes,
+                                        @Param("stcdOrStnm") List<String> stcdOrStnm);
 
 }
