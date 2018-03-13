@@ -68,8 +68,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
         dateE = tm.getTime();
-        List<RiverExchange> riverByMaxZ = riverAnalysisMapper.getRiverByMaxZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
-        List<RiverExchange> riverByMaxQ = riverAnalysisMapper.getRiverByMaxZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
         double avgQ = 0;
         List<RiverExchange> rList = new ArrayList<>();
         for(int i=0; i<alist.size(); i++){
@@ -77,13 +76,13 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             avgQ = alist.get(i)/countDay;
             riverExchange.setAvgQ(avgQ);
             riverExchange.setSumQ(avgQ*3600*24*countDay);
-            riverExchange.setMaxZ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxZ.get(i).getMaxZ())));
+            riverExchange.setMaxZ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQZ.get(i).getMaxZ())));
             Calendar m = Calendar.getInstance();
             Date dateZ = null;
             Date dateQ = null;
             int month = 0;
             int date = 0;
-            String MaxZTime = riverByMaxZ.get(i).getMaxZTime();
+            String MaxZTime = riverByMaxQZ.get(i).getMaxZTime();
             if( MaxZTime != null){
                 try {
                     dateZ = DateUtils.parse(MaxZTime, "yyyy-MM-dd");
@@ -97,8 +96,8 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             }else{
                 riverExchange.setMaxZTime("");
             }
-            riverExchange.setMaxQ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQ.get(i).getMaxQ())));
-            String MaxQTime = riverByMaxQ.get(i).getMaxQTime();
+            riverExchange.setMaxQ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQZ.get(i).getMaxQ())));
+            String MaxQTime = riverByMaxQZ.get(i).getMaxQTime();
             if( MaxQTime != null){
                 try {
                     dateZ = DateUtils.parse(MaxQTime, "yyyy-MM-dd");

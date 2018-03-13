@@ -68,7 +68,7 @@
 
     <!-- 查询最高水位及其时间 -->
     <select id="getRiverByMaxZ" resultType="com.world.chaip.entity.Exchange.RiverExchange">
-        select st.stcd,st.stnm,st.rvnm,adnm,z maxZ,tm maxZTime from
+        select st.stcd,st.stnm,st.rvnm,adnm,maxZ,maxZTime,maxQ,maxQTime from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -119,82 +119,16 @@
         ) st
         LEFT JOIN
         (
-        select STCD,MAX (z) z,tm from RP_RIVER_R v
-        WHERE Z = (SELECT MAX (Z) from RP_RIVER_R
-        <where>
-            v.stcd = stcd
-            <![CDATA[
-				and tm>=#{beginTime} and tm<=#{endTime}
-			]]>
-        </where>)
-        group by stcd
-        )PP
-        on ST.STCD=PP.STCD
-    </select>
-
-
-    <!-- 查询最大流量及其时间 -->
-    <select id="getRiverByMaxQ" resultType="com.world.chaip.entity.Exchange.RiverExchange">
-        select st.stcd,st.stnm,st.rvnm,adnm,q maxq,tm maxQTime from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                and ZFL = 1 and STTP LIKE '%Z%'
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select STCD,MAX (q) q,tm from RP_RIVER_R v
-        WHERE TM = (SELECT MAX (Q) from RP_RIVER_R
-        <where>
-            v.stcd = stcd
-            <![CDATA[
-				and tm>=#{beginTime} and tm<=#{endTime}
-			]]>
-        </where>)
-        group by stcd
+        select x.STCD,maxZ,maxZTime,maxQ,maxQTime from RP_RIVER_R x
+        left join
+        (select v.STCD,MAX (a.z) maxZ,max(tm) maxZTime from RP_RIVER_R v
+        inner join (select stcd, max(z) z from RP_RIVER_R where tm between #{beginTime} and #{endTime} group by stcd) a
+        on v.STCD = a.STCD and v.Z = a.z where tm between #{beginTime} and #{endTime} group by v.stcd) z on x.STCD = z.STCD
+        left join(
+        select v.STCD,MAX (b.q) maxQ,max(tm) maxQTime from RP_RIVER_R v
+        inner join (select stcd, max(q) q from RP_RIVER_R where tm between #{beginTime} and #{endTime} group by stcd) b
+        on v.STCD = b.STCD and v.q = b.q where tm between #{beginTime} and #{endTime} group by v.stcd) q on x.STCD = q.STCD
+        group by x.STCD,maxZ,maxZTime,maxQ,maxQTime;
         )PP
         on ST.STCD=PP.STCD
     </select>

@@ -24,22 +24,13 @@ public interface RiverAnalysisMapper {
             @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     /**
-     * 获取最大水位和日期
+     * 获取最大水位流量和日期
      * @return
      */
-    List<RiverExchange> getRiverByMaxQ(@Param("beginTime") Date beginTime,
+    List<RiverExchange> getRiverByMaxQZ(@Param("beginTime") Date beginTime,
                                        @Param("endTime") Date endTime,
                                        @Param("adcd") List<String> adcd,
                                        @Param("systemTypes") List<String> systemTypes,
                                        @Param("stcdOrStnm") List<String> stcdOrStnm);
 
-    /**
-     * 获取最大流量和日期
-     * @return
-     */
-    List<RiverExchange> getRiverByMaxZ(@Param("beginTime") Date beginTime,
-                                       @Param("endTime") Date endTime,
-                                       @Param("adcd") List<String> adcd,
-                                       @Param("systemTypes") List<String> systemTypes,
-                                       @Param("stcdOrStnm") List<String> stcdOrStnm);
 }
