@@ -136,7 +136,7 @@
     </select>
 
     <!--  水库特征值统计表 -->
-    <select id="getRsvrFeaturesAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
+    <select id="getRsvrFeaturesAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrExchange">
         select st.stcd,st.stnm,st.RVNM,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
