@@ -126,7 +126,7 @@
         (select STCD, max(tm)tm from ST_RIVER_R
         <where>
             <![CDATA[
-				tm>#{beginTime} and tm<=#{endTime}
+				tm<=#{endTime}
 			]]>
         </where>
         group by stcd)
@@ -189,11 +189,11 @@
         LEFT JOIN
         (
         select A.STCD, A.TM, z,msamt,q,A.wptn from RP_RIVER_R A
-        LEFT JOIN
-        (select STCD, max(tm)tm from ST_RIVER_R
+        INNER JOIN
+        (select STCD, max(tm)tm from RP_RIVER_R
         <where>
             <![CDATA[
-				tm>#{beginTime} and tm<=#{endTime}
+				tm<=#{endTime}
 			]]>
         </where>
         group by stcd)
