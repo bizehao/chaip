@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * 汛期降雨量  交换库
  */
+@Service
 public class RainAnalysisServiceImpl implements RainAnalysisService {
 
     @Autowired

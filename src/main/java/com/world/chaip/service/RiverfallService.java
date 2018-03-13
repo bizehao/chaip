@@ -13,7 +13,7 @@ import java.util.List;
  * @author BZH
  *
  */
-@Service
+
 public interface RiverfallService {
     /**
      * 河道统计 实时

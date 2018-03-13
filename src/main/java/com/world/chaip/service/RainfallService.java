@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author BZH
  *
  */
-@Service
+
 public interface RainfallService {
 	/**
 	 * 逐时雨量统计

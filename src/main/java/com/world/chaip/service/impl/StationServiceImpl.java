@@ -12,7 +12,7 @@ import com.world.chaip.entity.baseinfo.Station;
 import com.world.chaip.entity.baseinfo.StationDetail;
 import com.world.chaip.mapper.StationMapper;
 import com.world.chaip.service.StationService;
-
+@Service
 public class StationServiceImpl implements StationService {
 
 	@Autowired

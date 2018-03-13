@@ -16,7 +16,7 @@ import java.util.List;
  * 专业分析
  * @author BZH
  */
-@Service
+
 public interface RainAnalysisService {
 
     /**

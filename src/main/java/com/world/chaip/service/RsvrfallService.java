@@ -14,7 +14,7 @@ import java.util.List;
  * @author BZH
  *
  */
-@Service
+
 public interface RsvrfallService {
 	/**
 	 * 水库(实时)

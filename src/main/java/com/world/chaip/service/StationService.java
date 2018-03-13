@@ -9,7 +9,7 @@ import com.world.chaip.entity.report.Stations;
 import com.world.chaip.entity.report.Tyid;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface StationService {
 	public List<StationDetail> getAll();
 
