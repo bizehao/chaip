@@ -7,6 +7,7 @@ import com.world.chaip.service.RsvrAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,14 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
 
     @Override
     public List<RsvrExchange> getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
-        return null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(dateS);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Date beginTime = now.getTime();
+        now.setTime(dateE);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Date endTime = now.getTime();
+        List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        return list;
     }
 }
