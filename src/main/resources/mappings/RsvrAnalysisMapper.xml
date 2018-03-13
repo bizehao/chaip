@@ -191,20 +191,20 @@
         select x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from RP_RSVR_R x
         left join(
         select r.stcd, max(tm) mrztm ,max(a.rz) mrz from RP_RSVR_R r
-        inner join (select max(rz) rz,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) a
-        on r.stcd = a.stcd and r.RZ = a.rz where tm between #{beginTime} and #{endTime} group by r.stcd) rz on x.STCD = rz.STCD
+        inner join (select max(rz) rz,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) a
+        on r.stcd = a.stcd and r.RZ = a.rz where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) rz on x.STCD = rz.STCD
         left join(
         select r.stcd, max(tm) mwtm ,max(b.w) mw from RP_RSVR_R r
-        inner join (select max(w) w,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) b
-        on r.stcd = b.stcd and r.w = b.w where tm between #{beginTime} and #{endTime} group by r.stcd) w on x.STCD = w.STCD
+        inner join (select max(w) w,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) b
+        on r.stcd = b.stcd and r.w = b.w where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) w on x.STCD = w.STCD
         left join(
         select r.stcd, max(tm) minqtm ,max(c.inq) minq from RP_RSVR_R r
-        inner join (select max(inq) inq,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) c
-        on r.stcd = c.stcd and r.INQ = c.inq where tm between #{beginTime} and #{endTime} group by r.stcd) inq on x.STCD = inq.STCD
+        inner join (select max(inq) inq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) c
+        on r.stcd = c.stcd and r.INQ = c.inq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) inq on x.STCD = inq.STCD
         left join(
         select r.stcd, max(tm) motqtm ,max(d.otq) motq from RP_RSVR_R r
-        inner join (select max(otq) otq,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) d
-        on r.stcd = d.stcd and r.OTQ = d.otq where tm between #{beginTime} and #{endTime} group by r.stcd) otq on x.STCD = otq.STCD
+        inner join (select max(otq) otq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) d
+        on r.stcd = d.stcd and r.OTQ = d.otq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) otq on x.STCD = otq.STCD
         group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq
         )PP
         on ST.STCD=PP.STCD

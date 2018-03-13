@@ -122,12 +122,12 @@
         select x.STCD,maxZ,maxZTime,maxQ,maxQTime from RP_RIVER_R x
         left join
         (select v.STCD,MAX (a.z) maxZ,max(tm) maxZTime from RP_RIVER_R v
-        inner join (select stcd, max(z) z from RP_RIVER_R where tm between #{beginTime} and #{endTime} group by stcd) a
-        on v.STCD = a.STCD and v.Z = a.z where tm between #{beginTime} and #{endTime} group by v.stcd) z on x.STCD = z.STCD
+        inner join (select stcd, max(z) z from RP_RIVER_R where tm > #{beginTime} and tm &lt;= #{endTime} group by stcd) a
+        on v.STCD = a.STCD and v.Z = a.z where tm > #{beginTime} and tm &lt;= #{endTime} group by v.stcd) z on x.STCD = z.STCD
         left join(
         select v.STCD,MAX (b.q) maxQ,max(tm) maxQTime from RP_RIVER_R v
-        inner join (select stcd, max(q) q from RP_RIVER_R where tm between #{beginTime} and #{endTime} group by stcd) b
-        on v.STCD = b.STCD and v.q = b.q where tm between #{beginTime} and #{endTime} group by v.stcd) q on x.STCD = q.STCD
+        inner join (select stcd, max(q) q from RP_RIVER_R where tm > #{beginTime} and tm &lt;= #{endTime} group by stcd) b
+        on v.STCD = b.STCD and v.q = b.q where tm > #{beginTime} and tm &lt;= #{endTime} group by v.stcd) q on x.STCD = q.STCD
         group by x.STCD,maxZ,maxZTime,maxQ,maxQTime;
         )PP
         on ST.STCD=PP.STCD
