@@ -204,8 +204,8 @@
         left join(
         select r.stcd, max(tm) motqtm ,max(d.otq) motq from RP_RSVR_R r
         inner join (select max(otq) otq,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) d
-        on r.stcd = d.stcd and r.OTQ = d.otq where tm between #{beginTime} and #{endTime}' group by r.stcd) otq on x.STCD = otq.STCD
-        group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq;
+        on r.stcd = d.stcd and r.OTQ = d.otq where tm between #{beginTime} and #{endTime} group by r.stcd) otq on x.STCD = otq.STCD
+        group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq
         )PP
         on ST.STCD=PP.STCD
     </select>
