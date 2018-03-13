@@ -33,6 +33,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date beginTime = now.getTime();
         now.setTime(dateE);
+        now.add(Calendar.DATE,1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date endTime = now.getTime();
         List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
