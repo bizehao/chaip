@@ -4,6 +4,7 @@ import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrXunQi;
 import com.world.chaip.entity.report.RsvrZhuanYe;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author BZH
  *
  */
+@Service
 public interface RsvrfallService {
 	/**
 	 * 水库(实时)

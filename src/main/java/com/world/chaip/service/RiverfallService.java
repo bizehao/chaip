@@ -3,6 +3,7 @@ package com.world.chaip.service;
 import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.Exchange.RiverExchange;
 import com.world.chaip.entity.report.River;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author BZH
  *
  */
+@Service
 public interface RiverfallService {
     /**
      * 河道统计 实时

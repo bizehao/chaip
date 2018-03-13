@@ -21,7 +21,6 @@ import com.world.chaip.util.DateUtils;
 import javax.annotation.Resource;
 import javax.validation.constraints.Null;
 
-@Service
 public class RainfallServiceImpl implements RainfallService {
 
 	@Autowired

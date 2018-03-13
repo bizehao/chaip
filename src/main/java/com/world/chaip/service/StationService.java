@@ -7,7 +7,9 @@ import com.world.chaip.entity.baseinfo.StationDetail;
 import com.world.chaip.entity.report.City;
 import com.world.chaip.entity.report.Stations;
 import com.world.chaip.entity.report.Tyid;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface StationService {
 	public List<StationDetail> getAll();
 

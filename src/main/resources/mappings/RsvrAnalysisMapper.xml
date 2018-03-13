@@ -67,4 +67,146 @@
         )PP
         on ST.STCD=PP.STCD
     </select>
+
+    <!--  水库蓄水量分析表 -->
+    <select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,tm,e.name,HNNM,RZ,W,OTQ from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and sttp like '%R%' and ZFL='1'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, rz,w,otq from ST_RSVR_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from ST_RSVR_R
+        <where>
+            <![CDATA[
+				tm>#{beginTime} and tm<=#{endTime}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
+
+    <!--  水库特征值统计表 -->
+    <select id="getRsvrFeaturesAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,st.RVNM,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and sttp like '%R%' and ZFL='1'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from RP_RSVR_R x
+        left join(
+        select r.stcd, max(tm) mrztm ,max(a.rz) mrz from RP_RSVR_R r
+        inner join (select max(rz) rz,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) a
+        on r.stcd = a.stcd and r.RZ = a.rz where tm between #{beginTime} and #{endTime} group by r.stcd) rz on x.STCD = rz.STCD
+        left join(
+        select r.stcd, max(tm) mwtm ,max(b.w) mw from RP_RSVR_R r
+        inner join (select max(w) w,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) b
+        on r.stcd = b.stcd and r.w = b.w where tm between #{beginTime} and #{endTime} group by r.stcd) w on x.STCD = w.STCD
+        left join(
+        select r.stcd, max(tm) minqtm ,max(c.inq) minq from RP_RSVR_R r
+        inner join (select max(inq) inq,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) c
+        on r.stcd = c.stcd and r.INQ = c.inq where tm between #{beginTime} and #{endTime} group by r.stcd) inq on x.STCD = inq.STCD
+        left join(
+        select r.stcd, max(tm) motqtm ,max(d.otq) motq from RP_RSVR_R r
+        inner join (select max(otq) otq,stcd from RP_RSVR_R where tm between #{beginTime} and #{endTime} group by STCD) d
+        on r.stcd = d.stcd and r.OTQ = d.otq where tm between #{beginTime} and #{endTime}' group by r.stcd) otq on x.STCD = otq.STCD
+        group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq;
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
 </mapper>

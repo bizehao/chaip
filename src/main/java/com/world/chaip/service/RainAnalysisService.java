@@ -5,6 +5,7 @@ import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
+import org.springframework.stereotype.Service;
 
 import javax.jws.Oneway;
 import java.util.Calendar;
@@ -15,6 +16,7 @@ import java.util.List;
  * 专业分析
  * @author BZH
  */
+@Service
 public interface RainAnalysisService {
 
     /**

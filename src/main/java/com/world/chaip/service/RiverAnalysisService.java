@@ -1,6 +1,7 @@
 package com.world.chaip.service;
 
 import com.world.chaip.entity.Exchange.RiverExchange;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * 专业分析  （河道）
  */
+@Service
 public interface RiverAnalysisService {
 
     /**

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.world.chaip.mapper.ReportMapper;
 import com.world.chaip.service.ReportService;
 
-@Service
 public class ReportServiceImpl implements ReportService {
 	
 	@Autowired

@@ -7,12 +7,14 @@ import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
+import org.springframework.stereotype.Service;
 
 /**
  * 实时和专业
  * @author BZH
  *
  */
+@Service
 public interface RainfallService {
 	/**
 	 * 逐时雨量统计

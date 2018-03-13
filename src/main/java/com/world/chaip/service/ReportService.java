@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.world.chaip.entity.report.*;
 import com.world.chaip.entity.report.gson.PptnGson;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ReportService {
 	/**
 	 * 水库水情统计

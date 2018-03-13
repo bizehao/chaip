@@ -23,7 +23,7 @@ public class Rsvr {
 	private double w;
 	//出库流量
 	private double otq;
-	//出库流量
+	//入库流量
 	private double inq;
 	
 	public Rsvr() {
