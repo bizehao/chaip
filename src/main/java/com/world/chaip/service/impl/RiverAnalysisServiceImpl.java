@@ -100,8 +100,8 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             String MaxQTime = riverByMaxQZ.get(i).getMaxQTime();
             if( MaxQTime != null){
                 try {
-                    dateZ = DateUtils.parse(MaxQTime, "yyyy-MM-dd");
-                    m.setTime(dateZ);
+                    dateQ = DateUtils.parse(MaxQTime, "yyyy-MM-dd");
+                    m.setTime(dateQ);
                     month = m.get(Calendar.MONTH)+1;
                     date = m.get(Calendar.DATE);
                     riverExchange.setMaxQTime(month+"月"+date+"日");
