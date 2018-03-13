@@ -123,7 +123,7 @@
         (
         select A.STCD, A.TM, z,msamt,q,A.wptn from RP_RIVER_R A
         INNER JOIN
-        (select STCD, max(tm)tm from ST_RIVER_R
+        (select STCD, max(tm)tm from RP_RIVER_R
         <where>
             <![CDATA[
 				tm<=#{endTime}
