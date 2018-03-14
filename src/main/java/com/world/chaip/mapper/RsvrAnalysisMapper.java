@@ -1,6 +1,7 @@
 package com.world.chaip.mapper;
 
 import com.world.chaip.entity.Exchange.RsvrExchange;
+import com.world.chaip.entity.Exchange.RsvrWaterExchange;
 import com.world.chaip.entity.report.Rsvr;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,18 +17,16 @@ public interface RsvrAnalysisMapper {
 
     /**
      * 水库水量分析表
-     * @param beginTime
-     * @param endTime
+     * @param monthTime
      * @param adcd
      * @param systemTypes
      * @param stcdOrStnm
      * @return
      */
-    List<Rsvr> getRsvrWaterAnalysis(@Param("beginTime") Date beginTime,
-                                    @Param("endTime") Date endTime,
-                                    @Param("adcd") List<String> adcd,
-                                    @Param("systemTypes") List<String> systemTypes,
-                                    @Param("stcdOrStnm") List<String> stcdOrStnm);
+    List<RsvrWaterExchange> getRsvrWaterAnalysis(@Param("monthTime") Date monthTime,
+                                                 @Param("adcd") List<String> adcd,
+                                                 @Param("systemTypes") List<String> systemTypes,
+                                                 @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     List<Rsvr> getRsvrStorageAnalysis(@Param("Time") Date Time,
                                       @Param("adcd") List<String> adcd,

@@ -3,7 +3,7 @@
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
     <!--  水库水情分析表 -->
     <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
-        select st.stcd,st.stnm,tm,e.name,HNNM,RZ,W,OTQ from
+        select st.stcd,st.stnm,HNNM,AVINQ,AVOTQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -54,16 +54,14 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, A.TM, rz,w,otq from ST_RSVR_R A
-        INNER JOIN
-        (select STCD, max(tm)tm from ST_RSVR_R
+        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_R A
         <where>
             <![CDATA[
-				tm>#{beginTime} and tm<=#{endTime}
+				IDTM=#{monthTime}
 			]]>
+            and STTDRCD = 5
         </where>
-        group by stcd)
-        B on A.STCD = B.STCD and B.tm = A.TM
+        group by stcd, AVINQ, AVOTQ
         )PP
         on ST.STCD=PP.STCD
     </select>

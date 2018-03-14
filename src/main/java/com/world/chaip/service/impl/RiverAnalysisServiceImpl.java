@@ -30,15 +30,12 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         Date beginTime = null;
         Date endTime = null;
         int day = 0;
-        double avq = 0;
         int countDay = 0;
         List<RiverExchange> list = new ArrayList<>();
         List<Double> alist = new ArrayList<>();
         RiverExchange riverExchange = null;
-        List<Double> liuliang = null;
-        List<List<Double>> jiheList = new ArrayList<>();
+        double[] listArray = null;
         for(int month = beginMonth; month<=endMonth; month++){
-            liuliang = new ArrayList<>();
             tm.set(Calendar.MONTH, month);
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
@@ -49,23 +46,24 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             endTime = tm.getTime();
             day = tm.getActualMaximum(Calendar.DAY_OF_MONTH);
             List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+            if(month == beginMonth){
+                listArray = new double[riverByAnalysis.size()];
+            }
             for(int i=0; i<riverByAnalysis.size(); i++){
-                if(month == beginMonth){
-                    RiverExchange river = riverByAnalysis.get(i);
-                    riverExchange = new RiverExchange();
-                    riverExchange.setStcd(river.getStcd());
-                    riverExchange.setRvnm(river.getRvnm()==null?"":river.getRvnm());
-                    riverExchange.setStnm(river.getStnm());
-                    list.add(riverExchange);
-                }
-                liuliang.add(riverByAnalysis.get(i).getAvgQ()*day);
+                listArray[i] = listArray[i]+riverByAnalysis.get(i).getAvgQ()*day;
             }
             countDay+=day;
-            jiheList.add(liuliang);
-        }
-        for(int i = 0; i<jiheList.size(); i++){
-            liuliang = jiheList.get(i);
-
+            if(month == endMonth){
+                for (int i=0; i<riverByAnalysis.size(); i++){
+                    riverExchange = new RiverExchange();
+                    riverExchange.setStcd(riverByAnalysis.get(i).getStcd());
+                    riverExchange.setRvnm(riverByAnalysis.get(i).getRvnm()==null?"":riverByAnalysis.get(i).getRvnm());
+                    riverExchange.setStnm(riverByAnalysis.get(i).getStnm());
+                    riverExchange.setAvgQ(listArray[i]/countDay);
+                    riverExchange.setSumQ(listArray[i]/countDay*3600*24*countDay);
+                    list.add(riverExchange);
+                }
+            }
         }
         //最大水位 流量 及 时间
         Calendar maxtm = Calendar.getInstance();
