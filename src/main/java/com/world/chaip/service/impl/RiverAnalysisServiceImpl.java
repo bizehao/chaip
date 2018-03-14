@@ -77,13 +77,9 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         maxtm.set(Calendar.HOUR_OF_DAY,8);
         dateE = tm.getTime();
         List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
-        double avgQ = 0;
         List<RiverExchange> rList = new ArrayList<>();
-        for(int i=0; i<alist.size(); i++){
+        for(int i=0; i<riverByMaxQZ.size(); i++){
             riverExchange = list.get(i);
-            avgQ = alist.get(i)/countDay;
-            riverExchange.setAvgQ(avgQ);
-            riverExchange.setSumQ(avgQ*3600*24*countDay);
             riverExchange.setMaxZ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQZ.get(i).getMaxZ())));
             Calendar m = Calendar.getInstance();
             Date dateZ = null;
