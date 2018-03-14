@@ -21,7 +21,7 @@ public class RsvrWaterExcel {
 
     public class RsvrWC extends RsvrWaterExchange{
         //水系名
-        private String hnnm;
+        private String name;
         //
         private List<RsvrWaterExchange> rList;
 
@@ -30,12 +30,14 @@ public class RsvrWaterExcel {
         }
 
 
-        public String getHnnm() {
-            return hnnm;
+        @Override
+        public String getName() {
+            return name;
         }
 
-        public void setHnnm(String hnnm) {
-            this.hnnm = hnnm;
+        @Override
+        public void setName(String name) {
+            this.name = name;
         }
 
         public List<RsvrWaterExchange> getrList() {

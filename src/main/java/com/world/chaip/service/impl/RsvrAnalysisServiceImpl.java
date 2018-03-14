@@ -1,7 +1,8 @@
 package com.world.chaip.service.impl;
 
-import com.world.chaip.entity.Exchange.RiverExchange;
 import com.world.chaip.entity.Exchange.RsvrExchange;
+import com.world.chaip.entity.Exchange.RsvrWaterExcel;
+import com.world.chaip.entity.Exchange.RsvrWaterExcel.RsvrWC;
 import com.world.chaip.entity.Exchange.RsvrWaterExchange;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.mapper.RsvrAnalysisMapper;
@@ -20,7 +21,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
     private RsvrAnalysisMapper rsvrAnalysisMapper;
 
     @Override
-    public List<RsvrWaterExchange> getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public RsvrWaterExcel getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         int beginMonth = tm.get(Calendar.MONTH);
@@ -59,7 +60,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
                 for (int i=0; i<rsvrWaterAnalysis.size(); i++){
                     rsvrWaterExchange = new RsvrWaterExchange();
                     rsvrWaterExchange.setStcd(rsvrWaterAnalysis.get(i).getStcd());
-                    rsvrWaterExchange.setHnnm(rsvrWaterAnalysis.get(i).getHnnm()==null?"":rsvrWaterAnalysis.get(i).getHnnm());
+                    rsvrWaterExchange.setName(rsvrWaterAnalysis.get(i).getName());
                     rsvrWaterExchange.setStnm(rsvrWaterAnalysis.get(i).getStnm());
                     rsvrWaterExchange.setAvotq(otqlistArray[i]/countDay);
                     rsvrWaterExchange.setSumotq(otqlistArray[i]/countDay*3600*24*countDay);
@@ -89,7 +90,24 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
             rsvrWaterExchange.setChaW(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW());
             rsvrsList.add(rsvrWaterExchange);
         }
-        return rsvrsList;
+        RsvrWaterExcel rsvrWaterExcel = new RsvrWaterExcel();
+        for(int i=0; i<rsvrsList.size(); i++){
+            RsvrWC rsvrWC = null;
+            for (int j=0; j<rsvrWaterExcel.getRsvrWCList().size(); j++){
+                RsvrWC rsvrWCX = rsvrWaterExcel.getRsvrWCList().get(i);
+                if(rsvrWCX.getName() .equals(rsvrsList.get(i).getName())){
+                    rsvrWC = rsvrWCX;
+                    rsvrWC.getrList().add(rsvrsList.get(i));
+                }
+            }
+            if(rsvrWC == null){
+                rsvrWC = rsvrWaterExcel.new RsvrWC();
+                rsvrWC.setName(rsvrsList.get(i).getName());
+                rsvrWC.getrList().add(rsvrsList.get(i));
+                rsvrWaterExcel.getRsvrWCList().add(rsvrWC);
+            }
+        }
+        return rsvrWaterExcel;
     }
 
     @Override

@@ -3,7 +3,7 @@
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
     <!--  水库水情分析表 -->
     <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrWaterExchange">
-        select st.stcd,st.stnm,HNNM,AVINQ,AVOTQ from
+        select st.stcd,st.stnm,name,AVINQ,AVOTQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -67,7 +67,7 @@
     </select>
     <!--  水库水情分析表 查询单日的 -->
     <select id="getRsvrWaterAnalysisRi" resultType="com.world.chaip.entity.report.Rsvr">
-        select st.stcd,st.stnm,HNNM,rz,w from
+        select st.stcd,st.stnm,name,rz,w from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD

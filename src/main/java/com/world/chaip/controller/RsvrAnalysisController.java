@@ -1,6 +1,7 @@
 package com.world.chaip.controller;
 
 import com.world.chaip.entity.Exchange.RsvrExchange;
+import com.world.chaip.entity.Exchange.RsvrWaterExcel;
 import com.world.chaip.entity.Exchange.RsvrWaterExchange;
 import com.world.chaip.service.RsvrAnalysisService;
 import com.world.chaip.util.DateUtils;
@@ -79,7 +80,7 @@ public class RsvrAnalysisController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<RsvrWaterExchange> a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
+        RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
         return new JsonResult(a);
     }
 

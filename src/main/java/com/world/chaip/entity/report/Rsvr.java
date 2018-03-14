@@ -15,6 +15,8 @@ public class Rsvr {
 	private String  stnm;
 	//水系
 	private String hnnm;
+	//站类型
+	private String name;
 	//时间
 	private String tm;
 	//水位
@@ -31,10 +33,12 @@ public class Rsvr {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Rsvr(String stcd, String stnm, String hnnm, String tm, double rz, double w, double otq, double inq) {
+	public Rsvr(String stcd, String stnm, String hnnm, String name, String tm, double rz, double w, double otq,
+				double inq) {
 		this.stcd = stcd;
 		this.stnm = stnm;
 		this.hnnm = hnnm;
+		this.name = name;
 		this.tm = tm;
 		this.rz = rz;
 		this.w = w;
@@ -104,5 +108,13 @@ public class Rsvr {
 
 	public void setInq(double inq) {
 		this.inq = inq;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

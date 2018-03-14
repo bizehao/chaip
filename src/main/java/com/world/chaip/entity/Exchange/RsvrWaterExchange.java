@@ -9,8 +9,8 @@ public class RsvrWaterExchange {
     private String stcd;
     //站名
     private String stnm;
-    //水系名
-    private String hnnm;
+    //系统
+    private String name;
     //前水位
     private double qRZ;
     //前蓄水量
@@ -33,11 +33,11 @@ public class RsvrWaterExchange {
     public RsvrWaterExchange() {
     }
 
-    public RsvrWaterExchange(String stcd, String stnm, String hnnm, double qRZ, double qW, double hRZ, double hW,
+    public RsvrWaterExchange(String stcd, String stnm, String name, double qRZ, double qW, double hRZ, double hW,
                              double chaW, double avotq, double avinq, double sumotq, double suminq) {
         this.stcd = stcd;
         this.stnm = stnm;
-        this.hnnm = hnnm;
+        this.name = name;
         this.qRZ = qRZ;
         this.qW = qW;
         this.hRZ = hRZ;
@@ -65,12 +65,12 @@ public class RsvrWaterExchange {
         this.stnm = stnm;
     }
 
-    public String getHnnm() {
-        return hnnm;
+    public String getName() {
+        return name;
     }
 
-    public void setHnnm(String hnnm) {
-        this.hnnm = hnnm;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getqRZ() {
