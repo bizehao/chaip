@@ -15,19 +15,19 @@ public class RiverExchange {
     private String stnm;
 
     //平均流量
-    private double avgQ;
+    private String avgQ;
 
     //径流总量
-    private double sumQ;
+    private String sumQ;
 
     //最高水位
-    private double maxZ;
+    private String maxZ;
 
     //水位的最高日期
     private String maxZTime;
 
     //最大流量
-    private double maxQ;
+    private String maxQ;
 
     //流量的最高日期
     private String maxQTime;
@@ -35,7 +35,7 @@ public class RiverExchange {
     public RiverExchange() {
     }
 
-    public RiverExchange(String stcd, String rvnm, String stnm, double avgQ, double sumQ, double maxZ, String maxZTime, double maxQ, String maxQTime) {
+    public RiverExchange(String stcd, String rvnm, String stnm, String avgQ, String sumQ, String maxZ, String maxZTime, String maxQ, String maxQTime) {
         this.stcd = stcd;
         this.rvnm = rvnm;
         this.stnm = stnm;
@@ -47,15 +47,12 @@ public class RiverExchange {
         this.maxQTime = maxQTime;
     }
 
-    public RiverExchange(String rvnm, String stnm, double avgQ, double sumQ, double maxZ, String maxZTime, double maxQ, String maxQTime) {
-        this.rvnm = rvnm;
-        this.stnm = stnm;
-        this.avgQ = avgQ;
-        this.sumQ = sumQ;
-        this.maxZ = maxZ;
-        this.maxZTime = maxZTime;
-        this.maxQ = maxQ;
-        this.maxQTime = maxQTime;
+    public String getStcd() {
+        return stcd;
+    }
+
+    public void setStcd(String stcd) {
+        this.stcd = stcd;
     }
 
     public String getRvnm() {
@@ -74,27 +71,27 @@ public class RiverExchange {
         this.stnm = stnm;
     }
 
-    public double getAvgQ() {
+    public String getAvgQ() {
         return avgQ;
     }
 
-    public void setAvgQ(double avgQ) {
+    public void setAvgQ(String avgQ) {
         this.avgQ = avgQ;
     }
 
-    public double getSumQ() {
+    public String getSumQ() {
         return sumQ;
     }
 
-    public void setSumQ(double sumQ) {
+    public void setSumQ(String sumQ) {
         this.sumQ = sumQ;
     }
 
-    public double getMaxZ() {
+    public String getMaxZ() {
         return maxZ;
     }
 
-    public void setMaxZ(double maxZ) {
+    public void setMaxZ(String maxZ) {
         this.maxZ = maxZ;
     }
 
@@ -106,11 +103,11 @@ public class RiverExchange {
         this.maxZTime = maxZTime;
     }
 
-    public double getMaxQ() {
+    public String getMaxQ() {
         return maxQ;
     }
 
-    public void setMaxQ(double maxQ) {
+    public void setMaxQ(String maxQ) {
         this.maxQ = maxQ;
     }
 
@@ -120,13 +117,5 @@ public class RiverExchange {
 
     public void setMaxQTime(String maxQTime) {
         this.maxQTime = maxQTime;
-    }
-
-    public String getStcd() {
-        return stcd;
-    }
-
-    public void setStcd(String stcd) {
-        this.stcd = stcd;
     }
 }

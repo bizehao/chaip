@@ -44,13 +44,14 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
             endTime = tm.getTime();
+            tm.add(Calendar.MONTH,-1);
             day = tm.getActualMaximum(Calendar.DAY_OF_MONTH);
             List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
             if(month == beginMonth){
                 listArray = new double[riverByAnalysis.size()];
             }
             for(int i=0; i<riverByAnalysis.size(); i++){
-                listArray[i] = listArray[i]+riverByAnalysis.get(i).getAvgQ()*day;
+                listArray[i] = listArray[i]+Double.parseDouble(riverByAnalysis.get(i).getAvgQ())*day;
             }
             countDay+=day;
             if(month == endMonth){
@@ -59,8 +60,8 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
                     riverExchange.setStcd(riverByAnalysis.get(i).getStcd());
                     riverExchange.setRvnm(riverByAnalysis.get(i).getRvnm()==null?"":riverByAnalysis.get(i).getRvnm());
                     riverExchange.setStnm(riverByAnalysis.get(i).getStnm());
-                    riverExchange.setAvgQ(listArray[i]/countDay);
-                    riverExchange.setSumQ(listArray[i]/countDay*3600*24*countDay);
+                    riverExchange.setAvgQ(new DecimalFormat("#0.000").format(listArray[i]/countDay));
+                    riverExchange.setSumQ(new DecimalFormat("#0.000").format(listArray[i]/countDay*3600*24*countDay));
                     list.add(riverExchange);
                 }
             }
@@ -68,19 +69,19 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         //最大水位 流量 及 时间
         Calendar maxtm = Calendar.getInstance();
         maxtm.setTime(dateS);
-        maxtm.set(Calendar.DATE, 2);
+        maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
         dateS = maxtm.getTime();
         maxtm.setTime(dateE);
         maxtm.add(Calendar.MONTH,1);
         maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
-        dateE = tm.getTime();
+        dateE = maxtm.getTime();
         List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
         List<RiverExchange> rList = new ArrayList<>();
         for(int i=0; i<riverByMaxQZ.size(); i++){
             riverExchange = list.get(i);
-            riverExchange.setMaxZ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQZ.get(i).getMaxZ())));
+            riverExchange.setMaxZ(new DecimalFormat("#0.00").format(Double.parseDouble(riverByMaxQZ.get(i).getMaxZ())));
             Calendar m = Calendar.getInstance();
             Date dateZ = null;
             Date dateQ = null;
@@ -100,7 +101,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             }else{
                 riverExchange.setMaxZTime("");
             }
-            riverExchange.setMaxQ(Double.parseDouble(new DecimalFormat("#0.000").format(riverByMaxQZ.get(i).getMaxQ())));
+            riverExchange.setMaxQ(new DecimalFormat("#0.000").format(Double.parseDouble(riverByMaxQZ.get(i).getMaxQ())));
             String MaxQTime = riverByMaxQZ.get(i).getMaxQTime();
             if( MaxQTime != null){
                 try {
@@ -118,5 +119,19 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             rList.add(riverExchange);
         }
         return rList;
+    }
+    public String roundByScale(double v, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException(
+                    "The   scale   must   be   a   positive   integer   or   zero");
+        }
+        if(scale == 0){
+            return new DecimalFormat("0").format(v);
+        }
+        String formatStr = "0.";
+        for(int i=0;i<scale;i++){
+            formatStr = formatStr + "0";
+        }
+        return new DecimalFormat(formatStr).format(v);
     }
 }
