@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
     <!--  水库水情分析表 -->
-    <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
+    <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrWaterExchange">
         select st.stcd,st.stnm,HNNM,AVINQ,AVOTQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
@@ -54,7 +54,7 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_R A
+        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_B A
         <where>
             <![CDATA[
 				IDTM > #{beginTime} AND IDTM <= #{endTime}
@@ -118,14 +118,14 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_R A
+        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_B A
         <where>
             <![CDATA[
 				IDTM = #{time}
 			]]>
             and STTDRCD = 1
         </where>
-        group by stcd
+        group by stcd,AVRZ,AVW
         )PP
         on ST.STCD=PP.STCD ORDER BY STCD
     </select>

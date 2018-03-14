@@ -38,7 +38,7 @@ public interface RsvrAnalysisMapper {
      * @param stcdOrStnm
      * @return
      */
-    List<Rsvr> getRsvrWaterAnalysisRi(@Param("beginTime") Date time,
+    List<Rsvr> getRsvrWaterAnalysisRi(@Param("time") Date time,
                                                  @Param("adcd") List<String> adcd,
                                                  @Param("systemTypes") List<String> systemTypes,
                                                  @Param("stcdOrStnm") List<String> stcdOrStnm);
