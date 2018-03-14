@@ -19,49 +19,77 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
     @Autowired
     private RsvrAnalysisMapper rsvrAnalysisMapper;
 
-    /*@Override
-    public List<Rsvr> getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    @Override
+    public List<RsvrWaterExchange> getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         int beginMonth = tm.get(Calendar.MONTH);
         tm.setTime(dateE);
         int endMonth = tm.get(Calendar.MONTH);
-        Date time = null;
         int day = 0;
-        double avq = 0;
         int countDay = 0;
-        List<RiverExchange> list = new ArrayList<>();
-        List<Double> alist = new ArrayList<>();
-        RiverExchange riverExchange = null;
+        Date beginTime = null;
+        Date endTime = null;
+        List<RsvrWaterExchange>  rsvrsList= new ArrayList<>();
+        List<RsvrWaterExchange> list = new ArrayList<>();
+        RsvrWaterExchange rsvrWaterExchange = null;
+        double[] otqlistArray = null;   //出库平均流量
+        double[] inqlistArray = null;   //入库平均流量
         for(int month = beginMonth; month<=endMonth; month++){
             tm.set(Calendar.MONTH, month);
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
-            time = tm.getTime();
+            beginTime = tm.getTime();
+            tm.set(Calendar.MONTH, month+1);
+            tm.set(Calendar.DATE, 1);
+            tm.set(Calendar.HOUR_OF_DAY, 8);
+            endTime = tm.getTime();
             day = tm.getActualMaximum(Calendar.DAY_OF_MONTH);
-            List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(time,adcd,systemTypes,stcdOrStnm);
+            List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+            if(month == beginMonth){
+                otqlistArray = new double[rsvrWaterAnalysis.size()];
+                inqlistArray = new double[rsvrWaterAnalysis.size()];
+            }
             for(int i=0; i<rsvrWaterAnalysis.size(); i++){
-                if(month == beginMonth){
-                    RsvrWaterExchange rsvrWaterExchange = rsvrWaterAnalysis.get(i);
-                    riverExchange = new RiverExchange();
-                    riverExchange.setStcd(rsvrWaterExchange.getStcd());
-                    riverExchange.setRvnm(river.getRvnm()==null?"":river.getRvnm());
-                    riverExchange.setStnm(river.getStnm());
-                    list.add(riverExchange);
+                otqlistArray[i] = otqlistArray[i]+rsvrWaterAnalysis.get(i).getAvotq()*day;
+                inqlistArray[i] = inqlistArray[i]+rsvrWaterAnalysis.get(i).getAvinq()*day;
+            }
+            countDay+=day;
+            if(month == endMonth){
+                for (int i=0; i<rsvrWaterAnalysis.size(); i++){
+                    rsvrWaterExchange = new RsvrWaterExchange();
+                    rsvrWaterExchange.setStcd(rsvrWaterAnalysis.get(i).getStcd());
+                    rsvrWaterExchange.setHnnm(rsvrWaterAnalysis.get(i).getHnnm()==null?"":rsvrWaterAnalysis.get(i).getHnnm());
+                    rsvrWaterExchange.setStnm(rsvrWaterAnalysis.get(i).getStnm());
+                    rsvrWaterExchange.setAvotq(otqlistArray[i]/countDay);
+                    rsvrWaterExchange.setSumotq(otqlistArray[i]/countDay*3600*24*countDay);
+                    rsvrWaterExchange.setSuminq(inqlistArray[i]/countDay*3600*24*countDay);
+                    list.add(rsvrWaterExchange);
                 }
-                avq += riverByAnalysis.get(i).getAvgQ()*day;
-                if(month == endMonth){
-                    alist.add(avq);
-                }
-                countDay+=day;
             }
         }
-        return null;
-    }*/
-
-    @Override
-    public List<Rsvr> getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
-        return null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(dateS);
+        now.set(Calendar.DATE, 1);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Date time = now.getTime();
+        List<Rsvr> beginRsvrList =  rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time,adcd,systemTypes,stcdOrStnm);
+        now.setTime(dateE);
+        now.add(Calendar.MONTH, 1);
+        now.set(Calendar.DATE, 1);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        time = now.getTime();
+        List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time,adcd,systemTypes,stcdOrStnm);
+        for (int i=0; i<list.size(); i++){
+            rsvrWaterExchange = list.get(i);
+            rsvrWaterExchange.setqRZ(beginRsvrList.get(i).getRz());
+            rsvrWaterExchange.setqW(beginRsvrList.get(i).getW());
+            rsvrWaterExchange.sethRZ(endiRsvrList.get(i).getRz());
+            rsvrWaterExchange.sethW(endiRsvrList.get(i).getW());
+            rsvrWaterExchange.setChaW(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW());
+            rsvrsList.add(rsvrWaterExchange);
+        }
+        return rsvrsList;
     }
 
     @Override

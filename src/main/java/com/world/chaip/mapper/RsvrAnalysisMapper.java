@@ -17,13 +17,28 @@ public interface RsvrAnalysisMapper {
 
     /**
      * 水库水量分析表
-     * @param monthTime
+     * @param beginTime
+     * @param endTime
      * @param adcd
      * @param systemTypes
      * @param stcdOrStnm
      * @return
      */
-    List<RsvrWaterExchange> getRsvrWaterAnalysis(@Param("monthTime") Date monthTime,
+    List<RsvrWaterExchange> getRsvrWaterAnalysis(@Param("beginTime") Date beginTime,
+                                                 @Param("endTime") Date endTime,
+                                                 @Param("adcd") List<String> adcd,
+                                                 @Param("systemTypes") List<String> systemTypes,
+                                                 @Param("stcdOrStnm") List<String> stcdOrStnm);
+
+    /**
+     * 水库水量分析表
+     * @param time
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<Rsvr> getRsvrWaterAnalysisRi(@Param("beginTime") Date time,
                                                  @Param("adcd") List<String> adcd,
                                                  @Param("systemTypes") List<String> systemTypes,
                                                  @Param("stcdOrStnm") List<String> stcdOrStnm);
@@ -33,6 +48,15 @@ public interface RsvrAnalysisMapper {
                                       @Param("systemTypes") List<String> systemTypes,
                                       @Param("stcdOrStnm") List<String> stcdOrStnm);
 
+    /**
+     * 水库特征值统计表
+     * @param beginTime
+     * @param endTime
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
     List<RsvrExchange> getRsvrFeaturesAnalysis(@Param("beginTime") Date beginTime,
                                                @Param("endTime") Date endTime,
                                                @Param("adcd") List<String> adcd,

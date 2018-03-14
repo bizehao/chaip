@@ -57,15 +57,78 @@
         select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_R A
         <where>
             <![CDATA[
-				IDTM=#{monthTime}
+				IDTM > #{beginTime} AND IDTM <= #{endTime}
 			]]>
             and STTDRCD = 5
         </where>
         group by stcd, AVINQ, AVOTQ
         )PP
-        on ST.STCD=PP.STCD
+        on ST.STCD=PP.STCD ORDER BY STCD
     </select>
-
+    <!--  水库水情分析表 查询单日的 -->
+    <select id="getRsvrWaterAnalysisRi" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,HNNM,rz,w from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and sttp like '%R%' and ZFL='1'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_R A
+        <where>
+            <![CDATA[
+				IDTM = #{time}
+			]]>
+            and STTDRCD = 1
+        </where>
+        group by stcd
+        )PP
+        on ST.STCD=PP.STCD ORDER BY STCD
+    </select>
     <!--  水库蓄水量分析表 -->
     <select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.report.Rsvr">
         select st.stcd,st.stnm,tm,e.name,HNNM,RZ,W,OTQ from
