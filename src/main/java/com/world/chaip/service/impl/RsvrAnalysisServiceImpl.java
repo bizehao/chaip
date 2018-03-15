@@ -88,7 +88,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
             rsvrWaterExchange.setqWs(new DecimalFormat("#0.000").format(beginRsvrList.get(i).getW()));
             rsvrWaterExchange.sethRZs(new DecimalFormat("#0.00").format(endiRsvrList.get(i).getRz()));
             rsvrWaterExchange.sethWs(new DecimalFormat("#0.000").format(endiRsvrList.get(i).getW()));
-            rsvrWaterExchange.setChaW(new DecimalFormat("#0.00").format(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW()));
+            rsvrWaterExchange.setChaW(new DecimalFormat("#0.000").format(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW()));
             rsvrsList.add(rsvrWaterExchange);
         }
         RsvrWaterExcel rsvrWaterExcel = new RsvrWaterExcel();
