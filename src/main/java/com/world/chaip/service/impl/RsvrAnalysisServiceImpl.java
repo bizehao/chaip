@@ -120,15 +120,18 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
 
         List<RsvrW> rsvrWList = new ArrayList<>();
         RsvrStronge rsvrStronge = null;
-        int countrsvrStrongeListj3 = 0;
-        int countrsvrStrongeListj2 = 0;
-        int countrsvrStrongeListj1 = 0;
-        int countrsvrStrongeListq3 = 0;
-        int countrsvrStrongeListq2 = 0;
-        int countrsvrStrongeListq1 = 0;
-        int countrsvrStrongeListc3 = 0;
-        int countrsvrStrongeListc2 = 0;
-        int countrsvrStrongeListc1 = 0;
+        double countrsvrStrongeListj3 = 0;
+        double countrsvrStrongeListj2 = 0;
+        double countrsvrStrongeListj1 = 0;
+        double countrsvrStrongeListq3 = 0;
+        double countrsvrStrongeListq2 = 0;
+        double countrsvrStrongeListq1 = 0;
+        double countrsvrStrongeListc3 = 0;
+        double countrsvrStrongeListc2 = 0;
+        double countrsvrStrongeListc1 = 0;
+        double jinZong = 0;
+        double quZong = 0;
+        double changZong = 0;
 
         List<RsvrStronge> jinList = new ArrayList<>();
         //今年大型
@@ -158,6 +161,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         rsvrStrongeListj1.add(rsvrStronge);
         jinList.addAll(rsvrStrongeListj1);
 
+        jinZong=countrsvrStrongeListj3+countrsvrStrongeListj2+countrsvrStrongeListj1;
         //去年
         now.add(Calendar.YEAR,-1);
         Date time2 = now.getTime();
@@ -189,6 +193,8 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListq1);
         rsvrStrongeListq1.add(rsvrStronge);
         quList.addAll(rsvrStrongeListq1);
+
+        quZong=countrsvrStrongeListq3+countrsvrStrongeListq2+countrsvrStrongeListq1;
 
         List<RsvrStronge> changList = new ArrayList<>();
         //常年
@@ -224,23 +230,39 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         rsvrStrongeListc1.add(rsvrStronge);
         changList.addAll(rsvrStrongeListc1);
 
+        changZong=countrsvrStrongeListc3+countrsvrStrongeListc2+countrsvrStrongeListc1;
+
         int listLength =  jinList.size();
+        System.out.println("长度"+listLength);
         RsvrW rsvrW = null;
         for(int i=0; i<listLength; i++){
             rsvrW = new RsvrW();
+            if(jinList.get(i).getHnnm().equals("未知")){
+                if(jinList.get(i).getW()==0 && quList.get(i).getW()==0 && (jinList.get(i).getW()-quList.get(i).getW()) ==0
+                        && changList.get(i).getW()==0 && (jinList.get(i).getW()-changList.get(i).getW()) == 0){
+                    continue;
+                }
+            }
             rsvrW.setHnnm(jinList.get(i).getHnnm());
             rsvrW.setStnm(jinList.get(i).getStnm());
             rsvrW.setW(new DecimalFormat("#0.000").format(jinList.get(i).getW()));
             rsvrW.setQw(new DecimalFormat("#0.000").format(quList.get(i).getW()));
-            rsvrW.setQwCompare(quList.get(i).getW()==0?"":new DecimalFormat("##.00%").format((jinList.get(i).getW()-quList.get(i).getW())/quList.get(i).getW()));
+            rsvrW.setQwCompare(new DecimalFormat("#0.000").format(jinList.get(i).getW()-quList.get(i).getW()));
             rsvrW.setCw(new DecimalFormat("#0.000").format(changList.get(i).getW()));
-            rsvrW.setCwCompare(changList.get(i).getW()==0?"":new DecimalFormat("##.00%").format((jinList.get(i).getW()-changList.get(i).getW())/changList.get(i).getW()));
+            rsvrW.setCwCompare(new DecimalFormat("#0.000").format(jinList.get(i).getW()-changList.get(i).getW()));
             rsvrWList.add(rsvrW);
         }
-        System.out.println("集合长度"+rsvrWList.size());
-        for(int i=0; i<rsvrWList.size(); i++){
-            System.out.println(rsvrWList.get(i).getHnnm());
-        }
+        //综合
+        RsvrW rwZong = new RsvrW();
+        rwZong.setHnnm("未知");
+        rwZong.setStnm("综合");
+        rwZong.setW(new DecimalFormat("#0.000").format(jinZong));
+        rwZong.setQw(new DecimalFormat("#0.000").format(quZong));
+        rwZong.setQwCompare(new DecimalFormat("#0.000").format(jinZong-quZong));
+        rwZong.setCw(new DecimalFormat("#0.000").format(changZong));
+        rwZong.setCwCompare(new DecimalFormat("#0.000").format(jinZong-changZong));
+        rsvrWList.add(rwZong);
+
         RsvrStrongeExcel rsvrStrongeExcel = new RsvrStrongeExcel();
         for (int i=0; i<rsvrWList.size(); i++){
             RsvrStrongeItem rsvrStrongeItem = null;
@@ -266,7 +288,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
     public RsvrStronge getRsvrStronge(String type, double w){
         RsvrStronge rs = new RsvrStronge();
         rs.setStcd("");
-        rs.setHnnm("类型");
+        rs.setHnnm("未知");
         rs.setStnm(type);
         rs.setW(w);
         return rs;

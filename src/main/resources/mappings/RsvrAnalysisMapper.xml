@@ -158,7 +158,7 @@
                 <if test="stcdOrStnm!=null">
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
+                            and (b.stcd IN
                             <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
                                 #{stcdOrStnm}
                             </foreach>
@@ -168,7 +168,7 @@
                             </foreach>
                         </when>
                         <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%'))
                         </otherwise>
                     </choose>
                 </if>
@@ -233,7 +233,7 @@
                 <if test="stcdOrStnm!=null">
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
+                            and (b.stcd IN
                             <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
                                 #{stcdOrStnm}
                             </foreach>
@@ -243,7 +243,7 @@
                             </foreach>
                         </when>
                         <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%'))
                         </otherwise>
                     </choose>
                 </if>
