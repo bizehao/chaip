@@ -54,7 +54,7 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_B A
+        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_R A
         <where>
             <![CDATA[
 				IDTM > #{beginTime} AND IDTM <= #{endTime}
@@ -118,7 +118,7 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_B A
+        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_R A
         <where>
             <![CDATA[
 				IDTM = #{time}
