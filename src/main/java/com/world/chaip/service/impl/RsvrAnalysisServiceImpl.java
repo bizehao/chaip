@@ -46,7 +46,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
             endTime = tm.getTime();
+            tm.add(Calendar.MONTH,-1);
             day = tm.getActualMaximum(Calendar.DAY_OF_MONTH);
+            System.out.println("天数"+day);
             List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
             if(month == beginMonth){
                 otqlistArray = new double[rsvrWaterAnalysis.size()];
