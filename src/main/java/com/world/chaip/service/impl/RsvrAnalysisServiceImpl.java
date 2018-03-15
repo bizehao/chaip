@@ -94,7 +94,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         for(int i=0; i<rsvrsList.size(); i++){
             RsvrWC rsvrWC = null;
             for (int j=0; j<rsvrWaterExcel.getRsvrWCList().size(); j++){
-                RsvrWC rsvrWCX = rsvrWaterExcel.getRsvrWCList().get(i);
+                RsvrWC rsvrWCX = rsvrWaterExcel.getRsvrWCList().get(j);
                 if(rsvrWCX.getName() .equals(rsvrsList.get(i).getName())){
                     rsvrWC = rsvrWCX;
                     rsvrWC.getrList().add(rsvrsList.get(i));
