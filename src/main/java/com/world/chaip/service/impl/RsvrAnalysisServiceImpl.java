@@ -10,6 +10,7 @@ import com.world.chaip.service.RsvrAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,9 +63,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
                     rsvrWaterExchange.setStcd(rsvrWaterAnalysis.get(i).getStcd());
                     rsvrWaterExchange.setName(rsvrWaterAnalysis.get(i).getName());
                     rsvrWaterExchange.setStnm(rsvrWaterAnalysis.get(i).getStnm());
-                    rsvrWaterExchange.setAvotq(otqlistArray[i]/countDay);
-                    rsvrWaterExchange.setSumotq(otqlistArray[i]/countDay*3600*24*countDay);
-                    rsvrWaterExchange.setSuminq(inqlistArray[i]/countDay*3600*24*countDay);
+                    rsvrWaterExchange.setAvotqs(new DecimalFormat("#0.000").format(otqlistArray[i]/countDay));
+                    rsvrWaterExchange.setSumotqs(new DecimalFormat("#0.000").format(otqlistArray[i]/countDay*3600*24*countDay));
+                    rsvrWaterExchange.setSuminqs(new DecimalFormat("#0.000").format(inqlistArray[i]/countDay*3600*24*countDay));
                     list.add(rsvrWaterExchange);
                 }
             }
@@ -83,11 +84,11 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time,adcd,systemTypes,stcdOrStnm);
         for (int i=0; i<list.size(); i++){
             rsvrWaterExchange = list.get(i);
-            rsvrWaterExchange.setqRZ(beginRsvrList.get(i).getRz());
-            rsvrWaterExchange.setqW(beginRsvrList.get(i).getW());
-            rsvrWaterExchange.sethRZ(endiRsvrList.get(i).getRz());
-            rsvrWaterExchange.sethW(endiRsvrList.get(i).getW());
-            rsvrWaterExchange.setChaW(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW());
+            rsvrWaterExchange.setqRZs(new DecimalFormat("#0.00").format(beginRsvrList.get(i).getRz()));
+            rsvrWaterExchange.setqWs(new DecimalFormat("#0.000").format(beginRsvrList.get(i).getW()));
+            rsvrWaterExchange.sethRZs(new DecimalFormat("#0.00").format(endiRsvrList.get(i).getRz()));
+            rsvrWaterExchange.sethWs(new DecimalFormat("#0.000").format(endiRsvrList.get(i).getW()));
+            rsvrWaterExchange.setChaW(new DecimalFormat("#0.00").format(endiRsvrList.get(i).getW()-beginRsvrList.get(i).getW()));
             rsvrsList.add(rsvrWaterExchange);
         }
         RsvrWaterExcel rsvrWaterExcel = new RsvrWaterExcel();
