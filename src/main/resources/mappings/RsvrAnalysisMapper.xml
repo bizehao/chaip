@@ -164,13 +164,14 @@
                             </foreach>
                             or b.stnm IN
                             <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm})
+                                #{stcdOrStnm}
                             </foreach>
                         </when>
                         <otherwise>
-                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%'))
+                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
+                    )
                 </if>
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and c.lx IN
@@ -239,13 +240,14 @@
                             </foreach>
                             or b.stnm IN
                             <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm})
+                                #{stcdOrStnm}
                             </foreach>
                         </when>
                         <otherwise>
-                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%'))
+                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
+                    )
                 </if>
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and c.lx IN
