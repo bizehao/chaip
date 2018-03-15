@@ -27,7 +27,7 @@ public class RsvrAnalysisController {
 
     //水库水量分析表
     @GetMapping("getrsvrexchangewater")
-    public JsonResult GetRsvrByAnalysiswater(
+    public RsvrWaterExcel GetRsvrByAnalysiswater(
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
@@ -81,7 +81,7 @@ public class RsvrAnalysisController {
             e.printStackTrace();
         }
         RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
-        return new JsonResult(a);
+        return a;
     }
 
     //水库特征值统计表
