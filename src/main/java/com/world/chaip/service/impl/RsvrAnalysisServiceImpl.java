@@ -224,29 +224,35 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         rsvrStrongeListc1.add(rsvrStronge);
         changList.addAll(rsvrStrongeListc1);
 
-        int listLength =  rsvrStrongeListj3.size();
+        int listLength =  jinList.size();
         RsvrW rsvrW = null;
         for(int i=0; i<listLength; i++){
             rsvrW = new RsvrW();
-            rsvrW.setHnnm(rsvrStrongeListj3.get(i).getHnnm());
-            rsvrW.setStnm(rsvrStrongeListj3.get(i).getStnm());
+            rsvrW.setHnnm(jinList.get(i).getHnnm());
+            rsvrW.setStnm(jinList.get(i).getStnm());
             rsvrW.setW(new DecimalFormat("#0.000").format(jinList.get(i).getW()));
             rsvrW.setQw(new DecimalFormat("#0.000").format(quList.get(i).getW()));
-            rsvrW.setQwCompare(new DecimalFormat("##.00%").format((jinList.get(i).getW()-quList.get(i).getW())/quList.get(i).getW()));
+            rsvrW.setQwCompare(quList.get(i).getW()==0?"":new DecimalFormat("##.00%").format((jinList.get(i).getW()-quList.get(i).getW())/quList.get(i).getW()));
             rsvrW.setCw(new DecimalFormat("#0.000").format(changList.get(i).getW()));
-            rsvrW.setCwCompare(new DecimalFormat("##.00%").format((jinList.get(i).getW()-changList.get(i).getW())/changList.get(i).getW()));
+            rsvrW.setCwCompare(changList.get(i).getW()==0?"":new DecimalFormat("##.00%").format((jinList.get(i).getW()-changList.get(i).getW())/changList.get(i).getW()));
             rsvrWList.add(rsvrW);
+        }
+        System.out.println("集合长度"+rsvrWList.size());
+        for(int i=0; i<rsvrWList.size(); i++){
+            System.out.println(rsvrWList.get(i).getHnnm());
         }
         RsvrStrongeExcel rsvrStrongeExcel = new RsvrStrongeExcel();
         for (int i=0; i<rsvrWList.size(); i++){
             RsvrStrongeItem rsvrStrongeItem = null;
-            for(int j=0; j<rsvrStrongeExcel.getStrongeItemList().size(); j++){
-                RsvrStrongeItem rsvrStrongeItemX = rsvrStrongeExcel.getStrongeItemList().get(j);
+            /*for(int j=0; j<rsvrStrongeExcel.getStrongeItemList().size(); j++){*/
+            if(rsvrStrongeExcel.getStrongeItemList().size()>0){
+                RsvrStrongeItem rsvrStrongeItemX = rsvrStrongeExcel.getStrongeItemList().get(rsvrStrongeExcel.getStrongeItemList().size()-1);
                 if (rsvrStrongeItemX.getHnnm().equals(rsvrWList.get(i).getHnnm())){
                     rsvrStrongeItem = rsvrStrongeItemX;
                     rsvrStrongeItem.getChildList().add(rsvrWList.get(i));
                 }
             }
+            /*}*/
             if(rsvrStrongeItem == null){
                 rsvrStrongeItem = rsvrStrongeExcel.new RsvrStrongeItem();
                 rsvrStrongeItem.setHnnm(rsvrWList.get(i).getHnnm());
@@ -260,7 +266,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
     public RsvrStronge getRsvrStronge(String type, double w){
         RsvrStronge rs = new RsvrStronge();
         rs.setStcd("");
-        rs.setHnnm("");
+        rs.setHnnm("类型");
         rs.setStnm(type);
         rs.setW(w);
         return rs;

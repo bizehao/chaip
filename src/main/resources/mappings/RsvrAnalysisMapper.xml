@@ -131,7 +131,7 @@
     </select>
     <!--  水库蓄水量分析表 -->
     <select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
-        select st.stcd,st.stnm,HNNM,AVW w from
+        select st.stcd,st.stnm,HNNM,isnull(w,0) w from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -206,7 +206,7 @@
     </select>
     <!-- 水库蓄水量常量值表 -->
     <select id="getRsvrStorageCLAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
-        select st.stcd,st.stnm,HNNM,AVW w from
+        select st.stcd,st.stnm,HNNM,isnull(w,0) w from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
