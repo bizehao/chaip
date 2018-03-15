@@ -42,7 +42,6 @@ public class RainfallServiceImpl implements RainfallService {
 		System.out.println("数量"+rainfalls.size());
 		if(rainfalls!=null && rainfalls.size()>0) {
 			for(int i=0;i<rainfalls.size();i++) {
-				double dyp = 0;
 				DayByHourRainfallItem tempItem =null;
 				/*System.out.println(i+"这个"+daybyHourRainfall.getData().size());*/
 				for(int j=0;j<daybyHourRainfall.getData().size();j++) {

@@ -1,15 +1,13 @@
 package com.world.chaip.service.impl;
 
-import com.world.chaip.entity.Exchange.RsvrExchange;
-import com.world.chaip.entity.Exchange.RsvrWaterExcel;
+import com.world.chaip.entity.Exchange.RsvrStrongeExcel.RsvrStrongeItem;
+import com.world.chaip.entity.Exchange.*;
 import com.world.chaip.entity.Exchange.RsvrWaterExcel.RsvrWC;
-import com.world.chaip.entity.Exchange.RsvrWaterExchange;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.mapper.RsvrAnalysisMapper;
 import com.world.chaip.service.RsvrAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -114,10 +112,161 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
     }
 
     @Override
-    public List<Rsvr> getRsvrStorageAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
-        return null;
+    public RsvrStrongeExcel getRsvrStorageAnalysis(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Date time1 = now.getTime();
+
+        List<RsvrW> rsvrWList = new ArrayList<>();
+        RsvrStronge rsvrStronge = null;
+        int countrsvrStrongeListj3 = 0;
+        int countrsvrStrongeListj2 = 0;
+        int countrsvrStrongeListj1 = 0;
+        int countrsvrStrongeListq3 = 0;
+        int countrsvrStrongeListq2 = 0;
+        int countrsvrStrongeListq1 = 0;
+        int countrsvrStrongeListc3 = 0;
+        int countrsvrStrongeListc2 = 0;
+        int countrsvrStrongeListc1 = 0;
+
+        List<RsvrStronge> jinList = new ArrayList<>();
+        //今年大型
+        List<RsvrStronge> rsvrStrongeListj3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,3);
+        for (int i=0; i<rsvrStrongeListj3.size(); i++){
+            countrsvrStrongeListj3+=rsvrStrongeListj3.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListj3);
+        rsvrStrongeListj3.add(rsvrStronge);
+        jinList.addAll(rsvrStrongeListj3);
+
+        //今年中型
+        List<RsvrStronge> rsvrStrongeListj2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,2);
+        for (int i=0; i<rsvrStrongeListj2.size(); i++){
+            countrsvrStrongeListj2+=rsvrStrongeListj2.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListj2);
+        rsvrStrongeListj2.add(rsvrStronge);
+        jinList.addAll(rsvrStrongeListj2);
+
+        //今年小型
+        List<RsvrStronge> rsvrStrongeListj1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,1);
+        for (int i=0; i<rsvrStrongeListj1.size(); i++){
+            countrsvrStrongeListj1+=rsvrStrongeListj1.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListj1);
+        rsvrStrongeListj1.add(rsvrStronge);
+        jinList.addAll(rsvrStrongeListj1);
+
+        //去年
+        now.add(Calendar.YEAR,-1);
+        Date time2 = now.getTime();
+
+        List<RsvrStronge> quList = new ArrayList<>();
+        //去年大型
+        List<RsvrStronge> rsvrStrongeListq3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,3);
+        for (int i=0; i<rsvrStrongeListq3.size(); i++){
+            countrsvrStrongeListq3+=rsvrStrongeListq3.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListq3);
+        rsvrStrongeListq3.add(rsvrStronge);
+        quList.addAll(rsvrStrongeListq3);
+
+        //去年中型
+        List<RsvrStronge> rsvrStrongeListq2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,2);
+        for (int i=0; i<rsvrStrongeListq2.size(); i++){
+            countrsvrStrongeListq2+=rsvrStrongeListq2.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListq2);
+        rsvrStrongeListq2.add(rsvrStronge);
+        quList.addAll(rsvrStrongeListq2);
+
+        //去年小型
+        List<RsvrStronge> rsvrStrongeListq1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,1);
+        for (int i=0; i<rsvrStrongeListq1.size(); i++){
+            countrsvrStrongeListq1+=rsvrStrongeListq1.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListq1);
+        rsvrStrongeListq1.add(rsvrStronge);
+        quList.addAll(rsvrStrongeListq1);
+
+        List<RsvrStronge> changList = new ArrayList<>();
+        //常年
+        Calendar chang = Calendar.getInstance();
+        chang.setTime(date);
+        int month = chang.get(Calendar.MONTH);
+        int day = chang.get(Calendar.DATE);
+
+        //常年大型
+        List<RsvrStronge> rsvrStrongeListc3 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,3);
+        for (int i=0; i<rsvrStrongeListc3.size(); i++){
+            countrsvrStrongeListc3+=rsvrStrongeListc3.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListc3);
+        rsvrStrongeListc3.add(rsvrStronge);
+        changList.addAll(rsvrStrongeListc3);
+
+        //常年中型
+        List<RsvrStronge> rsvrStrongeListc2 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,2);
+        for (int i=0; i<rsvrStrongeListc2.size(); i++){
+            countrsvrStrongeListc2+=rsvrStrongeListc2.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListc2);
+        rsvrStrongeListc2.add(rsvrStronge);
+        changList.addAll(rsvrStrongeListc2);
+
+        //常年小型
+        List<RsvrStronge> rsvrStrongeListc1 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,1);
+        for (int i=0; i<rsvrStrongeListc1.size(); i++){
+            countrsvrStrongeListc1+=rsvrStrongeListc1.get(i).getW();
+        }
+        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListc1);
+        rsvrStrongeListc1.add(rsvrStronge);
+        changList.addAll(rsvrStrongeListc1);
+
+        int listLength =  rsvrStrongeListj3.size();
+        RsvrW rsvrW = null;
+        for(int i=0; i<listLength; i++){
+            rsvrW = new RsvrW();
+            rsvrW.setHnnm(rsvrStrongeListj3.get(i).getHnnm());
+            rsvrW.setStnm(rsvrStrongeListj3.get(i).getStnm());
+            rsvrW.setW(new DecimalFormat("#0.000").format(jinList.get(i).getW()));
+            rsvrW.setQw(new DecimalFormat("#0.000").format(quList.get(i).getW()));
+            rsvrW.setQwCompare(new DecimalFormat("##.00%").format((jinList.get(i).getW()-quList.get(i).getW())/quList.get(i).getW()));
+            rsvrW.setCw(new DecimalFormat("#0.000").format(changList.get(i).getW()));
+            rsvrW.setCwCompare(new DecimalFormat("##.00%").format((jinList.get(i).getW()-changList.get(i).getW())/changList.get(i).getW()));
+            rsvrWList.add(rsvrW);
+        }
+        RsvrStrongeExcel rsvrStrongeExcel = new RsvrStrongeExcel();
+        for (int i=0; i<rsvrWList.size(); i++){
+            RsvrStrongeItem rsvrStrongeItem = null;
+            for(int j=0; j<rsvrStrongeExcel.getStrongeItemList().size(); j++){
+                RsvrStrongeItem rsvrStrongeItemX = rsvrStrongeExcel.getStrongeItemList().get(j);
+                if (rsvrStrongeItemX.getHnnm().equals(rsvrWList.get(i).getHnnm())){
+                    rsvrStrongeItem = rsvrStrongeItemX;
+                    rsvrStrongeItem.getChildList().add(rsvrWList.get(i));
+                }
+            }
+            if(rsvrStrongeItem == null){
+                rsvrStrongeItem = rsvrStrongeExcel.new RsvrStrongeItem();
+                rsvrStrongeItem.setHnnm(rsvrWList.get(i).getHnnm());
+                rsvrStrongeItem.getChildList().add(rsvrWList.get(i));
+                rsvrStrongeExcel.getStrongeItemList().add(rsvrStrongeItem);
+            }
+        }
+
+        return rsvrStrongeExcel;
+    }
+    public RsvrStronge getRsvrStronge(String type, double w){
+        RsvrStronge rs = new RsvrStronge();
+        rs.setStcd("");
+        rs.setHnnm("");
+        rs.setStnm(type);
+        rs.setW(w);
+        return rs;
     }
 
+    //水库特征值他统计表
     @Override
     public List<RsvrExchange> getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();

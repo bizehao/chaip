@@ -32,7 +32,6 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         int day = 0;
         int countDay = 0;
         List<RiverExchange> list = new ArrayList<>();
-        List<Double> alist = new ArrayList<>();
         RiverExchange riverExchange = null;
         double[] listArray = null;
         for(int month = beginMonth; month<=endMonth; month++){

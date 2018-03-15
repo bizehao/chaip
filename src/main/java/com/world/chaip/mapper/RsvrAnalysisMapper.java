@@ -1,6 +1,7 @@
 package com.world.chaip.mapper;
 
 import com.world.chaip.entity.Exchange.RsvrExchange;
+import com.world.chaip.entity.Exchange.RsvrStronge;
 import com.world.chaip.entity.Exchange.RsvrWaterExchange;
 import com.world.chaip.entity.report.Rsvr;
 import org.apache.ibatis.annotations.Param;
@@ -39,14 +40,39 @@ public interface RsvrAnalysisMapper {
      * @return
      */
     List<Rsvr> getRsvrWaterAnalysisRi(@Param("time") Date time,
-                                                 @Param("adcd") List<String> adcd,
-                                                 @Param("systemTypes") List<String> systemTypes,
-                                                 @Param("stcdOrStnm") List<String> stcdOrStnm);
-
-    List<Rsvr> getRsvrStorageAnalysis(@Param("Time") Date Time,
                                       @Param("adcd") List<String> adcd,
                                       @Param("systemTypes") List<String> systemTypes,
                                       @Param("stcdOrStnm") List<String> stcdOrStnm);
+
+    /**
+     * 水库蓄水量分析表
+     * @param time
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<RsvrStronge> getRsvrStorageAnalysis(@Param("time") Date time,
+                                      @Param("adcd") List<String> adcd,
+                                      @Param("systemTypes") List<String> systemTypes,
+                                      @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                      @Param("sign") int sign);
+
+    /**
+     * 水库蓄水量分析常量值表
+     * @param month
+     * @param day
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<RsvrStronge> getRsvrStorageCLAnalysis(@Param("month") int month,
+                                               @Param("day") int day,
+                                               @Param("adcd") List<String> adcd,
+                                               @Param("systemTypes") List<String> systemTypes,
+                                               @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                               @Param("sign") int sign);
 
     /**
      * 水库特征值统计表
