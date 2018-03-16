@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,14 +32,7 @@ public class ChaipApplicationTests {
 
 	@Test
 	public void contextLoads1() throws ParseException {
-		String dateStart = "2018-03-07 08";
-		Date dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
-		Calendar now = Calendar.getInstance();
-		now.setTime(dateS);
-		Date mn = now.getTime();
-		SimpleDateFormat kl = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String s = kl.format(dateS);
-		System.out.println(dateS);
-		System.out.println(s);
+        BigDecimal num1 = new BigDecimal("0").setScale(2, BigDecimal.ROUND_HALF_UP);
+        System.out.println(num1);
 	}
 }

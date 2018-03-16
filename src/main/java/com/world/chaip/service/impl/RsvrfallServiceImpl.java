@@ -45,6 +45,13 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int jilu = 0;
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
         for(int i=0; i<rainfalls.size(); i++){
+            /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
+            rainfalls.get(i).setFsltdz(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdz())));
+            /*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*/
+            rainfalls.get(i).setRz(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getRz())));
+            rainfalls.get(i).setW(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getW())));
+            rainfalls.get(i).setInq(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getInq())));
+            rainfalls.get(i).setOtq(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getOtq())));
             if(rainfalls.get(i).getRz() >= rainfalls.get(i).getFsltdz()){
                 jilu++;
                 level = rainfalls.get(i).getRz() - rainfalls.get(i).getFsltdz();

@@ -137,21 +137,21 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response
-            /*@RequestParam("dateS")String dateStart,
+            HttpServletResponse response,
+            @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
-        String dateStart = "2018-03-15 08";
+       /* String dateStart = "2018-03-15 08";
         String dateEnd = "2018-03-16 08";
         String adcd = "X";
         String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
+        String stcdOrStnm = "X";*/
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
+        System.out.println("开始时间00"+dateStart);
+        System.out.println("结束时间00"+dateEnd);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
@@ -198,8 +198,8 @@ public class RsvrExcelController {
         }
         DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"水库名称","总库容(亿m³)","汛期("+dayRsvr.getFstp()+")","","目前实际"};
-        String[] shuangName = new String[]{"水位(m)","库容(亿m³)","水位(m)","蓄水量(亿m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
+        String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际"};
+        String[] shuangName = new String[]{"水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
@@ -224,7 +224,7 @@ public class RsvrExcelController {
         beginTime= now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh");
         String begin = formatter.format(beginTime);
-        String time ="时间："+ begin;
+        String time ="时间："+ begin+"时";
 
         //列头单元格合并
         //水库名称
