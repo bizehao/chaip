@@ -135,9 +135,8 @@ public class RsvrAnalysisController {
             }
         }
         Date dateTime = null;
-        Date dateE = null;
         try {
-            dateTime = DateUtils.parse(date, "yyyy-MM");
+            dateTime = DateUtils.parse(date, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }

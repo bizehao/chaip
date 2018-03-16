@@ -117,6 +117,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         now.setTime(date);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date time1 = now.getTime();
+        now.add(Calendar.DATE,1);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Date time2 = now.getTime();
 
         List<RsvrW> rsvrWList = new ArrayList<>();
         RsvrStronge rsvrStronge = null;
@@ -135,64 +138,78 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
 
         List<RsvrStronge> jinList = new ArrayList<>();
         //今年大型
-        List<RsvrStronge> rsvrStrongeListj3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,3);
-        for (int i=0; i<rsvrStrongeListj3.size(); i++){
-            countrsvrStrongeListj3+=rsvrStrongeListj3.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListj3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,3);
+        if(rsvrStrongeListj3.size()>0){
+            for (int i=0; i<rsvrStrongeListj3.size(); i++){
+                countrsvrStrongeListj3+=rsvrStrongeListj3.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListj3);
+            rsvrStrongeListj3.add(rsvrStronge);
+            jinList.addAll(rsvrStrongeListj3);
         }
-        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListj3);
-        rsvrStrongeListj3.add(rsvrStronge);
-        jinList.addAll(rsvrStrongeListj3);
 
         //今年中型
-        List<RsvrStronge> rsvrStrongeListj2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,2);
-        for (int i=0; i<rsvrStrongeListj2.size(); i++){
-            countrsvrStrongeListj2+=rsvrStrongeListj2.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListj2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,2);
+        if(rsvrStrongeListj2.size()>0){
+            for (int i=0; i<rsvrStrongeListj2.size(); i++){
+                countrsvrStrongeListj2+=rsvrStrongeListj2.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListj2);
+            rsvrStrongeListj2.add(rsvrStronge);
+            jinList.addAll(rsvrStrongeListj2);
         }
-        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListj2);
-        rsvrStrongeListj2.add(rsvrStronge);
-        jinList.addAll(rsvrStrongeListj2);
 
         //今年小型
-        List<RsvrStronge> rsvrStrongeListj1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,adcd,systemTypes,stcdOrStnm,1);
-        for (int i=0; i<rsvrStrongeListj1.size(); i++){
-            countrsvrStrongeListj1+=rsvrStrongeListj1.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListj1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,1);
+        if(rsvrStrongeListj1.size()>0){
+            for (int i=0; i<rsvrStrongeListj1.size(); i++){
+                countrsvrStrongeListj1+=rsvrStrongeListj1.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListj1);
+            rsvrStrongeListj1.add(rsvrStronge);
+            jinList.addAll(rsvrStrongeListj1);
         }
-        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListj1);
-        rsvrStrongeListj1.add(rsvrStronge);
-        jinList.addAll(rsvrStrongeListj1);
 
         jinZong=countrsvrStrongeListj3+countrsvrStrongeListj2+countrsvrStrongeListj1;
         //去年
         now.add(Calendar.YEAR,-1);
-        Date time2 = now.getTime();
+        time2 = now.getTime();
+        now.add(Calendar.DATE,-1);
+        time1 = now.getTime();
 
         List<RsvrStronge> quList = new ArrayList<>();
         //去年大型
-        List<RsvrStronge> rsvrStrongeListq3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,3);
-        for (int i=0; i<rsvrStrongeListq3.size(); i++){
-            countrsvrStrongeListq3+=rsvrStrongeListq3.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListq3 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,3);
+        if(rsvrStrongeListq3.size()>0){
+            for (int i=0; i<rsvrStrongeListq3.size(); i++){
+                countrsvrStrongeListq3+=rsvrStrongeListq3.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListq3);
+            rsvrStrongeListq3.add(rsvrStronge);
+            quList.addAll(rsvrStrongeListq3);
         }
-        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListq3);
-        rsvrStrongeListq3.add(rsvrStronge);
-        quList.addAll(rsvrStrongeListq3);
 
         //去年中型
-        List<RsvrStronge> rsvrStrongeListq2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,2);
-        for (int i=0; i<rsvrStrongeListq2.size(); i++){
-            countrsvrStrongeListq2+=rsvrStrongeListq2.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListq2 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,2);
+        if(rsvrStrongeListq2.size()>0){
+            for (int i=0; i<rsvrStrongeListq2.size(); i++){
+                countrsvrStrongeListq2+=rsvrStrongeListq2.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListq2);
+            rsvrStrongeListq2.add(rsvrStronge);
+            quList.addAll(rsvrStrongeListq2);
         }
-        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListq2);
-        rsvrStrongeListq2.add(rsvrStronge);
-        quList.addAll(rsvrStrongeListq2);
 
         //去年小型
-        List<RsvrStronge> rsvrStrongeListq1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time2,adcd,systemTypes,stcdOrStnm,1);
-        for (int i=0; i<rsvrStrongeListq1.size(); i++){
-            countrsvrStrongeListq1+=rsvrStrongeListq1.get(i).getW();
+        List<RsvrStronge> rsvrStrongeListq1 =  rsvrAnalysisMapper.getRsvrStorageAnalysis(time1,time2,adcd,systemTypes,stcdOrStnm,1);
+        if(rsvrStrongeListq1.size()>0){
+            for (int i=0; i<rsvrStrongeListq1.size(); i++){
+                countrsvrStrongeListq1+=rsvrStrongeListq1.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListq1);
+            rsvrStrongeListq1.add(rsvrStronge);
+            quList.addAll(rsvrStrongeListq1);
         }
-        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListq1);
-        rsvrStrongeListq1.add(rsvrStronge);
-        quList.addAll(rsvrStrongeListq1);
 
         quZong=countrsvrStrongeListq3+countrsvrStrongeListq2+countrsvrStrongeListq1;
 
@@ -205,30 +222,36 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
 
         //常年大型
         List<RsvrStronge> rsvrStrongeListc3 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,3);
-        for (int i=0; i<rsvrStrongeListc3.size(); i++){
-            countrsvrStrongeListc3+=rsvrStrongeListc3.get(i).getW();
+        if(rsvrStrongeListc3.size()>0){
+            for (int i=0; i<rsvrStrongeListc3.size(); i++){
+                countrsvrStrongeListc3+=rsvrStrongeListc3.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListc3);
+            rsvrStrongeListc3.add(rsvrStronge);
+            changList.addAll(rsvrStrongeListc3);
         }
-        rsvrStronge = getRsvrStronge("大型", countrsvrStrongeListc3);
-        rsvrStrongeListc3.add(rsvrStronge);
-        changList.addAll(rsvrStrongeListc3);
 
         //常年中型
         List<RsvrStronge> rsvrStrongeListc2 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,2);
-        for (int i=0; i<rsvrStrongeListc2.size(); i++){
-            countrsvrStrongeListc2+=rsvrStrongeListc2.get(i).getW();
+        if(rsvrStrongeListc2.size()>0){
+            for (int i=0; i<rsvrStrongeListc2.size(); i++){
+                countrsvrStrongeListc2+=rsvrStrongeListc2.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListc2);
+            rsvrStrongeListc2.add(rsvrStronge);
+            changList.addAll(rsvrStrongeListc2);
         }
-        rsvrStronge = getRsvrStronge("中型", countrsvrStrongeListc2);
-        rsvrStrongeListc2.add(rsvrStronge);
-        changList.addAll(rsvrStrongeListc2);
 
         //常年小型
         List<RsvrStronge> rsvrStrongeListc1 =  rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month,day,adcd,systemTypes,stcdOrStnm,1);
-        for (int i=0; i<rsvrStrongeListc1.size(); i++){
-            countrsvrStrongeListc1+=rsvrStrongeListc1.get(i).getW();
+        if(rsvrStrongeListc1.size()>0){
+            for (int i=0; i<rsvrStrongeListc1.size(); i++){
+                countrsvrStrongeListc1+=rsvrStrongeListc1.get(i).getW();
+            }
+            rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListc1);
+            rsvrStrongeListc1.add(rsvrStronge);
+            changList.addAll(rsvrStrongeListc1);
         }
-        rsvrStronge = getRsvrStronge("小型", countrsvrStrongeListc1);
-        rsvrStrongeListc1.add(rsvrStronge);
-        changList.addAll(rsvrStrongeListc1);
 
         changZong=countrsvrStrongeListc3+countrsvrStrongeListc2+countrsvrStrongeListc1;
 
@@ -237,12 +260,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         RsvrW rsvrW = null;
         for(int i=0; i<listLength; i++){
             rsvrW = new RsvrW();
-            if(jinList.get(i).getHnnm().equals("未知")){
-                if(jinList.get(i).getW()==0 && quList.get(i).getW()==0 && (jinList.get(i).getW()-quList.get(i).getW()) ==0
-                        && changList.get(i).getW()==0 && (jinList.get(i).getW()-changList.get(i).getW()) == 0){
-                    continue;
-                }
-            }
             rsvrW.setHnnm(jinList.get(i).getHnnm());
             rsvrW.setStnm(jinList.get(i).getStnm());
             rsvrW.setW(new DecimalFormat("#0.000").format(jinList.get(i).getW()));

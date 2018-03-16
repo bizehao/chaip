@@ -46,17 +46,19 @@ public interface RsvrAnalysisMapper {
 
     /**
      * 水库蓄水量分析表
-     * @param time
+     * @param time1
+     * @param time2
      * @param adcd
      * @param systemTypes
      * @param stcdOrStnm
      * @return
      */
-    List<RsvrStronge> getRsvrStorageAnalysis(@Param("time") Date time,
-                                      @Param("adcd") List<String> adcd,
-                                      @Param("systemTypes") List<String> systemTypes,
-                                      @Param("stcdOrStnm") List<String> stcdOrStnm,
-                                      @Param("sign") int sign);
+    List<RsvrStronge> getRsvrStorageAnalysis(@Param("time1") Date time1,
+                                             @Param("time2") Date time2,
+                                             @Param("adcd") List<String> adcd,
+                                             @Param("systemTypes") List<String> systemTypes,
+                                             @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                             @Param("sign") int sign);
 
     /**
      * 水库蓄水量分析常量值表
