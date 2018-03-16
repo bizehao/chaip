@@ -217,7 +217,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         //常年
         Calendar chang = Calendar.getInstance();
         chang.setTime(date);
-        int month = chang.get(Calendar.MONTH);
+        int month = chang.get(Calendar.MONTH)+1;
         int day = chang.get(Calendar.DATE);
 
         //常年大型
