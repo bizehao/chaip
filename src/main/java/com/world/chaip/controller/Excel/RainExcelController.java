@@ -131,17 +131,15 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response,
-                       @RequestParam("date")String dateStr,
+    public void exportRainByDate(HttpServletResponse response
+                       /*@RequestParam("date")String dateStr,
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
-                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
-
-        /*dateStr="2017-07-21";
-        adcd = "X";
-        systemTypes = "X";
-        stcdOrStnm = "X";*/
-
+                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
+        String dateStr="2017-07-21";
+        String adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+        String systemTypes="11,12,";
+        String stcdOrStnm="X";
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
         System.out.println("站类型////"+systemTypes);
@@ -198,7 +196,7 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "日雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","站名","雨量","站名","雨量","站名","雨量","站名","雨量"};
+        String[] rowsName = new String[]{"县名","站名","雨量","站名","雨量","站名","雨量","站名","雨量","站名","雨量"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         int xuhao = 0;
@@ -206,10 +204,9 @@ public class RainExcelController extends HttpServlet{
             xuhao++;
             DayRainExcel.DayRain item = a.getDayRainList().get(i);
             objects = new Object[rowsName.length];
-            objects[0] = xuhao;
-            objects[1] = item.getAdnm();
+            objects[0] = item.getAdnm();
             Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
-            int j = 0;
+            int j = -1;
             int m = 0;
             int k = 0;
             for (Map.Entry<String, Double> entry : map.entrySet()) {
@@ -227,9 +224,8 @@ public class RainExcelController extends HttpServlet{
                 if(j>10 && map.size()>=5){
                     xuhao++;
                     objects = new Object[rowsName.length];
-                    objects[0] = xuhao;
-                    objects[1] = null;
-                    j = 0;
+                    objects[0] = null;
+                    j = -1;
                     j=j+2;
                     m=j+1;
                     objects[j] = entry.getKey();

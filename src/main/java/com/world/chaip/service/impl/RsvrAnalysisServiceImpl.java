@@ -299,7 +299,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
                 rsvrStrongeExcel.getStrongeItemList().add(rsvrStrongeItem);
             }
         }
-
         return rsvrStrongeExcel;
     }
     public RsvrStronge getRsvrStronge(String type, double w){

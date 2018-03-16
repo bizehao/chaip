@@ -25,19 +25,40 @@ public class ExportExcel {
     private String title;
     //导出表的列名
     private String[] rowName ;
+    //双层表头的列名
+    private String[] shuangName ;
+    //双层表头的合并单元格
+    CellRangeAddress[] shuangCell;
     //导出的集合数据
     private List<Object[]> dataList = new ArrayList<Object[]>();
+    int lieNum = 0;
 
     private String time;
     private HttpServletResponse response;
 
-    //构造方法，传入要导出的数据
+    public ExportExcel() {
+    }
+
+    //构造方法，传入要导出的数据 单行表头
     public ExportExcel(String title,String[] rowName,List<Object[]>  dataList, HttpServletResponse response, String time){
         this.dataList = dataList;
         this.rowName = rowName;
         this.title = title;
         this.time = time;
         this.response = response;
+    }
+
+    //构造方法，传入要导出的数据 双行表头
+    public ExportExcel(String title,String[] rowName,String[] shuangName,CellRangeAddress[] shuangCell,List<Object[]>  dataList,
+                       HttpServletResponse response, String time, int lieNum){
+        this.dataList = dataList;
+        this.rowName = rowName;
+        this.shuangName = shuangName;
+        this.shuangCell = shuangCell;
+        this.title = title;
+        this.time = time;
+        this.response = response;
+        this.lieNum = lieNum;
     }
 
     /**
@@ -50,6 +71,13 @@ public class ExportExcel {
             HSSFWorkbook workbook = new HSSFWorkbook();                     // 创建工作簿对象
             HSSFSheet sheet = workbook.createSheet(title);                  // 创建工作表
 
+            // 定义所需列数
+            int columnNum = 0;
+            if(shuangCell != null){
+                columnNum = lieNum;
+            }else{
+                columnNum = rowName.length;
+            }
             // 产生表格标题行
             HSSFRow rowm = sheet.createRow(0);
             HSSFCell cellTiltle = rowm.createCell(0);
@@ -58,34 +86,61 @@ public class ExportExcel {
             HSSFCellStyle columnTopStyle = this.getColumnTopStyle(workbook);//获取列头样式对象
             HSSFCellStyle style = this.getStyle(workbook);                  //单元格样式对象
 
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, (rowName.length-1)));
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, (columnNum-1)));
             cellTiltle.setCellStyle(columnTopStyle);
             cellTiltle.setCellValue(title);
             //定义时间行
+            CellRangeAddress callRangeAddress = new CellRangeAddress(2,2,0,(columnNum-1));//起始行,结束行,起始列,结束列
+            sheet.addMergedRegion(callRangeAddress);
             HSSFRow rowRowTime = sheet.createRow(2);
             HSSFCell cellTime = rowRowTime.createCell(0);
-            CellRangeAddress callRangeAddress = new CellRangeAddress(2,2,0,(rowName.length-1));//起始行,结束行,起始列,结束列
-            sheet.addMergedRegion(callRangeAddress);
             cellTime.setCellValue(time);
-            // 定义所需列数
-            int columnNum = rowName.length;
-            HSSFRow rowRowName = sheet.createRow(3);                // 在索引2的位置创建行(最顶端的行开始的第二行)
+            HSSFRow rowRowName = sheet.createRow(3);                // 在索引3的位置创建行(最顶端的行开始的第四行)
 
 
-            // 将列头设置到sheet的单元格中
-            for(int n=0;n<columnNum;n++){
-                HSSFCell  cellRowName = rowRowName.createCell(n);               //创建列头对应个数的单元格
-                cellRowName.setCellType(HSSFCell.CELL_TYPE_STRING);             //设置列头单元格的数据类型
-                HSSFRichTextString text = new HSSFRichTextString(rowName[n]);
-                cellRowName.setCellValue(text);                                 //设置列头单元格的值
-                cellRowName.setCellStyle(columnTopStyle);                       //设置列头单元格样式
+            int wei = 0;    //从哪一行开始写起
+            //合并双列表头的单元格
+            if(shuangCell != null){
+                wei = 5;
+                int shuangtitle = shuangCell.length;
+                for (int i=0; i<shuangtitle; i++){
+                    sheet.addMergedRegion(shuangCell[i]);
+                }
+                int shangNum = rowName.length;
+                for(int n=0;n<shangNum;n++){
+                    HSSFCell  cellRowName = rowRowName.createCell(n);               //创建列头对应个数的单元格
+                    cellRowName.setCellType(HSSFCell.CELL_TYPE_STRING);             //设置列头单元格的数据类型
+                    HSSFRichTextString text = new HSSFRichTextString(rowName[n]);
+                    cellRowName.setCellValue(text);                                 //设置列头单元格的值
+                    System.out.println(rowName[n]);
+                    cellRowName.setCellStyle(columnTopStyle);                       //设置列头单元格样式
+                }
+                HSSFRow rowRowName1 = sheet.createRow(4);                // 在索引3的位置创建行(最顶端的行开始的第四行)
+                int xiaNum = shuangName.length;
+                for(int n=0;n<xiaNum;n++){
+                    HSSFCell  cellRowName = rowRowName1.createCell(2+n);               //创建列头对应个数的单元格
+                    cellRowName.setCellType(HSSFCell.CELL_TYPE_STRING);             //设置列头单元格的数据类型
+                    HSSFRichTextString text = new HSSFRichTextString(shuangName[n]);
+                    cellRowName.setCellValue(text);                                 //设置列头单元格的值
+                    cellRowName.setCellStyle(columnTopStyle);                       //设置列头单元格样式
+                }
+            }else{
+                wei=4;
+                // 将列头设置到sheet的单元格中
+                for(int n=0;n<columnNum;n++){
+                    HSSFCell  cellRowName = rowRowName.createCell(n);               //创建列头对应个数的单元格
+                    cellRowName.setCellType(HSSFCell.CELL_TYPE_STRING);             //设置列头单元格的数据类型
+                    HSSFRichTextString text = new HSSFRichTextString(rowName[n]);
+                    cellRowName.setCellValue(text);                                 //设置列头单元格的值
+                    cellRowName.setCellStyle(columnTopStyle);                       //设置列头单元格样式
+                }
             }
 
             //将查询出的数据设置到sheet对应的单元格中
             for(int i=0;i<dataList.size();i++){
 
                 Object[] obj = dataList.get(i);//遍历每个对象
-                HSSFRow row = sheet.createRow(i+4);//创建所需的行数
+                HSSFRow row = sheet.createRow(i+wei);//创建所需的行数
 
                 for(int j=0; j<obj.length; j++){
                     HSSFCell  cell = null;   //设置单元格的数据类型
@@ -107,6 +162,10 @@ public class ExportExcel {
                     cell.setCellStyle(style);                                   //设置单元格样式
                 }
             }
+            /*HSSFRow row = sheet.createRow(dataList.size());//创建所需的行数
+            HSSFCell cell = row.createCell(0);
+            CellRangeAddress lastRow = new CellRangeAddress(dataList.size(),dataList.size(),0,(rowName.length-1));//起始行,结束行,起始列,结束列
+            sheet.addMergedRegion(callRangeAddress);*/
             //让列宽随着导出的列长自动适应
             for (int colNum = 0; colNum < columnNum; colNum++) {
                 int columnWidth = sheet.getColumnWidth(colNum) / 256;

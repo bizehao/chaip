@@ -9,6 +9,8 @@ import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,8 +87,8 @@ public class RsvrExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -116,7 +118,7 @@ public class RsvrExcelController {
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
@@ -135,12 +137,18 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response,
-            @RequestParam("dateS")String dateStart,
+            HttpServletResponse response
+            /*@RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
+
+        String dateStart = "2018-03-15 08";
+        String dateEnd = "2018-03-16 08";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -183,45 +191,55 @@ public class RsvrExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
         } catch (ParseException e) {
             e.printStackTrace();
         }
         DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"水库名称","总库容","库名","站号","时间","水位(m)","蓄水量(亿m³)","出库流量(m³/s)"};
+        String[] rowsName = new String[]{"水库名称","总库容(亿m³)","汛期("+dayRsvr.getFstp()+")","","目前实际"};
+        String[] shuangName = new String[]{"水位(m)","库容(亿m³)","水位(m)","蓄水量(亿m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
         for (int i=0; i<a.size(); i++){
             RsvrZhuanYe item = a.get(i);
-            objects = new Object[rowsName.length];
-            objects[0] = i+1;
-            objects[1] = item.getStnm();
-            objects[2] = item.getTtcp();
-            objects[3] = item.getFsltdz();
-            objects[4] = item.getFsltdw();
-            objects[5] = item.getRz();
-            objects[6] = item.getW();
-            objects[7] = item.getInq();
-            objects[8] = item.getOtq();
+            objects = new Object[9];
+            objects[0] = item.getStnm();
+            objects[1] = item.getTtcp();
+            objects[2] = item.getFsltdz();
+            objects[3] = item.getFsltdw();
+            objects[4] = item.getRz();
+            objects[5] = item.getW();
+            objects[6] = item.getInq();
+            objects[7] = item.getOtq();
+            objects[8] = item.getTm();
             dataList.add(objects);
         }
         Date beginTime=null;
-        Date endTime=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
-        beginTime=now.getTime();
-        now.setTime(dateE);
-        endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime= now.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin;
+
+        //列头单元格合并
+        //水库名称
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
+        //总库容
+        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3,4,1,1);//起始行,结束行,起始列,结束列
+        //汛期
+        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,3,2,3);//起始行,结束行,起始列,结束列
+        //目前实际
+        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,4,8);//起始行,结束行,起始列,结束列
+
+        CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
+
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time,9);
         ex.export();
         rsvrXbyItem();
     }
