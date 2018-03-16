@@ -1,6 +1,7 @@
 package com.world.chaip.service.impl;
 
 import java.sql.Array;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import com.world.chaip.entity.excelFormat.DayRainExcel;
@@ -99,7 +100,11 @@ public class RainfallServiceImpl implements RainfallService {
 		if(cid == 0){
 			return list;
 		}
+		/*for(int i=0; i<list.size(); i++){
+			System.out.println(list.get(i).getStcd()+""+list.get(i).getStnm());
+		}*/
 		System.out.println("日降水量的记录数"+list.size());
+		Object[] objects = null;
 		DayRainExcel dayRainExcel = new DayRainExcel();
 		if(list != null && list.size()>0){
 			for(int i=0; i<list.size(); i++){
@@ -108,18 +113,35 @@ public class RainfallServiceImpl implements RainfallService {
 					DayRain dayRainX = dayRainExcel.getDayRainList().get(j);
 					if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
 						dayRain=dayRainX;
-						dayRain.getDayRainList().put(list.get(i).getStnm(),list.get(i).getDyp());
+						objects = new Object[2];
+						objects[0] = list.get(i).getStnm();
+						objects[1] = list.get(i).getDyp();
+						dayRain.getDayRainList().add(objects);
+						/*System.out.println(list.get(i).getStnm());*/
 						break;
 					}
 				}
 				if(dayRain == null){
 					dayRain = dayRainExcel.new DayRain();
 					dayRain.setAdnm(list.get(i).getAdnm());
-					dayRain.getDayRainList().put(list.get(i).getStnm(),list.get(i).getDyp());
+					objects = new Object[2];
+					objects[0] = list.get(i).getStnm();
+					objects[1] = list.get(i).getDyp();
+					dayRain.getDayRainList().add(objects);
+					/*System.out.println(list.get(i).getStnm());*/
 					dayRainExcel.getDayRainList().add(dayRain);
 				}
 			}
 		}
+		/*System.out.println("=============================");*/
+		/*for(int i=0; i<dayRainExcel.getDayRainList().size(); i++){
+			System.out.println(dayRainExcel.getDayRainList().get(i).getAdnm());
+			Map<String, Double> map =  dayRainExcel.getDayRainList().get(i).getDayRainList();
+			System.out.println(map.size());
+			for (Map.Entry<String, Double> entry : map.entrySet()) {
+				System.out.println("Key = 1" + entry.getKey() + ", Value = 1" + entry.getValue());
+			}
+		}*/
 		return dayRainExcel;
 	}
 
@@ -405,7 +427,7 @@ public class RainfallServiceImpl implements RainfallService {
 						obRainX = new Object[3];
 						obRainX[0] = list.get(i).getStnm();
 						obRainX[1] = list.get(i).getAccp();
-						obRainX[2] = list.get(i).getNum();
+						obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
 						dayRainM.getRainList().add(obRainX);
 						break;
 					}
@@ -416,7 +438,7 @@ public class RainfallServiceImpl implements RainfallService {
 					obRainX = new Object[3];
 					obRainX[0] = list.get(i).getStnm();
 					obRainX[1] = list.get(i).getAccp();
-					obRainX[2] = list.get(i).getNum();
+					obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
 					dayRainM.getRainList().add(obRainX);
 					dayRainExcelX.getDayRainXList().add(dayRainM);
 				}

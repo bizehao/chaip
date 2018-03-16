@@ -193,7 +193,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp is NOT NULL group by STCD) pt
+		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM
 	</select>
@@ -263,7 +263,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp is NOT NULL group by STCD) pt
+		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM
     </select>
@@ -333,7 +333,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp is NOT NULL group by STCD) pt
+		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM
 	</select>

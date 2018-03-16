@@ -1,9 +1,6 @@
 package com.world.chaip.entity.excelFormat;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //日雨量
 public class DayRainExcel {
@@ -26,13 +23,13 @@ public class DayRainExcel {
         //县名
         private String adnm;
 
-        private Map<String, Double> dayRainList;
+        private List<Object[]> dayRainList;
 
         public DayRain() {
-            dayRainList = new HashMap<String, Double>();
+            dayRainList = new ArrayList<>();
         }
 
-        public DayRain(String adnm, Map<String, Double> dayRainList) {
+        public DayRain(String adnm, List<Object[]> dayRainList) {
 
             this.adnm = adnm;
             this.dayRainList = dayRainList;
@@ -46,11 +43,11 @@ public class DayRainExcel {
             this.adnm = adnm;
         }
 
-        public Map<String, Double> getDayRainList() {
+        public List<Object[]> getDayRainList() {
             return dayRainList;
         }
 
-        public void setDayRainList(Map<String, Double> dayRainList) {
+        public void setDayRainList(List<Object[]> dayRainList) {
             this.dayRainList = dayRainList;
         }
     }
