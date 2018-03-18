@@ -19,7 +19,7 @@ public class RsvrWaterExcel {
         this.rsvrWCList = rsvrWCList;
     }
 
-    public class RsvrWC extends RsvrWaterExchange{
+    public class RsvrWC{
         //水系名
         private String name;
         //
@@ -29,13 +29,10 @@ public class RsvrWaterExcel {
             rList = new ArrayList<>();
         }
 
-
-        @Override
         public String getName() {
             return name;
         }
 
-        @Override
         public void setName(String name) {
             this.name = name;
         }

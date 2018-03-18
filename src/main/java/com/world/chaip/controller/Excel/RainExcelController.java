@@ -36,7 +36,7 @@ public class RainExcelController extends HttpServlet{
     @Autowired
     private RainfallService rainfallService;
 
-    String ip = StaticConfig.ipAddress;;
+    private String ip = StaticConfig.ipAddress;
 
     //导出逐时表
     @GetMapping("getrainbyhourbyexcel")
@@ -85,6 +85,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DaybyHourRainfall a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist);
         String title = "逐时雨量统计报表";
         String[] rowsName = new String[]{"序号","县名","站名","站类","累计值(mm)","9","10","11","12","13","14","15","16",
                 "17","18","19","20","21","22","23","0","1","2","3","4","5","6","7","8"};
@@ -122,7 +123,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin+"~~"+end;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
         rainXbyHour();
     }
@@ -134,16 +135,16 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response,
-                                 @RequestParam("date")String dateStr,
+    public void exportRainByDate(HttpServletResponse response
+                                 /*@RequestParam("date")String dateStr,
                                  @RequestParam(name="adcd",required=false)String adcd,
                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
 
-        /*String dateStr="2017-07-21";
-        String adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+        String dateStr="2017-07-21";
+        String adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,";//130530,130531,130532,130533,130534,130535,130581,130582,
         String systemTypes="11,12,";
-        String stcdOrStnm="X";*/
+        String stcdOrStnm="X";
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -191,7 +192,7 @@ public class RainExcelController extends HttpServlet{
         }
 
         DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
-        List<Object> b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
+        String b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         String title = "日雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -228,27 +229,13 @@ public class RainExcelController extends HttpServlet{
                 }
             }
         }
-        objects = new Object[12];
-        objects[0] = "超过100毫米的有：";
-        objects[1] = b.get(0)+"站";
-        objects[2] = "超过50毫米的有：";
-        objects[3] = b.get(1)+"站";
-        objects[4] = "超过30毫米的有：";
-        objects[5] = b.get(2)+"站";
-        objects[6] = "最大的是";
-        objects[7] = b.get(3)+"站";
-        objects[8] = "次大点的是";
-        objects[9] = b.get(4)+"站";
-        objects[10] = "再次大点的是";
-        objects[11] = b.get(5)+"站";
-        dataList.add(objects);
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbydate")
@@ -309,6 +296,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
+        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         String title = "旬雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -331,7 +319,7 @@ public class RainExcelController extends HttpServlet{
         String begin = formatter.format(Time);
         String time ="时间："+ begin+""+xun;
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbyxun")
@@ -392,6 +380,7 @@ public class RainExcelController extends HttpServlet{
         }
 
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
+        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         String title = "月雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -407,7 +396,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbymonth")
@@ -463,6 +452,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
+        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -486,7 +476,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbyyear")
@@ -507,8 +497,8 @@ public class RainExcelController extends HttpServlet{
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
-        System.out.println("这儿00"+dateStart);
-        System.out.println("这儿00"+dateEnd);
+        System.out.println(dateStart);
+        System.out.println(dateEnd);
         System.out.println(adcd);
         System.out.println(systemTypes);
         System.out.println(stcdOrStnm);
@@ -551,6 +541,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
+        String b = rainfallService.getDaybyTimeJS(dateS, dateE, adcdlist, typelist,stcdlist,"ST_PPTN_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -569,8 +560,6 @@ public class RainExcelController extends HttpServlet{
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
-        System.out.println("这个的颠三倒四"+dateS);
-        System.out.println(dateE);
         now.setTime(dateS);
         beginTime=now.getTime();
         now.setTime(dateE);
@@ -580,7 +569,7 @@ public class RainExcelController extends HttpServlet{
         String end = formatter.format(endTime);
         String time ="时间："+ begin+" :00 ~~"+end + " :00";
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbytime")
@@ -682,7 +671,7 @@ public class RainExcelController extends HttpServlet{
         }
 
         DayRainExcel a = (DayRainExcel)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
-        List<Object> b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
+        String b = rainfallService.getDaybyDateJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         /*for(int i=0; i<a.getDayRainList().size(); i++){
             System.out.println(a.getDayRainList().get(i).getAdnm());
             Map<String, Double> map =  a.getDayRainList().get(i).getDayRainList();
@@ -692,11 +681,10 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "日雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","站名","雨量","站名","雨量","站名","雨量","站名","雨量"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)","站名","雨量(mm)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         Object[] rx = null;
-        int xuhao = 0;
         for (int i=0; i<a.getDayRainList().size(); i++){
             DayRainExcel.DayRain item = a.getDayRainList().get(i);
             objects = new Object[rowsName.length];
@@ -728,28 +716,13 @@ public class RainExcelController extends HttpServlet{
                 }
             }
         }
-        objects = new Object[12];
-        objects[0] = "超过100毫米的有：";
-        objects[1] = b.get(0)+"站";
-        objects[2] = "超过50毫米的有：";
-        objects[3] = b.get(1)+"站";
-        objects[4] = "超过30毫米的有：";
-        objects[5] = b.get(2)+"站";
-        objects[6] = "最大的是";
-        objects[7] = b.get(3)+"站";
-        objects[8] = "次大点的是";
-        objects[9] = b.get(4)+"站";
-        objects[10] = "再次大点的是";
-        objects[11] = b.get(5)+"站";
-        dataList.add(objects);
-        //处理时间
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbydatezy")
@@ -805,13 +778,13 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         String title = "旬雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
         Date Time=null;
-        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(date);
         int ri = now.get(Calendar.DATE);
@@ -828,7 +801,7 @@ public class RainExcelController extends HttpServlet{
         String begin = formatter.format(Time);
         String time ="时间："+ begin+""+xun;
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbyxunzy")
@@ -870,7 +843,6 @@ public class RainExcelController extends HttpServlet{
             stcdlist=null;
         }else{
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            System.out.println("stcdOrStnm"+stcdOrStnm);
             String[] sytemp = stcdOrStnm.split(",");
             for(int i = 0; i<sytemp.length; i++){
                 stcdlist.add(sytemp[i]);
@@ -884,8 +856,9 @@ public class RainExcelController extends HttpServlet{
         }
 
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         String title = "月雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
@@ -899,7 +872,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbymonthzy")
@@ -942,7 +915,6 @@ public class RainExcelController extends HttpServlet{
             stcdlist=null;
         }else{
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            System.out.println("stcdOrStnm"+stcdOrStnm);
             String[] sytemp = stcdOrStnm.split(",");
             for(int i = 0; i<sytemp.length; i++){
                 stcdlist.add(sytemp[i]);
@@ -955,6 +927,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -965,7 +938,7 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "年雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数","站名","雨量","降水天数"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
@@ -974,7 +947,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbyyearzy")
@@ -1036,6 +1009,7 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
+        String b = rainfallService.getDaybyTimeJS(dateS, dateE, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -1046,7 +1020,7 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "时段雨量统计报表";
-        String[] rowsName = new String[]{"序号","县名","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量","站名","雨量","最近一小时雨量"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
@@ -1061,9 +1035,9 @@ public class RainExcelController extends HttpServlet{
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
-        String time ="时间："+ begin+"-"+end;
+        String time ="时间："+ begin+"~~"+end;
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
     }
     @GetMapping(value="rainXbytimezy")

@@ -189,7 +189,6 @@ public class RiverExcelController {
         String[] rowsName = new String[]{"河名","站名","水位(m)","流量(m³/s)","数据时间","河名","站名","水位(m)","流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
-        System.out.println("记录是为这个"+a.size());
         for (int i=0; i<a.size(); i++){
             if(i%2==0 || i==0){
                 objects = new Object[rowsName.length];

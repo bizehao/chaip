@@ -198,8 +198,8 @@ public class RsvrExcelController {
         }
         DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际"};
-        String[] shuangName = new String[]{"水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
+        String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际","","","",""};
+        String[] shuangName = new String[]{"","","水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
@@ -239,7 +239,7 @@ public class RsvrExcelController {
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
 
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time,9);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time);
         ex.export();
         rsvrXbyItem();
     }

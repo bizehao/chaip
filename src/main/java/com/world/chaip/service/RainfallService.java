@@ -73,7 +73,15 @@ public interface RainfallService {
 	 */
 	Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	/**
+	 * 逐时雨量统计
+	 * @param date 日期
+	 * @param adcd 测站编码
+	 * @param systemTypes
+	 * @param stcdOrStnm
+	 * @return
+	 */
+	String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 	/**
 	 * 逐日雨量计算
 	 * @param date 日期
@@ -82,7 +90,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
+	String getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
 	 * 逐旬雨量计算
 	 * @param date 日期
@@ -91,7 +99,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
+	String getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
 	 * 逐月雨量计算
 	 * @param date 日期
@@ -100,7 +108,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
+	String getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
 	 * 逐年雨量计算
 	 * @param date 日期
@@ -109,7 +117,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Object> getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
+	String getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 	/**
 	 * 时段雨量计算
 	 * @param dateS
@@ -119,5 +127,5 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	Object getDaybyTimeJS(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn);
+	String getDaybyTimeJS(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn);
 }

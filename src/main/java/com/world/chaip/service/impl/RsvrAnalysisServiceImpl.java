@@ -1,5 +1,6 @@
 package com.world.chaip.service.impl;
 
+import com.world.chaip.entity.Exchange.RsvrExchangeExcel.RsvrExchangeItem;
 import com.world.chaip.entity.Exchange.RsvrStrongeExcel.RsvrStrongeItem;
 import com.world.chaip.entity.Exchange.*;
 import com.world.chaip.entity.Exchange.RsvrWaterExcel.RsvrWC;
@@ -312,7 +313,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
 
     //水库特征值他统计表
     @Override
-    public List<RsvrExchange> getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public RsvrExchangeExcel getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         now.set(Calendar.HOUR_OF_DAY, 8);
@@ -322,6 +323,46 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date endTime = now.getTime();
         List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
-        return list;
+        RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
+        Object[] objects = null;
+        for(int i=0; i<list.size(); i++){
+            RsvrExchangeItem rsvrExchangeItem = null;
+            for (int j=0; j<rsvrExchangeExcel.getRsvrPro().size(); j++){
+                if(rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(list.get(i).getRvnm())){
+                    rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
+                    objects = new Object[9];
+                    objects[0] = list.get(i).getStnm();
+                    objects[1] = list.get(i).getMrz();
+                    objects[2] = list.get(i).getMrztm();
+                    objects[3] = list.get(i).getMw();
+                    objects[4] = list.get(i).getMwtm();
+                    objects[5] = list.get(i).getMinq();
+                    objects[6] = list.get(i).getMinqtm();
+                    objects[7] = list.get(i).getMotq();
+                    objects[8] = list.get(i).getMotqtm();
+                    rsvrExchangeItem.getData().add(objects);
+                }
+            }
+            if(rsvrExchangeItem == null){
+                rsvrExchangeItem = rsvrExchangeExcel.new RsvrExchangeItem();
+                rsvrExchangeItem.setRvnm(list.get(i).getRvnm());
+                objects = new Object[9];
+                objects[0] = list.get(i).getStnm();
+                objects[1] = list.get(i).getMrz();
+                objects[2] = list.get(i).getMrztm();
+                objects[3] = list.get(i).getMw();
+                objects[4] = list.get(i).getMwtm();
+                objects[5] = list.get(i).getMinq();
+                objects[6] = list.get(i).getMinqtm();
+                objects[7] = list.get(i).getMotq();
+                objects[8] = list.get(i).getMotqtm();
+                rsvrExchangeItem.getData().add(objects);
+                rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
+            }
+        }
+        for(int i=0; i<rsvrExchangeExcel.getRsvrPro().size(); i++){
+            System.out.println(rsvrExchangeExcel.getRsvrPro().get(i).getRvnm());
+        }
+        return rsvrExchangeExcel;
     }
 }
