@@ -144,12 +144,6 @@ public class RsvrExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
-       /* String dateStart = "2018-03-15 08";
-        String dateEnd = "2018-03-16 08";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";*/
-
         System.out.println("开始时间00"+dateStart);
         System.out.println("结束时间00"+dateEnd);
         System.out.println("县域"+adcd);

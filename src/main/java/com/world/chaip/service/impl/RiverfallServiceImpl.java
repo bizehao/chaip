@@ -6,6 +6,8 @@ import com.world.chaip.mapper.RiverfallMapper;
 import com.world.chaip.service.RiverfallService;
 import com.world.chaip.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;

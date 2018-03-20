@@ -135,16 +135,11 @@ public class RainExcelController extends HttpServlet{
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response
-                                 /*@RequestParam("date")String dateStr,
+    public void exportRainByDate(HttpServletResponse response,
+                                 @RequestParam("date")String dateStr,
                                  @RequestParam(name="adcd",required=false)String adcd,
                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
-
-        String dateStr="2017-07-21";
-        String adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,";//130530,130531,130532,130533,130534,130535,130581,130582,
-        String systemTypes="11,12,";
-        String stcdOrStnm="X";
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -250,11 +245,6 @@ public class RainExcelController extends HttpServlet{
                                 @RequestParam(name="adcd",required=false)String adcd,
                                 @RequestParam(name="systemTypes",required=false)String systemTypes,
                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
-
-        /*String dateStr="2017-07-11";
-        String adcd="130501,130503,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
-        String systemTypes="11,12,";
-        String stcdOrStnm="X";*/
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
