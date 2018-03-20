@@ -464,7 +464,6 @@ public class RainExcelController extends HttpServlet{
         Date btm = tm.getTime();
         String begin = formatter.format(btm);
         String time ="时间："+ begin;
-        System.out.println(time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
@@ -844,7 +843,6 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
         String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
         String title = "月雨量统计报表";
@@ -855,7 +853,7 @@ public class RainExcelController extends HttpServlet{
         Date beginTime=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.MONTH, -1);
+        now.add(Calendar.MONTH, -1);
         beginTime=now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         String begin = formatter.format(beginTime);
@@ -933,7 +931,11 @@ public class RainExcelController extends HttpServlet{
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-        String begin = formatter.format(date);
+        Calendar tm = Calendar.getInstance();
+        tm.setTime(date);
+        tm.add(Calendar.YEAR,-1);
+        Date ytm = tm.getTime();
+        String begin = formatter.format(ytm);
         String time ="时间："+ begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -1022,7 +1024,7 @@ public class RainExcelController extends HttpServlet{
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"~~"+end;

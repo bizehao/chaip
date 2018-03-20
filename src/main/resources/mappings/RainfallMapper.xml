@@ -124,7 +124,7 @@
 			]]>
 		</where>
 		)PP
-		on ST.STCD=PP.STCD ORDER BY ADNM
+		on ST.STCD=PP.STCD ORDER BY ADNM,st.STCD
 	</select>
 
 	<!-- 逐旬降雨量查询 -->
@@ -195,7 +195,7 @@
 		tm between #{beginTime} and #{Time}
 		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
-		ORDER BY ADNM
+		ORDER BY ADNM,st.STCD
 	</select>
 	<!-- 逐月降雨量查询 实时-->
     <select id="selectByMonth" resultType="com.world.chaip.entity.Rainfall">
@@ -265,7 +265,7 @@
 		tm between #{beginTime} and #{Time}
 		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
-		ORDER BY ADNM
+		ORDER BY ADNM,st.STCD
     </select>
 	<!-- 逐年降雨量查询 -->
 	<select id="selectByYear" resultType="com.world.chaip.entity.Rainfall">
@@ -335,7 +335,7 @@
 		tm between #{beginTime} and #{Time}
 		and dyp > 0 group by STCD) pt
 		on st.STCD = pt.STCD
-		ORDER BY ADNM
+		ORDER BY ADNM,st.STCD
 	</select>
 
 	<!-- 降雨量查询 时段-->
@@ -396,6 +396,6 @@
 		and dyp is NULL group by STCD) pt
 		on st.STCD = pt.STCD
 		left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD
-		ORDER BY ADNM
+		ORDER BY ADNM,st.STCD
 	</select>
 </mapper>

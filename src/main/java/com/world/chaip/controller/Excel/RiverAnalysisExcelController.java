@@ -110,9 +110,9 @@ public class RiverAnalysisExcelController {
         tm.setTime(dateE);
         int endMonth = tm.get(Calendar.MONTH) + 1;
         String time = formatter.format(dateS)+ "年" + beginMonth + "-" + endMonth + "月";
-        String title = time + "年" + beginMonth + "-" + endMonth + "月" + "各主要河道(闸坝)水量统计表";
-        String[] rowsName = new String[]{"序号", "河名", "站名", time + "年" + beginMonth + "-" + endMonth + "月", "", "", "", "", ""};
-        String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(10^6m³)", "最高水位(m)", "出现日期(日)", "最大流量(m³/s)", "出现日期(日)"};
+        String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "各主要河道(闸坝)水量统计表";
+        String[] rowsName = new String[]{"序号", "河名", "站名", formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月", "", "", "", "", ""};
+        String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(m³)", "最高水位(m)", "出现日期(日)", "最大流量(m³/s)", "出现日期(日)"};
         //列头单元格合并
         //序号
         CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
@@ -123,7 +123,7 @@ public class RiverAnalysisExcelController {
         //？年？月
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 3, 8);//起始行,结束行,起始列,结束列
         CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4};
-        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, "");
         ex.export();
     }
 

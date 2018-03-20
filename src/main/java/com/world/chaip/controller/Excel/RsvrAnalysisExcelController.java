@@ -121,10 +121,11 @@ public class RsvrAnalysisExcelController {
         int beginMonth = tm.get(Calendar.MONTH) + 1;
         tm.setTime(dateE);
         int endMonth = tm.get(Calendar.MONTH) + 1;
+        System.out.println(dateS+""+dateE);
         String time = formatter.format(dateS)+ "年" + beginMonth + "-" + endMonth + "月";
-        String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "河北省大型水库洼淀水量计算表";
-        String[] rowsName = new String[]{"序号", "系统", "库名", beginMonth + "月1日","", endMonth + "月1日", "", "蓄水量差(10^6m³)", "出库平均流量(m³/s)", "出库总量(10^6m³)", "入库总量(10^6m³)"};
-        String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(10^6m³)", "水位(m)", "蓄水量(10^6m³)", "", "", "", ""};
+        String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "中小型水库水量计算表";
+        String[] rowsName = new String[]{"序号", "系统", "库名", beginMonth + "月1日","", (endMonth) + "月1日", "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(m³)", "入库总量(m³)"};
+        String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(m³)", "水位(m)", "蓄水量(m³)", "", "", "", ""};
         //列头单元格合并
         //序号
         CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
@@ -146,7 +147,7 @@ public class RsvrAnalysisExcelController {
         CellRangeAddress callRangeAddress9 = new CellRangeAddress(3, 4, 10, 10);//起始行,结束行,起始列,结束列
         CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4,
         callRangeAddress5, callRangeAddress6, callRangeAddress7, callRangeAddress8, callRangeAddress9};
-        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, "");
         ex.export();
 
     }

@@ -109,9 +109,9 @@ public class RainAnalysisExcelController {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
-        String title = time+"年全省及各市年降雨量分析比较表";
-        String[] rowsName = new String[]{"市名","汛期降雨量","","","","","","降雨量与去年同期比较","","","","","降雨量与常年同期比较","","","",""};
-        String[] shuangName = new String[]{"","6月","7月","8月","9月","6-9月","6月,9月对比","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
+        String title = time+"年邢台市年降雨量分析比较表";
+        String[] rowsName = new String[]{"县名","汛期降雨量","","","","","","降雨量与去年同期比较","","","","","降雨量与常年同期比较","","","",""};
+        String[] shuangName = new String[]{"","6月","7月","8月","9月","6-9月","6月、9月对比","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
         //列头单元格合并
         //市名
         CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
@@ -122,7 +122,7 @@ public class RainAnalysisExcelController {
         //目前实际
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,12,16);//起始行,结束行,起始列,结束列
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
         ex.export();
     }
 
@@ -210,8 +210,8 @@ public class RainAnalysisExcelController {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
-        String title = time+"年河北省各市逐月及年降雨量分析比较表";
-        String[] rowsName = new String[]{"市名","降雨量(mm)","","","","","","","","","","","","年降雨量","","","比较","","相对值比较",""};
+        String title = time+"年邢台市逐月及年降雨量分析比较表";
+        String[] rowsName = new String[]{"县名","降雨量(mm)","","","","","","","","","","","","年降雨量","","","比较","","相对值比较(%)",""};
         String[] shuangName = new String[]{"","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月",
                 "降雨量","去年","常年","去年","常年","去年","常年"};
         //列头单元格合并
@@ -227,7 +227,7 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress5 = new CellRangeAddress(3,3,18,19);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4,callRangeAddress5};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
         ex.export();
     }
 
@@ -310,8 +310,8 @@ public class RainAnalysisExcelController {
         int monthE = tm.get(Calendar.MONTH)+1;
         int dayE = tm.get(Calendar.DATE);
         String time = monthS+"月"+dayS+"日"+""+"至"+""+monthE+"月"+dayE+"日";
-        String title = year+"年河北省降雨量分析比较表";
-        String[] rowsName = new String[]{"市名","降雨量(mm)","","","去年同期比较","常年同期比较"};
+        String title = year+"年邢台市降雨量分析比较表";
+        String[] rowsName = new String[]{"县名","降雨量(mm)","","","去年同期比较","常年同期比较"};
         String[] shuangName = new String[]{"",time,"去年同期","常年同期","",""};
         //列头单元格合并
         //市名
@@ -324,7 +324,7 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,4,5,5);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName, titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName, titleCell, dataList, response, "");
         ex.export();
     }
 

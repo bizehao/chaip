@@ -100,6 +100,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
                 if(rsvrWCX.getName() .equals(rsvrsList.get(i).getName())){
                     rsvrWC = rsvrWCX;
                     rsvrWC.getrList().add(rsvrsList.get(i));
+                    break;
                 }
             }
             if(rsvrWC == null){

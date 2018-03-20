@@ -46,15 +46,17 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
         for(int i=0; i<rainfalls.size(); i++){
             /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
-            rainfalls.get(i).setFsltdz(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdz())));
+            rainfalls.get(i).setFsltdz(rainfalls.get(i).getFsltdz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(rainfalls.get(i).getFsltdz())));
             /*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*/
-            rainfalls.get(i).setRz(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getRz())));
-            rainfalls.get(i).setW(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getW())));
-            rainfalls.get(i).setInq(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getInq())));
-            rainfalls.get(i).setOtq(Double.parseDouble(new DecimalFormat("#0.000").format(rainfalls.get(i).getOtq())));
-            if(rainfalls.get(i).getRz() >= rainfalls.get(i).getFsltdz()){
+            rainfalls.get(i).setRz(rainfalls.get(i).getRz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(rainfalls.get(i).getRz())));
+            rainfalls.get(i).setW(rainfalls.get(i).getW()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getW())));
+            rainfalls.get(i).setInq(rainfalls.get(i).getInq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getInq())));
+            rainfalls.get(i).setOtq(rainfalls.get(i).getOtq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getOtq())));
+            double a = rainfalls.get(i).getRz().length()==0?0:Double.parseDouble(rainfalls.get(i).getRz());
+            double b = rainfalls.get(i).getFsltdz().length()==0?0:Double.parseDouble(rainfalls.get(i).getFsltdz());
+            if(a >= b){
                 jilu++;
-                level = rainfalls.get(i).getRz() - rainfalls.get(i).getFsltdz();
+                level = a - b;
                 levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
                 levelList.add(levelS);
             }

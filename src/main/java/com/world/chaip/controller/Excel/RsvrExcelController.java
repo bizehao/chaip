@@ -118,7 +118,7 @@ public class RsvrExcelController {
         beginTime=now.getTime();
         now.setTime(dateE);
         endTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
@@ -137,15 +137,21 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response,
-            @RequestParam("dateS")String dateStart,
+            HttpServletResponse response
+            /*@RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception{
 
-        System.out.println("开始时间00"+dateStart);
-        System.out.println("结束时间00"+dateEnd);
+        String dateStart = "2018-03-19 08:00";
+        String dateEnd = "2018-03-20 08:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+
+        System.out.println("开始时间"+dateStart);
+        System.out.println("结束时间"+dateEnd);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
@@ -212,13 +218,16 @@ public class RsvrExcelController {
             dataList.add(objects);
         }
         Date beginTime=null;
+        Date endTime=null;
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         now.set(Calendar.HOUR_OF_DAY, 8);
         beginTime= now.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh");
+        endTime=now.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
-        String time ="时间："+ begin+"时";
+        String end = formatter.format(endTime);
+        String time ="时间："+ begin+"时"+"~~"+endTime;
 
         //列头单元格合并
         //水库名称

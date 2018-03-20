@@ -269,8 +269,6 @@ public class RiverExcelController {
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
-        System.out.println("这个的颠三倒四"+dateS);
-        System.out.println(dateE);
         now.setTime(dateS);
         beginTime=now.getTime();
         now.setTime(dateE);

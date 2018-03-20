@@ -15,30 +15,30 @@ public class RsvrZhuanYe {
     private String tm;
 
     //总库容
-    private double ttcp;
+    private String ttcp;
 
     //汛期水位
-    private double fsltdz;
+    private String fsltdz;
 
     //汛限库容
-    private double fsltdw;
+    private String fsltdw;
 
     //水位
-    private double rz;
+    private String rz;
 
     //蓄水量
-    private double w;
+    private String w;
 
     //入库流量
-    private double inq;
+    private String inq;
 
     //下泄流量
-    private double otq;
+    private String otq;
 
     public RsvrZhuanYe() {
     }
 
-    public RsvrZhuanYe(String stnm, String stcd, String tm, double ttcp, double fsltdz, double fsltdw, double rz, double w, double inq, double otq) {
+    public RsvrZhuanYe(String stnm, String stcd, String tm, String ttcp, String fsltdz, String fsltdw, String rz, String w, String inq, String otq) {
         this.stnm = stnm;
         this.stcd = stcd;
         this.tm = tm;
@@ -75,59 +75,59 @@ public class RsvrZhuanYe {
         this.tm = tm;
     }
 
-    public double getTtcp() {
+    public String getTtcp() {
         return ttcp;
     }
 
-    public void setTtcp(double ttcp) {
+    public void setTtcp(String ttcp) {
         this.ttcp = ttcp;
     }
 
-    public double getFsltdz() {
+    public String getFsltdz() {
         return fsltdz;
     }
 
-    public void setFsltdz(double fsltdz) {
+    public void setFsltdz(String fsltdz) {
         this.fsltdz = fsltdz;
     }
 
-    public double getFsltdw() {
+    public String getFsltdw() {
         return fsltdw;
     }
 
-    public void setFsltdw(double fsltdw) {
+    public void setFsltdw(String fsltdw) {
         this.fsltdw = fsltdw;
     }
 
-    public double getRz() {
+    public String getRz() {
         return rz;
     }
 
-    public void setRz(double rz) {
+    public void setRz(String rz) {
         this.rz = rz;
     }
 
-    public double getW() {
+    public String getW() {
         return w;
     }
 
-    public void setW(double w) {
+    public void setW(String w) {
         this.w = w;
     }
 
-    public double getInq() {
+    public String getInq() {
         return inq;
     }
 
-    public void setInq(double inq) {
+    public void setInq(String inq) {
         this.inq = inq;
     }
 
-    public double getOtq() {
+    public String getOtq() {
         return otq;
     }
 
-    public void setOtq(double otq) {
+    public void setOtq(String otq) {
         this.otq = otq;
     }
 }
