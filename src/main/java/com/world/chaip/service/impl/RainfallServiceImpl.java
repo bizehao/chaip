@@ -8,10 +8,8 @@ import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcel.DayRain;
 import com.world.chaip.entity.excelFormat.DayRainExcelX.DayRainX;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
-import com.world.chaip.entity.report.Pptn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.DaybyHourRainfall.DayByHourRainfallItem;
 import com.world.chaip.entity.Rainfall;

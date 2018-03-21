@@ -41,6 +41,12 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
+        /*String dateStart = "2018-01";
+        String dateEnd = "2018-11";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";*/
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -124,7 +130,13 @@ public class RsvrAnalysisExcelController {
         System.out.println(dateS+""+dateE);
         String time = formatter.format(dateS)+ "年" + beginMonth + "-" + endMonth + "月";
         String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "中小型水库水量计算表";
-        String[] rowsName = new String[]{"序号", "系统", "库名", beginMonth + "月1日","", (endMonth) + "月1日", "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(m³)", "入库总量(m³)"};
+        String endtm = "";
+        if(endMonth==12){
+            endtm = endMonth+"月31日";
+        }else{
+            endtm = (endMonth+1)+"月1日";
+        }
+        String[] rowsName = new String[]{"序号", "系统", "库名", beginMonth + "月1日","", endtm, "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(m³)", "入库总量(m³)"};
         String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(m³)", "水位(m)", "蓄水量(m³)", "", "", "", ""};
         //列头单元格合并
         //序号
