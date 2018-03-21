@@ -34,18 +34,18 @@ public class RsvrAnalysisExcelController {
     //水库水量分析表
     @GetMapping("getrsvrexchangewaterexcel")
     public void GetRsvrByAnalysiswaterExcel(
-            HttpServletResponse response,
-            @RequestParam("dateS")String dateStart,
+            HttpServletResponse response
+            /*@RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
 
-        /*String dateStart = "2018-01";
+        String dateStart = "2018-01";
         String dateEnd = "2018-11";
         String adcd = "X";
         String systemTypes = "11,12,";
-        String stcdOrStnm = "X";*/
+        String stcdOrStnm = "X";
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -250,13 +250,13 @@ public class RsvrAnalysisExcelController {
                 dataList.add(objects);
             }
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateTime);
         String time = formatter.format(dateTime);
-        String title = time+ "河北省水库蓄水量分析表";
-        String[] rowsName = new String[]{"河系", "库名", "蓄水量(10^6m³)", "去年同期(10^6m³)", "较去年(10^6m³)", "常年同期(10^6m³)", "较常年(10^6m³)"};
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        String title = time+ "年水库蓄水量分析表";
+        String[] rowsName = new String[]{"河系", "库名", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
         ex.export();
     }
 
