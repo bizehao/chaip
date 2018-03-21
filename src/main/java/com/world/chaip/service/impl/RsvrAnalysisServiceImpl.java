@@ -325,39 +325,39 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         Date endTime = now.getTime();
         List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
         RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
-        Object[] objects = null;
+        RsvrTZCount rsvrTZCount = null;
         for(int i=0; i<list.size(); i++){
             RsvrExchangeItem rsvrExchangeItem = null;
             for (int j=0; j<rsvrExchangeExcel.getRsvrPro().size(); j++){
                 if(rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(list.get(i).getRvnm())){
                     rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
-                    objects = new Object[9];
-                    objects[0] = list.get(i).getStnm();
-                    objects[1] = list.get(i).getMrz();
-                    objects[2] = list.get(i).getMrztm();
-                    objects[3] = list.get(i).getMw();
-                    objects[4] = list.get(i).getMwtm();
-                    objects[5] = list.get(i).getMinq();
-                    objects[6] = list.get(i).getMinqtm();
-                    objects[7] = list.get(i).getMotq();
-                    objects[8] = list.get(i).getMotqtm();
-                    rsvrExchangeItem.getData().add(objects);
+                    rsvrTZCount = new RsvrTZCount();
+                    rsvrTZCount.setStnm(list.get(i).getStnm());
+                    rsvrTZCount.setMrz(getBL3(list.get(i).getMrz()));
+                    rsvrTZCount.setMrztm(list.get(i).getMrztm());
+                    rsvrTZCount.setMw(getBL2(list.get(i).getMw()));
+                    rsvrTZCount.setMwtm(list.get(i).getMwtm());
+                    rsvrTZCount.setMinq(getBL3(list.get(i).getMinq()));
+                    rsvrTZCount.setMinqtm(list.get(i).getMinqtm());
+                    rsvrTZCount.setMotq(getBL3(list.get(i).getMotq()));
+                    rsvrTZCount.setMotqtm(list.get(i).getMotqtm());
+                    rsvrExchangeItem.getData().add(rsvrTZCount);
                 }
             }
             if(rsvrExchangeItem == null){
                 rsvrExchangeItem = rsvrExchangeExcel.new RsvrExchangeItem();
                 rsvrExchangeItem.setRvnm(list.get(i).getRvnm());
-                objects = new Object[9];
-                objects[0] = list.get(i).getStnm();
-                objects[1] = list.get(i).getMrz();
-                objects[2] = list.get(i).getMrztm();
-                objects[3] = list.get(i).getMw();
-                objects[4] = list.get(i).getMwtm();
-                objects[5] = list.get(i).getMinq();
-                objects[6] = list.get(i).getMinqtm();
-                objects[7] = list.get(i).getMotq();
-                objects[8] = list.get(i).getMotqtm();
-                rsvrExchangeItem.getData().add(objects);
+                rsvrTZCount = new RsvrTZCount();
+                rsvrTZCount.setStnm(list.get(i).getStnm());
+                rsvrTZCount.setMrz(getBL3(list.get(i).getMrz()));
+                rsvrTZCount.setMrztm(list.get(i).getMrztm());
+                rsvrTZCount.setMw(getBL2(list.get(i).getMw()));
+                rsvrTZCount.setMwtm(list.get(i).getMwtm());
+                rsvrTZCount.setMinq(getBL3(list.get(i).getMinq()));
+                rsvrTZCount.setMinqtm(list.get(i).getMinqtm());
+                rsvrTZCount.setMotq(getBL3(list.get(i).getMotq()));
+                rsvrTZCount.setMotqtm(list.get(i).getMotqtm());
+                rsvrExchangeItem.getData().add(rsvrTZCount);
                 rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
             }
         }
@@ -366,4 +366,13 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService{
         }
         return rsvrExchangeExcel;
     }
+
+    public String getBL3(double x){
+       return new DecimalFormat("#0.000").format(x);
+    }
+
+    public String getBL2(double x){
+        return new DecimalFormat("#0.00").format(x);
+    }
+
 }

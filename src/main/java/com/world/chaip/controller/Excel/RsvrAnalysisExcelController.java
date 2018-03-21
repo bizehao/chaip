@@ -34,18 +34,12 @@ public class RsvrAnalysisExcelController {
     //水库水量分析表
     @GetMapping("getrsvrexchangewaterexcel")
     public void GetRsvrByAnalysiswaterExcel(
-            HttpServletResponse response
-            /*@RequestParam("dateS")String dateStart,
+            HttpServletResponse response,
+            @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
-
-        String dateStart = "2018-01";
-        String dateEnd = "2018-11";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -178,8 +172,6 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
-
-
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -274,6 +266,12 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
+        /*String dateStart = "2017-02-11";
+        String dateEnd = "2017-06-12";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";*/
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -323,7 +321,7 @@ public class RsvrAnalysisExcelController {
         RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
-        Object[] rsvrStrongeChild = null;
+        RsvrTZCount rsvrStrongeChild = null;
         RsvrExchangeExcel rsvrExchangeExcel = null;
         for (int i = 0; i < a.getRsvrPro().size(); i++) {
             RsvrExchangeExcel.RsvrExchangeItem rsvrExchangeItem = a.getRsvrPro().get(i);;
@@ -335,15 +333,15 @@ public class RsvrAnalysisExcelController {
                     objects[0] = "";
                 }
                 rsvrStrongeChild =  rsvrExchangeItem.getData().get(j);
-                objects[1] = rsvrStrongeChild[0];
-                objects[2] = rsvrStrongeChild[1];
-                objects[3] = rsvrStrongeChild[2];
-                objects[4] = rsvrStrongeChild[3];
-                objects[5] = rsvrStrongeChild[4];
-                objects[6] = rsvrStrongeChild[5];
-                objects[7] = rsvrStrongeChild[6];
-                objects[8] = rsvrStrongeChild[7];
-                objects[9] = rsvrStrongeChild[8];
+                objects[1] = rsvrStrongeChild.getStnm();
+                objects[2] = rsvrStrongeChild.getMrz();
+                objects[3] = rsvrStrongeChild.getMrztm();
+                objects[4] = rsvrStrongeChild.getMw();
+                objects[5] = rsvrStrongeChild.getMwtm();
+                objects[6] = rsvrStrongeChild.getMinq();
+                objects[7] = rsvrStrongeChild.getMinqtm();
+                objects[8] = rsvrStrongeChild.getMotq();
+                objects[9] = rsvrStrongeChild.getMotqtm();
                 dataList.add(objects);
             }
         }

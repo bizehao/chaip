@@ -23,13 +23,13 @@ public class RsvrExchangeExcel {
         //河名
         private String rvnm;
         //子项信息
-        private List<Object[]> data;
+        private List<RsvrTZCount> data;
 
         public RsvrExchangeItem() {
             this.data = new ArrayList<>();
         }
 
-        public RsvrExchangeItem(String rvnm, List<Object[]> data) {
+        public RsvrExchangeItem(String rvnm, List<RsvrTZCount> data) {
             this.rvnm = rvnm;
             this.data = data;
         }
@@ -42,11 +42,11 @@ public class RsvrExchangeExcel {
             this.rvnm = rvnm;
         }
 
-        public List<Object[]> getData() {
+        public List<RsvrTZCount> getData() {
             return data;
         }
 
-        public void setData(List<Object[]> data) {
+        public void setData(List<RsvrTZCount> data) {
             this.data = data;
         }
     }
