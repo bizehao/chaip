@@ -142,7 +142,7 @@ public class RsvrAnalysisController {
     }
     //水库特征值统计表
     @GetMapping("getrsvrexchangetongji")
-    public JsonResult GetRsvrByAnalysistongji(
+    public RsvrExchangeExcel GetRsvrByAnalysistongji(
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
@@ -196,7 +196,7 @@ public class RsvrAnalysisController {
             e.printStackTrace();
         }
         RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
-        return new JsonResult(a);
+        return a;
     }
 
 }
