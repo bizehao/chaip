@@ -97,7 +97,7 @@ public class RainExcelController extends HttpServlet{
             sig=Integer.parseInt(sign);
         }
         List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig);
-        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,column,sign);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist);
         String title = "逐时雨量统计报表";
         String[] rowsName = new String[]{"序号","县名","站名","站类","累计值(mm)","9","10","11","12","13","14","15","16",
                 "17","18","19","20","21","22","23","0","1","2","3","4","5","6","7","8"};

@@ -40,7 +40,7 @@ public class RealtimeRainfallController {
 
     //时段雨量
     @GetMapping("getrainbyhour")
-    public RainEc getRainByHour(
+    public JsonResult getRainByHour(
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
@@ -107,11 +107,12 @@ public class RealtimeRainfallController {
             sig=Integer.parseInt(sign);
         }
         List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig);
-        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,column,sign);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist);
         RainEc arrList = new RainEc();
         arrList.setPptnGsonList(a);
         arrList.setMessage(b);
-        return arrList;
+        System.out.println("======="+b);
+        return new JsonResult(arrList);
     }
     //日雨量
     @GetMapping("getrainbydate")

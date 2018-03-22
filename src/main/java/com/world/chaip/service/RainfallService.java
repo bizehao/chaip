@@ -82,7 +82,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String column, String sign);
+	String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
 	/**
 	 * 逐日雨量计算
 	 * @param date 日期

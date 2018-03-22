@@ -25,32 +25,32 @@ import javax.validation.constraints.Null;
 @Service
 public class RainfallServiceImpl implements RainfallService {
 
-	@Autowired
-	private RainfallMapper rainfallMapper;
+    @Autowired
+    private RainfallMapper rainfallMapper;
 
-	//时段降雨量
-	@Override
-	public List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,int column,int sign) {
-		Date beginTime=null;
-		Date endTime=null;
-		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		beginTime=now.getTime();
-		endTime=DateUtils.getDateAfter(beginTime, 1);
-		System.out.println(beginTime+","+endTime);
-		List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
-		System.out.println("数量"+rainfalls.size());
-		if(rainfalls!=null && rainfalls.size()>0) {
-			for(int i=0;i<rainfalls.size();i++) {
-				DayByHourRainfallItem tempItem =null;
+    //时段降雨量
+    @Override
+    public List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,int column,int sign) {
+        Date beginTime=null;
+        Date endTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        System.out.println(beginTime+","+endTime);
+        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        System.out.println("数量"+rainfalls.size());
+        if(rainfalls!=null && rainfalls.size()>0) {
+            for(int i=0;i<rainfalls.size();i++) {
+                DayByHourRainfallItem tempItem =null;
 				/*System.out.println(i+"这个"+daybyHourRainfall.getData().size());*/
-				for(int j=0;j<daybyHourRainfall.getData().size();j++) {
-					DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
-					if(tempItemX.getStcd().equals(rainfalls.get(i).getStcd())) {
-						tempItem=tempItemX;
-						if(rainfalls.get(i).getDrp() == null){
+                for(int j=0;j<daybyHourRainfall.getData().size();j++) {
+                    DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
+                    if(tempItemX.getStcd().equals(rainfalls.get(i).getStcd())) {
+                        tempItem=tempItemX;
+                        if(rainfalls.get(i).getDrp() == null){
                             tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
                         }else{
                             tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
@@ -58,30 +58,30 @@ public class RainfallServiceImpl implements RainfallService {
 						/*System.out.println((double) rainfalls.get(i).getTm().getHours()+","+rainfalls.get(i).getDrp());*/
                         /*System.out.println(rainfalls.get(i).getDrp());
                         dyp+=rainfalls.get(i).getDrp();*/
-						if(i == rainfalls.size()-1){
-							tempItem=tempItemX;
-							double count = tempItem.testValues();
-							tempItem.setCountDrp(count);
+                        if(i == rainfalls.size()-1){
+                            tempItem=tempItemX;
+                            double count = tempItem.testValues();
+                            tempItem.setCountDrp(count);
 							/*System.out.println("sads"+count);*/
-						}
-						break;
-					}else{
-						tempItem=tempItemX;
-						double count = tempItem.testValues();
-						tempItem.setCountDrp(count);
-						tempItem = null;
+                        }
+                        break;
+                    }else{
+                        tempItem=tempItemX;
+                        double count = tempItem.testValues();
+                        tempItem.setCountDrp(count);
+                        tempItem = null;
 						/*System.out.println("sads"+count);*/
-					}
-				}
+                    }
+                }
 				/*System.out.println(dyp);*/
-				if(tempItem==null) {
-					tempItem=daybyHourRainfall.new DayByHourRainfallItem();
-					tempItem.setStcd(rainfalls.get(i).getStcd());
-					tempItem.setStnm(rainfalls.get(i).getStnm());
-					tempItem.setLgtd(rainfalls.get(i).getLgtd());
-					tempItem.setLttd(rainfalls.get(i).getLttd());
-					tempItem.setName(rainfalls.get(i).getName());
-					tempItem.setAdnm(rainfalls.get(i).getAdnm());
+                if(tempItem==null) {
+                    tempItem=daybyHourRainfall.new DayByHourRainfallItem();
+                    tempItem.setStcd(rainfalls.get(i).getStcd());
+                    tempItem.setStnm(rainfalls.get(i).getStnm());
+                    tempItem.setLgtd(rainfalls.get(i).getLgtd());
+                    tempItem.setLttd(rainfalls.get(i).getLttd());
+                    tempItem.setName(rainfalls.get(i).getName());
+                    tempItem.setAdnm(rainfalls.get(i).getAdnm());
                     if(rainfalls.get(i).getDrp() == null){
                         tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
                     }else{
@@ -89,12 +89,12 @@ public class RainfallServiceImpl implements RainfallService {
                     }
                     daybyHourRainfall.getData().add(tempItem);
 					/*tempItem.setDyp(dyp);*/
-				}
-			}
-		}
+                }
+            }
+        }
         List<PptnGson> list = new ArrayList<>();
         PptnGson pptnGson = null;
-		for(int i=0; i<daybyHourRainfall.getData().size(); i++){
+        for(int i=0; i<daybyHourRainfall.getData().size(); i++){
             pptnGson = new PptnGson();
             pptnGson.setAdnm(daybyHourRainfall.getData().get(i).getAdnm());
             pptnGson.setStnm(daybyHourRainfall.getData().get(i).getStnm());
@@ -130,56 +130,56 @@ public class RainfallServiceImpl implements RainfallService {
             list =  getListPX(list,column,sign);
         }
 
-		return list;
-	}
+        return list;
+    }
 
-	//日降雨量
-	@Override
-	public Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+    //日降雨量
+    @Override
+    public Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
         Date beginTime=null;
-		Date endTime=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		beginTime=now.getTime();
-		endTime=DateUtils.getDateAfter(beginTime, 1);
-		List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
-		if(cid == 0){
-			return list;
-		}
+        Date endTime=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
+        if(cid == 0){
+            return list;
+        }
 		/*for(int i=0; i<list.size(); i++){
 			System.out.println(list.get(i).getStcd()+""+list.get(i).getStnm());
 		}*/
-		System.out.println("日降水量的记录数"+list.size());
-		Object[] objects = null;
-		DayRainExcel dayRainExcel = new DayRainExcel();
-		if(list != null && list.size()>0){
-			for(int i=0; i<list.size(); i++){
-				DayRain dayRain = null;
-				for(int j=0; j<dayRainExcel.getDayRainList().size(); j++){
-					DayRain dayRainX = dayRainExcel.getDayRainList().get(j);
-					if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
-						dayRain=dayRainX;
-						objects = new Object[2];
-						objects[0] = list.get(i).getStnm();
-						objects[1] = list.get(i).getDyp();
-						dayRain.getDayRainList().add(objects);
+        System.out.println("日降水量的记录数"+list.size());
+        Object[] objects = null;
+        DayRainExcel dayRainExcel = new DayRainExcel();
+        if(list != null && list.size()>0){
+            for(int i=0; i<list.size(); i++){
+                DayRain dayRain = null;
+                for(int j=0; j<dayRainExcel.getDayRainList().size(); j++){
+                    DayRain dayRainX = dayRainExcel.getDayRainList().get(j);
+                    if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
+                        dayRain=dayRainX;
+                        objects = new Object[2];
+                        objects[0] = list.get(i).getStnm();
+                        objects[1] = list.get(i).getDyp();
+                        dayRain.getDayRainList().add(objects);
 						/*System.out.println(list.get(i).getStnm());*/
-						break;
-					}
-				}
-				if(dayRain == null){
-					dayRain = dayRainExcel.new DayRain();
-					dayRain.setAdnm(list.get(i).getAdnm());
-					objects = new Object[2];
-					objects[0] = list.get(i).getStnm();
-					objects[1] = list.get(i).getDyp();
-					dayRain.getDayRainList().add(objects);
+                        break;
+                    }
+                }
+                if(dayRain == null){
+                    dayRain = dayRainExcel.new DayRain();
+                    dayRain.setAdnm(list.get(i).getAdnm());
+                    objects = new Object[2];
+                    objects[0] = list.get(i).getStnm();
+                    objects[1] = list.get(i).getDyp();
+                    dayRain.getDayRainList().add(objects);
 					/*System.out.println(list.get(i).getStnm());*/
-					dayRainExcel.getDayRainList().add(dayRain);
-				}
-			}
-		}
+                    dayRainExcel.getDayRainList().add(dayRain);
+                }
+            }
+        }
 		/*System.out.println("=============================");*/
 		/*for(int i=0; i<dayRainExcel.getDayRainList().size(); i++){
 			System.out.println(dayRainExcel.getDayRainList().get(i).getAdnm());
@@ -189,119 +189,119 @@ public class RainfallServiceImpl implements RainfallService {
 				System.out.println("Key = 1" + entry.getKey() + ", Value = 1" + entry.getValue());
 			}
 		}*/
-		return dayRainExcel;
-	}
+        return dayRainExcel;
+    }
 
-	//旬降雨量
-	@Override
-	public Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
-		Date Time=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.DATE, -9);
-		beginTime = now.getTime();
-		List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		if(cid == 0){
-			return list;
-		}
-		return getXYN(list);
-	}
+    //旬降雨量
+    @Override
+    public Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+        Date Time=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.DATE, -9);
+        beginTime = now.getTime();
+        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        if(cid == 0){
+            return list;
+        }
+        return getXYN(list);
+    }
 
-	//月降雨量
-	@Override
-	public Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
-		Date Time=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.MONTH, -1);
-		now.add(Calendar.DATE, 1);
-		beginTime = now.getTime();
-		List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		if(cid == 0){
-			return list;
-		}
-		return getXYN(list);
-	}
+    //月降雨量
+    @Override
+    public Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+        Date Time=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.MONTH, -1);
+        now.add(Calendar.DATE, 1);
+        beginTime = now.getTime();
+        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        if(cid == 0){
+            return list;
+        }
+        return getXYN(list);
+    }
 
-	//年降雨量
-	@Override
-	public Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
-		Date Time=null;
-		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.YEAR, -1);
-		now.add(Calendar.DATE, 1);
-		beginTime = now.getTime();
-		List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		if(cid == 0){
-			return list;
-		}
-		return getXYN(list);
-	}
+    //年降雨量
+    @Override
+    public Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+        Date Time=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.YEAR, -1);
+        now.add(Calendar.DATE, 1);
+        beginTime = now.getTime();
+        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        if(cid == 0){
+            return list;
+        }
+        return getXYN(list);
+    }
 
-	//时段降雨量
-	@Override
-	public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
-		Calendar now =  Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH);
-		int day = now.get(Calendar.DATE);
-		int hour = now.get(Calendar.HOUR_OF_DAY);
-		now.set(year,month,day,hour,0,0);
-		now.set(Calendar.MILLISECOND,0);
+    //时段降雨量
+    @Override
+    public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+        Calendar now =  Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH);
+        int day = now.get(Calendar.DATE);
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        now.set(year,month,day,hour,0,0);
+        now.set(Calendar.MILLISECOND,0);
         Date NowTime = now.getTime();
         System.out.println(NowTime);
         //开始时间
-		now.setTime(dateS);
-		now.set(Calendar.MINUTE,0);
-		dateS = now.getTime();
-		//结束时间
-		now.setTime(dateE);
-		now.set(Calendar.MINUTE,0);
-		dateE = now.getTime();
-		List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn);
-		if(cid == 0){
-			return list;
-		}
-		DayRainExcelX dayRainExcelX = new DayRainExcelX();
-		Object[] obRainX = null;
-		if(list != null && list.size()>0){
-			for(int i=0; i<list.size(); i++){
-				DayRainX dayRainM = null;
-				for(int j=0; j<dayRainExcelX.getDayRainXList().size(); j++){
-					DayRainX dayRainX = dayRainExcelX.getDayRainXList().get(j);
-					if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
-						dayRainM=dayRainX;
-						obRainX = new Object[3];
-						obRainX[0] = list.get(i).getStnm();
-						obRainX[1] = list.get(i).getNum();
-						obRainX[2] = list.get(i).getDrp();
-						dayRainM.getRainList().add(obRainX);
-						break;
-					}
-				}
-				if(dayRainM == null){
-					dayRainM = dayRainExcelX.new DayRainX();
-					dayRainM.setAdnm(list.get(i).getAdnm());
-					obRainX = new Object[3];
-					obRainX[0] = list.get(i).getStnm();
-					obRainX[1] = list.get(i).getNum();
-					obRainX[2] = list.get(i).getDrp();
-					dayRainM.getRainList().add(obRainX);
-					dayRainExcelX.getDayRainXList().add(dayRainM);
-				}
-			}
-		}
+        now.setTime(dateS);
+        now.set(Calendar.MINUTE,0);
+        dateS = now.getTime();
+        //结束时间
+        now.setTime(dateE);
+        now.set(Calendar.MINUTE,0);
+        dateE = now.getTime();
+        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn);
+        if(cid == 0){
+            return list;
+        }
+        DayRainExcelX dayRainExcelX = new DayRainExcelX();
+        Object[] obRainX = null;
+        if(list != null && list.size()>0){
+            for(int i=0; i<list.size(); i++){
+                DayRainX dayRainM = null;
+                for(int j=0; j<dayRainExcelX.getDayRainXList().size(); j++){
+                    DayRainX dayRainX = dayRainExcelX.getDayRainXList().get(j);
+                    if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
+                        dayRainM=dayRainX;
+                        obRainX = new Object[3];
+                        obRainX[0] = list.get(i).getStnm();
+                        obRainX[1] = list.get(i).getNum();
+                        obRainX[2] = list.get(i).getDrp();
+                        dayRainM.getRainList().add(obRainX);
+                        break;
+                    }
+                }
+                if(dayRainM == null){
+                    dayRainM = dayRainExcelX.new DayRainX();
+                    dayRainM.setAdnm(list.get(i).getAdnm());
+                    obRainX = new Object[3];
+                    obRainX[0] = list.get(i).getStnm();
+                    obRainX[1] = list.get(i).getNum();
+                    obRainX[2] = list.get(i).getDrp();
+                    dayRainM.getRainList().add(obRainX);
+                    dayRainExcelX.getDayRainXList().add(dayRainM);
+                }
+            }
+        }
 		/*for(int i=0;i<dayRainExcelX.getDayRainXList().size();i++){
 		    for(int j=0;j<dayRainExcelX.getDayRainXList().get(i).getRainList().size();j++){
                 System.out.println(dayRainExcelX.getDayRainXList().get(i).getRainList().get(j)[0]);
@@ -310,92 +310,172 @@ public class RainfallServiceImpl implements RainfallService {
                 System.out.println("=======================================");
             }
         }*/
-		return dayRainExcelX;
-	}
+        return dayRainExcelX;
+    }
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//逐时降雨量计算
-	@Override
-	public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String column, String sign) {
-		Date beginTime=null;
-		Date endTime=null;
-		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		beginTime=now.getTime();
-		endTime=DateUtils.getDateAfter(beginTime, 1);
-		System.out.println(beginTime+","+endTime);
-		List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
-		String xianshi = coonPC(rainfalls,0);
-		return xianshi;
-	}
+    //逐时降雨量计算
+    @Override
+    public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+        Date beginTime=null;
+        Date endTime=null;
+        DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        System.out.println(beginTime+","+endTime);
+        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        if(rainfalls!=null && rainfalls.size()>0) {
+            for(int i=0;i<rainfalls.size();i++) {
+                DayByHourRainfallItem tempItem =null;
+                for(int j=0;j<daybyHourRainfall.getData().size();j++) {
+                    DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
+                    if(tempItemX.getStcd().equals(rainfalls.get(i).getStcd())) {
+                        tempItem=tempItemX;
+                        if(rainfalls.get(i).getDrp() == null){
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
+                        }else{
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+                        }
+                        if(i == rainfalls.size()-1){
+                            tempItem=tempItemX;
+                            double count = tempItem.testValues();
+                            tempItem.setCountDrp(count);
+                        }
+                        break;
+                    }else{
+                        tempItem=tempItemX;
+                        double count = tempItem.testValues();
+                        tempItem.setCountDrp(count);
+                        tempItem = null;
+                    }
+                }
+                if(tempItem==null) {
+                    tempItem=daybyHourRainfall.new DayByHourRainfallItem();
+                    tempItem.setStcd(rainfalls.get(i).getStcd());
+                    tempItem.setStnm(rainfalls.get(i).getStnm());
+                    tempItem.setLgtd(rainfalls.get(i).getLgtd());
+                    tempItem.setLttd(rainfalls.get(i).getLttd());
+                    tempItem.setName(rainfalls.get(i).getName());
+                    tempItem.setAdnm(rainfalls.get(i).getAdnm());
+                    if(rainfalls.get(i).getDrp() == null){
+                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
+                    }else{
+                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+                    }
+                    daybyHourRainfall.getData().add(tempItem);
+                }
+            }
+        }
+        int hundred = 0;
+        int Fifty = 0;
+        int Thirty = 0;
 
-	//日降雨量计算
-	@Override
-	public String getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
-		Date beginTime=null;
-		Date endTime=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		beginTime=now.getTime();
-		endTime=DateUtils.getDateAfter(beginTime, 1);
-		List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
-		String xianshi = coonPC(list,1);
-		return xianshi;
-	}
+        bgm:for(int i=0; i<daybyHourRainfall.getData().size(); i++){
+            Map<Double,Double> map = daybyHourRainfall.getData().get(i).getHourRainfalls();
+            int hundredmap = 0;
+            int Fiftymap = 0;
+            int Thirtymap = 0;
+            for (Double value : map.values()) {
+                if(Thirtymap != 1){
+                    if(value >= 30){
+                        Thirty++;
+                        Thirtymap++;
+                    }
+                }
+                if(Fiftymap != 1){
+                    if(value >= 50){
+                        Fifty++;
+                        Fiftymap++;
+                    }
+                }
+                if(hundredmap != 1){
+                    if(value >= 100){
+                        hundred++;
+                        hundredmap++;
+                    }
+                }
+                if(hundredmap==1&&Fiftymap==1&&Thirtymap==1){
+                    continue bgm;
+                }
+            }
+        }
+        String xianshi ="一小时 超过100毫米的有："+
+                hundred+"站;"+
+                "超过50毫米的有："+
+                Fifty+"站;"+
+                "超过30毫米的有："+
+                Thirty+"站";
+        return xianshi;
+    }
 
-	//旬降雨量计算
-	@Override
-	public String getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
-		Date Time=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.DATE, -9);
-		beginTime = now.getTime();
-		List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		String xianshi = coonPC(list,2);
-		return xianshi;
-	}
+    //日降雨量计算
+    @Override
+    public String getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+        Date beginTime=null;
+        Date endTime=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        beginTime=now.getTime();
+        endTime=DateUtils.getDateAfter(beginTime, 1);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
+        String xianshi = coonPC(list,1);
+        return xianshi;
+    }
 
-	//月降雨量计算
-	@Override
-	public String getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
-		Date Time=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.MONTH, -1);
-		now.add(Calendar.DATE, 1);
-		beginTime = now.getTime();
-		List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		String xianshi = coonPC(list,2);
-		return xianshi;
-	}
+    //旬降雨量计算
+    @Override
+    public String getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+        Date Time=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.DATE, -9);
+        beginTime = now.getTime();
+        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        String xianshi = coonPC(list,2);
+        return xianshi;
+    }
 
-	//年降雨量计算
-	@Override
-	public String getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
-		Date Time=null;
-		Calendar now = Calendar.getInstance();
-		now.setTime(date);
-		now.set(Calendar.HOUR_OF_DAY, 8);
-		Time=now.getTime();
-		Date beginTime = null;
-		now.add(Calendar.YEAR, -1);
-		now.add(Calendar.DATE, 1);
-		beginTime = now.getTime();
-		List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
-		String xianshi = coonPC(list,2);
-		return xianshi;
-	}
+    //月降雨量计算
+    @Override
+    public String getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+        Date Time=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.MONTH, -1);
+        now.add(Calendar.DATE, 1);
+        beginTime = now.getTime();
+        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        String xianshi = coonPC(list,2);
+        return xianshi;
+    }
+
+    //年降雨量计算
+    @Override
+    public String getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+        Date Time=null;
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.HOUR_OF_DAY, 8);
+        Time=now.getTime();
+        Date beginTime = null;
+        now.add(Calendar.YEAR, -1);
+        now.add(Calendar.DATE, 1);
+        beginTime = now.getTime();
+        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn);
+        String xianshi = coonPC(list,2);
+        return xianshi;
+    }
 
     //时段降雨量计算
     @Override
@@ -422,16 +502,16 @@ public class RainfallServiceImpl implements RainfallService {
     }
 
     //list集合排序   0 =逐时  1=日  2= 旬月年  3 = 时段
-	public String coonPC(List<Rainfall> list,int sign) {
+    public String coonPC(List<Rainfall> list,int sign) {
         int hundred = 0;
         int Fifty = 0;
         int Thirty = 0;
         double dyp = 0;
         double x = 0;
-        if(sign ==0){
+        if(sign == 1){
             for(int i = 0; i<list.size(); i++) {
-                x = list.get(i).getDrp();
-                if (x != 0) {
+                x = list.get(i).getDyp();
+                if (list.get(i).getDyp() != null) {
                     dyp = x;
                 }
                 if (dyp >= 100) {
@@ -443,35 +523,7 @@ public class RainfallServiceImpl implements RainfallService {
                 if (dyp >= 30) {
                     Thirty++;
                 }
-                Collections.sort(list, new Comparator<Rainfall>() {
-                    @Override
-                    public int compare(Rainfall o1, Rainfall o2) {
-                        if (o1.getDrp() > o2.getDrp()) {
-                            return -1;
-                        }
-                        if (o1.getDrp().equals(o2.getDrp())) {
-                            return 0;
-                        }
-                        return 1;
-                    }
-                });
             }
-        }else if(sign == 1){
-                for(int i = 0; i<list.size(); i++) {
-                    x = list.get(i).getDyp();
-                    if (list.get(i).getDyp() != null) {
-                        dyp = x;
-                    }
-                    if (dyp >= 100) {
-                        hundred++;
-                    }
-                    if (dyp >= 50) {
-                        Fifty++;
-                    }
-                    if (dyp >= 30) {
-                        Thirty++;
-                    }
-                }
             Collections.sort(list, new Comparator<Rainfall>() {
                 @Override
                 public int compare(Rainfall o1, Rainfall o2) {
@@ -566,7 +618,6 @@ public class RainfallServiceImpl implements RainfallService {
             String one = "";
             String two = "";
             String three = "";
-            System.out.println("最大"+list.get(0).getDyp());
             if(list.size()==1){
                 one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
             }else if(list.size()==2){
@@ -577,10 +628,6 @@ public class RainfallServiceImpl implements RainfallService {
                 two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
                 three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"毫米";
             }
-            System.out.println("超过100的:"+hundred);
-            System.out.println("超过50的:"+Fifty);
-            System.out.println("超过30的:"+Thirty);
-            System.out.println("前三个:第一个"+one+", 第二个"+two+","+", 第三个"+three);
             xianshi ="超过100毫米的有："+
                     hundred+"站"+
                     "超过50毫米的有："+
@@ -592,51 +639,58 @@ public class RainfallServiceImpl implements RainfallService {
                     "次大点的是"+
                     two+"站"+
                     "再次大点的是"+
-                    three+"站";
+                    three+"站;"+
+                    "超过100毫米的有："+
+                    hundred+"站;"+
+                    "超过50毫米的有："+
+                    Fifty+"站;"+
+                    "超过30毫米的有："+
+                    Thirty+"站";
+            return xianshi;
         }
-		return xianshi;
-	}
-	//处理旬月年
-	public DayRainExcelX getXYN(List<Rainfall>  list) {
-		DayRainExcelX dayRainExcelX = new DayRainExcelX();
-		Object[] obRainX = null;
-		if(list != null && list.size()>0){
-			for(int i=0; i<list.size(); i++){
-				DayRainX dayRainM = null;
-				for(int j=0; j<dayRainExcelX.getDayRainXList().size(); j++){
-					DayRainX dayRainX = dayRainExcelX.getDayRainXList().get(j);
-					if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
-						dayRainM=dayRainX;
-						obRainX = new Object[3];
-						obRainX[0] = list.get(i).getStnm();
-						obRainX[1] = list.get(i).getAccp();
-						obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
-						dayRainM.getRainList().add(obRainX);
-						break;
-					}
-				}
-				if(dayRainM == null){
-					dayRainM = dayRainExcelX.new DayRainX();
-					dayRainM.setAdnm(list.get(i).getAdnm());
-					obRainX = new Object[3];
-					obRainX[0] = list.get(i).getStnm();
-					obRainX[1] = list.get(i).getAccp();
-					obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
-					dayRainM.getRainList().add(obRainX);
-					dayRainExcelX.getDayRainXList().add(dayRainM);
-				}
-			}
-		}
+        return xianshi;
+    }
+    //处理旬月年
+    public DayRainExcelX getXYN(List<Rainfall>  list) {
+        DayRainExcelX dayRainExcelX = new DayRainExcelX();
+        Object[] obRainX = null;
+        if(list != null && list.size()>0){
+            for(int i=0; i<list.size(); i++){
+                DayRainX dayRainM = null;
+                for(int j=0; j<dayRainExcelX.getDayRainXList().size(); j++){
+                    DayRainX dayRainX = dayRainExcelX.getDayRainXList().get(j);
+                    if(dayRainX.getAdnm().equals(list.get(i).getAdnm())){
+                        dayRainM=dayRainX;
+                        obRainX = new Object[3];
+                        obRainX[0] = list.get(i).getStnm();
+                        obRainX[1] = list.get(i).getAccp();
+                        obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
+                        dayRainM.getRainList().add(obRainX);
+                        break;
+                    }
+                }
+                if(dayRainM == null){
+                    dayRainM = dayRainExcelX.new DayRainX();
+                    dayRainM.setAdnm(list.get(i).getAdnm());
+                    obRainX = new Object[3];
+                    obRainX[0] = list.get(i).getStnm();
+                    obRainX[1] = list.get(i).getAccp();
+                    obRainX[2] = new DecimalFormat("#").format(list.get(i).getNum());
+                    dayRainM.getRainList().add(obRainX);
+                    dayRainExcelX.getDayRainXList().add(dayRainM);
+                }
+            }
+        }
 		/*for(int i=0; i<dayRainExcelX.getDayRainXList().size();i++){
 		    for (int j=0; j<dayRainExcelX.getDayRainXList().get(i).getRainList().size();j++){
                 System.out.println("导出的"+dayRainExcelX.getDayRainXList().get(i).getRainList().get(j)[0]);
             }
 
         }*/
-		return dayRainExcelX;
-	}
+        return dayRainExcelX;
+    }
 
-	public List<PptnGson> getListPX(List<PptnGson> list, int column, int sign){
+    public List<PptnGson> getListPX(List<PptnGson> list, int column, int sign){
         switch (column) {
             case 9:
                 Collections.sort(list, new Comparator<PptnGson>() {
