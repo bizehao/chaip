@@ -147,7 +147,7 @@ public class RsvrAnalysisController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();

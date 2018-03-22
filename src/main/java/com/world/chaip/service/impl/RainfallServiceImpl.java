@@ -8,6 +8,9 @@ import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcel.DayRain;
 import com.world.chaip.entity.excelFormat.DayRainExcelX.DayRainX;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
+import com.world.chaip.entity.report.gson.PptnGson;
+import com.world.chaip.entity.report.gson.RainEc;
+import org.apache.poi.hssf.record.formula.functions.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.world.chaip.entity.DaybyHourRainfall;
@@ -27,7 +30,7 @@ public class RainfallServiceImpl implements RainfallService {
 
 	//时段降雨量
 	@Override
-	public DaybyHourRainfall getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+	public List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,int column,int sign) {
 		Date beginTime=null;
 		Date endTime=null;
 		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
@@ -47,7 +50,11 @@ public class RainfallServiceImpl implements RainfallService {
 					DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
 					if(tempItemX.getStcd().equals(rainfalls.get(i).getStcd())) {
 						tempItem=tempItemX;
-						tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+						if(rainfalls.get(i).getDrp() == null){
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
+                        }else{
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+                        }
 						/*System.out.println((double) rainfalls.get(i).getTm().getHours()+","+rainfalls.get(i).getDrp());*/
                         /*System.out.println(rainfalls.get(i).getDrp());
                         dyp+=rainfalls.get(i).getDrp();*/
@@ -75,13 +82,55 @@ public class RainfallServiceImpl implements RainfallService {
 					tempItem.setLttd(rainfalls.get(i).getLttd());
 					tempItem.setName(rainfalls.get(i).getName());
 					tempItem.setAdnm(rainfalls.get(i).getAdnm());
-                    tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
-					daybyHourRainfall.getData().add(tempItem);
+                    if(rainfalls.get(i).getDrp() == null){
+                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
+                    }else{
+                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+                    }
+                    daybyHourRainfall.getData().add(tempItem);
 					/*tempItem.setDyp(dyp);*/
 				}
 			}
 		}
-		return daybyHourRainfall;
+        List<PptnGson> list = new ArrayList<>();
+        PptnGson pptnGson = null;
+		for(int i=0; i<daybyHourRainfall.getData().size(); i++){
+            pptnGson = new PptnGson();
+            pptnGson.setAdnm(daybyHourRainfall.getData().get(i).getAdnm());
+            pptnGson.setStnm(daybyHourRainfall.getData().get(i).getStnm());
+            pptnGson.setName(daybyHourRainfall.getData().get(i).getName());
+            pptnGson.setCountDrp(daybyHourRainfall.getData().get(i).getCountDrp());
+            pptnGson.setNineDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(9.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(9.0));
+            pptnGson.setTenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(10.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(10.0));
+            pptnGson.setElevenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(11.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(11.0));
+            pptnGson.setTwelveDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(12.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(12.0));
+            pptnGson.setThirteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(13.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(13.0));
+            pptnGson.setFourteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(14.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(14.0));
+            pptnGson.setFifteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(15.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(15.0));
+            pptnGson.setSixteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(16.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(16.0));
+            pptnGson.setSeventeenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(17.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(17.0));
+            pptnGson.setEighteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(18.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(18.0));
+            pptnGson.setNineteenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(19.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(19.0));
+            pptnGson.setTwentyDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(20.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(20.0));
+            pptnGson.setTwenty_oneDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(21.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(21.0));
+            pptnGson.setTwenty_twoDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(22.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(22.0));
+            pptnGson.setTwenty_threeDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(23.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(23.0));
+            pptnGson.setZeroDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(0.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(0.0));
+            pptnGson.setOneDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(1.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(1.0));
+            pptnGson.setTwoDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(2.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(2.0));
+            pptnGson.setThreeDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(3.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(3.0));
+            pptnGson.setFourDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(4.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(4.0));
+            pptnGson.setFiveDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(5.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(5.0));
+            pptnGson.setSixDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(6.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(6.0));
+            pptnGson.setSevenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(7.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(7.0));
+            pptnGson.setEightDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(8.0)==null?0:daybyHourRainfall.getData().get(i).getHourRainfalls().get(8.0));
+            list.add(pptnGson);
+        }
+        if(column != -1){
+            list =  getListPX(list,column,sign);
+        }
+
+		return list;
 	}
 
 	//日降雨量
@@ -268,7 +317,7 @@ public class RainfallServiceImpl implements RainfallService {
 
 	//逐时降雨量计算
 	@Override
-	public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+	public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String column, String sign) {
 		Date beginTime=null;
 		Date endTime=null;
 		DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
@@ -372,7 +421,7 @@ public class RainfallServiceImpl implements RainfallService {
         return xianshi;
     }
 
-    //list集合排序   0 =日  1=旬月年 2=时段
+    //list集合排序   0 =逐时  1=日  2= 旬月年  3 = 时段
 	public String coonPC(List<Rainfall> list,int sign) {
         int hundred = 0;
         int Fifty = 0;
@@ -397,15 +446,13 @@ public class RainfallServiceImpl implements RainfallService {
                 Collections.sort(list, new Comparator<Rainfall>() {
                     @Override
                     public int compare(Rainfall o1, Rainfall o2) {
-                        double a = 0;
-                        double b = 0;
-                        if (o1.getDrp() != null) {
-                            a = o1.getDyp();
+                        if (o1.getDrp() > o2.getDrp()) {
+                            return -1;
                         }
-                        if (o2.getDrp() != null) {
-                            b = o2.getDyp();
+                        if (o1.getDrp().equals(o2.getDrp())) {
+                            return 0;
                         }
-                        return new Double(b).compareTo(new Double(a));
+                        return 1;
                     }
                 });
             }
@@ -424,21 +471,19 @@ public class RainfallServiceImpl implements RainfallService {
                     if (dyp >= 30) {
                         Thirty++;
                     }
-                    Collections.sort(list, new Comparator<Rainfall>() {
-                        @Override
-                        public int compare(Rainfall o1, Rainfall o2) {
-                            double a = 0;
-                            double b = 0;
-                            if (o1.getDyp() != null) {
-                                a = o1.getDyp();
-                            }
-                            if (o2.getDyp() != null) {
-                                b = o2.getDyp();
-                            }
-                            return new Double(b).compareTo(new Double(a));
-                        }
-                    });
                 }
+            Collections.sort(list, new Comparator<Rainfall>() {
+                @Override
+                public int compare(Rainfall o1, Rainfall o2) {
+                    if (o1.getDyp() > o2.getDyp()) {
+                        return -1;
+                    }
+                    if (o1.getDyp().equals(o2.getDyp())) {
+                        return 0;
+                    }
+                    return 1;
+                }
+            });
         }else if(sign == 2){
             for(int i = 0; i<list.size(); i++) {
                 x = list.get(i).getAccp();
@@ -454,21 +499,19 @@ public class RainfallServiceImpl implements RainfallService {
                 if (dyp >= 30) {
                     Thirty++;
                 }
-                Collections.sort(list, new Comparator<Rainfall>() {
-                    @Override
-                    public int compare(Rainfall o1, Rainfall o2) {
-                        double a = 0;
-                        double b = 0;
-                        if (o1.getAccp() != null) {
-                            a = o1.getDyp();
-                        }
-                        if (o2.getAccp() != null) {
-                            b = o2.getDyp();
-                        }
-                        return new Double(b).compareTo(new Double(a));
-                    }
-                });
             }
+            Collections.sort(list, new Comparator<Rainfall>() {
+                @Override
+                public int compare(Rainfall o1, Rainfall o2) {
+                    if (o1.getAccp() > o2.getAccp()) {
+                        return -1;
+                    }
+                    if (o1.getAccp().equals(o2.getAccp())) {
+                        return 0;
+                    }
+                    return 1;
+                }
+            });
         }else{
             for(int i = 0; i<list.size(); i++) {
                 x = list.get(i).getNum();
@@ -484,73 +527,73 @@ public class RainfallServiceImpl implements RainfallService {
                 if (dyp >= 30) {
                     Thirty++;
                 }
-                Collections.sort(list, new Comparator<Rainfall>() {
-                    @Override
-                    public int compare(Rainfall o1, Rainfall o2) {
-                        double a = 0;
-                        double b = 0;
-                        if (o1.getAccp() != null) {
-                            a = o1.getNum();
-                        }
-                        if (o2.getAccp() != null) {
-                            b = o2.getNum();
-                        }
-                        return new Double(b).compareTo(new Double(a));
-                    }
-                });
             }
+            Collections.sort(list, new Comparator<Rainfall>() {
+                @Override
+                public int compare(Rainfall o1, Rainfall o2) {
+                    if (o1.getNum() > o2.getNum()) {
+                        return -1;
+                    }
+                    if (o1.getNum().equals(o2.getNum())) {
+                        return 0;
+                    }
+                    return 1;
+                }
+            });
         }
+        String xianshi = "";
         double y1 = 0;
         double y2 = 1;
         double y3 = 2;
-        if(sign==0){
-            y1 = list.get(0).getDrp();
-            y2 = list.get(1).getDrp();
-            y3 = list.get(2).getDrp();
-        }else if(sign==1){
-            y1 = list.get(0).getDyp();
-            y2 = list.get(1).getDyp();
-            y3 = list.get(2).getDyp();
-        }else if(sign==2){
-            y1 = list.get(0).getAccp();
-            y2 = list.get(1).getAccp();
-            y3 = list.get(2).getAccp();
-        }else{
-            y1 = list.get(0).getNum();
-            y2 = list.get(1).getNum();
-            y3 = list.get(2).getNum();
+        if(list.size()>3){
+            if(sign==0){
+                y1 = list.get(0).getDrp();
+                y2 = list.get(1).getDrp();
+                y3 = list.get(2).getDrp();
+            }else if(sign==1){
+                y1 = list.get(0).getDyp();
+                y2 = list.get(1).getDyp();
+                y3 = list.get(2).getDyp();
+            }else if(sign==2){
+                y1 = list.get(0).getAccp();
+                y2 = list.get(1).getAccp();
+                y3 = list.get(2).getAccp();
+            }else{
+                y1 = list.get(0).getNum();
+                y2 = list.get(1).getNum();
+                y3 = list.get(2).getNum();
+            }
+            String one = "";
+            String two = "";
+            String three = "";
+            System.out.println("最大"+list.get(0).getDyp());
+            if(list.size()==1){
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
+            }else if(list.size()==2){
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
+                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
+            }else{
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
+                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
+                three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"毫米";
+            }
+            System.out.println("超过100的:"+hundred);
+            System.out.println("超过50的:"+Fifty);
+            System.out.println("超过30的:"+Thirty);
+            System.out.println("前三个:第一个"+one+", 第二个"+two+","+", 第三个"+three);
+            xianshi ="超过100毫米的有："+
+                    hundred+"站"+
+                    "超过50毫米的有："+
+                    Fifty+"站"+
+                    "超过30毫米的有："+
+                    Thirty+"站"+
+                    "最大的是"+
+                    one+"站"+
+                    "次大点的是"+
+                    two+"站"+
+                    "再次大点的是"+
+                    three+"站";
         }
-
-        String one = "";
-        String two = "";
-        String three = "";
-		System.out.println("最大"+list.get(0).getDyp());
-		if(list.size()==1){
-            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
-        }else if(list.size()==2){
-            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
-            two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
-        }else{
-            one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
-            two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
-            three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"毫米";
-        }
-		System.out.println("超过100的:"+hundred);
-		System.out.println("超过50的:"+Fifty);
-		System.out.println("超过30的:"+Thirty);
-		System.out.println("前三个:第一个"+one+", 第二个"+two+","+", 第三个"+three);
-		String xianshi ="超过100毫米的有："+
-				hundred+"站"+
-				"超过50毫米的有："+
-				Fifty+"站"+
-				"超过30毫米的有："+
-				Thirty+"站"+
-				"最大的是"+
-				one+"站"+
-				"次大点的是"+
-				two+"站"+
-				 "再次大点的是"+
-				 three+"站";
 		return xianshi;
 	}
 	//处理旬月年
@@ -593,4 +636,585 @@ public class RainfallServiceImpl implements RainfallService {
 		return dayRainExcelX;
 	}
 
+	public List<PptnGson> getListPX(List<PptnGson> list, int column, int sign){
+        switch (column) {
+            case 9:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getNineDrp() > o2.getNineDrp()) {
+                                return 1;
+                            }
+                            if (o1.getNineDrp() == o2.getNineDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getNineDrp() > o2.getNineDrp()) {
+                                return -1;
+                            }
+                            if (o1.getNineDrp() == o2.getNineDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 10:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTenDrp() > o2.getTenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTenDrp() == o2.getTenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTenDrp() > o2.getTenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTenDrp() == o2.getTenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 11:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getElevenDrp() > o2.getElevenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getElevenDrp() == o2.getElevenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getElevenDrp() > o2.getElevenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getElevenDrp() == o2.getElevenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 12:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwelveDrp() > o2.getTwelveDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwelveDrp() == o2.getTwelveDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwelveDrp() > o2.getTwelveDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwelveDrp() == o2.getTwelveDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 13:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getThirteenDrp() > o2.getThirteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getThirteenDrp() == o2.getThirteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getThirteenDrp() > o2.getThirteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getThirteenDrp() == o2.getThirteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 14:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getFourteenDrp() > o2.getFourteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getFourteenDrp() == o2.getFourteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getFourteenDrp() > o2.getFourteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getFourteenDrp() == o2.getFourteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 15:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getFifteenDrp() > o2.getFifteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getFifteenDrp() == o2.getFifteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getFifteenDrp() > o2.getFifteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getFifteenDrp() == o2.getFifteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 16:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getSixteenDrp() > o2.getSixteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getSixteenDrp() == o2.getSixteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getSixteenDrp() > o2.getSixteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getSixteenDrp() == o2.getSixteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 17:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getSeventeenDrp() > o2.getSeventeenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getSeventeenDrp() == o2.getSeventeenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getSeventeenDrp() > o2.getSeventeenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getSeventeenDrp() == o2.getSeventeenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 18:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getEighteenDrp() > o2.getEighteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getEighteenDrp() == o2.getEighteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getEighteenDrp() > o2.getEighteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getEighteenDrp() == o2.getEighteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 19:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getNineteenDrp() > o2.getNineteenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getNineteenDrp() == o2.getNineteenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getNineteenDrp() > o2.getNineteenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getNineteenDrp() == o2.getNineteenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 20:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwentyDrp() > o2.getTwentyDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwentyDrp() == o2.getTwentyDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwentyDrp() > o2.getTwentyDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwentyDrp() == o2.getTwentyDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 21:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwenty_oneDrp() > o2.getTwenty_oneDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwenty_oneDrp() == o2.getTwenty_oneDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwenty_oneDrp() > o2.getTwenty_oneDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwenty_oneDrp() == o2.getTwenty_oneDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 22:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwenty_twoDrp() > o2.getTwenty_twoDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwenty_twoDrp() == o2.getTwenty_twoDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwenty_twoDrp() > o2.getTwenty_twoDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwenty_twoDrp() == o2.getTwenty_twoDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 23:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwenty_threeDrp() > o2.getTwenty_threeDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwenty_threeDrp() == o2.getTwenty_threeDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwenty_threeDrp() > o2.getTwenty_threeDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwenty_threeDrp() == o2.getTwenty_threeDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 0:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getZeroDrp() > o2.getZeroDrp()) {
+                                return 1;
+                            }
+                            if (o1.getZeroDrp() == o2.getZeroDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getZeroDrp() > o2.getZeroDrp()) {
+                                return -1;
+                            }
+                            if (o1.getZeroDrp() == o2.getZeroDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 1:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getOneDrp() > o2.getOneDrp()) {
+                                return 1;
+                            }
+                            if (o1.getOneDrp() == o2.getOneDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getOneDrp() > o2.getOneDrp()) {
+                                return -1;
+                            }
+                            if (o1.getOneDrp() == o2.getOneDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 2:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getTwoDrp() > o2.getTwoDrp()) {
+                                return 1;
+                            }
+                            if (o1.getTwoDrp() == o2.getTwoDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getTwoDrp() > o2.getTwoDrp()) {
+                                return -1;
+                            }
+                            if (o1.getTwoDrp() == o2.getTwoDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 3:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getThreeDrp() > o2.getThreeDrp()) {
+                                return 1;
+                            }
+                            if (o1.getThreeDrp() == o2.getThreeDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getThreeDrp() > o2.getThreeDrp()) {
+                                return -1;
+                            }
+                            if (o1.getThreeDrp() == o2.getThreeDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 4:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getFourDrp() > o2.getFourDrp()) {
+                                return 1;
+                            }
+                            if (o1.getFourDrp() == o2.getFourDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getFourDrp() > o2.getFourDrp()) {
+                                return -1;
+                            }
+                            if (o1.getFourDrp() == o2.getFourDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 5:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getFiveDrp() > o2.getFiveDrp()) {
+                                return 1;
+                            }
+                            if (o1.getFiveDrp() == o2.getFiveDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getFiveDrp() > o2.getFiveDrp()) {
+                                return -1;
+                            }
+                            if (o1.getFiveDrp() == o2.getFiveDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 6:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getSixDrp() > o2.getSixDrp()) {
+                                return 1;
+                            }
+                            if (o1.getSixDrp() == o2.getSixDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getSixDrp() > o2.getSixDrp()) {
+                                return -1;
+                            }
+                            if (o1.getSixDrp() == o2.getSixDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 7:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getSevenDrp() > o2.getSevenDrp()) {
+                                return 1;
+                            }
+                            if (o1.getSevenDrp() == o2.getSevenDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getSevenDrp() > o2.getSevenDrp()) {
+                                return -1;
+                            }
+                            if (o1.getSevenDrp() == o2.getSevenDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 8:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getEightDrp() > o2.getEightDrp()) {
+                                return 1;
+                            }
+                            if (o1.getEightDrp() == o2.getEightDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getEightDrp() > o2.getEightDrp()) {
+                                return -1;
+                            }
+                            if (o1.getEightDrp() == o2.getEightDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+        }
+        return list;
+    }
 }

@@ -7,6 +7,7 @@ import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
+import com.world.chaip.entity.report.gson.PptnGson;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +25,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	DaybyHourRainfall getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+    List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int column, int sign);
 	/**
 	 * 逐日雨量统计
 	 * @param date 日期
@@ -81,7 +82,7 @@ public interface RainfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String column, String sign);
 	/**
 	 * 逐日雨量计算
 	 * @param date 日期

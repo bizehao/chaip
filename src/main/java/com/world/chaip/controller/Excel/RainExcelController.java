@@ -7,6 +7,7 @@ import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
+import com.world.chaip.entity.report.gson.PptnGson;
 import com.world.chaip.service.RainfallService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
@@ -44,7 +45,9 @@ public class RainExcelController extends HttpServlet{
                                  @RequestParam("date")String dateStr,
                                  @RequestParam(name="adcd",required=false)String adcd,
                                  @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+                                 @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+                                 @RequestParam(name="column",required=false)String column,
+                                 @RequestParam(name="sign",required=false)String sign) throws Exception{
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -84,28 +87,53 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DaybyHourRainfall a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist);
-        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist);
+        int col = -1;
+        int sig = -1;
+        if(!column.equals("X")){
+            col=Integer.parseInt(column);
+        }
+
+        if(!sign.equals("X")){
+            sig=Integer.parseInt(sign);
+        }
+        List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,column,sign);
         String title = "逐时雨量统计报表";
         String[] rowsName = new String[]{"序号","县名","站名","站类","累计值(mm)","9","10","11","12","13","14","15","16",
                 "17","18","19","20","21","22","23","0","1","2","3","4","5","6","7","8"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
-        for (int i=0; i<a.getData().size(); i++){
-            DaybyHourRainfall.DayByHourRainfallItem item = a.getData().get(i);
+        for (int i=0; i<a.size(); i++){
             objects = new Object[rowsName.length];
             objects[0] = i+1;
-            objects[1] = item.getAdnm();
-            objects[2] = item.getStnm();
-            objects[3] = item.getName();
-            objects[4] = (double) Math.round(item.getCountDrp() * 100) / 100;
-            for(int j=9; j<=23; j++){
-                objects[j-4] = item.getHourRainfalls().get((double)j);
-            }
-            for(int k=0; k<=8; k++){
-                objects[k+20] = item.getHourRainfalls().get((double)k);
-            }
-
+            objects[1] = a.get(i).getAdnm();
+            objects[2] = a.get(i).getStnm();
+            objects[3] = a.get(i).getName();
+            objects[4] = a.get(i).getCountDrp();
+            objects[5] = a.get(i).getNineDrp();
+            objects[6] = a.get(i).getTenDrp();
+            objects[7] = a.get(i).getElevenDrp();
+            objects[8] = a.get(i).getTwelveDrp();
+            objects[9] = a.get(i).getThirteenDrp();
+            objects[10] = a.get(i).getFourteenDrp();
+            objects[11] = a.get(i).getFifteenDrp();
+            objects[12] = a.get(i).getSixteenDrp();
+            objects[13] = a.get(i).getSeventeenDrp();
+            objects[14] = a.get(i).getEighteenDrp();
+            objects[15] = a.get(i).getNineteenDrp();
+            objects[16] = a.get(i).getTwentyDrp();
+            objects[17] = a.get(i).getTwenty_oneDrp();
+            objects[18] = a.get(i).getTwenty_twoDrp();
+            objects[19] = a.get(i).getTwenty_threeDrp();
+            objects[20] = a.get(i).getZeroDrp();
+            objects[21] = a.get(i).getOneDrp();
+            objects[22] = a.get(i).getTwoDrp();
+            objects[23] = a.get(i).getThreeDrp();
+            objects[24] = a.get(i).getFourDrp();
+            objects[25] = a.get(i).getFiveDrp();
+            objects[26] = a.get(i).getSixDrp();
+            objects[27] = a.get(i).getSevenDrp();
+            objects[28] = a.get(i).getEightDrp();
             dataList.add(objects);
         }
         //处理时间

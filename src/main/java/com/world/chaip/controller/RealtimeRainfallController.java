@@ -12,6 +12,8 @@ import com.world.chaip.business.ExportExcel;
 import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
+import com.world.chaip.entity.report.gson.PptnGson;
+import com.world.chaip.entity.report.gson.RainEc;
 import com.world.chaip.util.JsonResult;
 import org.apache.juli.logging.Log;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,11 +40,13 @@ public class RealtimeRainfallController {
 
     //时段雨量
     @GetMapping("getrainbyhour")
-    public Object getRainByHour(
+    public RainEc getRainByHour(
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="column",required=false)String column,
+            @RequestParam(name="sign",required=false)String sign){
         /*adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";*/
         /*dateStr="2017-06-04";
         systemTypes="11,12,";
@@ -53,6 +57,9 @@ public class RealtimeRainfallController {
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
+        System.out.println("列名"+column);
+        System.out.println("顺序"+sign);
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -90,9 +97,21 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DaybyHourRainfall a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist);
-        System.out.println(a.getData().size());
-        return a;
+        int col = -1;
+        int sig = -1;
+        if(!column.equals("X")){
+            col=Integer.parseInt(column);
+        }
+
+        if(!sign.equals("X")){
+            sig=Integer.parseInt(sign);
+        }
+        List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,column,sign);
+        RainEc arrList = new RainEc();
+        arrList.setPptnGsonList(a);
+        arrList.setMessage(b);
+        return arrList;
     }
     //日雨量
     @GetMapping("getrainbydate")

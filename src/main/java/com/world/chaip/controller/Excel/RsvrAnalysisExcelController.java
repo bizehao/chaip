@@ -354,7 +354,7 @@ public class RsvrAnalysisExcelController {
         String time=time1+"~~"+time2;
         String title = year+ "年水库(洼淀)最高水位，最大蓄水量统计表";
         String[] rowsName = new String[]{"河名", "站名", year+"年","","","","","","",""};
-        String[] shuangName = new String[]{"", "", "最高水位(m)", "出现日期(日)", "最大蓄水量(m³)", "出现日期(日)", "最大入库流量(m³/s)", "出现日期(日)", "最大出库流量(m³/s)", "出现日期(日)"};
+        String[] shuangName = new String[]{"", "", "最高水位(m)", "出现日期(日)", "最大蓄水量(百万m³)", "出现日期(日)", "最大入库流量(m³/s)", "出现日期(日)", "最大出库流量(m³/s)", "出现日期(日)"};
         //列头单元格合并
         //河名
         CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
@@ -363,7 +363,7 @@ public class RsvrAnalysisExcelController {
         //时间
         CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 3, 2, 9);//起始行,结束行,起始列,结束列
         CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3};
-        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, "");
         ex.export();
     }
     @GetMapping(value="getrsvrexchangetongjiexcelfw")
