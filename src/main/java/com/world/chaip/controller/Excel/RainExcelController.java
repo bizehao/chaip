@@ -48,6 +48,7 @@ public class RainExcelController extends HttpServlet{
                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
                                  @RequestParam(name="column",required=false)String column,
                                  @RequestParam(name="sign",required=false)String sign) throws Exception{
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -55,7 +56,7 @@ public class RainExcelController extends HttpServlet{
         if(adcd.equals("X")){
             adcdlist=null;
         }else {
-            adcd = adcd.substring(0, adcd.length() - 1);
+            adcd = adcd.substring(0, adcd.length() -1);
             String[] temp = adcd.split(",");
             for(int i = 0; i<temp.length; i++){
                 adcdlist.add(temp[i]);
@@ -151,6 +152,7 @@ public class RainExcelController extends HttpServlet{
         String time ="时间："+ begin+"~~"+end;
         System.out.println(time);
         //导出Excel公共方法调用
+        System.out.println(b);
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
         ex.export();
         rainXbyHour();

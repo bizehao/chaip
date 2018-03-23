@@ -1,5 +1,6 @@
 package com.world.chaip.entity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,8 @@ public class DaybyHourRainfall {
                 /*System.out.println(value);*/
                 count += value;
             }
+            String cou = new DecimalFormat("#0.0").format(count);
+            count = Double.parseDouble(cou);
             return count;
         }
 

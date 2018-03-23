@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,21 +35,7 @@ public class ChaipApplicationTests {
 
 	@Test
 	public void contextLoads1() throws IOException {
-			/*Properties pro = new Properties();
-			InputStream in = new BufferedInputStream( new FileInputStream("ipConfig.properties"));
-			pro.load(in);
-			String ipAddress = pro.getProperty("ip");
-			System.out.println(ipAddress);
-			in.close();*/
-		// 获得资源包
-		ResourceBundle rb = ResourceBundle.getBundle("ipConfig".trim());
-		// 通过资源包拿到所有的key
-		Enumeration<String> allKey = rb.getKeys();
-		// 遍历key 得到 value
-		while (allKey.hasMoreElements()) {
-			String key = allKey.nextElement();
-			String value = (String) rb.getString(key);
-			System.out.println(value);
-		}
-	}
+        String ipAddress = InetAddress.getLocalHost().getHostAddress();
+        System.out.println(ipAddress);
+    }
 }

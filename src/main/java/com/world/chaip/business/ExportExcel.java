@@ -6,12 +6,14 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.Inet4Address;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,19 @@ public class ExportExcel {
         this.title = title;
         this.time = time;
         this.response = response;
+    }
+
+    //构造方法，传入要导出的数据 双行表头 有最后一行
+    public ExportExcel(String title,String[] rowName,String[] shuangName,CellRangeAddress[] shuangCell,List<Object[]>  dataList,
+                       HttpServletResponse response, String time,String xianshi){
+        this.dataList = dataList;
+        this.rowName = rowName;
+        this.shuangName = shuangName;
+        this.shuangCell = shuangCell;
+        this.title = title;
+        this.time = time;
+        this.response = response;
+        this.xianshi = xianshi;
     }
 
     //构造方法，传入要导出的数据 最后一行
@@ -164,31 +179,46 @@ public class ExportExcel {
                     cell.setCellStyle(style);                                   //设置单元格样式
                 }
             }
-            System.out.println("高度"+dataList.size());
+            int chang = 0;
             if(xianshi != null){
-                CellRangeAddress lastCallRangeAddress = new CellRangeAddress(dataList.size()+5,dataList.size()+5,0,40);//起始行,结束行,起始列,结束列
-                sheet.addMergedRegion(lastCallRangeAddress);
-                HSSFRow lastRow = sheet.createRow(dataList.size()+5);                // 创建最后一行
-                HSSFCell cell = lastRow.createCell(0);
-                cell.setCellValue(xianshi);
+                CellRangeAddress lastCallRangeAddress = null;
+                chang = (int) Math.ceil(xianshi.length()/100)+1;
+                System.out.println("asasa"+chang);
+                int hou =0;
+                for(int i = 0; i<chang; i++){
+                    lastCallRangeAddress = new CellRangeAddress(dataList.size()+6+i,dataList.size()+6+i,0,columnNum-1);//起始行,结束行,起始列,结束列
+                    sheet.addMergedRegion(lastCallRangeAddress);
+                    HSSFRow lastRow = sheet.createRow(dataList.size()+6+i);                // 创建最后一行
+                    HSSFCell cell = lastRow.createCell(0);
+                    if((xianshi.length()-100*(i+1)-1)>99){
+                        cell.setCellValue(xianshi.substring(i*100,100*(i+1)-1));
+                    }else{
+                        cell.setCellValue(xianshi.substring(i*100,xianshi.length()-1));
+                    }
+                    HSSFCellStyle alignStyle = workbook.createCellStyle();
+                    alignStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                    cell.setCellStyle(alignStyle);
+                }
             }
             //让列宽随着导出的列长自动适应
             for (int colNum = 0; colNum < columnNum; colNum++) {
                 int columnWidth = sheet.getColumnWidth(colNum) / 256;
-                for (int rowNum = 0; rowNum < sheet.getLastRowNum(); rowNum++) {
-                    HSSFRow currentRow;
-                    //当前行未被使用过
-                    if (sheet.getRow(rowNum) == null) {
-                        currentRow = sheet.createRow(rowNum);
-                    } else {
-                        currentRow = sheet.getRow(rowNum);
-                    }
-                    if (currentRow.getCell(colNum) != null) {
-                        HSSFCell currentCell = currentRow.getCell(colNum);
-                        if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-                            int length = currentCell.getStringCellValue().getBytes().length;
-                            if (columnWidth < length) {
-                                columnWidth = length;
+                for (int rowNum = 0; rowNum < sheet.getLastRowNum()-chang; rowNum++) {
+                    if(rowNum !=2){
+                        HSSFRow currentRow;
+                        //当前行未被使用过
+                        if (sheet.getRow(rowNum) == null) {
+                            currentRow = sheet.createRow(rowNum);
+                        } else {
+                            currentRow = sheet.getRow(rowNum);
+                        }
+                        if (currentRow.getCell(colNum) != null) {
+                            HSSFCell currentCell = currentRow.getCell(colNum);
+                            if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+                                int length = currentCell.getStringCellValue().getBytes().length;
+                                if (columnWidth < length) {
+                                    columnWidth = length;
+                                }
                             }
                         }
                     }

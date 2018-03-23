@@ -1,6 +1,7 @@
 package com.world.chaip.controller.Excel;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.service.RiverfallService;
@@ -28,6 +29,8 @@ public class RiverExcelController {
 
     @Autowired
     private RiverfallService riverfallService;
+
+    private String ip = StaticConfig.ipAddress;
 
     //导出河道表(实时库)
     @GetMapping("getriverbyitembyexcel")
@@ -126,7 +129,7 @@ public class RiverExcelController {
     //河道
     @GetMapping("riverXbyitem")
     public JsonResult riverXbyItem(){
-        return new JsonResult("http://192.168.1.63:8080/services/realtime/riverfallexcel/getriverbyitembyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/riverfallexcel/getriverbyitembyexcel");
     }
 
     //导出河道表(本区)
@@ -142,8 +145,8 @@ public class RiverExcelController {
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
+        System.out.println("开始000时间"+dateStart);
+        System.out.println("结束00时间"+dateEnd);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
@@ -286,7 +289,7 @@ public class RiverExcelController {
     //河道(本区)
     @GetMapping("riverXbyben")
     public JsonResult riverXbyBen(){
-        return new JsonResult("http://192.168.1.63:8080/services/realtime/riverfallexcel/getriverbybenbyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/riverfallexcel/getriverbybenbyexcel");
     }
 
     //导出河道表(外区)
@@ -401,7 +404,7 @@ public class RiverExcelController {
     //河道 (外区)
     @GetMapping("riverXbywai")
     public JsonResult riverXbyWai(){
-        return new JsonResult("http://192.168.1.63:8080/services/realtime/riverfallexcel/getriverbywaibyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/riverfallexcel/getriverbywaibyexcel");
     }
 
 

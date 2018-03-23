@@ -1,6 +1,7 @@
 package com.world.chaip.controller.Excel;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.report.River;
@@ -35,6 +36,8 @@ public class RsvrExcelController {
 
     @Autowired
     private RsvrfallService rsvrfallService;
+
+    private String ip = StaticConfig.ipAddress;
 
     //水库 (实时)
     @GetMapping("getrsvrbyitembyexcel")
@@ -197,6 +200,7 @@ public class RsvrExcelController {
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
+        String head = dayRsvr.getLevels();
         for (int i=0; i<a.size(); i++){
             RsvrZhuanYe item = a.get(i);
             objects = new Object[9];
@@ -220,8 +224,7 @@ public class RsvrExcelController {
         endTime=now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time ="时间："+ begin+"时"+"~~"+endTime;
+        String time ="时间："+ begin+"时";
 
         //列头单元格合并
         //水库名称
@@ -236,7 +239,7 @@ public class RsvrExcelController {
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
 
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time, head);
         ex.export();
         rsvrXbyItem();
     }
@@ -244,6 +247,6 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("rsvrXbyzhuanye")
     public JsonResult rsvrXbyZhuanYe(){
-        return new JsonResult("http://192.168.1.63:8080/services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel");
     }
 }

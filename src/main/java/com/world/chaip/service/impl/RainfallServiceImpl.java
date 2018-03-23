@@ -501,7 +501,7 @@ public class RainfallServiceImpl implements RainfallService {
         return xianshi;
     }
 
-    //list集合排序   0 =逐时  1=日  2= 旬月年  3 = 时段
+    //list集合排序    1=日  2= 旬月年  3 = 时段
     public String coonPC(List<Rainfall> list,int sign) {
         int hundred = 0;
         int Fifty = 0;
@@ -628,24 +628,17 @@ public class RainfallServiceImpl implements RainfallService {
                 two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
                 three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"毫米";
             }
-            xianshi ="超过100毫米的有："+
-                    hundred+"站"+
-                    "超过50毫米的有："+
-                    Fifty+"站"+
-                    "超过30毫米的有："+
-                    Thirty+"站"+
-                    "最大的是"+
-                    one+"站"+
-                    "次大点的是"+
-                    two+"站"+
-                    "再次大点的是"+
-                    three+"站;"+
-                    "超过100毫米的有："+
-                    hundred+"站;"+
-                    "超过50毫米的有："+
-                    Fifty+"站;"+
-                    "超过30毫米的有："+
-                    Thirty+"站";
+            if(sign ==2 ){
+                xianshi = one+";"+two+";"+three+".";
+            }else{
+                xianshi ="超过100毫米的有："+
+                        hundred+"站"+
+                        "超过50毫米的有："+
+                        Fifty+"站"+
+                        "超过30毫米的有："+
+                        Thirty+"站;"+ one+";"+two+";"+three+".";
+
+            }
             return xianshi;
         }
         return xianshi;
