@@ -619,23 +619,23 @@ public class RainfallServiceImpl implements RainfallService {
             String two = "";
             String three = "";
             if(list.size()==1){
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
             }else if(list.size()==2){
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
-                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
+                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"mm";
             }else{
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"毫米";
-                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"毫米";
-                three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"毫米";
+                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
+                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"mm";
+                three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"mm";
             }
             if(sign ==2 ){
                 xianshi = one+";"+two+";"+three+".";
             }else{
-                xianshi ="超过100毫米的有："+
+                xianshi ="超过100mm的有："+
                         hundred+"站"+
-                        "超过50毫米的有："+
+                        "超过50mm的有："+
                         Fifty+"站"+
-                        "超过30毫米的有："+
+                        "超过30mm的有："+
                         Thirty+"站;"+ one+";"+two+";"+three+".";
 
             }
@@ -1254,6 +1254,30 @@ public class RainfallServiceImpl implements RainfallService {
                                 return -1;
                             }
                             if (o1.getEightDrp() == o2.getEightDrp()) {
+                                return 0;
+                            }
+                            return 1;
+                        }
+                    }
+                });
+                break;
+            case 24:
+                Collections.sort(list, new Comparator<PptnGson>() {
+                    @Override
+                    public int compare(PptnGson o1, PptnGson o2) {
+                        if (sign == 0) {  //正序
+                            if (o1.getCountDrp() > o2.getCountDrp()) {
+                                return 1;
+                            }
+                            if (o1.getCountDrp() == o2.getCountDrp()) {
+                                return 0;
+                            }
+                            return -1;
+                        } else {     //倒序
+                            if (o1.getCountDrp() > o2.getCountDrp()) {
+                                return -1;
+                            }
+                            if (o1.getCountDrp() == o2.getCountDrp()) {
                                 return 0;
                             }
                             return 1;
