@@ -134,7 +134,7 @@ public class RsvrExcelController {
     //水库 (实时)
     @GetMapping("rsvrXbyitem")
     public JsonResult rsvrXbyItem(){
-        return new JsonResult("http://192.168.1.63:8080/services/realtime/rsvrfallexcel/getrsvrbyitembyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/rsvrfallexcel/getrsvrbyitembyexcel");
     }
 
     //水库 (专业)

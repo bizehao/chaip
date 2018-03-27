@@ -4,6 +4,7 @@ import java.sql.Array;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import com.mchange.lang.ShortUtils;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcel.DayRain;
 import com.world.chaip.entity.excelFormat.DayRainExcelX.DayRainX;
@@ -253,10 +254,11 @@ public class RainfallServiceImpl implements RainfallService {
     @Override
     public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
         Calendar now =  Calendar.getInstance();
+        now.setTime(dateE);
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH);
         int day = now.get(Calendar.DATE);
-        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int hour = now.get(Calendar.HOUR_OF_DAY)-1;
         now.set(year,month,day,hour,0,0);
         now.set(Calendar.MILLISECOND,0);
         Date NowTime = now.getTime();
