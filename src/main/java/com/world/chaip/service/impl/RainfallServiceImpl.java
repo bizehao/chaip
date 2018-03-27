@@ -404,11 +404,11 @@ public class RainfallServiceImpl implements RainfallService {
             }
         }
         String xianshi ="一小时 超过100毫米的有："+
-                hundred+"站;"+
+                hundred+"个站;"+
                 "超过50毫米的有："+
-                Fifty+"站;"+
+                Fifty+"个站;"+
                 "超过30毫米的有："+
-                Thirty+"站";
+                Thirty+"个站.";
         return xianshi;
     }
 
@@ -597,49 +597,89 @@ public class RainfallServiceImpl implements RainfallService {
         double y1 = 0;
         double y2 = 1;
         double y3 = 2;
-        if(list.size()>3){
+        if(list.size()!=0){
             if(sign==0){
-                y1 = list.get(0).getDrp();
-                y2 = list.get(1).getDrp();
-                y3 = list.get(2).getDrp();
+                if(list.size()==1){
+                    y1 = list.get(0).getDrp();
+                }else if(list.size()==2){
+                    y1 = list.get(0).getDrp();
+                    y2 = list.get(1).getDrp();
+                }else{
+                    y1 = list.get(0).getDrp();
+                    y2 = list.get(1).getDrp();
+                    y3 = list.get(2).getDrp();
+                }
             }else if(sign==1){
-                y1 = list.get(0).getDyp();
-                y2 = list.get(1).getDyp();
-                y3 = list.get(2).getDyp();
+                if(list.size()==1){
+                    y1 = list.get(0).getDyp();
+                }else if(list.size()==2){
+                    y1 = list.get(0).getDyp();
+                    y2 = list.get(1).getDyp();
+                }else{
+                    y1 = list.get(0).getDyp();
+                    y2 = list.get(1).getDyp();
+                    y3 = list.get(2).getDyp();
+                }
             }else if(sign==2){
-                y1 = list.get(0).getAccp();
-                y2 = list.get(1).getAccp();
-                y3 = list.get(2).getAccp();
-            }else{
-                y1 = list.get(0).getNum();
-                y2 = list.get(1).getNum();
-                y3 = list.get(2).getNum();
+                if(list.size()==1){
+                    y1 = list.get(0).getAccp();
+                }else if(list.size()==2){
+                    y1 = list.get(0).getAccp();
+                    y2 = list.get(1).getAccp();
+                }else{
+                    y1 = list.get(0).getAccp();
+                    y2 = list.get(1).getAccp();
+                    y3 = list.get(2).getAccp();
+                }
+            }else {
+                if (list.size() == 1) {
+                    y1 = list.get(0).getNum();
+                } else if (list.size() == 2) {
+                    y1 = list.get(0).getNum();
+                    y2 = list.get(1).getNum();
+                } else {
+                    y1 = list.get(0).getNum();
+                    y2 = list.get(1).getNum();
+                    y3 = list.get(2).getNum();
+                }
             }
             String one = "";
             String two = "";
             String three = "";
             if(list.size()==1){
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
+                one ="最大点是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站、降雨量是"+y1+"mm";
             }else if(list.size()==2){
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
-                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"mm";
+                one ="最大点是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站、降雨量是"+y1+"mm";
+                two = "次大点是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站、降雨量是"+y2+"mm";
             }else{
-                one ="最大的是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站，降雨量是"+y1+"mm";
-                two = "次大点的是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站，降雨量是"+y2+"mm";
-                three = "再次大点的是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站，降雨量是"+y3+"mm";
+                one ="最大点是"+list.get(0).getAdnm()+"的"+list.get(0).getStnm()+"站、降雨量是"+y1+"mm";
+                two = "次大点是"+list.get(1).getAdnm()+"的"+list.get(1).getStnm()+"站、降雨量是"+y2+"mm";
+                three = "再次大点是"+list.get(2).getAdnm()+"的"+list.get(2).getStnm()+"站、降雨量是"+y3+"mm";
             }
             if(sign ==2 ){
-                xianshi = one+";"+two+";"+three+".";
+                xianshi = one+","+two+","+three+".";
             }else{
-                xianshi ="超过100mm的有："+
-                        hundred+"站"+
-                        "超过50mm的有："+
-                        Fifty+"站"+
-                        "超过30mm的有："+
-                        Thirty+"站;"+ one+";"+two+";"+three+".";
+                xianshi ="降雨量超过100mm的有"+
+                        hundred+"个站,"+
+                        "降雨量超过50mm的有"+
+                        Fifty+"个站,"+
+                        "降雨量超过30mm的有"+
+                        Thirty+"个站,"+ one+","+two+","+three+".";
 
             }
-            return xianshi;
+        }else{
+            if(sign == 2){
+                xianshi ="最大点是_县的_站、降雨量是0.0mm,"+
+                        "次大点是_县的_站、降雨量是0.0mm,"+
+                        "再次大点是_县的_站、降雨量是0.0mm";
+            }else{
+                xianshi ="降雨量超过100mm的有0个站,"+
+                        "降雨量超过50mm的有0个站,"+
+                        "降雨量超过30mm的有0个站,"+
+                        "最大点是_县的_站、降雨量是0.0mm,"+
+                        "次大点是_县的_站、降雨量是0.0mm,"+
+                        "再次大点是_县的_站、降雨量是0.0mm";
+            }
         }
         return xianshi;
     }

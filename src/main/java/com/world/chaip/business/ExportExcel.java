@@ -182,18 +182,17 @@ public class ExportExcel {
             int chang = 0;
             if(xianshi != null){
                 CellRangeAddress lastCallRangeAddress = null;
-                chang = (int) Math.ceil(xianshi.length()/100)+1;
-                System.out.println("asasa"+chang);
+                chang = (int) Math.ceil((double) xianshi.length()/100);
                 int hou =0;
                 for(int i = 0; i<chang; i++){
                     lastCallRangeAddress = new CellRangeAddress(dataList.size()+6+i,dataList.size()+6+i,0,columnNum-1);//起始行,结束行,起始列,结束列
                     sheet.addMergedRegion(lastCallRangeAddress);
                     HSSFRow lastRow = sheet.createRow(dataList.size()+6+i);                // 创建最后一行
                     HSSFCell cell = lastRow.createCell(0);
-                    if((xianshi.length()-100*(i+1)-1)>99){
-                        cell.setCellValue(xianshi.substring(i*100,100*(i+1)-1));
+                    if((xianshi.length()-100*i)>100){
+                        cell.setCellValue(xianshi.substring(i*100,100*(i+1)));
                     }else{
-                        cell.setCellValue(xianshi.substring(i*100,xianshi.length()-1));
+                        cell.setCellValue(xianshi.substring(i*100,xianshi.length()));
                     }
                     HSSFCellStyle alignStyle = workbook.createCellStyle();
                     alignStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
