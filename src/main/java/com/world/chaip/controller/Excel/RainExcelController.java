@@ -571,7 +571,7 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "时段雨量统计报表";
-        String[] rowsName = new String[]{"县名","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间
@@ -1042,7 +1042,7 @@ public class RainExcelController extends HttpServlet{
             }
         }*/
         String title = "时段雨量统计报表";
-        String[] rowsName = new String[]{"县名","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量","站名","雨量(mm)","最近一小时雨量"};
+        String[] rowsName = new String[]{"县名","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量","站名","雨量(mm)","最近1小时雨量"};
         //处理List<Object[]>;
         List<Object[]> dataList = conExcel(a, rowsName);
         //处理时间

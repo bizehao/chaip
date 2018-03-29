@@ -63,7 +63,9 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     //计算值
     public String suan(double num1, double num2){
         if(num1 == 0){
-            return "100%";
+            return "--";
+        }else if(num2 == 0){
+            return "--";
         }else{
             return new DecimalFormat("#0.0").format((num2-num1)/num1*100)+"%";
         }
@@ -138,31 +140,36 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             arbitrarilyDay.setoDay_oDay(list1.get(i).getZong());
             arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong());
             arbitrarilyDay.setSamePeriodChang(dList.get(i));
-            chaqu = list1.get(i).getZong()-list2.get(i).getZong();
-            if(list2.get(i).getZong()>0){
-                if(chaqu==0){
-                    arbitrarilyDay.setSamePeriodCompareQu(0+"%");
-                }
-                if(chaqu>0){
-                    arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.0").format(chaqu/list2.get(i).getZong()*100)+"%");
-                }else{
-                    arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.0").format(-chaqu/list2.get(i).getZong()*100)+"%");
-                }
+            if(list1.get(i).getZong()==0){
+                arbitrarilyDay.setSamePeriodCompareQu("--");
+                arbitrarilyDay.setSamePeriodCompareChang("--");
             }else{
-                arbitrarilyDay.setSamePeriodCompareQu("100%");
-            }
-            chachang = list1.get(i).getZong()-dList.get(i);
-            if(dList.get(i)>0){
-                if(chachang==0){
-                    arbitrarilyDay.setSamePeriodCompareChang(0+"%");
-                }
-                if(chaqu>0){
-                    arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.0").format(chaqu/dList.get(i)*100)+"%");
+                chaqu = list1.get(i).getZong()-list2.get(i).getZong();
+                if(list2.get(i).getZong()>0){
+                    if(chaqu==0){
+                        arbitrarilyDay.setSamePeriodCompareQu(0+"%");
+                    }
+                    if(chaqu>0){
+                        arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.0").format(chaqu/list2.get(i).getZong()*100)+"%");
+                    }else{
+                        arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.0").format(-chaqu/list2.get(i).getZong()*100)+"%");
+                    }
                 }else{
-                    arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.0").format(-chaqu/dList.get(i)*100)+"%");
+                    arbitrarilyDay.setSamePeriodCompareQu("--");
                 }
-            }else{
-                arbitrarilyDay.setSamePeriodCompareChang("100%");
+                chachang = list1.get(i).getZong()-dList.get(i);
+                if(dList.get(i)>0){
+                    if(chachang==0){
+                        arbitrarilyDay.setSamePeriodCompareChang(0+"%");
+                    }
+                    if(chaqu>0){
+                        arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.0").format(chaqu/dList.get(i)*100)+"%");
+                    }else{
+                        arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.0").format(-chaqu/dList.get(i)*100)+"%");
+                    }
+                }else{
+                    arbitrarilyDay.setSamePeriodCompareChang("--");
+                }
             }
             obList.add(arbitrarilyDay);
         }
