@@ -97,7 +97,7 @@ public class RsvrExcelController {
         }
         List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"序号","水系","库名","站号","时间","水位(m)","蓄水量(亿m³)","出库流量(m³/s)"};
+        String[] rowsName = new String[]{"序号","水系","库名","站号","时间","水位(m)","蓄水量(百万m³)","出库流量(m³/s)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         for (int i=0; i<a.size(); i++){
