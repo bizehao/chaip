@@ -54,7 +54,8 @@ public interface RainfallMapper {
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
-			@Param("pptn") String pptn);
+			@Param("pptn") String pptn,
+            @Param("patat") String patat);
 	/**
 	 * 逐月降雨量查询
 	 * @param Time
@@ -70,7 +71,8 @@ public interface RainfallMapper {
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
-			@Param("pptn") String pptn);
+            @Param("pptn") String pptn,
+            @Param("patat") String patat);
 	/**
 	 * 逐年降雨量查询
 	 * @param Time
@@ -86,7 +88,8 @@ public interface RainfallMapper {
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
-			@Param("pptn") String pptn);
+            @Param("pptn") String pptn,
+            @Param("patat") String patat);
 
 	/**
 	 * 降雨量查询(时段)

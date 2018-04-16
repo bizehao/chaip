@@ -47,11 +47,6 @@ public class RealtimeRainfallController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="column",required=false)String column,
             @RequestParam(name="sign",required=false)String sign){
-        /*adcd="130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";*/
-        /*dateStr="2017-06-04";
-        systemTypes="11,12,";
-        adcd="X";*/
-        /*stcdOrStnm="30906330,";*/
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -121,11 +116,6 @@ public class RealtimeRainfallController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
-
-        /*dateStr="2017-06-04";
-        stcdOrStnm="X";
-        systemTypes="X";
-        adcd="X";*/
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -219,7 +209,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R");
         return new JsonResult(a);
     }
     //月雨量
@@ -230,10 +220,6 @@ public class RealtimeRainfallController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
-        /*dateStr="2017-06-04";
-        stcdOrStnm="X";
-        systemTypes="X";
-        adcd="X";*/
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
@@ -274,7 +260,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R");
         return new JsonResult(a);
     }
     //年雨量
@@ -330,7 +316,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R");
         return new JsonResult(a);
     }
 
@@ -495,7 +481,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R");
         return new JsonResult(a);
     }
     //月雨量(专业)
@@ -551,7 +537,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R");
         return new JsonResult(a);
     }
     //年雨量(专业)
@@ -607,7 +593,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R");
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R");
         return new JsonResult(a);
     }
 

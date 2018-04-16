@@ -89,11 +89,6 @@ public class RsvrAnalysisController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
-        /*date = "2018-03-15";
-        adcd = "X";
-        systemTypes = "11,12,";
-        stcdOrStnm = "X";*/
-
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();

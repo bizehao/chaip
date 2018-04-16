@@ -315,8 +315,8 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
-        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R","ST_PSTAT_R");
+        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R","ST_PSTAT_R");
         String title = "旬雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -399,8 +399,8 @@ public class RainExcelController extends HttpServlet{
             e.printStackTrace();
         }
 
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
-        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R","ST_PSTAT_R");
+        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R","ST_PSTAT_R");
         String title = "月雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -471,8 +471,8 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R");
-        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"ST_PPTN_R","ST_PSTAT_R");
+        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"ST_PPTN_R","ST_PSTAT_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
@@ -796,8 +796,8 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
-        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R","RP_PSTAT_R");
+        String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R","RP_PSTAT_R");
         String title = "旬雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -873,8 +873,8 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
-        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R","RP_PSTAT_R");
+        String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R","RP_PSTAT_R");
         String title = "月雨量统计报表";
         String[] rowsName = new String[]{"县名","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数","站名","雨量(mm)","降水天数"};
         //处理List<Object[]>;
@@ -944,8 +944,8 @@ public class RainExcelController extends HttpServlet{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R");
-        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R");
+        DayRainExcelX a = (DayRainExcelX)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,1,"RP_PPTN_R","RP_PSTAT_R");
+        String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist,stcdlist,"RP_PPTN_R","RP_PSTAT_R");
         /*for(int i=0; i<a.getDayRainXList().size(); i++){
             System.out.println(a.getDayRainXList().get(i).getAdnm());
             List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
