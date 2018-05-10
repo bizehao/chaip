@@ -331,7 +331,11 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         RsvrTZCount rsvrTZCount = null;
         for (int i = 0; i < list.size(); i++) {
             RsvrExchangeItem rsvrExchangeItem = null;
+            if(list.get(i).getRvnm() == null){
+                list.get(i).setRvnm("");
+            }
             for (int j = 0; j < rsvrExchangeExcel.getRsvrPro().size(); j++) {
+                System.out.println("进行"+list.get(i).getRvnm());
                 if (rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(list.get(i).getRvnm())) {
                     rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
                     rsvrTZCount = new RsvrTZCount();

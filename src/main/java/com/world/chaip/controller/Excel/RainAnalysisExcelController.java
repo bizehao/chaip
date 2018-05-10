@@ -38,6 +38,7 @@ public class RainAnalysisExcelController {
     public void getRainAnalysisXQExcel(
             HttpServletResponse response,
             @RequestParam("date")String dateStr,
+            @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
@@ -46,9 +47,21 @@ public class RainAnalysisExcelController {
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
+        List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+
+        if(ly.equals("X")){
+            lylist=null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] temp = ly.split(",");
+            for(int i = 0; i<temp.length; i++){
+                lylist.add(temp[i]);
+            }
+        }
+
         if(adcd.equals("X")){
             adcdlist=null;
         }else {
@@ -83,7 +96,7 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<XunQi> xqList = service.getRainXQCompared(date, adcdlist, typelist,stcdlist);
+        List<XunQi> xqList = service.getRainXQCompared(date,lylist, adcdlist, typelist,stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         for (int i=0; i<xqList.size(); i++){
@@ -136,6 +149,7 @@ public class RainAnalysisExcelController {
     public void getRainAnalysisNZYExcel(
             HttpServletResponse response,
             @RequestParam("date")String dateStr,
+            @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
@@ -144,9 +158,22 @@ public class RainAnalysisExcelController {
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
         System.out.println("站号"+stcdOrStnm);
+
+        List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+
+        if(ly.equals("X")){
+            lylist=null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] temp = ly.split(",");
+            for(int i = 0; i<temp.length; i++){
+                lylist.add(temp[i]);
+            }
+        }
+
         if(adcd.equals("X")){
             adcdlist=null;
         }else {
@@ -181,7 +208,7 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<YearAndMonthRain> yearAndMonthRains = service.getRainNZYCompared(date, adcdlist, typelist,stcdlist);
+        List<YearAndMonthRain> yearAndMonthRains = service.getRainNZYCompared(date,lylist, adcdlist, typelist,stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] object = null;
         for(int i=0; i<yearAndMonthRains.size(); i++){
@@ -242,13 +269,25 @@ public class RainAnalysisExcelController {
             HttpServletResponse response,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
+            @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name = "adcd",required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
+        List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+
+        if(ly.equals("X")){
+            lylist=null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] temp = ly.split(",");
+            for(int i = 0; i<temp.length; i++){
+                lylist.add(temp[i]);
+            }
+        }
 
         if(adcd.equals("X")){
             adcdlist=null;
@@ -287,7 +326,7 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<ArbitrarilyDay> arbitrarilyDays = service.getRainRYCompared(dateS,dateE,adcdlist, typelist,stcdlist);
+        List<ArbitrarilyDay> arbitrarilyDays = service.getRainRYCompared(dateS,dateE,lylist,adcdlist, typelist,stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         for(int i=0; i<arbitrarilyDays.size(); i++){

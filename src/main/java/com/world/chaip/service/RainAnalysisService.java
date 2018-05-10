@@ -27,7 +27,7 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<XunQi> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes,
+    List<XunQi> getRainXQCompared(Date time,List<String> ly, List<String> adcd, List<String> systemTypes,
                                   List<String> stcdOrStnm);
 
     /**
@@ -38,7 +38,7 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<YearAndMonthRain> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes,
+    List<YearAndMonthRain> getRainNZYCompared(Date time,List<String> ly, List<String> adcd, List<String> systemTypes,
                                               List<String> stcdOrStnm);
 
     /**
@@ -50,7 +50,7 @@ public interface RainAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes,
+    List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime,List<String> ly, List<String> adcd, List<String> systemTypes,
                                            List<String> stcdOrStnm);
 
 }

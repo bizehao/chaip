@@ -15,11 +15,13 @@ public interface RainAnalysisMapper {
                                          @Param("endTime2") Date endTime2,
                                          @Param("endTime3") Date endTime3,
                                          @Param("endTime4") Date endTime4,
+                                         @Param("ly") List<String> ly,
                                          @Param("adcd") List<String> adcd,
                                          @Param("systemTypes") List<String> systemTypes,
                                          @Param("stcdOrStnm") List<String> stcdOrStnm);
     //汛期常年查询
-    List<RainExchange> getRainXQCLCompared(@Param("adcd") List<String> adcd,
+    List<RainExchange> getRainXQCLCompared(@Param("ly") List<String> ly,
+                                           @Param("adcd") List<String> adcd,
                                            @Param("systemTypes") List<String> systemTypes,
                                            @Param("stcdOrStnm") List<String> stcdOrStnm);
 
@@ -36,18 +38,21 @@ public interface RainAnalysisMapper {
                                           @Param("endTime10") Date endTime10,
                                           @Param("endTime11") Date endTime11,
                                           @Param("endTime12") Date endTime12,
+                                          @Param("ly") List<String> ly,
                                           @Param("adcd") List<String> adcd,
                                           @Param("systemTypes") List<String> systemTypes,
                                           @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     //年逐月常量查询
-    List<RainExchange> getRainNZYCLCompared(@Param("adcd") List<String> adcd,
+    List<RainExchange> getRainNZYCLCompared(@Param("ly") List<String> ly,
+                                            @Param("adcd") List<String> adcd,
                                             @Param("systemTypes") List<String> systemTypes,
                                             @Param("stcdOrStnm") List<String> stcdOrStnm);
 
     //任意日降雨量
     List<RainExchange> getRainRYCompared(@Param("beginTime") Date beginTime,
                                          @Param("endTime") Date endTime,
+                                         @Param("ly") List<String> ly,
                                          @Param("adcd") List<String> adcd,
                                          @Param("systemTypes") List<String> systemTypes,
                                          @Param("stcdOrStnm") List<String> stcdOrStnm);
@@ -55,6 +60,7 @@ public interface RainAnalysisMapper {
     //任意常量日降雨量
     List<RainExchange> getRainRYCLCompared(@Param("beginTime") int beginTime,
                                            @Param("endTime") int endTime,
+                                           @Param("ly") List<String> ly,
                                            @Param("adcd") List<String> adcd,
                                            @Param("systemTypes") List<String> systemTypes,
                                            @Param("stcdOrStnm") List<String> stcdOrStnm,

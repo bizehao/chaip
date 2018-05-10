@@ -27,13 +27,13 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     RainAnalysisMapper mapper;
     //汛期降雨量
     @Override
-    public List<XunQi> getRainXQCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<XunQi> getRainXQCompared(Date time,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();
         now.setTime(time);
-        List<RainExchange> list1 = getRainXQ(now,adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list1 = getRainXQ(now,ly,adcd,systemTypes,stcdOrStnm);
         now.add(Calendar.YEAR, -1);
-        List<RainExchange> list2 = getRainXQ(now,adcd,systemTypes,stcdOrStnm);
-        List<RainExchange> list3 = mapper.getRainXQCLCompared(adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list2 = getRainXQ(now,ly,adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list3 = mapper.getRainXQCLCompared(ly,adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
         XunQi xq = null;
         List<XunQi> xqList = new ArrayList<>();
@@ -72,13 +72,13 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     }
     //年逐月降雨量分析对比
     @Override
-    public List<YearAndMonthRain> getRainNZYCompared(Date time, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<YearAndMonthRain> getRainNZYCompared(Date time,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar now = Calendar.getInstance();
         now.setTime(time);
-        List<RainExchange> list1 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list1 = getRainNZY(now,ly,adcd,systemTypes,stcdOrStnm);
         now.add(Calendar.YEAR, -2);
-        List<RainExchange> list2 = getRainNZY(now,adcd,systemTypes,stcdOrStnm);
-        List<RainExchange> list3 = mapper.getRainNZYCLCompared(adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list2 = getRainNZY(now,ly,adcd,systemTypes,stcdOrStnm);
+        List<RainExchange> list3 = mapper.getRainNZYCLCompared(ly,adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
         YearAndMonthRain yearAndMonthRain = null;
         List<YearAndMonthRain> nzylist = new ArrayList<>();
@@ -111,14 +111,14 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
 
     //任意日降雨量分析对比
     @Override
-    public List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<ArbitrarilyDay> getRainRYCompared(Date beginTime, Date endTime,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         Calendar begin1 = Calendar.getInstance();
         begin1.setTime(beginTime);
         begin1.add(Calendar.DATE,1);
         Calendar end1 = Calendar.getInstance();
         end1.setTime(endTime);
         end1.add(Calendar.DATE,1);
-        List<RainExchange> list1 = getRainRY(begin1, end1, adcd, systemTypes, stcdOrStnm);
+        List<RainExchange> list1 = getRainRY(begin1, end1,ly, adcd, systemTypes, stcdOrStnm);
         Calendar begin2 = Calendar.getInstance();
         begin2.setTime(beginTime);
         begin2.add(Calendar.DATE,1);
@@ -127,8 +127,8 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         end2.setTime(endTime);
         end2.add(Calendar.DATE,1);
         end2.add(Calendar.YEAR, -1);
-        List<RainExchange> list2 = getRainRY(begin2, end2, adcd, systemTypes, stcdOrStnm);
-        List<Double> dList = getRainPYCL(beginTime, endTime, adcd, systemTypes, stcdOrStnm);
+        List<RainExchange> list2 = getRainRY(begin2, end2,ly, adcd, systemTypes, stcdOrStnm);
+        List<Double> dList = getRainPYCL(beginTime, endTime,ly, adcd, systemTypes, stcdOrStnm);
         List<ArbitrarilyDay> obList = new ArrayList<>();
         ArbitrarilyDay arbitrarilyDay = null;
         int length = list1.size();
@@ -177,7 +177,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
     }
 
     //处理汛期降雨量的时间
-    public List<RainExchange> getRainXQ(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<RainExchange> getRainXQ(Calendar now,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //六月
         now.set(Calendar.MONTH,6);
         now.set(Calendar.DATE,1);
@@ -199,11 +199,11 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         now.set(Calendar.HOUR_OF_DAY,8);
         Date timeNineEnd = now.getTime();
 
-        return mapper.getRainXQCompared(timeSixEnd,timeSevenEnd,timeEightEnd,timeNineEnd,adcd,systemTypes,stcdOrStnm);
+        return mapper.getRainXQCompared(timeSixEnd,timeSevenEnd,timeEightEnd,timeNineEnd,ly,adcd,systemTypes,stcdOrStnm);
     }
 
     //处理年逐月降雨量的时间
-    public List<RainExchange> getRainNZY(Calendar now, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<RainExchange> getRainNZY(Calendar now,List<String> ly,List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         //一月
         now.set(Calendar.MONTH,1);
         now.set(Calendar.DATE,1);
@@ -269,21 +269,21 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         return mapper.getRainNZYCompared(timeOneEnd,timeTwoEnd,timeThreeEnd,
                 timeFourEnd,timeFiveEnd,timeSixEnd,timeSevenEnd,
                 timeEightEnd,timeNineEnd,timeTenEnd,timeElevenEnd,
-                timeTwelveEnd,adcd,systemTypes,stcdOrStnm);
+                timeTwelveEnd,ly,adcd,systemTypes,stcdOrStnm);
     }
 
     //处理任意日降雨量的时间及结果
-    public List<RainExchange> getRainRY(Calendar beginTime, Calendar endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<RainExchange> getRainRY(Calendar beginTime, Calendar endTime,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
         beginTime.set(Calendar.HOUR_OF_DAY, 8);
         Date beginDate = beginTime.getTime();
         endTime.set(Calendar.HOUR_OF_DAY, 8);
         Date endDate = endTime.getTime();
-        List<RainExchange> list = mapper.getRainRYCompared(beginDate, endDate, adcd, systemTypes, stcdOrStnm);
+        List<RainExchange> list = mapper.getRainRYCompared(beginDate, endDate,ly, adcd, systemTypes, stcdOrStnm);
         return list;
     }
 
     //处理任意日降雨量的常量数据
-    public List<Double> getRainPYCL(Date beginTime, Date endTime, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm){
+    public List<Double> getRainPYCL(Date beginTime, Date endTime,List<String> ly, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm){
         List<Double> dList = null;
         int length = 0;
         Calendar tm = Calendar.getInstance();
@@ -294,8 +294,8 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         int endMonth = tm.get(Calendar.MONTH)+1;
         int endDate = tm.get(Calendar.DATE);
         if(endMonth-beginMonth==1){
-            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,1,0);
-            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate, adcd, systemTypes, stcdOrStnm,2,0);
+            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate,ly, adcd, systemTypes, stcdOrStnm,1,0);
+            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate,ly, adcd, systemTypes, stcdOrStnm,2,0);
             length = list1.size();
             dList = new ArrayList<>();
             for(int i=0; i<length; i++){
@@ -303,7 +303,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             }
             return dList;
         }else if(endMonth-beginMonth==0){
-            List<RainExchange> list3 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,3,endDate);
+            List<RainExchange> list3 = mapper.getRainRYCLCompared(beginMonth, beginDate,ly, adcd, systemTypes, stcdOrStnm,3,endDate);
             length = list3.size();
             dList = new ArrayList<>();
             for(int i=0; i<length; i++){
@@ -311,9 +311,9 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             }
             return dList;
         }else{
-            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate, adcd, systemTypes, stcdOrStnm,1,0);
-            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate, adcd, systemTypes, stcdOrStnm,2,0);
-            List<RainExchange> list0 = mapper.getRainRYCLCompared(beginMonth, endMonth, adcd, systemTypes, stcdOrStnm,0,0);
+            List<RainExchange> list1 = mapper.getRainRYCLCompared(beginMonth, beginDate,ly, adcd, systemTypes, stcdOrStnm,1,0);
+            List<RainExchange> list2 = mapper.getRainRYCLCompared(endMonth, endDate,ly, adcd, systemTypes, stcdOrStnm,2,0);
+            List<RainExchange> list0 = mapper.getRainRYCLCompared(beginMonth, endMonth,ly, adcd, systemTypes, stcdOrStnm,0,0);
             length = list1.size();
             dList = new ArrayList<>();
             for(int i=0; i<length; i++){
