@@ -48,20 +48,20 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and sttp like '%R%' and ZFL='1'
+                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVINQ, AVOTQ from RP_RSVRAV_R A
+        select A.STCD, sum(AVINQ) AVINQ, sum(AVOTQ) AVOTQ from RP_RSVRAV_R A
         <where>
             <![CDATA[
 				IDTM > #{beginTime} AND IDTM <= #{endTime}
 			]]>
-            and STTDRCD = 5
+            and STTDRCD = 1
         </where>
-        group by stcd, AVINQ, AVOTQ
+        group by stcd
         )PP
         on ST.STCD=PP.STCD ORDER BY STCD
     </select>
@@ -112,7 +112,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and sttp like '%R%' and ZFL='1'
+                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
         ) st
@@ -131,7 +131,7 @@
     </select>
     <!--  水库蓄水量分析表 -->
     <select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
-        select st.stcd,st.stnm,HNNM,isnull(w,0) w from
+        select st.adnm, st.rvnm, st.stcd,st.stnm,HNNM,isnull(w,0) w from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -188,7 +188,7 @@
                 <if test="sign == 3">
                     and RSVRTP IN (4,5)
                 </if>
-                and sttp like '%R%' and ZFL='1'
+                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
         ) st
@@ -264,7 +264,7 @@
                 <if test="sign == 3">
                     and RSVRTP IN (4,5)
                 </if>
-                and sttp like '%R%' and ZFL='1'
+                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
         ) st
@@ -327,7 +327,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and sttp like '%R%' and ZFL='1'
+                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
         ) st

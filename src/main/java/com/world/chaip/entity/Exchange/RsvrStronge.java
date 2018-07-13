@@ -1,6 +1,10 @@
 package com.world.chaip.entity.Exchange;
 
 public class RsvrStronge {
+    //县域
+    private String adnm;
+    //河名
+    private String rvnm;
     //站编号
     private String stcd;
     //站名（库名）
@@ -13,7 +17,9 @@ public class RsvrStronge {
     public RsvrStronge() {
     }
 
-    public RsvrStronge(String stcd, String stnm, String hnnm, double w) {
+    public RsvrStronge(String adnm, String rvnm, String stcd, String stnm, String hnnm, double w) {
+        this.adnm = adnm;
+        this.rvnm = rvnm;
         this.stcd = stcd;
         this.stnm = stnm;
         this.hnnm = hnnm;
@@ -50,5 +56,21 @@ public class RsvrStronge {
 
     public void setW(double w) {
         this.w = w;
+    }
+
+    public String getAdnm() {
+        return adnm;
+    }
+
+    public void setAdnm(String adnm) {
+        this.adnm = adnm;
+    }
+
+    public String getRvnm() {
+        return rvnm;
+    }
+
+    public void setRvnm(String rvnm) {
+        this.rvnm = rvnm;
     }
 }

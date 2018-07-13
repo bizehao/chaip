@@ -110,6 +110,25 @@
                     }
                 })
             });
+
+            $("#shishi").click(function () {
+                //水库实时
+                $.ajax({
+                    url: 'services/realtime/riverfall/getriverbyanalysis',
+                    data: {"dateS":0,
+                        "dateE":0,
+                        "adcd":0,
+                        "systemTypes":0,
+                        "stcdOrStnm":0},
+                    success:function (result) {
+                        var data = result.data;
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
         })
     </script>
 </head>
@@ -119,6 +138,7 @@
     <button id="xun"> 旬数据 </button>
     <button id="yue"> 月数据 </button>
     <button id="nian"> 年数据 </button>
+    <button id="shishi"> 实时河道 </button>
     <br/><br/><br/>
     <a  href="services/realtime/rainfallexcel/getrainbyhourbyexcel">逐时数据</a>
     <a  href="services/realtime/rainfallexcel/getrainbydatebyexcel">日数据</a>
@@ -140,6 +160,6 @@
     <a  href="services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel">专业水库分析表</a>
     <button id="skss"> 水库实时 </button>
     <br>
-    <a  href="services/realtime/rsvrfall/getrsvrexchangetongji">水库特征值统计表</a>
+    <a  href="services/realtime/rsvrfallexcel/getrsvrexchangetongjiexcel">水库特征值统计表</a>
 </body>
 </html>

@@ -1,17 +1,13 @@
 package com.world.chaip.service.impl;
 
-import java.sql.Array;
+
 import java.text.DecimalFormat;
 import java.util.*;
-
-import com.mchange.lang.ShortUtils;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcel.DayRain;
 import com.world.chaip.entity.excelFormat.DayRainExcelX.DayRainX;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
 import com.world.chaip.entity.report.gson.PptnGson;
-import com.world.chaip.entity.report.gson.RainEc;
-import org.apache.poi.hssf.record.formula.functions.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.world.chaip.entity.DaybyHourRainfall;
@@ -20,18 +16,15 @@ import com.world.chaip.entity.Rainfall;
 import com.world.chaip.mapper.RainfallMapper;
 import com.world.chaip.service.RainfallService;
 import com.world.chaip.util.DateUtils;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.Null;
 @Service
 public class RainfallServiceImpl implements RainfallService {
 
     @Autowired
     private RainfallMapper rainfallMapper;
 
-    //时段降雨量
+    //逐时降雨量
     @Override
-    public List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,int column,int sign) {
+    public List<PptnGson> getDaybyHour(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,int column,int sign, String db) {
         Date beginTime=null;
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
@@ -41,7 +34,7 @@ public class RainfallServiceImpl implements RainfallService {
         beginTime=now.getTime();
         endTime=DateUtils.getDateAfter(beginTime, 1);
         System.out.println(beginTime+","+endTime);
-        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm,db);
         System.out.println("数量"+rainfalls.size());
         if(rainfalls!=null && rainfalls.size()>0) {
             for(int i=0;i<rainfalls.size();i++) {
@@ -87,6 +80,11 @@ public class RainfallServiceImpl implements RainfallService {
                         tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), 0.0);
                     }else{
                         tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), rainfalls.get(i).getDrp());
+                    }
+                    if(i == rainfalls.size()-1){
+                        double count = tempItem.testValues();
+                        tempItem.setCountDrp(count);
+							/*System.out.println("sads"+count);*/
                     }
                     daybyHourRainfall.getData().add(tempItem);
 					/*tempItem.setDyp(dyp);*/
@@ -136,7 +134,7 @@ public class RainfallServiceImpl implements RainfallService {
 
     //日降雨量
     @Override
-    public Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+    public Object getDaybyDate(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String benqu, String db) {
         Date beginTime=null;
         Date endTime=null;
         Calendar now = Calendar.getInstance();
@@ -144,7 +142,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.set(Calendar.HOUR_OF_DAY, 8);
         beginTime=now.getTime();
         endTime=DateUtils.getDateAfter(beginTime, 1);
-        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn,benqu,db);
         if(cid == 0){
             return list;
         }
@@ -195,16 +193,25 @@ public class RainfallServiceImpl implements RainfallService {
 
     //旬降雨量
     @Override
-    public Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat) {
+    public Object getDaybyXun(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Time=now.getTime();
         Date beginTime = null;
-        now.add(Calendar.DATE, -9);
+        System.out.println(Calendar.DATE);
+        if(now.get(Calendar.DATE) == 11){
+            now.set(Calendar.DATE, 2);
+        }else if(now.get(Calendar.DATE) == 21){
+            now.set(Calendar.DATE, 12);
+        }else{
+            now.add(Calendar.MONTH, -1);
+            now.set(Calendar.DATE, 22);
+        }
+
         beginTime = now.getTime();
-        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         if(cid == 0){
             return list;
         }
@@ -213,7 +220,7 @@ public class RainfallServiceImpl implements RainfallService {
 
     //月降雨量
     @Override
-    public Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat) {
+    public Object getDaybyMonth(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
@@ -223,7 +230,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.MONTH, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         if(cid == 0){
             return list;
         }
@@ -232,7 +239,7 @@ public class RainfallServiceImpl implements RainfallService {
 
     //年降雨量
     @Override
-    public Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat) {
+    public Object getDaybyYear(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
@@ -243,7 +250,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.YEAR, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         if(cid == 0){
             return list;
         }
@@ -252,26 +259,28 @@ public class RainfallServiceImpl implements RainfallService {
 
     //时段降雨量
     @Override
-    public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn) {
+    public Object getDaybyTime(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int cid, String pptn,String benqu, String db) {
         Calendar now =  Calendar.getInstance();
         now.setTime(dateE);
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH);
         int day = now.get(Calendar.DATE);
         int hour = now.get(Calendar.HOUR_OF_DAY)-1;
-        now.set(year,month,day,hour,0,0);
+        int mounte = now.get(Calendar.MINUTE);
+        now.set(year,month,day,hour,mounte,0);
         now.set(Calendar.MILLISECOND,0);
         Date NowTime = now.getTime();
+        NowTime.setMinutes(0);
         System.out.println(NowTime);
         //开始时间
         now.setTime(dateS);
-        now.set(Calendar.MINUTE,0);
+        //now.set(Calendar.MINUTE,0);
         dateS = now.getTime();
         //结束时间
         now.setTime(dateE);
-        now.set(Calendar.MINUTE,0);
+        //now.set(Calendar.MINUTE,0);
         dateE = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn);
+        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn,benqu,db);
         if(cid == 0){
             return list;
         }
@@ -319,7 +328,7 @@ public class RainfallServiceImpl implements RainfallService {
 
     //逐时降雨量计算
     @Override
-    public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public String getDaybyHourJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String db) {
         Date beginTime=null;
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
@@ -329,7 +338,7 @@ public class RainfallServiceImpl implements RainfallService {
         beginTime=now.getTime();
         endTime=DateUtils.getDateAfter(beginTime, 1);
         System.out.println(beginTime+","+endTime);
-        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        List<Rainfall> rainfalls=rainfallMapper.selectByTm(beginTime,endTime,adcd,systemTypes,stcdOrStnm,db);
         if(rainfalls!=null && rainfalls.size()>0) {
             for(int i=0;i<rainfalls.size();i++) {
                 DayByHourRainfallItem tempItem =null;
@@ -416,7 +425,7 @@ public class RainfallServiceImpl implements RainfallService {
 
     //日降雨量计算
     @Override
-    public String getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+    public String getDaybyDateJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn,String benqu, String db) {
         Date beginTime=null;
         Date endTime=null;
         Calendar now = Calendar.getInstance();
@@ -424,14 +433,14 @@ public class RainfallServiceImpl implements RainfallService {
         now.set(Calendar.HOUR_OF_DAY, 8);
         beginTime=now.getTime();
         endTime=DateUtils.getDateAfter(beginTime, 1);
-        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime,adcd,systemTypes,stcdOrStnm,pptn,benqu,db);
         String xianshi = coonPC(list,1);
         return xianshi;
     }
 
     //旬降雨量计算
     @Override
-    public String getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat) {
+    public String getDaybyXunJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
@@ -440,14 +449,14 @@ public class RainfallServiceImpl implements RainfallService {
         Date beginTime = null;
         now.add(Calendar.DATE, -9);
         beginTime = now.getTime();
-        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list =  rainfallMapper.selectByXun(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         String xianshi = coonPC(list,2);
         return xianshi;
     }
 
     //月降雨量计算
     @Override
-    public String getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat) {
+    public String getDaybyMonthJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
@@ -457,14 +466,14 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.MONTH, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list =  rainfallMapper.selectByMonth(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         String xianshi = coonPC(list,2);
         return xianshi;
     }
 
     //年降雨量计算
     @Override
-    public String getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat) {
+    public String getDaybyYearJS(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn, String patat,String benqu, String db) {
         Date Time=null;
         Calendar now = Calendar.getInstance();
         now.setTime(date);
@@ -474,14 +483,14 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.YEAR, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat);
+        List<Rainfall> list = rainfallMapper.selectByYear(Time,beginTime,adcd,systemTypes,stcdOrStnm,pptn,patat,benqu,db);
         String xianshi = coonPC(list,2);
         return xianshi;
     }
 
     //时段降雨量计算
     @Override
-    public String getDaybyTimeJS(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn) {
+    public String getDaybyTimeJS(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String pptn,String benqu, String db) {
         Calendar now =  Calendar.getInstance();
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH + 1);
@@ -498,7 +507,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.setTime(dateE);
         now.set(Calendar.MINUTE,0);
         dateE = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn);
+        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm,pptn,benqu,db);
         String xianshi = coonPC(list,3);
         return xianshi;
     }

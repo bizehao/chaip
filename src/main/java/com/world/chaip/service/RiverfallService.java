@@ -5,6 +5,7 @@ import com.world.chaip.entity.Exchange.RiverExchange;
 import com.world.chaip.entity.report.River;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-	List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String benqu) throws ParseException;
 	/**
 	 * 河道统计 本区
      * @param dateS
@@ -34,7 +35,7 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-	List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
     /**
      * 河道统计 外区
      * @param dateS
@@ -44,6 +45,6 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-    List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+    List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
 
 }

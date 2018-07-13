@@ -24,7 +24,8 @@ public interface RainfallMapper {
             @Param("endTime") Date endTime,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("db") String db);
 	/**
 	 * 逐日降雨量查询
 	 * @param Time
@@ -38,7 +39,9 @@ public interface RainfallMapper {
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
-			@Param("pptn") String pptn);
+			@Param("pptn") String pptn,
+            @Param("benqu") String benqu,
+            @Param("db") String db);
 	/**
 	 * 逐旬降雨量查询
 	 * @param Time
@@ -55,7 +58,9 @@ public interface RainfallMapper {
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
 			@Param("pptn") String pptn,
-            @Param("patat") String patat);
+            @Param("patat") String patat,
+            @Param("benqu") String benqu,
+            @Param("db") String db);
 	/**
 	 * 逐月降雨量查询
 	 * @param Time
@@ -72,7 +77,9 @@ public interface RainfallMapper {
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
             @Param("pptn") String pptn,
-            @Param("patat") String patat);
+            @Param("patat") String patat,
+            @Param("benqu") String benqu,
+            @Param("db") String db);
 	/**
 	 * 逐年降雨量查询
 	 * @param Time
@@ -89,7 +96,9 @@ public interface RainfallMapper {
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
             @Param("pptn") String pptn,
-            @Param("patat") String patat);
+            @Param("patat") String patat,
+            @Param("benqu") String benqu,
+            @Param("db") String db);
 
 	/**
 	 * 降雨量查询(时段)
@@ -107,5 +116,7 @@ public interface RainfallMapper {
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm,
-			@Param("pptn") String pptn);
+			@Param("pptn") String pptn,
+            @Param("benqu") String benqu,
+            @Param("db") String db);
 }

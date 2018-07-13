@@ -48,6 +48,7 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                ${benqu}
                 and ZFL = 1 and STTP LIKE '%Z%'
 			</trim>
 		</where>
@@ -115,7 +116,9 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '31'
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
             </trim>
         </where>
         ) st

@@ -31,7 +31,7 @@ public class RiverAnalysisExcelController {
     @Autowired
     private RiverAnalysisService riverAnalysisService;
 
-    //汛期降雨量
+    //河道水情分析
     @GetMapping("getriverbyanalysisexcel")
     public void GetRiverByAnalysisExcel(
             HttpServletResponse response,
@@ -82,8 +82,8 @@ public class RiverAnalysisExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -112,7 +112,7 @@ public class RiverAnalysisExcelController {
         String time = formatter.format(dateS)+ "年" + beginMonth + "-" + endMonth + "月";
         String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "各主要河道(闸坝)水量统计表";
         String[] rowsName = new String[]{"序号", "河名", "站名", formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月", "", "", "", "", ""};
-        String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(m³)", "最高水位(m)", "出现日期(日)", "最大流量(m³/s)", "出现日期(日)"};
+        String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(百万m³)", "最高水位(m)", "出现日期", "最大流量(m³/s)", "出现日期"};
         //列头单元格合并
         //序号
         CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列

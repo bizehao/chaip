@@ -15,7 +15,7 @@ public class ArbitrarilyDay {
     private double samePeriodQu;
 
     //常年同期
-    private double samePeriodChang;
+    private String samePeriodChang;
 
     //去年同期
     private String samePeriodCompareQu;
@@ -26,7 +26,7 @@ public class ArbitrarilyDay {
     public ArbitrarilyDay() {
     }
 
-    public ArbitrarilyDay(String adnm, double oDay_oDay, double samePeriodQu, double samePeriodChang, String samePeriodCompareQu, String samePeriodCompareChang) {
+    public ArbitrarilyDay(String adnm, double oDay_oDay, double samePeriodQu, String samePeriodChang, String samePeriodCompareQu, String samePeriodCompareChang) {
         this.adnm = adnm;
         this.oDay_oDay = oDay_oDay;
         this.samePeriodQu = samePeriodQu;
@@ -59,11 +59,11 @@ public class ArbitrarilyDay {
         this.samePeriodQu = samePeriodQu;
     }
 
-    public double getSamePeriodChang() {
+    public String getSamePeriodChang() {
         return samePeriodChang;
     }
 
-    public void setSamePeriodChang(double samePeriodChang) {
+    public void setSamePeriodChang(String samePeriodChang) {
         this.samePeriodChang = samePeriodChang;
     }
 

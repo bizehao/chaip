@@ -1,27 +1,26 @@
 package com.world.chaip.business;
 
-import com.world.chaip.mapper.RainfallMapper;
-import com.world.chaip.util.JsonResult;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+import sun.misc.Contended;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.Inet4Address;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ExportExcel {
 
-    @Autowired
-    RainfallMapper rainfallMapper;
+    private String autograph = StaticConfig.autograph;
 
     //显示的导出表的标题
     private String title;
@@ -34,9 +33,15 @@ public class ExportExcel {
     //导出的集合数据
     private List<Object[]> dataList = new ArrayList<Object[]>();
     private String xianshi;
+    //专业分析(降雨)
+    private int major;
 
     private String time;
     private HttpServletResponse response;
+
+    int wei = 0;    //从哪一行开始写起
+    int firstTimeHang = 0; //时间行的上行
+    int lastTimeHang = 0; //时间行的下行
 
     public ExportExcel() {
     }
@@ -48,6 +53,17 @@ public class ExportExcel {
         this.title = title;
         this.time = time;
         this.response = response;
+    }
+
+    //构造方法，传入要导出的数据 单行表头 带有签名,有最后一行
+    public ExportExcel(String title,String[] rowName,List<Object[]>  dataList, HttpServletResponse response, String time,String xianshi, int major){
+        this.dataList = dataList;
+        this.rowName = rowName;
+        this.title = title;
+        this.time = time;
+        this.response = response;
+        this.xianshi = xianshi;
+        this.major = major;
     }
 
     //构造方法，传入要导出的数据 双行表头
@@ -105,22 +121,68 @@ public class ExportExcel {
             //sheet样式定义【getColumnTopStyle()/getStyle()均为自定义方法 - 在下面  - 可扩展】
             HSSFCellStyle columnTopStyle = this.getColumnTopStyle(workbook);//获取列头样式对象
             HSSFCellStyle style = this.getStyle(workbook);                  //单元格样式对象
-
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, (columnNum-1)));
+            HSSFCellStyle timeStyle = this.getTimeStyle(workbook);                  //时间行样式对象
+            CellRangeAddress exceltitle = new CellRangeAddress(0, 1, 0, (columnNum-1));
+            sheet.addMergedRegion(exceltitle);
             cellTiltle.setCellStyle(columnTopStyle);
             cellTiltle.setCellValue(title);
+            /*HSSFCell cellTitleyu = null;
+            for(int i=1; i<=3; i++){
+                cellTitleyu = rowm.createCell(i);
+                sheet.addMergedRegion(new CellRangeAddress(0, 1, (columnNum-1)+i, (columnNum-1)+i));
+                cellTitleyu.setCellValue("000");
+                cellTitleyu.setCellStyle(timeStyle);
+            }*/
+            //定义签名
+            if(major==1){
+                CellRangeAddress callRangeAddress = new CellRangeAddress(2,2,0,(columnNum-1));//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(callRangeAddress);
+                HSSFRow rowRowAutograph = sheet.createRow(2);
+                HSSFCell cellAutograph = rowRowAutograph.createCell(0);
+                cellAutograph.setCellValue(autograph);
+                cellAutograph.setCellStyle(timeStyle);
+                HSSFRow rowRowName = sheet.createRow(4);                // 在索引4的位置创建行(最顶端的行开始的第五行)
+                HSSFCell cellTimeyu = null;
+                for(int i=1; i<columnNum; i++){
+                    cellTimeyu = rowRowAutograph.createCell(i);
+                    cellTimeyu.setCellValue("");
+                    cellTimeyu.setCellStyle(timeStyle);
+                }
+                firstTimeHang = 3;
+                lastTimeHang = 3;
+                if(shuangCell != null){
+                    wei = 6;
+                }else{
+                    wei=5;
+                }
+
+            } else{
+                firstTimeHang = 2;
+                lastTimeHang = 2;
+
+                if(shuangCell != null){
+                    wei = 5;
+                }else{
+                    wei=4;
+                }
+            }
             //定义时间行
-            CellRangeAddress callRangeAddress = new CellRangeAddress(2,2,0,(columnNum-1));//起始行,结束行,起始列,结束列
+            CellRangeAddress callRangeAddress = new CellRangeAddress(firstTimeHang,lastTimeHang,0,(columnNum-1));//起始行,结束行,起始列,结束列
             sheet.addMergedRegion(callRangeAddress);
-            HSSFRow rowRowTime = sheet.createRow(2);
+            HSSFRow rowRowTime = sheet.createRow(firstTimeHang);
             HSSFCell cellTime = rowRowTime.createCell(0);
             cellTime.setCellValue(time);
-            HSSFRow rowRowName = sheet.createRow(3);                // 在索引3的位置创建行(最顶端的行开始的第四行)
+            cellTime.setCellStyle(timeStyle);
+            HSSFRow rowRowName = sheet.createRow(firstTimeHang+1);                // 在索引3的位置创建行(最顶端的行开始的第四行)
+            HSSFCell cellTimeyu = null;
+            for(int i=1; i<columnNum; i++){
+                cellTimeyu = rowRowTime.createCell(i);
+                cellTimeyu.setCellValue("");
+                cellTimeyu.setCellStyle(timeStyle);
+            }
 
-            int wei = 0;    //从哪一行开始写起
             //合并双列表头的单元格
             if(shuangCell != null){
-                wei = 5;
                 int shuangtitle = shuangCell.length;
                 for (int i=0; i<shuangtitle; i++){
                     sheet.addMergedRegion(shuangCell[i]);
@@ -143,7 +205,6 @@ public class ExportExcel {
                     cellRowName.setCellStyle(columnTopStyle);                       //设置列头单元格样式
                 }
             }else{
-                wei=4;
                 // 将列头设置到sheet的单元格中
                 for(int n=0;n<columnNum;n++){
                     HSSFCell  cellRowName = rowRowName.createCell(n);               //创建列头对应个数的单元格
@@ -201,7 +262,7 @@ public class ExportExcel {
             }
             //让列宽随着导出的列长自动适应
             for (int colNum = 0; colNum < columnNum; colNum++) {
-                int columnWidth = sheet.getColumnWidth(colNum) / 256;
+                int columnWidth = sheet.getColumnWidth(colNum) / 200;
                 for (int rowNum = 0; rowNum < sheet.getLastRowNum()-chang; rowNum++) {
                     if(rowNum !=2){
                         HSSFRow currentRow;
@@ -223,9 +284,9 @@ public class ExportExcel {
                     }
                 }
                 if(colNum == 0){
-                    sheet.setColumnWidth(colNum, (columnWidth-2) * 256);
+                    sheet.setColumnWidth(colNum, (columnWidth-2) * 200);//256
                 }else{
-                    sheet.setColumnWidth(colNum, (columnWidth+4) * 256);
+                    sheet.setColumnWidth(colNum, (columnWidth+4) * 200);
                 }
             }
 /*            String fileName = "Excel-" + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
@@ -260,7 +321,6 @@ public class ExportExcel {
      * 列头单元格样式
      */
     public HSSFCellStyle getColumnTopStyle(HSSFWorkbook workbook) {
-
         // 设置字体
         HSSFFont font = workbook.createFont();
         //设置字体大小
@@ -293,6 +353,46 @@ public class ExportExcel {
         style.setWrapText(false);
         //设置水平对齐的样式为居中对齐;
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        //设置垂直对齐的样式为居中对齐;
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        return style;
+    }
+    /**
+     * 时间信息行单元格样式
+     */
+    public HSSFCellStyle getTimeStyle(HSSFWorkbook workbook) {
+        // 设置字体
+        HSSFFont font = workbook.createFont();
+        //设置字体大小
+        //font.setFontHeightInPoints((short)10);
+        //字体加粗
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        //设置字体名字
+        font.setFontName("Courier New");
+        //设置样式;
+        HSSFCellStyle style = workbook.createCellStyle();
+        //设置底边框;
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        //设置底边框颜色;
+        style.setBottomBorderColor(HSSFColor.BLACK.index);
+        //设置左边框;
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        //设置左边框颜色;
+        style.setLeftBorderColor(HSSFColor.BLACK.index);
+        //设置右边框;
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        //设置右边框颜色;
+        style.setRightBorderColor(HSSFColor.BLACK.index);
+        //设置顶边框;
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        //设置顶边框颜色;
+        style.setTopBorderColor(HSSFColor.BLACK.index);
+        //在样式用应用设置的字体;
+        style.setFont(font);
+        //设置自动换行;
+        style.setWrapText(false);
+        //设置水平对齐的样式为居中对齐;
+        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
         //设置垂直对齐的样式为居中对齐;
         style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         return style;

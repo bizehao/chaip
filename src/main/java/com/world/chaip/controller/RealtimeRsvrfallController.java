@@ -35,7 +35,7 @@ public class RealtimeRsvrfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -78,8 +78,8 @@ public class RealtimeRsvrfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -94,7 +94,7 @@ public class RealtimeRsvrfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -137,8 +137,8 @@ public class RealtimeRsvrfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH");
         } catch (ParseException e) {
             e.printStackTrace();
         }

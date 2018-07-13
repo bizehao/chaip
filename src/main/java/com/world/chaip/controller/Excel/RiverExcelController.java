@@ -27,6 +27,8 @@ import java.util.List;
 @RequestMapping("services/realtime/riverfallexcel")
 public class RiverExcelController {
 
+    private String autograph = StaticConfig.autograph;
+
     @Autowired
     private RiverfallService riverfallService;
 
@@ -40,7 +42,7 @@ public class RiverExcelController {
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
-
+        String benqu="and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -82,12 +84,12 @@ public class RiverExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist,benqu);
         String title = "河道水情统计表";
         String[] rowsName = new String[]{"序号","县名","河名","站名","站号","时间","水位(m)","流量(m³/s)","水势"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -110,7 +112,6 @@ public class RiverExcelController {
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
-        System.out.println("这个的颠三倒四"+dateS);
         System.out.println(dateE);
         now.setTime(dateS);
         beginTime=now.getTime();
@@ -182,8 +183,8 @@ public class RiverExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -281,7 +282,7 @@ public class RiverExcelController {
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
         ex.export();
         riverXbyBen();
     }
@@ -352,7 +353,6 @@ public class RiverExcelController {
         String[] rowsName = new String[]{"河名","站名","水位(m)","流量(m³/s)","数据时间","河名","站名","水位(m)","流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
-        System.out.println("记录是为这个"+a.size());
         for (int i=0; i<a.size(); i++){
             if(i%2==0 || i==0){
                 objects = new Object[rowsName.length];
@@ -385,7 +385,6 @@ public class RiverExcelController {
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
-        System.out.println("这个的颠三倒四"+dateS);
         System.out.println(dateE);
         now.setTime(dateS);
         beginTime=now.getTime();
@@ -396,7 +395,7 @@ public class RiverExcelController {
         String end = formatter.format(endTime);
         String time ="时间："+ begin+"-"+end;
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
         ex.export();
         riverXbyBen();
     }

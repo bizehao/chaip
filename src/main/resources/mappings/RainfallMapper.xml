@@ -48,6 +48,8 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                and c.dq = 31
+                ${db}
 				and PFL = 1
 			</trim>
 		</where>
@@ -111,7 +113,9 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                ${benqu}
                 and PFL = 1
+                ${db}
 			</trim>
 		</where>
 		) st
@@ -174,7 +178,9 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                ${benqu}
 				and PFL = 1
+                ${db}
 			</trim>
 		</where>
 		) st
@@ -193,7 +199,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp > 0 group by STCD) pt
+		and dyp >= 1 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM,st.STCD
 	</select>
@@ -244,7 +250,9 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                ${benqu}
 				and PFL = 1
+                ${db}
             </trim>
         </where>
         ) st
@@ -263,7 +271,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp > 0 group by STCD) pt
+		and dyp >= 1 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM,st.STCD
     </select>
@@ -314,7 +322,9 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                ${benqu}
 				and PFL = 1
+                ${db}
             </trim>
         </where>
         ) st
@@ -333,7 +343,7 @@
 		select count(*) num, STCD
 		from ${pptn} where
 		tm between #{beginTime} and #{Time}
-		and dyp > 0 group by STCD) pt
+		and dyp >= 1 group by STCD) pt
 		on st.STCD = pt.STCD
 		ORDER BY ADNM,st.STCD
 	</select>
@@ -385,7 +395,9 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                ${benqu}
 				and PFL = 1
+                ${db}
 			</trim>
 		</where>
 		) st

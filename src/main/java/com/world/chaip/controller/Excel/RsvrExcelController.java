@@ -34,6 +34,8 @@ import java.util.List;
 @RequestMapping("services/realtime/rsvrfallexcel")
 public class RsvrExcelController {
 
+    private String autograph = StaticConfig.autograph;
+
     @Autowired
     private RsvrfallService rsvrfallService;
 
@@ -97,34 +99,35 @@ public class RsvrExcelController {
         }
         List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"序号","水系","库名","站号","时间","水位(m)","蓄水量(百万m³)","出库流量(m³/s)"};
+        String[] rowsName = new String[]{"序号","库名","站号","县域","河流","时间","水位(m)","蓄水量(百万m³)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         for (int i=0; i<a.size(); i++){
             Rsvr item = a.get(i);
             objects = new Object[rowsName.length];
             objects[0] = i+1;
-            objects[1] = item.getHnnm();
-            objects[2] = item.getStnm();
-            objects[3] = item.getStcd();
-            objects[4] = item.getTm();
-            objects[5] = item.getRz();
-            objects[6] = item.getW();
-            objects[7] = item.getOtq();
+            objects[1] = item.getStnm();
+            objects[2] = item.getStcd();
+            objects[3] = item.getAdnm();
+            objects[4] = item.getRvnm();
+            objects[5] = item.getTm();
+            objects[6] = item.getRz();
+            objects[7] = item.getW();
             dataList.add(objects);
         }
-        Date beginTime=null;
+        /*Date beginTime=null;
         Date endTime=null;
         DaybyHourRainfall daybyHourRainfall=new DaybyHourRainfall();
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         beginTime=now.getTime();
         now.setTime(dateE);
-        endTime= now.getTime();
+        endTime= now.getTime();*/
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
+        String begin = formatter.format(formatter.parse(dateStart));
+        String end = formatter.format(formatter.parse(dateEnd));
         String time ="时间："+ begin+"-"+end;
+        System.out.println("==========="+time);
         //导出Excel公共方法调用
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
         ex.export();
@@ -194,7 +197,7 @@ public class RsvrExcelController {
             e.printStackTrace();
         }
         DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
-        String title = "水库水情统计表";
+        String title = "今日水情(水库)";
         String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际","","","",""};
         String[] shuangName = new String[]{"","","水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -239,7 +242,7 @@ public class RsvrExcelController {
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
 
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, time, head);
+        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, autograph, head);
         ex.export();
         rsvrXbyItem();
     }

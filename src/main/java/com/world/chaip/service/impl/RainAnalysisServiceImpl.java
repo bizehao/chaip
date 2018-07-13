@@ -139,7 +139,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             arbitrarilyDay.setAdnm(list1.get(i).getAdnm());
             arbitrarilyDay.setoDay_oDay(list1.get(i).getZong());
             arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong());
-            arbitrarilyDay.setSamePeriodChang(dList.get(i));
+            arbitrarilyDay.setSamePeriodChang(new DecimalFormat("#0.0").format(dList.get(i)));
             if(list1.get(i).getZong()==0){
                 arbitrarilyDay.setSamePeriodCompareQu("--");
                 arbitrarilyDay.setSamePeriodCompareChang("--");

@@ -9,11 +9,13 @@ import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.mapper.RsvrfallMapper;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
+import com.world.chaip.util.ExcepTimeUtil;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,14 +28,17 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 
     //水库 (实时)
     @Override
-    public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
         List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        for(Rsvr rsvr : rainfalls){
+            rsvr.setTm(ExcepTimeUtil.getExcepTime(rsvr.getTm()));
+        }
         return rainfalls;
     }
 
     //水库 (专业)
     @Override
-    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
         int fstp =  getRsverXunQi(dateS);
         int fstp1 =  getRsverXunQi(dateE);
         if(fstp >= fstp1){
@@ -45,6 +50,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int jilu = 0;
         List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
         for(int i=0; i<rainfalls.size(); i++){
+            rainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(rainfalls.get(i).getTm()));
             /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
             rainfalls.get(i).setFsltdz(rainfalls.get(i).getFsltdz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(rainfalls.get(i).getFsltdz())));
             /*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*/

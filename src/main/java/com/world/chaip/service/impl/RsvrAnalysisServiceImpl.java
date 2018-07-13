@@ -22,9 +22,39 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
     @Autowired
     private RsvrAnalysisMapper rsvrAnalysisMapper;
 
+    //水库水量分析表
     @Override
     public RsvrWaterExcel getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+
         Calendar tm = Calendar.getInstance();
+        tm.setTime(dateS);
+        tm.set(Calendar.HOUR_OF_DAY,8);
+        Date dateS1 = tm.getTime();
+        tm.setTime(dateE);
+        tm.set(Calendar.HOUR_OF_DAY,8);
+        tm.add(Calendar.DATE,1);
+        Date dateE1 = tm.getTime();
+        List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(dateS1, dateE1, adcd, systemTypes, stcdOrStnm);
+        List<RsvrWaterExchange> list = new ArrayList<>();
+        RsvrWaterExchange rsvrWaterExchange = null;
+
+        //日期之间的天数
+        long difference =  (dateS.getTime()-dateE.getTime())/86400000;
+        int days = (int) (Math.abs(difference)+1);
+
+        for (int i = 0; i < rsvrWaterAnalysis.size(); i++) {
+            rsvrWaterExchange = new RsvrWaterExchange();
+            rsvrWaterExchange.setStcd(rsvrWaterAnalysis.get(i).getStcd());
+            rsvrWaterExchange.setName(rsvrWaterAnalysis.get(i).getName());
+            rsvrWaterExchange.setStnm(rsvrWaterAnalysis.get(i).getStnm());
+            rsvrWaterExchange.setAvotqs(new DecimalFormat("#0.000").format(rsvrWaterAnalysis.get(i).getAvotq() / days));
+            rsvrWaterExchange.setSumotqs(new DecimalFormat("#0.000").format(rsvrWaterAnalysis.get(i).getAvotq() / days * 3600 * 24 * days/1000000));
+            rsvrWaterExchange.setSuminqs(new DecimalFormat("#0.000").format(rsvrWaterAnalysis.get(i).getAvinq() / days * 3600 * 24 * days/1000000));
+            list.add(rsvrWaterExchange);
+        }
+
+
+        /*Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         int beginMonth = tm.get(Calendar.MONTH);
         tm.setTime(dateE);
@@ -67,21 +97,21 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
                     rsvrWaterExchange.setName(rsvrWaterAnalysis.get(i).getName());
                     rsvrWaterExchange.setStnm(rsvrWaterAnalysis.get(i).getStnm());
                     rsvrWaterExchange.setAvotqs(new DecimalFormat("#0.000").format(otqlistArray[i] / countDay));
-                    rsvrWaterExchange.setSumotqs(new DecimalFormat("#0.000").format(otqlistArray[i] / countDay * 3600 * 24 * countDay));
-                    rsvrWaterExchange.setSuminqs(new DecimalFormat("#0.000").format(inqlistArray[i] / countDay * 3600 * 24 * countDay));
+                    rsvrWaterExchange.setSumotqs(new DecimalFormat("#0.000").format(otqlistArray[i] / countDay * 3600 * 24 * countDay/1000000));
+                    rsvrWaterExchange.setSuminqs(new DecimalFormat("#0.000").format(inqlistArray[i] / countDay * 3600 * 24 * countDay/1000000));
                     list.add(rsvrWaterExchange);
                 }
             }
-        }
+        }*/
+        List<RsvrWaterExchange> rsvrsList = new ArrayList<>();
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
-        now.set(Calendar.DATE, 1);
+        now.add(Calendar.DATE, 1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date time = now.getTime();
         List<Rsvr> beginRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm);
         now.setTime(dateE);
-        now.add(Calendar.MONTH, 1);
-        now.set(Calendar.DATE, 1);
+        now.add(Calendar.DATE, 1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         time = now.getTime();
         List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm);
@@ -114,9 +144,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
         return rsvrWaterExcel;
     }
-
+    //水库蓄水量量分析表
     @Override
-    public RsvrStrongeExcel getRsvrStorageAnalysis(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public Object getRsvrStorageAnalysis(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int sign) {
         Calendar now = Calendar.getInstance();
         now.setTime(date);
         now.set(Calendar.HOUR_OF_DAY, 8);
@@ -266,6 +296,8 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
             rsvrW = new RsvrW();
             rsvrW.setHnnm(jinList.get(i).getHnnm());
             rsvrW.setStnm(jinList.get(i).getStnm());
+            rsvrW.setAdnm(jinList.get(i).getAdnm());
+            rsvrW.setRvnm(jinList.get(i).getRvnm());
             rsvrW.setW(new DecimalFormat("#0.000").format(jinList.get(i).getW()));
             rsvrW.setQw(new DecimalFormat("#0.000").format(quList.get(i).getW()));
             rsvrW.setQwCompare(new DecimalFormat("#0.000").format(jinList.get(i).getW() - quList.get(i).getW()));
@@ -285,6 +317,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         rsvrWList.add(rwZong);
 
         RsvrStrongeExcel rsvrStrongeExcel = new RsvrStrongeExcel();
+        if(sign == 1){
+            return rsvrWList;
+        }
         for (int i = 0; i < rsvrWList.size(); i++) {
             RsvrStrongeItem rsvrStrongeItem = null;
             /*for(int j=0; j<rsvrStrongeExcel.getStrongeItemList().size(); j++){*/
@@ -335,7 +370,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
                 list.get(i).setRvnm("");
             }
             for (int j = 0; j < rsvrExchangeExcel.getRsvrPro().size(); j++) {
-                System.out.println("进行"+list.get(i).getRvnm());
                 if (rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(list.get(i).getRvnm())) {
                     rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
                     rsvrTZCount = new RsvrTZCount();
@@ -368,9 +402,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
                 rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
             }
         }
-        for (int i = 0; i < rsvrExchangeExcel.getRsvrPro().size(); i++) {
+        /*for (int i = 0; i < rsvrExchangeExcel.getRsvrPro().size(); i++) {
             System.out.println(rsvrExchangeExcel.getRsvrPro().get(i).getRvnm());
-        }
+        }*/
         return rsvrExchangeExcel;
     }
 
@@ -386,12 +420,14 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         if(tm==null){
             return "";
         }
-        Date date = DateUtils.parse(tm, "yyyy-MM-dd");
+        Date date = DateUtils.parse(tm, "yyyy-MM-dd HH:mm");
         Calendar m = Calendar.getInstance();
         m.setTime(date);
         int month = m.get(Calendar.MONTH) + 1;
         int day = m.get(Calendar.DATE);
-        String time = month + "月" + day + "日";
+        int hours = m.get(Calendar.HOUR_OF_DAY);
+        int minutes = m.get(Calendar.MINUTE);
+        String time = month + "月" + day + "日"+hours+"时"+minutes+"分";
         return time;
     }
 }

@@ -32,6 +32,12 @@ public class RiverAnalysisController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
 
+        /*String dateStart = "2018-05-01";
+        String dateEnd = "2018-06-08";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";*/
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -73,8 +79,8 @@ public class RiverAnalysisController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }

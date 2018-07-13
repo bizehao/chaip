@@ -48,7 +48,9 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                and c.dq = '31'
                 and sttp like '%R%' and ZFL='1'
+                and c.db in (2,3)
             </trim>
         </where>
         ) st
@@ -117,7 +119,7 @@
                     </foreach>
                 </if>
             </trim>
-            and a.sttp like '%R%' and n.ZFL='1'
+            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3)
         </where>
         ) m
         left join

@@ -8,7 +8,10 @@ package com.world.chaip.entity.report;
 import java.util.Date;
 
 public class Rsvr {
-	
+    //县域
+    private String adnm;
+    //河名
+    private String rvnm;
 	//站号
 	private String stcd;
 	//库名
@@ -33,20 +36,21 @@ public class Rsvr {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Rsvr(String stcd, String stnm, String hnnm, String name, String tm, double rz, double w, double otq,
-				double inq) {
-		this.stcd = stcd;
-		this.stnm = stnm;
-		this.hnnm = hnnm;
-		this.name = name;
-		this.tm = tm;
-		this.rz = rz;
-		this.w = w;
-		this.otq = otq;
-		this.inq = inq;
-	}
+    public Rsvr(String adnm, String rvnm, String stcd, String stnm, String hnnm, String name, String tm, double rz, double w, double otq, double inq) {
+        this.adnm = adnm;
+        this.rvnm = rvnm;
+        this.stcd = stcd;
+        this.stnm = stnm;
+        this.hnnm = hnnm;
+        this.name = name;
+        this.tm = tm;
+        this.rz = rz;
+        this.w = w;
+        this.otq = otq;
+        this.inq = inq;
+    }
 
-	public String getStcd() {
+    public String getStcd() {
 		return stcd;
 	}
 
@@ -117,4 +121,20 @@ public class Rsvr {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    public String getAdnm() {
+        return adnm;
+    }
+
+    public void setAdnm(String adnm) {
+        this.adnm = adnm;
+    }
+
+    public String getRvnm() {
+        return rvnm;
+    }
+
+    public void setRvnm(String rvnm) {
+        this.rvnm = rvnm;
+    }
 }

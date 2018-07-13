@@ -1,6 +1,10 @@
 package com.world.chaip.entity.Exchange;
 
 public class RsvrStrongeChild {
+    //县域
+    private String adnm;
+    //河名
+    private String rvnm;
     //站编号
     private String stcd;
     //站名（库名）
@@ -16,7 +20,9 @@ public class RsvrStrongeChild {
     //较常年
     private String cwCompare;
 
-    public RsvrStrongeChild(String stcd, String stnm, String w, String qw, String qwCompare, String cw, String cwCompare) {
+    public RsvrStrongeChild(String adnm, String rvnm, String stcd, String stnm, String w, String qw, String qwCompare, String cw, String cwCompare) {
+        this.adnm = adnm;
+        this.rvnm = rvnm;
         this.stcd = stcd;
         this.stnm = stnm;
         this.w = w;
@@ -83,5 +89,21 @@ public class RsvrStrongeChild {
 
     public void setCwCompare(String cwCompare) {
         this.cwCompare = cwCompare;
+    }
+
+    public String getAdnm() {
+        return adnm;
+    }
+
+    public void setAdnm(String adnm) {
+        this.adnm = adnm;
+    }
+
+    public String getRvnm() {
+        return rvnm;
+    }
+
+    public void setRvnm(String rvnm) {
+        this.rvnm = rvnm;
     }
 }

@@ -48,20 +48,20 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%'
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
             </trim>
         </where>
         ) st
         LEFT JOIN
         (
-        select A.STCD,AVQ from RP_RVAV_R A
+        select A.STCD,sum(AVQ) AVQ from RP_RVAV_R A
         <where>
             <![CDATA[
 				IDTM > #{beginTime} AND IDTM <= #{endTime}
-				and A.STTDRCD=5
+				and A.STTDRCD=1
 			]]>
         </where>
-        group by stcd,AVQ
+        group by stcd
         )PP
         on ST.STCD=PP.STCD ORDER BY ST.STCD
     </select>
@@ -113,7 +113,7 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%'
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
             </trim>
         </where>
         ) st
@@ -133,7 +133,7 @@
         on ST.STCD=PP.STCD ORDER BY ST.STCD
     </select>
 
-    <!-- 河道水情获取最大时期 -->
+    <!-- 河道水情获取最大时期  and c.dq = 31 and c.jdb in (2,3) -->
     <select id="getRiverMaxTime" resultType="String">
         select
         MAX(tm)
@@ -152,5 +152,6 @@
         <![CDATA[
 				tm>=#{beginTime} and tm<=#{endTime}
 			]]>;
+
     </select>
 </mapper>

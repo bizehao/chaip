@@ -22,7 +22,39 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
     //河道水情分析
     @Override
     public List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+
+        long difference =  (dateS.getTime()-dateE.getTime())/86400000;
         Calendar tm = Calendar.getInstance();
+        tm.setTime(dateS);
+        tm.set(Calendar.HOUR_OF_DAY, 8);
+        Date beginTime = tm.getTime();
+
+        tm.setTime(dateE);
+
+        tm.set(Calendar.HOUR_OF_DAY, 8);
+        tm.add(Calendar.DATE,1);
+        Date endTime = tm.getTime();
+
+        List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+
+        int days = (int) (Math.abs(difference)+1);
+        System.out.println("======"+days);
+        List<RiverExchange> list = new ArrayList<>();
+        RiverExchange riverExchange = null;
+
+        for (int i=0; i<riverByAnalysis.size(); i++){
+            riverExchange = new RiverExchange();
+            riverExchange.setStcd(riverByAnalysis.get(i).getStcd());
+            riverExchange.setRvnm(riverByAnalysis.get(i).getRvnm()==null?"":riverByAnalysis.get(i).getRvnm());
+            riverExchange.setStnm(riverByAnalysis.get(i).getStnm());
+            riverExchange.setAvgQ(new DecimalFormat("#0.000").format((Double.parseDouble(riverByAnalysis.get(i).getAvgQ()))/days));
+            riverExchange.setSumQ(new DecimalFormat("#0.000").format((Double.parseDouble(riverByAnalysis.get(i).getAvgQ()))*3600*24/1000000));
+            list.add(riverExchange);
+        }
+
+        System.out.println(list.size());
+
+        /*Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         int beginMonth = tm.get(Calendar.MONTH);
         tm.setTime(dateE);
@@ -34,7 +66,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         List<RiverExchange> list = new ArrayList<>();
         RiverExchange riverExchange = null;
         double[] listArray = null;
-        for(int month = beginMonth; month<=endMonth; month++){
+        for(int month = beginMonth; month<=endMonth; month++){   //  4     6
             tm.set(Calendar.MONTH, month);
             tm.set(Calendar.DATE, 1);
             tm.set(Calendar.HOUR_OF_DAY, 8);
@@ -64,9 +96,9 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
                     list.add(riverExchange);
                 }
             }
-        }
+        }*/
         //最大水位 流量 及 时间
-        Calendar maxtm = Calendar.getInstance();
+        /*Calendar maxtm = Calendar.getInstance();
         maxtm.setTime(dateS);
         maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
@@ -75,8 +107,9 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         maxtm.add(Calendar.MONTH,1);
         maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
-        dateE = maxtm.getTime();
-        List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        dateE = maxtm.getTime();*/
+        List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        System.out.println(riverByMaxQZ.size());
         List<RiverExchange> rList = new ArrayList<>();
         for(int i=0; i<riverByMaxQZ.size(); i++){
             riverExchange = list.get(i);
@@ -86,14 +119,18 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             Date dateQ = null;
             int month = 0;
             int date = 0;
+            int hour = 0;
+            int minute = 0;
             String MaxZTime = riverByMaxQZ.get(i).getMaxZTime();
             if( MaxZTime != null){
                 try {
-                    dateZ = DateUtils.parse(MaxZTime, "yyyy-MM-dd");
+                    dateZ = DateUtils.parse(MaxZTime, "yyyy-MM-dd HH:mm");
                     m.setTime(dateZ);
                     month = m.get(Calendar.MONTH)+1;
                     date = m.get(Calendar.DATE);
-                    riverExchange.setMaxZTime(month+"月"+date+"日");
+                    hour = m.get(Calendar.HOUR_OF_DAY);
+                    minute = m.get(Calendar.MINUTE);
+                    riverExchange.setMaxZTime(month+"月"+date+"日"+hour+"时"+minute+"分");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -104,11 +141,13 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             String MaxQTime = riverByMaxQZ.get(i).getMaxQTime();
             if( MaxQTime != null){
                 try {
-                    dateQ = DateUtils.parse(MaxQTime, "yyyy-MM-dd");
+                    dateQ = DateUtils.parse(MaxQTime, "yyyy-MM-dd HH:mm");
                     m.setTime(dateQ);
                     month = m.get(Calendar.MONTH)+1;
                     date = m.get(Calendar.DATE);
-                    riverExchange.setMaxQTime(month+"月"+date+"日");
+                    hour = m.get(Calendar.HOUR_OF_DAY);
+                    minute = m.get(Calendar.MINUTE);
+                    riverExchange.setMaxQTime(month+"月"+date+"日"+hour+"时"+minute+"分");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

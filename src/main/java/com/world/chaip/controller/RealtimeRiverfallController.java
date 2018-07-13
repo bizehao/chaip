@@ -33,8 +33,9 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
 			@RequestParam(name="adcd",required=false)String adcd,
 			@RequestParam(name="systemTypes",required=false)String systemTypes,
-			@RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+			@RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
 
+        String benqu="and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -76,12 +77,12 @@ public class RealtimeRiverfallController {
         Date dateS = null;
         Date dateE = null;
 		try {
-			dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+			dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist, benqu);
         return new JsonResult(a);
 	}
 
@@ -92,8 +93,8 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
-
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
+        String benqu="and c.dq != 32 and c.jdb in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -151,7 +152,7 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();

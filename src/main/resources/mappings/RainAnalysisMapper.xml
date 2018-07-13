@@ -60,7 +60,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st
@@ -134,7 +134,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st
@@ -215,7 +215,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st
@@ -324,7 +324,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st
@@ -411,7 +411,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st
@@ -480,7 +480,7 @@
                         #{ly}
                     </foreach>
                 </if>
-                and PFL = 1
+                and PFL = 1 and c.dq=31 and c.jdb in (1,3)
             </trim>
         </where>
         ) st

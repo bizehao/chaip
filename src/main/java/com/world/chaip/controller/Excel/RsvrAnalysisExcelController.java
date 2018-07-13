@@ -82,8 +82,8 @@ public class RsvrAnalysisExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -124,13 +124,18 @@ public class RsvrAnalysisExcelController {
         System.out.println(dateS+""+dateE);
         String time = formatter.format(dateS)+ "年" + beginMonth + "-" + endMonth + "月";
         String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "中小型水库水量计算表";
-        String endtm = "";
+        Calendar updateTm = Calendar.getInstance();
+        updateTm.setTime(dateS);
+        String beginTm = (updateTm.get(Calendar.MONTH)+1)+"月"+updateTm.get(Calendar.DATE)+"日";
+        updateTm.setTime(dateE);
+        String endTm = (updateTm.get(Calendar.MONTH)+1)+"月"+updateTm.get(Calendar.DATE)+"日";
+        /*String endtm = "";
         if(endMonth==12){
             endtm = endMonth+"月31日";
         }else{
             endtm = (endMonth+1)+"月1日";
-        }
-        String[] rowsName = new String[]{"序号", "系统", "库名", beginMonth + "月1日","", endtm, "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(m³)", "入库总量(m³)"};
+        }*/
+        String[] rowsName = new String[]{"序号", "系统", "库名", beginTm,"", endTm, "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(百万m³)", "入库总量(百万m³)"};
         String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(m³)", "水位(m)", "蓄水量(m³)", "", "", "", ""};
         //列头单元格合并
         //序号
@@ -215,11 +220,14 @@ public class RsvrAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        RsvrStrongeExcel a = rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist);
+        List<RsvrW> a = (List<RsvrW>) rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist,1);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         RsvrStrongeChild rsvrStrongeChild = null;
-        for (int i = 0; i < a.getStrongeItemList().size(); i++) {
+
+        RsvrW mm = null;
+
+        /*for (int i = 0; i < a.getStrongeItemList().size(); i++) {
             RsvrStrongeExcel.RsvrStrongeItem rsvrStrongeItem= a.getStrongeItemList().get(i);;
             for(int j=0; j<rsvrStrongeItem.getChildList().size(); j++){
                 objects = new Object[7];
@@ -241,13 +249,28 @@ public class RsvrAnalysisExcelController {
                 objects[6] = rsvrStrongeChild.getCwCompare();
                 dataList.add(objects);
             }
+        }*/
+
+        for(int i=0; i<a.size(); i++){
+            mm = a.get(i);
+            objects = new Object[8];
+            objects[0] = mm.getStnm();
+            objects[1] = mm.getAdnm();
+            objects[2] = mm.getRvnm();
+            objects[3] = mm.getW();
+            objects[4] = mm.getQw();
+            objects[5] = mm.getQwCompare();
+            objects[6] = mm.getCw();
+            objects[7] = mm.getCwCompare();
+            dataList.add(objects);
         }
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateTime);
         String time = formatter.format(dateTime);
-        String title = time+ "年水库蓄水量分析表";
-        String[] rowsName = new String[]{"河系", "库名", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
+        String title = time+ "年水库蓄水量分析表";     //"县域", "河流",
+        String[] rowsName = new String[]{"库名", "县域", "河流", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
         ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
         ex.export();
     }

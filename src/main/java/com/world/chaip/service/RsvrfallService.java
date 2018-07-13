@@ -6,6 +6,7 @@ import com.world.chaip.entity.report.RsvrXunQi;
 import com.world.chaip.entity.report.RsvrZhuanYe;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface RsvrfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
 
 	/**
 	 * 水库（专业报表）
@@ -36,6 +37,6 @@ public interface RsvrfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+	DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
 
 }

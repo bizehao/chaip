@@ -25,7 +25,8 @@ public interface RiverfallMapper {
             @Param("endTime") Date endTime,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("benqu") String benqu);
 	/**
 	 * 河道查询(本区)
 	 * @param beginTime

@@ -36,4 +36,9 @@ public class Rainfall extends Station {
 	public void setNum(Double num) {
 		this.num = num;
 	}
+
+    @Override
+    public String toString() {
+        return "Rainfall{" + "tm=" + tm + ", drp=" + drp + ", accp=" + accp + ", num=" + num + '}';
+    }
 }
