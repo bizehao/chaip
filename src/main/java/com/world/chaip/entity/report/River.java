@@ -24,13 +24,15 @@ public class River {
 	private String wptn;
 	//流量
 	private String q;
+	//河水特征码
+    private int flwchrcd;
 		
 	public River() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-    public River(String stcd, String adnm, String stnm, String rvnm, String tm, String z, String wptn, String q) {
+    public River(String stcd, String adnm, String stnm, String rvnm, String tm, String z, String wptn, String q, int flwchrcd) {
         this.stcd = stcd;
         this.adnm = adnm;
         this.stnm = stnm;
@@ -39,6 +41,7 @@ public class River {
         this.z = z;
         this.wptn = wptn;
         this.q = q;
+        this.flwchrcd = flwchrcd;
     }
 
     public String getStcd() {
@@ -103,5 +106,18 @@ public class River {
 
     public void setQ(String q) {
         this.q = q;
+    }
+
+    public int getFlwchrcd() {
+        return flwchrcd;
+    }
+
+    public void setFlwchrcd(int flwchrcd) {
+        this.flwchrcd = flwchrcd;
+    }
+
+    @Override
+    public String toString() {
+        return "River{" + "stcd='" + stcd + '\'' + ", adnm='" + adnm + '\'' + ", stnm='" + stnm + '\'' + ", rvnm='" + rvnm + '\'' + ", tm='" + tm + '\'' + ", z='" + z + '\'' + ", wptn='" + wptn + '\'' + ", q='" + q + '\'' + ", flwchrcd=" + flwchrcd + '}';
     }
 }

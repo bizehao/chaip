@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RsvrfallMapper {
 	/**
-     * 水库查询(实时)
+     * 水库查询(实时 时间不同)
 	 * @param beginTime
      * @param endTime
      * @param adcd
@@ -27,9 +27,24 @@ public interface RsvrfallMapper {
             @Param("systemTypes") List<String> systemTypes,
             @Param("stcdOrStnm") List<String> stcdOrStnm);
 
+    /**
+     * 水库查询(实时 时间相同)
+     * @param time
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<Rsvr> getRsvrByTermNew(
+            @Param("time") Date time,
+            @Param("adcd") List<String> adcd,
+            @Param("systemTypes") List<String> systemTypes,
+            @Param("stcdOrStnm") List<String> stcdOrStnm);
+
 	/**
-	 * 水库查询（专业报表）
-	 * @param time
+	 * 水库查询（专业报表 时间不同）
+	 * @param beginTime
+     * @param endTime
 	 * @param fstp
 	 * @param adcd
 	 * @param systemTypes
@@ -37,11 +52,27 @@ public interface RsvrfallMapper {
 	 * @return
 	 */
 	List<RsvrZhuanYe> getRsvrByZhaunYe(
-			@Param("time") Date time,
+            @Param("beginTime") Date beginTime,
+			@Param("endTime") Date endTime,
 			@Param("fstp") int fstp,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
 			@Param("stcdOrStnm") List<String> stcdOrStnm);
+    /**
+     * 水库查询（专业报表 时间相同）
+     * @param time
+     * @param fstp
+     * @param adcd
+     * @param systemTypes
+     * @param stcdOrStnm
+     * @return
+     */
+    List<RsvrZhuanYe> getRsvrByZhaunYeNew(
+            @Param("time") Date time,
+            @Param("fstp") int fstp,
+            @Param("adcd") List<String> adcd,
+            @Param("systemTypes") List<String> systemTypes,
+            @Param("stcdOrStnm") List<String> stcdOrStnm);
 
 	/**
 	 * 查询汛期

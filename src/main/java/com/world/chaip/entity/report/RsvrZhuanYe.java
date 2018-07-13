@@ -35,10 +35,13 @@ public class RsvrZhuanYe {
     //下泄流量
     private String otq;
 
+    //库水特征码
+    private int RWCHRCD;
+
     public RsvrZhuanYe() {
     }
 
-    public RsvrZhuanYe(String stnm, String stcd, String tm, String ttcp, String fsltdz, String fsltdw, String rz, String w, String inq, String otq) {
+    public RsvrZhuanYe(String stnm, String stcd, String tm, String ttcp, String fsltdz, String fsltdw, String rz, String w, String inq, String otq, int RWCHRCD) {
         this.stnm = stnm;
         this.stcd = stcd;
         this.tm = tm;
@@ -49,6 +52,7 @@ public class RsvrZhuanYe {
         this.w = w;
         this.inq = inq;
         this.otq = otq;
+        this.RWCHRCD = RWCHRCD;
     }
 
     public String getStnm() {
@@ -129,5 +133,13 @@ public class RsvrZhuanYe {
 
     public void setOtq(String otq) {
         this.otq = otq;
+    }
+
+    public int getRWCHRCD() {
+        return RWCHRCD;
+    }
+
+    public void setRWCHRCD(int RWCHRCD) {
+        this.RWCHRCD = RWCHRCD;
     }
 }

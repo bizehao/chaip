@@ -23,20 +23,22 @@ public class Rsvr {
 	//时间
 	private String tm;
 	//水位
-	private double rz;
+	private String rz;
 	//蓄量
 	private double w;
 	//出库流量
 	private double otq;
 	//入库流量
 	private double inq;
+    //库水特征码
+    private int RWCHRCD;
 	
 	public Rsvr() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-    public Rsvr(String adnm, String rvnm, String stcd, String stnm, String hnnm, String name, String tm, double rz, double w, double otq, double inq) {
+    public Rsvr(String adnm, String rvnm, String stcd, String stnm, String hnnm, String name, String tm, String rz, double w, double otq, double inq, int RWCHRCD) {
         this.adnm = adnm;
         this.rvnm = rvnm;
         this.stcd = stcd;
@@ -48,6 +50,7 @@ public class Rsvr {
         this.w = w;
         this.otq = otq;
         this.inq = inq;
+        this.RWCHRCD = RWCHRCD;
     }
 
     public String getStcd() {
@@ -82,11 +85,11 @@ public class Rsvr {
 		this.tm = tm;
 	}
 
-	public double getRz() {
+	public String getRz() {
 		return rz;
 	}
 
-	public void setRz(double rz) {
+	public void setRz(String rz) {
 		this.rz = rz;
 	}
 
@@ -136,5 +139,13 @@ public class Rsvr {
 
     public void setRvnm(String rvnm) {
         this.rvnm = rvnm;
+    }
+
+    public int getRWCHRCD() {
+        return RWCHRCD;
+    }
+
+    public void setRWCHRCD(int RWCHRCD) {
+        this.RWCHRCD = RWCHRCD;
     }
 }

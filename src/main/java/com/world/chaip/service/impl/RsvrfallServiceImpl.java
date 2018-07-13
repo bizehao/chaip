@@ -29,9 +29,17 @@ public class RsvrfallServiceImpl implements RsvrfallService {
     //水库 (实时)
     @Override
     public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
-        List<Rsvr> rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        List<Rsvr> rainfalls;
+        if(dateS.equals(dateE)){
+            rainfalls=rsvrfallMapper.getRsvrByTermNew(dateS,adcd,systemTypes,stcdOrStnm);
+        }else{
+            rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+        }
         for(Rsvr rsvr : rainfalls){
             rsvr.setTm(ExcepTimeUtil.getExcepTime(rsvr.getTm()));
+            if(rsvr.getRWCHRCD() == 1){
+                rsvr.setRz("干涸");
+            }
         }
         return rainfalls;
     }
@@ -48,7 +56,13 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         List<String> levelList = new ArrayList<>();
         String levelS = "";
         int jilu = 0;
-        List<RsvrZhuanYe> rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateE, fstp, adcd,systemTypes,stcdOrStnm);
+        List<RsvrZhuanYe> rainfalls;
+        if(dateS.equals(dateE)){
+            rainfalls=rsvrfallMapper.getRsvrByZhaunYeNew(dateE, fstp, adcd,systemTypes,stcdOrStnm);
+        }else{
+            rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateS,dateE, fstp, adcd,systemTypes,stcdOrStnm);
+        }
+
         for(int i=0; i<rainfalls.size(); i++){
             rainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(rainfalls.get(i).getTm()));
             /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
@@ -65,6 +79,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
                 level = a - b;
                 levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
                 levelList.add(levelS);
+            }
+            if(rainfalls.get(i).getRWCHRCD() == 1){
+                rainfalls.get(i).setRz("干涸");
             }
         }
         String head = "目前有"+jilu+"处水库水位超过汛限水位";

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RiverfallMapper">
-    <!-- 河道查询 实时 -->
+    <!-- 河道查询 实时 时间不同-->
     <select id="getRiverByTerm" resultType="com.world.chaip.entity.report.River">
-        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -29,11 +30,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -41,37 +44,34 @@
                             and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
                         </otherwise>
                     </choose>
-				</if>
-				<if test="systemTypes != null and systemTypes.size() > 0">
-					and c.lx IN
-					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-						#{systemTypes}
-					</foreach>
-				</if>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
                 ${benqu}
                 and ZFL = 1 and STTP LIKE '%Z%'
-			</trim>
-		</where>
-		) st
-		LEFT JOIN
-		(
-		select A.STCD, A.TM, z,msamt,q,A.wptn from ST_RIVER_R A
+            </trim>
+        </where>
+        ) st
         INNER JOIN
-        (select STCD, max(tm)tm from ST_RIVER_R
+        (
+        select A.STCD, A.TM, z,msamt,q,A.wptn,flwchrcd from ST_RIVER_R A
         <where>
             <![CDATA[
 				tm>#{beginTime} and tm<=#{endTime}
 			]]>
         </where>
-        group by stcd)
-        B on A.STCD = B.STCD and B.tm = A.TM
         )PP
-        on ST.STCD=PP.STCD
+        on ST.STCD=PP.STCD order by ST.STCD, tm desc
     </select>
 
-    <!-- 河道查询 本区-->
-    <select id="getRiverByBen" resultType="com.world.chaip.entity.report.River">
-        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
+    <!-- 河道查询 实时 时间相同 -->
+    <select id="getRiverByTermNew" resultType="com.world.chaip.entity.report.River">
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -97,11 +97,83 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                ${benqu}
+                and ZFL = 1 and STTP LIKE '%Z%'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, z,msamt,q,A.wptn,flwchrcd from ST_RIVER_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from ST_RIVER_R
+        <where>
+            <![CDATA[
+				tm<=#{time}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD order by ST.STCD, tm desc
+    </select>
+    <!-- 河道查询 本区 时间不同-->
+    <select id="getRiverByBen" resultType="com.world.chaip.entity.report.River">
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END, flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -119,28 +191,23 @@
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
+                and c.datafrom=1
             </trim>
         </where>
         ) st
-        LEFT JOIN
-        (
-        select A.STCD, A.TM, z,msamt,q,A.wptn from RP_RIVER_R A
         INNER JOIN
-        (select STCD, max(tm)tm from RP_RIVER_R
+        (
+        select STCD, TM,z, msamt,q,wptn, flwchrcd from RP_RIVER_R
         <where>
             <![CDATA[
-				tm<=#{endTime}
+				TM>=#{beginTime} and TM<=#{endTime}
 			]]>
         </where>
-        group by stcd)
-        B on A.STCD = B.STCD and B.tm = A.TM
         )PP
         on ST.STCD=PP.STCD
-    </select>
-
-    <!-- 河道查询 外区-->
-    <select id="getRiverByWai" resultType="com.world.chaip.entity.report.River">
-        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨' ELSE PP.wptn END from
+        union
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END, flwchrcd from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -166,11 +233,13 @@
                     <choose>
                         <when test="stcdOrStnm.size() > 1">
                             and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                             or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
                                 #{stcdOrStnm}
                             </foreach>
                         </when>
@@ -185,18 +254,296 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%'  and c.dq = '32'
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
+                and c.datafrom=2
+            </trim>
+        </where>
+        ) st
+        INNER JOIN
+        (
+        select STCD, TM,UPZ z,TGTQ q,SUPWPTN wptn,SWCHRCD flwchrcd from RP_WAS_R
+        <where>
+            <![CDATA[
+				TM>=#{beginTime} and TM<=#{endTime}
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+        union
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END, flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
+                and c.datafrom=3
+            </trim>
+        </where>
+        ) st
+        INNER JOIN
+        (
+        select STCD, TM, DWZ z,TGTQ q,SDWWPTN wptn,SWCHRCD flwchrcd from RP_WAS_R
+        <where>
+            <![CDATA[
+				TM>=#{beginTime} and TM<=#{endTime}
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
+
+    <!-- 河道查询 本区 时间相同-->
+    <select id="getRiverByBenNew" resultType="com.world.chaip.entity.report.River">
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
+                and c.datafrom=1
             </trim>
         </where>
         ) st
         LEFT JOIN
         (
-        select A.STCD, A.TM, z,msamt,q,A.wptn from RP_RIVER_R A
+        select A.STCD, A.TM, z,msamt,q,A.wptn,A.flwchrcd from RP_RIVER_R A
         INNER JOIN
         (select STCD, max(tm)tm from RP_RIVER_R
         <where>
             <![CDATA[
-				tm<=#{endTime}
+				tm<=#{time}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+        union
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
+                and c.datafrom=2
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, A.upz z,TGTQ q,A.SUPWPTN wptn,A.SWCHRCD flwchrcd from RP_WAS_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from RP_WAS_R
+        <where>
+            <![CDATA[
+				tm<=#{time}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+        union
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and ZFL = 1 and STTP LIKE '%Z%'
+                and c.jdb in (2,3)
+                and c.datafrom=3
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, A.DWZ z,TGTQ q,A.SDWWPTN wptn,A.SWCHRCD flwchrcd from RP_WAS_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from RP_WAS_R
+        <where>
+            <![CDATA[
+				tm<=#{time}
 			]]>
         </where>
         group by stcd)
@@ -204,5 +551,145 @@
         )PP
         on ST.STCD=PP.STCD
     </select>
+
+    <!-- 河道查询 外区 时间不同 -->
+    <select id="getRiverByWai" resultType="com.world.chaip.entity.report.River">
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32'
+            </trim>
+        </where>
+        ) st
+        INNER JOIN
+        (
+        select A.STCD, A.TM, z,msamt,q,A.wptn,flwchrcd from RP_RIVER_R A
+        <where>
+            <![CDATA[
+				tm>=#{beginTime} and tm<=#{endTime}
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
+
+    <!-- 河道查询 外区 时间相同 -->
+    <select id="getRiverByWaiNew" resultType="com.world.chaip.entity.report.River">
+        select st.stcd,st.stnm,z,tm,st.rvnm,adnm,q ,wptn=CASE PP.wptn when'4' then '落' when'5' then '平' when'6' then '涨'
+        ELSE PP.wptn END,flwchrcd from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32'
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.TM, z,msamt,q,A.wptn,flwchrcd from RP_RIVER_R A
+        INNER JOIN
+        (select STCD, max(tm)tm from RP_RIVER_R
+        <where>
+            <![CDATA[
+				tm<=#{time}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+    </select>
+    <!-- 闸坝 时间不同 -->
+    <!--<select id="getRiverBySluiceDam" resultType="com.world.chaip.entity.report.River"></select>-->
+    <!-- 闸坝 时间不同 -->
+    <!--<select id="getRiverBySluiceDamNew" resultType="com.world.chaip.entity.report.River"></select>-->
 
 </mapper>
