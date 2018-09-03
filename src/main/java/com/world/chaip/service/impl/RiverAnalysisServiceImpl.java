@@ -38,7 +38,6 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
 
         int days = (int) (Math.abs(difference)+1);
-        System.out.println("======"+days);
         List<RiverExchange> list = new ArrayList<>();
         RiverExchange riverExchange = null;
 
@@ -51,8 +50,6 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
             riverExchange.setSumQ(new DecimalFormat("#0.000").format((Double.parseDouble(riverByAnalysis.get(i).getAvgQ()))*3600*24/1000000));
             list.add(riverExchange);
         }
-
-        System.out.println(list.size());
 
         /*Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
@@ -109,7 +106,6 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         maxtm.set(Calendar.HOUR_OF_DAY,8);
         dateE = maxtm.getTime();*/
         List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
-        System.out.println(riverByMaxQZ.size());
         List<RiverExchange> rList = new ArrayList<>();
         for(int i=0; i<riverByMaxQZ.size(); i++){
             riverExchange = list.get(i);

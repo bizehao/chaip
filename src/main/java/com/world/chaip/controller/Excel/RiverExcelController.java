@@ -343,8 +343,8 @@ public class RiverExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
         } catch (ParseException e) {
             e.printStackTrace();
         }

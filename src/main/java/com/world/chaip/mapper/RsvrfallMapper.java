@@ -81,4 +81,6 @@ public interface RsvrfallMapper {
 	 */
 	RsvrXunQi getRsvrFS(
 			@Param("fstp") int fstp);
+
+	List<String> getFsltdzStations(@Param("fstp") int fstp);
 }

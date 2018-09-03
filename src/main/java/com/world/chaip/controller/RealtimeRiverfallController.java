@@ -136,11 +136,14 @@ public class RealtimeRiverfallController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("======================");
+        System.out.println(dateS);
+        System.out.println(dateE);
         List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist);
         return new JsonResult(a);
     }
@@ -194,9 +197,9 @@ public class RealtimeRiverfallController {
         }
         Date dateS = null;
         Date dateE = null;
-        try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh:mm");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh:mm");
+        try {//因为曹哥那边要改
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH:mm");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH:mm");
         } catch (ParseException e) {
             e.printStackTrace();
         }

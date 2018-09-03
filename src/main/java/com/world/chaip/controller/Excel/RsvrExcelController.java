@@ -92,8 +92,8 @@ public class RsvrExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -191,8 +191,8 @@ public class RsvrExcelController {
         Date dateS = null;
         Date dateE = null;
         try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd hh");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd hh");
+            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd HH");
+            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd HH");
         } catch (ParseException e) {
             e.printStackTrace();
         }

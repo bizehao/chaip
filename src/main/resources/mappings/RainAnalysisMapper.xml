@@ -4,7 +4,7 @@
 
     <!-- 汛期降雨量分析对比表 -->
     <select id="getRainXQCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        SELECT adnm, SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (zong) zong FROM
+        SELECT adnm, COUNT (*) adnmcount, SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (zong) zong FROM
         (select st.stcd,st.stnm,st.name,adnm,isnull(numSix,0) numSix,isnull(numSeven,0) numSeven,isnull(numEight,0)
         numEight,isnull(numNine,0) numNine, (isnull(numSix,0)+isnull(numSeven,0)+isnull(numEight,0)+isnull(numNine,0))
         as zong from
@@ -153,7 +153,7 @@
 
     <!-- 年逐月分析对比表 -->
     <select id="getRainNZYCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        SELECT adnm, SUM (numOne) numOne, SUM (numTwo) numTwo, SUM (numThree) numThree, SUM (numFour) numFour, SUM (numFive) numFive,
+        SELECT adnm, COUNT(*) adnmCount, SUM (numOne) numOne, SUM (numTwo) numTwo, SUM (numThree) numThree, SUM (numFour) numFour, SUM (numFive) numFive,
         SUM (numSix) numSix, SUM (numSeven) numSeven, SUM (numEight) numEight, SUM (numNine) numNine, SUM (numTen) numTen,
         SUM (numEleven) numEleven, SUM (numTwelve) numTwelve,SUM (zong) zong FROM
         (select st.stcd,st.stnm,st.name,adnm,isnull(numOne,0) numOne,isnull(numTwo,0) numTwo,isnull(numThree,0)
@@ -339,7 +339,7 @@
         left join (
         select MYMAVP numFive, STCD from RP_PDMMYAV_S where MNTH = 5 and PRDTP = 4 group by STCD,MYMAVP ) five on five.STCD = st.STCD
         left join (
-        select SUM (MYMAVP) numSix, STCD from RP_PDMMYAV_S where MNTH = 6 and PRDTP = 4 group by STCD,MYMAVP ) six on six.STCD = st.STCD
+        select MYMAVP numSix, STCD from RP_PDMMYAV_S where MNTH = 6 and PRDTP = 4 group by STCD,MYMAVP ) six on six.STCD = st.STCD
         left join (
         select MYMAVP numSeven, STCD from RP_PDMMYAV_S where MNTH = 7 and PRDTP = 4 group by STCD ,MYMAVP) seven on seven.STCD = st.STCD
         left join (
@@ -357,7 +357,7 @@
 
     <!-- 任意日降雨量查询 -->
     <select id="getRainRYCompared" resultType="com.world.chaip.entity.Exchange.RainExchange">
-        select adnm, SUM (zong) zong FROM
+        select adnm,COUNT(*) adnmCount, SUM (zong) zong FROM
         (select st.stcd,st.stnm,st.name,adnm,isnull(zong,0) zong from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
@@ -488,7 +488,7 @@
         select sum(MYDAVP) zong, STCD
         from RP_PDDMYAV_S where
         <if test="sign == 0">
-            MNTH >= #{beginTime} and MNTH &lt;= #{endTime}
+            MNTH > #{beginTime} and MNTH &lt; #{endTime}
         </if>
         <if test="sign == 1">
             MNTH = #{beginTime} and DAY >= #{endTime}
@@ -497,7 +497,7 @@
             MNTH = #{beginTime} and DAY &lt;= #{endTime}
         </if>
         <if test="sign == 3">
-            MNTH = #{beginTime} and DAY > #{endTime} and DAY &lt; #{isendTime}
+            MNTH = #{beginTime} and DAY >= #{endTime} and DAY &lt;= #{isendTime}
         </if>
         and MYDAVP > 0 group by STCD) pt
         on st.STCD = pt.STCD

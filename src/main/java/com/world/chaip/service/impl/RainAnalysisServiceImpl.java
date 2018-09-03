@@ -36,15 +36,17 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         List<RainExchange> list3 = mapper.getRainXQCLCompared(ly,adcd,systemTypes,stcdOrStnm);
         int length = list1.size();
         XunQi xq = null;
+        int adnmCount = 0; //县域下的站数
         List<XunQi> xqList = new ArrayList<>();
         for(int i=0; i<length; i++){
+            adnmCount = list1.get(i).getAdnmCount();
             xq = new XunQi();
             xq.setStnm(list1.get(i).getAdnm());
-            xq.setJxqSix(list1.get(i).getNumSix());
-            xq.setJxqSeven(list1.get(i).getNumSeven());
-            xq.setJxqEight(list1.get(i).getNumEight());
-            xq.setJxqNine(list1.get(i).getNumNine());
-            xq.setJxqSix_Nine(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getZong())));
+            xq.setJxqSix(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumSix()/adnmCount)));
+            xq.setJxqSeven(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumSeven()/adnmCount)));
+            xq.setJxqEight(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumEight()/adnmCount)));
+            xq.setJxqNine(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumNine()/adnmCount)));
+            xq.setJxqSix_Nine(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getZong()/adnmCount)));
             xq.setJxqSix_Nine_Compare(suan(list1.get(i).getNumNine(), list1.get(i).getNumSix()));
             xq.setQxqSix(suan(list2.get(i).getNumSix(), list1.get(i).getNumSix()));
             xq.setQxqSeven(suan(list2.get(i).getNumSeven(), list1.get(i).getNumSeven()));
@@ -82,28 +84,30 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         int length = list1.size();
         YearAndMonthRain yearAndMonthRain = null;
         List<YearAndMonthRain> nzylist = new ArrayList<>();
+        int count = 0;
         for(int i=0; i<length; i++){
+            count = list1.get(i).getAdnmCount();
             yearAndMonthRain = new YearAndMonthRain();
             yearAndMonthRain.setAdnm(list1.get(i).getAdnm());
-            yearAndMonthRain.setNumOne(list1.get(i).getNumOne());
-            yearAndMonthRain.setNumTwo(list1.get(i).getNumTwo());
-            yearAndMonthRain.setNumThree(list1.get(i).getNumThree());
-            yearAndMonthRain.setNumFour(list1.get(i).getNumFour());
-            yearAndMonthRain.setNumFive(list1.get(i).getNumFive());
-            yearAndMonthRain.setNumSix(list1.get(i).getNumSix());
-            yearAndMonthRain.setNumSeven(list1.get(i).getNumSeven());
-            yearAndMonthRain.setNumEight(list1.get(i).getNumEight());
-            yearAndMonthRain.setNumNine(list1.get(i).getNumNine());
-            yearAndMonthRain.setNumTen(list1.get(i).getNumTen());
-            yearAndMonthRain.setNumEleven(list1.get(i).getNumEleven());
-            yearAndMonthRain.setNumTwelve(list1.get(i).getNumTwelve());
-            yearAndMonthRain.setJinYearZong(list1.get(i).getZong());
-            yearAndMonthRain.setQuYearZong(list2.get(i).getZong());
-            yearAndMonthRain.setChangYearZong(list3.get(i).getZong());
-            yearAndMonthRain.setCompareQu(Double.parseDouble(new DecimalFormat("#0.000").format(list1.get(i).getZong()-list2.get(i).getZong())));
-            yearAndMonthRain.setCompareChang(Double.parseDouble((new DecimalFormat("#0.000").format(list1.get(i).getZong()-list3.get(i).getZong()))));
-            yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong(), list1.get(i).getZong()));
-            yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong(), list1.get(i).getZong()));
+            yearAndMonthRain.setNumOne(list1.get(i).getNumOne()/count);
+            yearAndMonthRain.setNumTwo(list1.get(i).getNumTwo()/count);
+            yearAndMonthRain.setNumThree(list1.get(i).getNumThree()/count);
+            yearAndMonthRain.setNumFour(list1.get(i).getNumFour()/count);
+            yearAndMonthRain.setNumFive(list1.get(i).getNumFive()/count);
+            yearAndMonthRain.setNumSix(list1.get(i).getNumSix()/count);
+            yearAndMonthRain.setNumSeven(list1.get(i).getNumSeven()/count);
+            yearAndMonthRain.setNumEight(list1.get(i).getNumEight()/count);
+            yearAndMonthRain.setNumNine(list1.get(i).getNumNine()/count);
+            yearAndMonthRain.setNumTen(list1.get(i).getNumTen()/count);
+            yearAndMonthRain.setNumEleven(list1.get(i).getNumEleven()/count);
+            yearAndMonthRain.setNumTwelve(list1.get(i).getNumTwelve()/count);
+            yearAndMonthRain.setJinYearZong(list1.get(i).getZong()/count);
+            yearAndMonthRain.setQuYearZong(list2.get(i).getZong()/count);
+            yearAndMonthRain.setChangYearZong(list3.get(i).getZong()/count);
+            yearAndMonthRain.setCompareQu(Double.parseDouble(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount())));
+            yearAndMonthRain.setCompareChang(Double.parseDouble((new DecimalFormat("#0.000").format(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count))));
+            yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong()/count, list1.get(i).getZong()/count));
+            yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong()/count, list1.get(i).getZong()/count));
             nzylist.add(yearAndMonthRain);
         }
         return nzylist;
@@ -118,7 +122,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         Calendar end1 = Calendar.getInstance();
         end1.setTime(endTime);
         end1.add(Calendar.DATE,1);
-        List<RainExchange> list1 = getRainRY(begin1, end1,ly, adcd, systemTypes, stcdOrStnm);
+        List<RainExchange> list1 = getRainRY(begin1, end1,ly, adcd, systemTypes, stcdOrStnm);//今年降雨量
         Calendar begin2 = Calendar.getInstance();
         begin2.setTime(beginTime);
         begin2.add(Calendar.DATE,1);
@@ -127,45 +131,47 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
         end2.setTime(endTime);
         end2.add(Calendar.DATE,1);
         end2.add(Calendar.YEAR, -1);
-        List<RainExchange> list2 = getRainRY(begin2, end2,ly, adcd, systemTypes, stcdOrStnm);
-        List<Double> dList = getRainPYCL(beginTime, endTime,ly, adcd, systemTypes, stcdOrStnm);
+        List<RainExchange> list2 = getRainRY(begin2, end2,ly, adcd, systemTypes, stcdOrStnm);//去年降雨量
+        List<Double> dList = getRainPYCL(beginTime, endTime,ly, adcd, systemTypes, stcdOrStnm);//常年降雨量
         List<ArbitrarilyDay> obList = new ArrayList<>();
         ArbitrarilyDay arbitrarilyDay = null;
         int length = list1.size();
         double chaqu = 0;
         double chachang = 0;
+        int count = 0;
         for(int i=0; i<length; i++){
+            count = list1.get(i).getAdnmCount();
             arbitrarilyDay = new ArbitrarilyDay();
             arbitrarilyDay.setAdnm(list1.get(i).getAdnm());
-            arbitrarilyDay.setoDay_oDay(list1.get(i).getZong());
-            arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong());
-            arbitrarilyDay.setSamePeriodChang(new DecimalFormat("#0.0").format(dList.get(i)));
+            arbitrarilyDay.setoDay_oDay(list1.get(i).getZong()/count);
+            arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong()/count);
+            arbitrarilyDay.setSamePeriodChang(new DecimalFormat("#0.0").format(dList.get(i)/count));
             if(list1.get(i).getZong()==0){
                 arbitrarilyDay.setSamePeriodCompareQu("--");
                 arbitrarilyDay.setSamePeriodCompareChang("--");
             }else{
-                chaqu = list1.get(i).getZong()-list2.get(i).getZong();
+                chaqu = list1.get(i).getZong()/count-list2.get(i).getZong()/count;
                 if(list2.get(i).getZong()>0){
                     if(chaqu==0){
                         arbitrarilyDay.setSamePeriodCompareQu(0+"%");
                     }
                     if(chaqu>0){
-                        arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.0").format(chaqu/list2.get(i).getZong()*100)+"%");
+                        arbitrarilyDay.setSamePeriodCompareQu("多"+new DecimalFormat("#0.0").format(chaqu/(list2.get(i).getZong()/count)*100)+"%");
                     }else{
-                        arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.0").format(-chaqu/list2.get(i).getZong()*100)+"%");
+                        arbitrarilyDay.setSamePeriodCompareQu("少"+new DecimalFormat("#0.0").format(-chaqu/(list2.get(i).getZong()/count)*100)+"%");
                     }
                 }else{
                     arbitrarilyDay.setSamePeriodCompareQu("--");
                 }
-                chachang = list1.get(i).getZong()-dList.get(i);
+                chachang = list1.get(i).getZong()/count-dList.get(i)/count;
                 if(dList.get(i)>0){
                     if(chachang==0){
                         arbitrarilyDay.setSamePeriodCompareChang(0+"%");
                     }
-                    if(chaqu>0){
-                        arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.0").format(chaqu/dList.get(i)*100)+"%");
+                    if(chachang>0){
+                        arbitrarilyDay.setSamePeriodCompareChang("多"+new DecimalFormat("#0.0").format(chachang/(dList.get(i)/count)*100)+"%");
                     }else{
-                        arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.0").format(-chaqu/dList.get(i)*100)+"%");
+                        arbitrarilyDay.setSamePeriodCompareChang("少"+new DecimalFormat("#0.0").format(-chachang/(dList.get(i)/count)*100)+"%");
                     }
                 }else{
                     arbitrarilyDay.setSamePeriodCompareChang("--");

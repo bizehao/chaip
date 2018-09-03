@@ -36,10 +36,9 @@ public class RiverfallServiceImpl implements RiverfallService {
         }
         for (River river : rainfalls) {
             river.setTm(ExcepTimeUtil.getExcepTime(river.getTm()));
-            if (river.getFlwchrcd() == 1) {
+            /*if (river.getFlwchrcd() == 1) {
                 river.setZ("干涸");
-            }
-            System.out.println(river);
+            }*/
         }
         return rainfalls;
     }

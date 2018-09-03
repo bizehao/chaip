@@ -25,7 +25,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
     //水库水量分析表
     @Override
     public RsvrWaterExcel getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
-
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         tm.set(Calendar.HOUR_OF_DAY,8);
@@ -117,9 +116,17 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm);
         for (int i = 0; i < list.size(); i++) {
             rsvrWaterExchange = list.get(i);
-            rsvrWaterExchange.setqRZs(new DecimalFormat("#0.00").format(beginRsvrList.get(i).getRz()));
+            String a = beginRsvrList.get(i).getRz();
+            String b = endiRsvrList.get(i).getRz();
+            if(a==null || a.equals("")){
+                a="0.0";
+            }
+            if(b==null || b.equals("")){
+                b="0.0";
+            }
+            rsvrWaterExchange.setqRZs(new DecimalFormat("#0.00").format(Double.parseDouble(a)));//
             rsvrWaterExchange.setqWs(new DecimalFormat("#0.000").format(beginRsvrList.get(i).getW()));
-            rsvrWaterExchange.sethRZs(new DecimalFormat("#0.00").format(endiRsvrList.get(i).getRz()));
+            rsvrWaterExchange.sethRZs(new DecimalFormat("#0.00").format(Double.parseDouble(b)));
             rsvrWaterExchange.sethWs(new DecimalFormat("#0.000").format(endiRsvrList.get(i).getW()));
             rsvrWaterExchange.setChaW(new DecimalFormat("#0.000").format(endiRsvrList.get(i).getW() - beginRsvrList.get(i).getW()));
             rsvrsList.add(rsvrWaterExchange);

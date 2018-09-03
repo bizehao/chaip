@@ -9,13 +9,16 @@
             $("#zhushi").click(function () {
                 //逐时
                $.ajax({
-                   url: 'services/realtime/rainanalysisfall/rainxqanalysis',
+                   url: 'services/realtime/rainfall/getrainbyhour',
                    data: {"date":0,
                         "adcd":0,
                         "systemTypes":0,
                         "stcdOrStnm":0},
                    success:function (result) {
                        var data = result.data;
+                       var a = JSON.stringify(data);
+                       console.log(a);
+
                        alert('成功');
                    },
                    error:function () {
@@ -129,6 +132,38 @@
                     }
                 })
             });
+            $("#xunqirain").click(function () {
+                //水库实时
+                $.ajax({
+                    url: 'services/realtime/rainanalysisfall/rainxqanalysis',
+                    data: {},
+                    success:function (result) {
+                        var data = result.data;
+                        var a = JSON.stringify(data);
+                        console.log(a);
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
+            $("#shuikuzhuanye").click(function () {
+                //水库实时
+                $.ajax({
+                    url: 'services/realtime/rsvrfall/getrsvrbyzhuanye',
+                    data: {},
+                    success:function (result) {
+                        //var data = result.data;
+                        //var a = JSON.stringify(data);
+                        //console.log(a);
+                        alert('成功');
+                    },
+                    error:function () {
+                        alert('失败')
+                    }
+                })
+            });
         })
     </script>
 </head>
@@ -139,6 +174,8 @@
     <button id="yue"> 月数据 </button>
     <button id="nian"> 年数据 </button>
     <button id="shishi"> 实时河道 </button>
+    <button id="xunqirain"> 汛期降雨量 </button>
+    <button id="shuikuzhuanye"> 水库专业 </button>
     <br/><br/><br/>
     <a  href="services/realtime/rainfallexcel/getrainbyhourbyexcel">逐时数据</a>
     <a  href="services/realtime/rainfallexcel/getrainbydatebyexcel">日数据</a>

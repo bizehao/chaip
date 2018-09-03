@@ -1,10 +1,7 @@
 package com.world.chaip.entity;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DaybyHourRainfall {
 	
@@ -24,26 +21,25 @@ public class DaybyHourRainfall {
 	public class DayByHourRainfallItem extends Rainfall{
 	
 		public DayByHourRainfallItem() {
-			hourRainfalls=new HashMap<Double, Double>();
+			hourRainfalls=new HashMap<Double, String>();
 		}
 		
-		public Map<Double, Double> getHourRainfalls() {
+		public Map<Double, String> getHourRainfalls() {
 			return hourRainfalls;
 		}
 
-		public void setHourRainfalls(Map<Double, Double> hourRainfalls) {
+		public void setHourRainfalls(Map<Double, String> hourRainfalls) {
 			this.hourRainfalls = hourRainfalls;
 		}
 
-		Map<Double,Double> hourRainfalls;
+		Map<Double,String> hourRainfalls;
         //日降雨量
 		double countDrp;
 
         public double testValues() {
             double count = 0;
-            for (Double value : hourRainfalls.values()) {
-                /*System.out.println(value);*/
-                count += value;
+            for (String value : hourRainfalls.values()) {
+                count += Double.parseDouble(value);
             }
             String cou = new DecimalFormat("#0.0").format(count);
             count = Double.parseDouble(cou);
@@ -57,5 +53,13 @@ public class DaybyHourRainfall {
         public void setCountDrp(double countDrp) {
             this.countDrp = countDrp;
         }
+        /*public void changeDrp(Double currentHour){
+            for(Map.Entry<Double, String > entry : hourRainfalls.entrySet()){
+                if(entry.getKey() > currentHour || (currentHour < 9 && entry.getKey() > currentHour)){
+                    System.out.println("======");
+                    entry.setValue("");
+                }
+            }
+        }*/
     }
 }

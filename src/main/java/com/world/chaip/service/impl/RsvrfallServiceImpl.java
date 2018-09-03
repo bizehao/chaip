@@ -16,10 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 @Service
 public class RsvrfallServiceImpl implements RsvrfallService {
 
@@ -35,18 +33,19 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         }else{
             rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm);
         }
-        for(Rsvr rsvr : rainfalls){
+        /*for(Rsvr rsvr : rainfalls){
             rsvr.setTm(ExcepTimeUtil.getExcepTime(rsvr.getTm()));
             if(rsvr.getRWCHRCD() == 1){
                 rsvr.setRz("干涸");
             }
-        }
+        }*/
         return rainfalls;
     }
 
     //水库 (专业)
     @Override
     public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+
         int fstp =  getRsverXunQi(dateS);
         int fstp1 =  getRsverXunQi(dateE);
         if(fstp >= fstp1){
@@ -62,7 +61,11 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         }else{
             rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateS,dateE, fstp, adcd,systemTypes,stcdOrStnm);
         }
+        List<String> stcdList = rsvrfallMapper.getFsltdzStations(fstp);
 
+        List<RsvrZhuanYe> rsvrItem = null; //新增 处理多条
+        RsvrZhuanYe rsvrZhuanYe; //新增 处理多条   新增  一个站有多条数据  其中最小的一个超过汛限水位,就算是超汛限水位
+        List<RsvrZhuanYe> rsvrChao = new ArrayList<>(); //在汛限水位里包含的
         for(int i=0; i<rainfalls.size(); i++){
             rainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(rainfalls.get(i).getTm()));
             /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
@@ -72,18 +75,66 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             rainfalls.get(i).setW(rainfalls.get(i).getW()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getW())));
             rainfalls.get(i).setInq(rainfalls.get(i).getInq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getInq())));
             rainfalls.get(i).setOtq(rainfalls.get(i).getOtq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getOtq())));
-            double a = rainfalls.get(i).getRz().length()==0?0:Double.parseDouble(rainfalls.get(i).getRz());
-            double b = rainfalls.get(i).getFsltdz().length()==0?0:Double.parseDouble(rainfalls.get(i).getFsltdz());
-            if(a >= b){
-                jilu++;
-                level = a - b;
-                levelS = rainfalls.get(i).getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
-                levelList.add(levelS);
+            //新增
+            if(stcdList.contains(rainfalls.get(i).getStcd())){ //判断该元素是否在集合中
+                rsvrChao.add(rainfalls.get(i));
             }
+            //干涸
+
+        }
+
+        for(int i=0;i<rsvrChao.size();i++){
+            System.out.println(rsvrChao.get(i).getStcd());
+            if(rsvrItem != null){
+                if(rsvrItem.get(0).getStcd().equals(rsvrChao.get(i).getStcd())){  // 111   22222    33  5
+                    rsvrZhuanYe = rsvrChao.get(i);
+                    rsvrItem.add(rsvrZhuanYe);
+                }else {
+                    Collections.sort(rsvrItem, new Comparator<RsvrZhuanYe>(){
+                        @Override
+                        public int compare(RsvrZhuanYe o1, RsvrZhuanYe o2) {
+                            return Double.parseDouble(o1.getRz())>Double.parseDouble(o2.getRz())?-1:1;
+                        }
+                    });
+                    rsvrZhuanYe = rsvrItem.get(0); //处理
+                    double a = rsvrZhuanYe.getRz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
+                    double b = rsvrZhuanYe.getFsltdz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
+                    if(a >= b){
+                        jilu++;
+                        level = a - b;
+                        levelS = rsvrZhuanYe.getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
+                        levelList.add(levelS);
+                    }
+
+                    rsvrItem = new ArrayList<>();
+                    rsvrZhuanYe = rsvrChao.get(i);
+                    rsvrItem.add(rsvrZhuanYe);
+                    if(i==rsvrChao.size()-1){
+                        rsvrZhuanYe = rsvrChao.get(i); //处理
+                        double ah = rsvrZhuanYe.getRz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
+                        double bh = rsvrZhuanYe.getFsltdz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
+                        if(ah >= bh){
+                            jilu++;
+                            level = ah - bh;
+                            levelS = rsvrZhuanYe.getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
+                            levelList.add(levelS);
+                        }
+                    }
+                }
+            }else{
+                rsvrItem = new ArrayList<>();
+                rsvrZhuanYe = rsvrChao.get(i);
+                rsvrItem.add(rsvrZhuanYe);
+            }
+        }
+
+        for(int i=0; i<rainfalls.size(); i++){
             if(rainfalls.get(i).getRWCHRCD() == 1){
                 rainfalls.get(i).setRz("干涸");
             }
+
         }
+
         String head = "目前有"+jilu+"处水库水位超过汛限水位";
         if(levelList.size()>0){
             for(int i=0; i<levelList.size(); i++){
@@ -136,5 +187,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             }
         }
         return 4;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Double.parseDouble("15.46"));
     }
 }

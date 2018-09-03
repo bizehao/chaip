@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrfallMapper">
 	<!-- 水库查询 实时 时间不同 -->
-	<select id="getRsvrByTerm" resultType="com.world.chaip.entity.report.Rsvr">
-        select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
+
+    <!-- 查实时的ST_RSVR_R表
+select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -59,7 +60,73 @@
         select A.STCD, A.TM, rz,w,otq,RWCHRCD from ST_RSVR_R A
         <where>
             <![CDATA[
-				A.TM>#{beginTime} and A.TM<=#{endTime}
+				A.TM>=#{beginTime} and A.TM<=#{endTime}
+			]]>
+        </where>
+        )PP
+        on ST.STCD=PP.STCD
+        order by ST.STCD,tm desc
+    -->
+	<select id="getRsvrByTerm" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and sttp like '%R%' and ZFL='1'
+                and c.db in (2,3)
+            </trim>
+        </where>
+        ) st
+        INNER JOIN
+        (
+        select A.STCD, A.YMDHM as TM, A.ZR as rz,Q as w from YY_DATA_WAT  A
+        <where>
+            DATATYPE='C'
+            and
+            <![CDATA[
+				A.YMDHM>=#{beginTime} and A.YMDHM<=#{endTime}
 			]]>
         </where>
         )PP
@@ -67,10 +134,8 @@
         order by ST.STCD,tm desc
 	</select>
 
-
-    <!-- 水库查询 实时 时间相同 -->
-    <select id="getRsvrByTermNew" resultType="com.world.chaip.entity.report.Rsvr">
-        select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
+    <!--
+select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
         LEFT JOIN ST_STSMTASK_B s
         on b.STCD = s.STCD
@@ -133,6 +198,75 @@
         </where>
         group by stcd)
         B on A.STCD = B.STCD and B.tm = A.TM
+        )PP
+        on ST.STCD=PP.STCD
+        order by ST.STCD,tm desc
+    -->
+    <!-- 水库查询 实时 时间相同 -->
+    <select id="getRsvrByTermNew" resultType="com.world.chaip.entity.report.Rsvr">
+        select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W from
+        (select b.* , e.name, ad.adnm from st_stbprp_b b
+        LEFT JOIN ST_STSMTASK_B s
+        on b.STCD = s.STCD
+        LEFT JOIN
+        DJ_AD ad
+        ON b.ADDVCD = ad.ADCD
+        LEFT join
+        DJ_EXP c
+        on b.STCD = c.stcd
+        LEFT join
+        DJ_TYID e
+        on
+        c.lx = e.typeID
+        <where>
+            <trim prefixOverrides="and|or">
+                <if test="adcd != null and adcd.size() > 0">
+                    and b.addvcd IN
+                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                        #{adcd}
+                    </foreach>
+                </if>
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and b.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or b.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="systemTypes != null and systemTypes.size() > 0">
+                    and c.lx IN
+                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+                        #{systemTypes}
+                    </foreach>
+                </if>
+                and c.dq = '31'
+                and sttp like '%R%' and ZFL='1'
+                and c.db in (2,3)
+            </trim>
+        </where>
+        ) st
+        LEFT JOIN
+        (
+        select A.STCD, A.YMDHM as TM, A.ZR as rz,Q as w from YY_DATA_WAT  A
+        INNER JOIN
+        (select STCD, max(YMDHM) tm from YY_DATA_WAT
+        <where>
+            <![CDATA[
+				YMDHM<=#{time}
+			]]>
+        </where>
+        group by stcd)
+        B on A.STCD = B.STCD and B.tm = A.YMDHM where DATATYPE='C'
         )PP
         on ST.STCD=PP.STCD
         order by ST.STCD,tm desc
@@ -214,7 +348,7 @@
         on
           m.stcd=d.stcd
         <where>
-            d.TM > #{beginTime} and d.TM &lt;= #{endTime}
+            d.TM >= #{beginTime} and d.TM &lt;= #{endTime}
         </where>
         order by m.stnm,d.TM desc
 	</select>
@@ -331,4 +465,10 @@
         </where>
 
     </select>
+    <!-- 获取汛限站 -->
+    <select id="getFsltdzStations" resultType="java.lang.String">
+      SELECT DISTINCT stcd FROM RP_RSVRFSR_B WHERE fstp = #{fstp}
+    </select>
+
+
 </mapper>

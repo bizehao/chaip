@@ -180,9 +180,9 @@ public class ReportServiceImpl implements ReportService {
 		return report.getTyid();
 	}
 	//根据时段分割
-	public PptnGson mapManager(Map<Date,Double> drpMap, Double countDrp,PptnGson pg ){
-        for(Map.Entry<Date, Double> entry : drpMap.entrySet()){
-            countDrp+=entry.getValue();
+	public PptnGson mapManager(Map<Date,String> drpMap, Double countDrp,PptnGson pg ){
+        for(Map.Entry<Date, String> entry : drpMap.entrySet()){
+            countDrp+=Double.parseDouble(entry.getValue());
             int hour = entry.getKey().getHours();
             switch (hour){
                 case 9:

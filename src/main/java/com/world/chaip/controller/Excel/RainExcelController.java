@@ -104,6 +104,7 @@ public class RainExcelController extends HttpServlet{
                 "17","18","19","20","21","22","23","0","1","2","3","4","5","6","7","8"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
+        Map<Object,Object> map = null;
         for (int i=0; i<a.size(); i++){
             objects = new Object[rowsName.length];
             objects[0] = i+1;
@@ -111,7 +112,16 @@ public class RainExcelController extends HttpServlet{
             objects[2] = a.get(i).getStnm();
             objects[3] = a.get(i).getName();
             objects[4] = a.get(i).getCountDrp();
-            objects[5] = a.get(i).getNineDrp();
+            map = a.get(i).getDrpMap();
+            double xx = 8.0;
+            for(int j=5; j<=28; j++){
+                xx++;
+                if(xx>23){
+                    xx=0.0;
+                }
+                objects[j] = map.get(xx);
+            }
+            /*objects[5] = a.get(i).getNineDrp();
             objects[6] = a.get(i).getTenDrp();
             objects[7] = a.get(i).getElevenDrp();
             objects[8] = a.get(i).getTwelveDrp();
@@ -134,7 +144,7 @@ public class RainExcelController extends HttpServlet{
             objects[25] = a.get(i).getFiveDrp();
             objects[26] = a.get(i).getSixDrp();
             objects[27] = a.get(i).getSevenDrp();
-            objects[28] = a.get(i).getEightDrp();
+            objects[28] = a.get(i).getEightDrp();*/
             dataList.add(objects);
         }
         //处理时间

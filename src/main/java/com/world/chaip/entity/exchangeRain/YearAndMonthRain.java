@@ -32,13 +32,18 @@ public class YearAndMonthRain extends RainExchange{
 
     }
 
-    public YearAndMonthRain(String adnm, double numOne, double numTwo, double numThree,
-                            double numFour, double numFive, double numSix, double numSeven,
-                            double numEight, double numNine, double numTen, double numEleven,
-                            double numTwelve, double zong, double jinYearZong, double quYearZong,
-                            double changYearZong, double compareQu, double compareChang,
-                            String relativeQu, String relativeChang) {
-        super(adnm, numOne, numTwo, numThree, numFour, numFive, numSix, numSeven, numEight, numNine, numTen, numEleven, numTwelve, zong);
+    public YearAndMonthRain(double jinYearZong, double quYearZong, double changYearZong, double compareQu, double compareChang, String relativeQu, String relativeChang) {
+        this.jinYearZong = jinYearZong;
+        this.quYearZong = quYearZong;
+        this.changYearZong = changYearZong;
+        this.compareQu = compareQu;
+        this.compareChang = compareChang;
+        this.relativeQu = relativeQu;
+        this.relativeChang = relativeChang;
+    }
+
+    public YearAndMonthRain(String adnm, int adnmCount, double numOne, double numTwo, double numThree, double numFour, double numFive, double numSix, double numSeven, double numEight, double numNine, double numTen, double numEleven, double numTwelve, double zong, double jinYearZong, double quYearZong, double changYearZong, double compareQu, double compareChang, String relativeQu, String relativeChang) {
+        super(adnm, adnmCount, numOne, numTwo, numThree, numFour, numFive, numSix, numSeven, numEight, numNine, numTen, numEleven, numTwelve, zong);
         this.jinYearZong = jinYearZong;
         this.quYearZong = quYearZong;
         this.changYearZong = changYearZong;

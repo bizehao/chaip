@@ -47,6 +47,14 @@ public class RealtimeRainfallController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="column",required=false)String column,
             @RequestParam(name="sign",required=false)String sign){
+
+        /*String dateStr = "2018-07-11";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "30932650";
+        String column = "24";
+        String sign = "1";*/
+
         String db = "and c.db in (1,3)";
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);

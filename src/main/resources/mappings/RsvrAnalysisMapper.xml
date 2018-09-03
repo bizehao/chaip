@@ -118,14 +118,13 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, AVRZ rz, AVW w from RP_RSVRAV_R A
+        select A.STCD, rz, w from RP_RSVR_R A
         <where>
             <![CDATA[
-				IDTM = #{time}
+				TM = #{time}
 			]]>
-            and STTDRCD = 1
         </where>
-        group by stcd,AVRZ,AVW
+        group by stcd,rz,w
         )PP
         on ST.STCD=PP.STCD ORDER BY STCD
     </select>

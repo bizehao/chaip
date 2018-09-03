@@ -1,6 +1,7 @@
 package com.world.chaip.entity.report.gson;
 
 import java.util.Date;
+import java.util.Map;
 
 public class PptnGson {
     //县名
@@ -11,65 +12,74 @@ public class PptnGson {
     private String name;
     //日总和降雨量
     private double countDrp;
+    private Map<Object, Object> drpMap;
     //9点
-    private double nineDrp = 0;
+    private String nineDrp;
     //10点
-    private double tenDrp = 0;
+    private String tenDrp;
     //11点
-    private double elevenDrp = 0;
+    private String elevenDrp;
     //12点
-    private double twelveDrp = 0;
+    private String twelveDrp;
     //13点
-    private double thirteenDrp = 0;
+    private String thirteenDrp;
     //14点
-    private double fourteenDrp = 0;
+    private String fourteenDrp;
     //15点
-    private double fifteenDrp = 0;
+    private String fifteenDrp;
     //16点
-    private double sixteenDrp = 0;
+    private String sixteenDrp;
     //17点
-    private double seventeenDrp = 0;
+    private String seventeenDrp;
     //18点
-    private double eighteenDrp = 0;
+    private String eighteenDrp;
     //19点
-    private double nineteenDrp = 0;
+    private String nineteenDrp;
     //20点
-    private double twentyDrp = 0;
+    private String twentyDrp;
     //21点
-    private double twenty_oneDrp = 0;
+    private String twenty_oneDrp;
     //22点
-    private double twenty_twoDrp = 0;
+    private String twenty_twoDrp;
     //23点
-    private double twenty_threeDrp = 0;
+    private String twenty_threeDrp;
     //0点
-    private double zeroDrp = 0;
+    private String zeroDrp;
     //1点
-    private double oneDrp = 0;
+    private String oneDrp;
     //2点
-    private double twoDrp = 0;
+    private String twoDrp;
     //3点
-    private double threeDrp = 0;
+    private String threeDrp;
     //4点
-    private double fourDrp = 0;
+    private String fourDrp;
     //5点
-    private double fiveDrp = 0;
+    private String fiveDrp;
     //6点
-    private double sixDrp = 0;
+    private String sixDrp;
     //7点
-    private double sevenDrp = 0;
+    private String sevenDrp;
     //8点
-    private double eightDrp = 0;
+    private String eightDrp;
 
     public PptnGson() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public PptnGson(String adnm, String stnm, String name, double countDrp, double nineDrp, double tenDrp, double elevenDrp,
-                    double twelveDrp, double thirteenDrp, double fourteenDrp, double fifteenDrp, double sixteenDrp,
-                    double seventeenDrp, double eighteenDrp, double nineteenDrp, double twentyDrp, double twenty_oneDrp,
-                    double twenty_twoDrp, double twenty_threeDrp, double zeroDrp, double oneDrp, double twoDrp,
-                    double threeDrp, double fourDrp, double fiveDrp, double sixDrp, double sevenDrp, double eightDrp) {
+    public Map<Object, Object> getDrpMap() {
+        return drpMap;
+    }
+
+    public void setDrpMap(Map<Object, Object> drpMap) {
+        this.drpMap = drpMap;
+    }
+
+    public PptnGson(String adnm, String stnm, String name, double countDrp, String nineDrp, String tenDrp,
+                    String elevenDrp, String twelveDrp, String thirteenDrp, String fourteenDrp, String fifteenDrp,
+                    String sixteenDrp, String seventeenDrp, String eighteenDrp, String nineteenDrp, String twentyDrp,
+                    String twenty_oneDrp, String twenty_twoDrp, String twenty_threeDrp, String zeroDrp, String oneDrp,
+                    String twoDrp, String threeDrp, String fourDrp, String fiveDrp, String sixDrp, String sevenDrp, String eightDrp) {
         this.adnm = adnm;
         this.stnm = stnm;
         this.name = name;
@@ -97,214 +107,6 @@ public class PptnGson {
         this.fiveDrp = fiveDrp;
         this.sixDrp = sixDrp;
         this.sevenDrp = sevenDrp;
-        this.eightDrp = eightDrp;
-    }
-
-    public String getStnm() {
-        return stnm;
-    }
-
-    public void setStnm(String stnm) {
-        this.stnm = stnm;
-    }
-
-    public double getCountDrp() {
-        return countDrp;
-    }
-
-    public void setCountDrp(double countDrp) {
-        this.countDrp = countDrp;
-    }
-
-    public double getNineDrp() {
-        return nineDrp;
-    }
-
-    public void setNineDrp(double nineDrp) {
-        this.nineDrp = nineDrp;
-    }
-
-    public double getTenDrp() {
-        return tenDrp;
-    }
-
-    public void setTenDrp(double tenDrp) {
-        this.tenDrp = tenDrp;
-    }
-
-    public double getElevenDrp() {
-        return elevenDrp;
-    }
-
-    public void setElevenDrp(double elevenDrp) {
-        this.elevenDrp = elevenDrp;
-    }
-
-    public double getTwelveDrp() {
-        return twelveDrp;
-    }
-
-    public void setTwelveDrp(double twelveDrp) {
-        this.twelveDrp = twelveDrp;
-    }
-
-    public double getThirteenDrp() {
-        return thirteenDrp;
-    }
-
-    public void setThirteenDrp(double thirteenDrp) {
-        this.thirteenDrp = thirteenDrp;
-    }
-
-    public double getFourteenDrp() {
-        return fourteenDrp;
-    }
-
-    public void setFourteenDrp(double fourteenDrp) {
-        this.fourteenDrp = fourteenDrp;
-    }
-
-    public double getFifteenDrp() {
-        return fifteenDrp;
-    }
-
-    public void setFifteenDrp(double fifteenDrp) {
-        this.fifteenDrp = fifteenDrp;
-    }
-
-    public double getSixteenDrp() {
-        return sixteenDrp;
-    }
-
-    public void setSixteenDrp(double sixteenDrp) {
-        this.sixteenDrp = sixteenDrp;
-    }
-
-    public double getSeventeenDrp() {
-        return seventeenDrp;
-    }
-
-    public void setSeventeenDrp(double seventeenDrp) {
-        this.seventeenDrp = seventeenDrp;
-    }
-
-    public double getEighteenDrp() {
-        return eighteenDrp;
-    }
-
-    public void setEighteenDrp(double eighteenDrp) {
-        this.eighteenDrp = eighteenDrp;
-    }
-
-    public double getNineteenDrp() {
-        return nineteenDrp;
-    }
-
-    public void setNineteenDrp(double nineteenDrp) {
-        this.nineteenDrp = nineteenDrp;
-    }
-
-    public double getTwentyDrp() {
-        return twentyDrp;
-    }
-
-    public void setTwentyDrp(double twentyDrp) {
-        this.twentyDrp = twentyDrp;
-    }
-
-    public double getTwenty_oneDrp() {
-        return twenty_oneDrp;
-    }
-
-    public void setTwenty_oneDrp(double twenty_oneDrp) {
-        this.twenty_oneDrp = twenty_oneDrp;
-    }
-
-    public double getTwenty_twoDrp() {
-        return twenty_twoDrp;
-    }
-
-    public void setTwenty_twoDrp(double twenty_twoDrp) {
-        this.twenty_twoDrp = twenty_twoDrp;
-    }
-
-    public double getTwenty_threeDrp() {
-        return twenty_threeDrp;
-    }
-
-    public void setTwenty_threeDrp(double twenty_threeDrp) {
-        this.twenty_threeDrp = twenty_threeDrp;
-    }
-
-    public double getZeroDrp() {
-        return zeroDrp;
-    }
-
-    public void setZeroDrp(double zeroDrp) {
-        this.zeroDrp = zeroDrp;
-    }
-
-    public double getOneDrp() {
-        return oneDrp;
-    }
-
-    public void setOneDrp(double oneDrp) {
-        this.oneDrp = oneDrp;
-    }
-
-    public double getTwoDrp() {
-        return twoDrp;
-    }
-
-    public void setTwoDrp(double twoDrp) {
-        this.twoDrp = twoDrp;
-    }
-
-    public double getThreeDrp() {
-        return threeDrp;
-    }
-
-    public void setThreeDrp(double threeDrp) {
-        this.threeDrp = threeDrp;
-    }
-
-    public double getFourDrp() {
-        return fourDrp;
-    }
-
-    public void setFourDrp(double fourDrp) {
-        this.fourDrp = fourDrp;
-    }
-
-    public double getFiveDrp() {
-        return fiveDrp;
-    }
-
-    public void setFiveDrp(double fiveDrp) {
-        this.fiveDrp = fiveDrp;
-    }
-
-    public double getSixDrp() {
-        return sixDrp;
-    }
-
-    public void setSixDrp(double sixDrp) {
-        this.sixDrp = sixDrp;
-    }
-
-    public double getSevenDrp() {
-        return sevenDrp;
-    }
-
-    public void setSevenDrp(double sevenDrp) {
-        this.sevenDrp = sevenDrp;
-    }
-
-    public double getEightDrp() {
-        return eightDrp;
-    }
-
-    public void setEightDrp(double eightDrp) {
         this.eightDrp = eightDrp;
     }
 
@@ -316,11 +118,219 @@ public class PptnGson {
         this.adnm = adnm;
     }
 
+    public String getStnm() {
+        return stnm;
+    }
+
+    public void setStnm(String stnm) {
+        this.stnm = stnm;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getCountDrp() {
+        return countDrp;
+    }
+
+    public void setCountDrp(double countDrp) {
+        this.countDrp = countDrp;
+    }
+
+    public String getNineDrp() {
+        return nineDrp;
+    }
+
+    public void setNineDrp(String nineDrp) {
+        this.nineDrp = nineDrp;
+    }
+
+    public String getTenDrp() {
+        return tenDrp;
+    }
+
+    public void setTenDrp(String tenDrp) {
+        this.tenDrp = tenDrp;
+    }
+
+    public String getElevenDrp() {
+        return elevenDrp;
+    }
+
+    public void setElevenDrp(String elevenDrp) {
+        this.elevenDrp = elevenDrp;
+    }
+
+    public String getTwelveDrp() {
+        return twelveDrp;
+    }
+
+    public void setTwelveDrp(String twelveDrp) {
+        this.twelveDrp = twelveDrp;
+    }
+
+    public String getThirteenDrp() {
+        return thirteenDrp;
+    }
+
+    public void setThirteenDrp(String thirteenDrp) {
+        this.thirteenDrp = thirteenDrp;
+    }
+
+    public String getFourteenDrp() {
+        return fourteenDrp;
+    }
+
+    public void setFourteenDrp(String fourteenDrp) {
+        this.fourteenDrp = fourteenDrp;
+    }
+
+    public String getFifteenDrp() {
+        return fifteenDrp;
+    }
+
+    public void setFifteenDrp(String fifteenDrp) {
+        this.fifteenDrp = fifteenDrp;
+    }
+
+    public String getSixteenDrp() {
+        return sixteenDrp;
+    }
+
+    public void setSixteenDrp(String sixteenDrp) {
+        this.sixteenDrp = sixteenDrp;
+    }
+
+    public String getSeventeenDrp() {
+        return seventeenDrp;
+    }
+
+    public void setSeventeenDrp(String seventeenDrp) {
+        this.seventeenDrp = seventeenDrp;
+    }
+
+    public String getEighteenDrp() {
+        return eighteenDrp;
+    }
+
+    public void setEighteenDrp(String eighteenDrp) {
+        this.eighteenDrp = eighteenDrp;
+    }
+
+    public String getNineteenDrp() {
+        return nineteenDrp;
+    }
+
+    public void setNineteenDrp(String nineteenDrp) {
+        this.nineteenDrp = nineteenDrp;
+    }
+
+    public String getTwentyDrp() {
+        return twentyDrp;
+    }
+
+    public void setTwentyDrp(String twentyDrp) {
+        this.twentyDrp = twentyDrp;
+    }
+
+    public String getTwenty_oneDrp() {
+        return twenty_oneDrp;
+    }
+
+    public void setTwenty_oneDrp(String twenty_oneDrp) {
+        this.twenty_oneDrp = twenty_oneDrp;
+    }
+
+    public String getTwenty_twoDrp() {
+        return twenty_twoDrp;
+    }
+
+    public void setTwenty_twoDrp(String twenty_twoDrp) {
+        this.twenty_twoDrp = twenty_twoDrp;
+    }
+
+    public String getTwenty_threeDrp() {
+        return twenty_threeDrp;
+    }
+
+    public void setTwenty_threeDrp(String twenty_threeDrp) {
+        this.twenty_threeDrp = twenty_threeDrp;
+    }
+
+    public String getZeroDrp() {
+        return zeroDrp;
+    }
+
+    public void setZeroDrp(String zeroDrp) {
+        this.zeroDrp = zeroDrp;
+    }
+
+    public String getOneDrp() {
+        return oneDrp;
+    }
+
+    public void setOneDrp(String oneDrp) {
+        this.oneDrp = oneDrp;
+    }
+
+    public String getTwoDrp() {
+        return twoDrp;
+    }
+
+    public void setTwoDrp(String twoDrp) {
+        this.twoDrp = twoDrp;
+    }
+
+    public String getThreeDrp() {
+        return threeDrp;
+    }
+
+    public void setThreeDrp(String threeDrp) {
+        this.threeDrp = threeDrp;
+    }
+
+    public String getFourDrp() {
+        return fourDrp;
+    }
+
+    public void setFourDrp(String fourDrp) {
+        this.fourDrp = fourDrp;
+    }
+
+    public String getFiveDrp() {
+        return fiveDrp;
+    }
+
+    public void setFiveDrp(String fiveDrp) {
+        this.fiveDrp = fiveDrp;
+    }
+
+    public String getSixDrp() {
+        return sixDrp;
+    }
+
+    public void setSixDrp(String sixDrp) {
+        this.sixDrp = sixDrp;
+    }
+
+    public String getSevenDrp() {
+        return sevenDrp;
+    }
+
+    public void setSevenDrp(String sevenDrp) {
+        this.sevenDrp = sevenDrp;
+    }
+
+    public String getEightDrp() {
+        return eightDrp;
+    }
+
+    public void setEightDrp(String eightDrp) {
+        this.eightDrp = eightDrp;
     }
 }

@@ -110,6 +110,12 @@
             <version>3.9</version>
         </dependency>
 
+        <!--aop切面依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
     </dependencies>
 
 	<build>

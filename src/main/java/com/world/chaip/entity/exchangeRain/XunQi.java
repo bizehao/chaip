@@ -206,4 +206,9 @@ public class XunQi implements Serializable {
     public void setJxqSix_Nine_Compare(String jxqSix_Nine_Compare) {
         this.jxqSix_Nine_Compare = jxqSix_Nine_Compare;
     }
+
+    @Override
+    public String toString() {
+        return "XunQi{" + "stnm='" + stnm + '\'' + ", jxqSix=" + jxqSix + ", jxqSeven=" + jxqSeven + ", jxqEight=" + jxqEight + ", jxqNine=" + jxqNine + ", jxqSix_Nine=" + jxqSix_Nine + ", jxqSix_Nine_Compare='" + jxqSix_Nine_Compare + '\'' + ", qxqSix='" + qxqSix + '\'' + ", qxqSeven='" + qxqSeven + '\'' + ", qxqEight='" + qxqEight + '\'' + ", qxqNine='" + qxqNine + '\'' + ", qxqSix_Nine='" + qxqSix_Nine + '\'' + ", cxqSix='" + cxqSix + '\'' + ", cxqSeven='" + cxqSeven + '\'' + ", cxqEight='" + cxqEight + '\'' + ", cxqNine='" + cxqNine + '\'' + ", cxqSix_Nine='" + cxqSix_Nine + '\'' + '}';
+    }
 }

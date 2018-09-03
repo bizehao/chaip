@@ -4,6 +4,8 @@ public class RainExchange {
 
     //县域名称
     private String adnm;
+    //县域下站的数目
+    private int adnmCount;
     //汛期降雨量1月
     private double numOne;
     //汛期降雨量2月
@@ -34,10 +36,11 @@ public class RainExchange {
     public RainExchange() {
     }
 
-    public RainExchange(String adnm, double numOne, double numTwo, double numThree, double numFour, double numFive,
-                        double numSix, double numSeven, double numEight, double numNine, double numTen, double numEleven,
-                        double numTwelve, double zong) {
+    public RainExchange(String adnm, int adnmCount, double numOne, double numTwo, double numThree, double numFour,
+                        double numFive, double numSix, double numSeven, double numEight, double numNine, double numTen,
+                        double numEleven, double numTwelve, double zong) {
         this.adnm = adnm;
+        this.adnmCount = adnmCount;
         this.numOne = numOne;
         this.numTwo = numTwo;
         this.numThree = numThree;
@@ -163,5 +166,13 @@ public class RainExchange {
 
     public void setZong(double zong) {
         this.zong = zong;
+    }
+
+    public int getAdnmCount() {
+        return adnmCount;
+    }
+
+    public void setAdnmCount(int adnmCount) {
+        this.adnmCount = adnmCount;
     }
 }
