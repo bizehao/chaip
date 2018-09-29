@@ -24,7 +24,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 
     //水库水量分析表
     @Override
-    public RsvrWaterExcel getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public RsvrWaterExcel getRsvrWaterAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) {
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
         tm.set(Calendar.HOUR_OF_DAY,8);
@@ -33,7 +33,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         tm.set(Calendar.HOUR_OF_DAY,8);
         tm.add(Calendar.DATE,1);
         Date dateE1 = tm.getTime();
-        List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(dateS1, dateE1, adcd, systemTypes, stcdOrStnm);
+        List<RsvrWaterExchange> rsvrWaterAnalysis = rsvrAnalysisMapper.getRsvrWaterAnalysis(dateS1, dateE1, adcd, systemTypes, stcdOrStnm,ly);
         List<RsvrWaterExchange> list = new ArrayList<>();
         RsvrWaterExchange rsvrWaterExchange = null;
 
@@ -108,12 +108,12 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         now.add(Calendar.DATE, 1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date time = now.getTime();
-        List<Rsvr> beginRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm);
+        List<Rsvr> beginRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm,ly);
         now.setTime(dateE);
         now.add(Calendar.DATE, 1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         time = now.getTime();
-        List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm);
+        List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(time, adcd, systemTypes, stcdOrStnm,ly);
         for (int i = 0; i < list.size(); i++) {
             rsvrWaterExchange = list.get(i);
             String a = beginRsvrList.get(i).getRz();
@@ -153,7 +153,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
     }
     //水库蓄水量量分析表
     @Override
-    public Object getRsvrStorageAnalysis(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int sign) {
+    public Object getRsvrStorageAnalysis(Date date, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, int sign, List<String> ly) {
         Calendar now = Calendar.getInstance();
         now.setTime(date);
         now.set(Calendar.HOUR_OF_DAY, 8);
@@ -179,7 +179,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 
         List<RsvrStronge> jinList = new ArrayList<>();
         //今年大型
-        List<RsvrStronge> rsvrStrongeListj3 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 3);
+        List<RsvrStronge> rsvrStrongeListj3 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 3,ly);
         if (rsvrStrongeListj3.size() > 0) {
             for (int i = 0; i < rsvrStrongeListj3.size(); i++) {
                 countrsvrStrongeListj3 += rsvrStrongeListj3.get(i).getW();
@@ -190,7 +190,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //今年中型
-        List<RsvrStronge> rsvrStrongeListj2 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 2);
+        List<RsvrStronge> rsvrStrongeListj2 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 2,ly);
         if (rsvrStrongeListj2.size() > 0) {
             for (int i = 0; i < rsvrStrongeListj2.size(); i++) {
                 countrsvrStrongeListj2 += rsvrStrongeListj2.get(i).getW();
@@ -201,7 +201,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //今年小型
-        List<RsvrStronge> rsvrStrongeListj1 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 1);
+        List<RsvrStronge> rsvrStrongeListj1 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 1,ly);
         if (rsvrStrongeListj1.size() > 0) {
             for (int i = 0; i < rsvrStrongeListj1.size(); i++) {
                 countrsvrStrongeListj1 += rsvrStrongeListj1.get(i).getW();
@@ -220,7 +220,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 
         List<RsvrStronge> quList = new ArrayList<>();
         //去年大型
-        List<RsvrStronge> rsvrStrongeListq3 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 3);
+        List<RsvrStronge> rsvrStrongeListq3 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 3,ly);
         if (rsvrStrongeListq3.size() > 0) {
             for (int i = 0; i < rsvrStrongeListq3.size(); i++) {
                 countrsvrStrongeListq3 += rsvrStrongeListq3.get(i).getW();
@@ -231,7 +231,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //去年中型
-        List<RsvrStronge> rsvrStrongeListq2 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 2);
+        List<RsvrStronge> rsvrStrongeListq2 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 2,ly);
         if (rsvrStrongeListq2.size() > 0) {
             for (int i = 0; i < rsvrStrongeListq2.size(); i++) {
                 countrsvrStrongeListq2 += rsvrStrongeListq2.get(i).getW();
@@ -242,7 +242,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //去年小型
-        List<RsvrStronge> rsvrStrongeListq1 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 1);
+        List<RsvrStronge> rsvrStrongeListq1 = rsvrAnalysisMapper.getRsvrStorageAnalysis(time1, time2, adcd, systemTypes, stcdOrStnm, 1,ly);
         if (rsvrStrongeListq1.size() > 0) {
             for (int i = 0; i < rsvrStrongeListq1.size(); i++) {
                 countrsvrStrongeListq1 += rsvrStrongeListq1.get(i).getW();
@@ -262,7 +262,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         int day = chang.get(Calendar.DATE);
 
         //常年大型
-        List<RsvrStronge> rsvrStrongeListc3 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 3);
+        List<RsvrStronge> rsvrStrongeListc3 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 3,ly);
         if (rsvrStrongeListc3.size() > 0) {
             for (int i = 0; i < rsvrStrongeListc3.size(); i++) {
                 countrsvrStrongeListc3 += rsvrStrongeListc3.get(i).getW();
@@ -273,7 +273,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //常年中型
-        List<RsvrStronge> rsvrStrongeListc2 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 2);
+        List<RsvrStronge> rsvrStrongeListc2 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 2,ly);
         if (rsvrStrongeListc2.size() > 0) {
             for (int i = 0; i < rsvrStrongeListc2.size(); i++) {
                 countrsvrStrongeListc2 += rsvrStrongeListc2.get(i).getW();
@@ -284,7 +284,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         }
 
         //常年小型
-        List<RsvrStronge> rsvrStrongeListc1 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 1);
+        List<RsvrStronge> rsvrStrongeListc1 = rsvrAnalysisMapper.getRsvrStorageCLAnalysis(month, day, adcd, systemTypes, stcdOrStnm, 1,ly);
         if (rsvrStrongeListc1.size() > 0) {
             for (int i = 0; i < rsvrStrongeListc1.size(); i++) {
                 countrsvrStrongeListc1 += rsvrStrongeListc1.get(i).getW();
@@ -357,9 +357,9 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         return rs;
     }
 
-    //水库特征值他统计表
+    //水库特征值统计表
     @Override
-    public RsvrExchangeExcel getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+    public RsvrExchangeExcel getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         now.set(Calendar.HOUR_OF_DAY, 8);
@@ -368,7 +368,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         now.add(Calendar.DATE, 1);
         now.set(Calendar.HOUR_OF_DAY, 8);
         Date endTime = now.getTime();
-        List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime, endTime, adcd, systemTypes, stcdOrStnm);
+        List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime, endTime, adcd, systemTypes, stcdOrStnm,ly);
         RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
         RsvrTZCount rsvrTZCount = null;
         for (int i = 0; i < list.size(); i++) {

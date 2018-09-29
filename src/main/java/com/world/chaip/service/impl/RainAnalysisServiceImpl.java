@@ -89,28 +89,34 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             count = list1.get(i).getAdnmCount();
             yearAndMonthRain = new YearAndMonthRain();
             yearAndMonthRain.setAdnm(list1.get(i).getAdnm());
-            yearAndMonthRain.setNumOne(list1.get(i).getNumOne()/count);
-            yearAndMonthRain.setNumTwo(list1.get(i).getNumTwo()/count);
-            yearAndMonthRain.setNumThree(list1.get(i).getNumThree()/count);
-            yearAndMonthRain.setNumFour(list1.get(i).getNumFour()/count);
-            yearAndMonthRain.setNumFive(list1.get(i).getNumFive()/count);
-            yearAndMonthRain.setNumSix(list1.get(i).getNumSix()/count);
-            yearAndMonthRain.setNumSeven(list1.get(i).getNumSeven()/count);
-            yearAndMonthRain.setNumEight(list1.get(i).getNumEight()/count);
-            yearAndMonthRain.setNumNine(list1.get(i).getNumNine()/count);
-            yearAndMonthRain.setNumTen(list1.get(i).getNumTen()/count);
-            yearAndMonthRain.setNumEleven(list1.get(i).getNumEleven()/count);
-            yearAndMonthRain.setNumTwelve(list1.get(i).getNumTwelve()/count);
-            yearAndMonthRain.setJinYearZong(list1.get(i).getZong()/count);
-            yearAndMonthRain.setQuYearZong(list2.get(i).getZong()/count);
-            yearAndMonthRain.setChangYearZong(list3.get(i).getZong()/count);
-            yearAndMonthRain.setCompareQu(Double.parseDouble(new DecimalFormat("#0.000").format((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount())));
-            yearAndMonthRain.setCompareChang(Double.parseDouble((new DecimalFormat("#0.000").format(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count))));
+            yearAndMonthRain.setNumOne(setXiaoShu(list1.get(i).getNumOne()/count));
+            yearAndMonthRain.setNumTwo(setXiaoShu(list1.get(i).getNumTwo()/count));
+            yearAndMonthRain.setNumThree(setXiaoShu(list1.get(i).getNumThree()/count));
+            yearAndMonthRain.setNumFour(setXiaoShu(list1.get(i).getNumFour()/count));
+            yearAndMonthRain.setNumFive(setXiaoShu(list1.get(i).getNumFive()/count));
+            yearAndMonthRain.setNumSix(setXiaoShu(list1.get(i).getNumSix()/count));
+            yearAndMonthRain.setNumSeven(setXiaoShu(list1.get(i).getNumSeven()/count));
+            yearAndMonthRain.setNumEight(setXiaoShu(list1.get(i).getNumEight()/count));
+            yearAndMonthRain.setNumNine(setXiaoShu(list1.get(i).getNumNine()/count));
+            yearAndMonthRain.setNumTen(setXiaoShu(list1.get(i).getNumTen()/count));
+            yearAndMonthRain.setNumEleven(setXiaoShu(list1.get(i).getNumEleven()/count));
+            yearAndMonthRain.setNumTwelve(setXiaoShu(list1.get(i).getNumTwelve()/count));
+            yearAndMonthRain.setJinYearZong(setXiaoShu(list1.get(i).getZong()/count));
+            yearAndMonthRain.setQuYearZong(setXiaoShu(list2.get(i).getZong()/count));
+            yearAndMonthRain.setChangYearZong(setXiaoShu(list3.get(i).getZong()/count));
+            yearAndMonthRain.setCompareQu(setXiaoShu((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount()));
+            System.out.println(setXiaoShu(list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount());
+            yearAndMonthRain.setCompareChang(setXiaoShu(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count));
             yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong()/count, list1.get(i).getZong()/count));
             yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong()/count, list1.get(i).getZong()/count));
             nzylist.add(yearAndMonthRain);
         }
         return nzylist;
+    }
+
+    public Double setXiaoShu(double math){
+        String a = new DecimalFormat("#0.0").format(math);
+        return Double.parseDouble(a);
     }
 
     //任意日降雨量分析对比
@@ -143,8 +149,8 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             count = list1.get(i).getAdnmCount();
             arbitrarilyDay = new ArbitrarilyDay();
             arbitrarilyDay.setAdnm(list1.get(i).getAdnm());
-            arbitrarilyDay.setoDay_oDay(list1.get(i).getZong()/count);
-            arbitrarilyDay.setSamePeriodQu(list2.get(i).getZong()/count);
+            arbitrarilyDay.setoDay_oDay(setXiaoShu(list1.get(i).getZong()/count));
+            arbitrarilyDay.setSamePeriodQu(setXiaoShu(list2.get(i).getZong()/count));
             arbitrarilyDay.setSamePeriodChang(new DecimalFormat("#0.0").format(dList.get(i)/count));
             if(list1.get(i).getZong()==0){
                 arbitrarilyDay.setSamePeriodCompareQu("--");

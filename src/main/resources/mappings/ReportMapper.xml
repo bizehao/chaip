@@ -20,7 +20,7 @@
 		on
 			b.ADDVCD = d.ADCD
 		where 
-			b.sttp = 'RR' 
+			b.sttp = 'RR' and c.viwe = 1
 		and 
 			a.TM between #{tm1} and #{tm2}
 		and 
@@ -49,7 +49,7 @@
 		on 
 			b.ADDVCD = d.ADCD 
 		where 
-			a.TM between #{tm1} and  #{tm2} 
+			a.TM between #{tm1} and  #{tm2} and c.viwe = 1
 		and 
 			a.stcd=#{stcd} 
 		and 
@@ -81,6 +81,8 @@
 		b.ADDVCD = d.ADCD
 		where
 		a.TM &gt; #{tm1} and a.TM &lt;= #{tm2}
+		and
+		c.viwe = 1
 		and
 		a.stcd=#{stcd}
 		OR
@@ -127,6 +129,8 @@
         </trim>
         and
         c.lx= #{type}
+        and
+        c.viwe = 1
         and
         d.ADCD=#{city}
         and

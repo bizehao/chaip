@@ -21,5 +21,5 @@ public interface RiverAnalysisService {
      * @param stcdOrStnm
      * @return
      */
-    List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm);
+    List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly);
 }

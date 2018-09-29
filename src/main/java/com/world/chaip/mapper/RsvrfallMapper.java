@@ -25,7 +25,8 @@ public interface RsvrfallMapper {
             @Param("endTime") Date endTime,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
 
     /**
      * 水库查询(实时 时间相同)
@@ -39,7 +40,8 @@ public interface RsvrfallMapper {
             @Param("time") Date time,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
 
 	/**
 	 * 水库查询（专业报表 时间不同）
@@ -57,7 +59,8 @@ public interface RsvrfallMapper {
 			@Param("fstp") int fstp,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
-			@Param("stcdOrStnm") List<String> stcdOrStnm);
+			@Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
     /**
      * 水库查询（专业报表 时间相同）
      * @param time
@@ -72,7 +75,8 @@ public interface RsvrfallMapper {
             @Param("fstp") int fstp,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
 
 	/**
 	 * 查询汛期

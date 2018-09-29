@@ -48,6 +48,12 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
                 and c.datafrom=1
             </trim>
@@ -111,6 +117,12 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
                 and c.datafrom=2
             </trim>
@@ -171,6 +183,12 @@
                     and c.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
                         #{systemTypes}
+                    </foreach>
+                </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
                     </foreach>
                 </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
@@ -239,6 +257,12 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
                 and c.datafrom=1
             </trim>
@@ -304,6 +328,12 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)
                 and c.datafrom=2
             </trim>
@@ -367,6 +397,12 @@
                     and c.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
                         #{systemTypes}
+                    </foreach>
+                </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
                     </foreach>
                 </if>
                 and ZFL = 1 and STTP LIKE '%Z%' and c.dq = 31 and c.jdb in (2,3)

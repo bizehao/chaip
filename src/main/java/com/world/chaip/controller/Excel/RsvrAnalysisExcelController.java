@@ -39,11 +39,13 @@ public class RsvrAnalysisExcelController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -79,6 +81,15 @@ public class RsvrAnalysisExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -87,7 +98,7 @@ public class RsvrAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
+        RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         RsvrWaterExchange waterExchange = null;
@@ -175,11 +186,13 @@ public class RsvrAnalysisExcelController {
             @RequestParam("date")String date,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("时间"+date);
         System.out.println("县域"+adcd);
@@ -214,13 +227,22 @@ public class RsvrAnalysisExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateTime = null;
         try {
             dateTime = DateUtils.parse(date, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<RsvrW> a = (List<RsvrW>) rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist,1);
+        List<RsvrW> a = (List<RsvrW>) rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist,1,lylist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         RsvrStrongeChild rsvrStrongeChild = null;
@@ -287,7 +309,8 @@ public class RsvrAnalysisExcelController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
         /*String dateStart = "2017-02-11";
         String dateEnd = "2017-06-12";
@@ -298,6 +321,7 @@ public class RsvrAnalysisExcelController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -333,6 +357,15 @@ public class RsvrAnalysisExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -341,7 +374,7 @@ public class RsvrAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
+        RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
         RsvrTZCount rsvrStrongeChild = null;

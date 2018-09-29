@@ -30,7 +30,8 @@ public class RiverAnalysisController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         /*String dateStart = "2018-05-01";
         String dateEnd = "2018-06-08";
@@ -41,6 +42,7 @@ public class RiverAnalysisController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -76,6 +78,15 @@ public class RiverAnalysisController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -84,7 +95,7 @@ public class RiverAnalysisController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<RiverExchange> a = riverAnalysisService.getRiverByAnalysis(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<RiverExchange> a = riverAnalysisService.getRiverByAnalysis(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         return new JsonResult(a);
     }
 }

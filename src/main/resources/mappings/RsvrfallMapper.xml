@@ -113,9 +113,15 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and sttp like '%R%' and ZFL='1'
-                and c.db in (2,3)
+                and c.db in (2,3) and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -249,9 +255,15 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and sttp like '%R%' and ZFL='1'
-                and c.db in (2,3)
+                and c.db in (2,3) and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -320,8 +332,14 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and k.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
             </trim>
-            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3)
+            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3) and k.viwe = 1
         </where>
         ) m
         left join
@@ -401,8 +419,14 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and k.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
             </trim>
-            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3)
+            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3) and k.viwe = 1
         </where>
         ) m
         left join

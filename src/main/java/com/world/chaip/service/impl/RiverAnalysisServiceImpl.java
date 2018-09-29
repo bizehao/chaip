@@ -21,7 +21,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
 
     //河道水情分析
     @Override
-    public List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) {
+    public List<RiverExchange> getRiverByAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) {
 
         long difference =  (dateS.getTime()-dateE.getTime())/86400000;
         Calendar tm = Calendar.getInstance();
@@ -35,7 +35,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         tm.add(Calendar.DATE,1);
         Date endTime = tm.getTime();
 
-        List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        List<RiverExchange> riverByAnalysis = riverAnalysisMapper.getRiverByAnalysis(beginTime,endTime,adcd,systemTypes,stcdOrStnm,ly);
 
         int days = (int) (Math.abs(difference)+1);
         List<RiverExchange> list = new ArrayList<>();
@@ -105,7 +105,7 @@ public class RiverAnalysisServiceImpl implements RiverAnalysisService{
         maxtm.set(Calendar.DATE, 1);
         maxtm.set(Calendar.HOUR_OF_DAY,8);
         dateE = maxtm.getTime();*/
-        List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(beginTime,endTime,adcd,systemTypes,stcdOrStnm);
+        List<RiverExchange> riverByMaxQZ = riverAnalysisMapper.getRiverByMaxQZ(beginTime,endTime,adcd,systemTypes,stcdOrStnm,ly);
         List<RiverExchange> rList = new ArrayList<>();
         for(int i=0; i<riverByMaxQZ.size(); i++){
             riverExchange = list.get(i);

@@ -29,7 +29,8 @@ public interface RsvrAnalysisMapper {
                                                  @Param("endTime") Date endTime,
                                                  @Param("adcd") List<String> adcd,
                                                  @Param("systemTypes") List<String> systemTypes,
-                                                 @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                                 @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                                 @Param("ly") List<String> ly);
 
     /**
      * 水库水量分析表
@@ -42,7 +43,8 @@ public interface RsvrAnalysisMapper {
     List<Rsvr> getRsvrWaterAnalysisRi(@Param("time") Date time,
                                       @Param("adcd") List<String> adcd,
                                       @Param("systemTypes") List<String> systemTypes,
-                                      @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                      @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                      @Param("ly") List<String> ly);
 
     /**
      * 水库蓄水量分析表
@@ -58,7 +60,8 @@ public interface RsvrAnalysisMapper {
                                              @Param("adcd") List<String> adcd,
                                              @Param("systemTypes") List<String> systemTypes,
                                              @Param("stcdOrStnm") List<String> stcdOrStnm,
-                                             @Param("sign") int sign);
+                                             @Param("sign") int sign,
+                                             @Param("ly") List<String> ly);
 
     /**
      * 水库蓄水量分析常量值表
@@ -74,7 +77,8 @@ public interface RsvrAnalysisMapper {
                                                @Param("adcd") List<String> adcd,
                                                @Param("systemTypes") List<String> systemTypes,
                                                @Param("stcdOrStnm") List<String> stcdOrStnm,
-                                               @Param("sign") int sign);
+                                               @Param("sign") int sign,
+                                               @Param("ly") List<String> ly);
 
     /**
      * 水库特征值统计表
@@ -89,7 +93,8 @@ public interface RsvrAnalysisMapper {
                                                @Param("endTime") Date endTime,
                                                @Param("adcd") List<String> adcd,
                                                @Param("systemTypes") List<String> systemTypes,
-                                               @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                               @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                               @Param("ly") List<String> ly);
 
 
 }

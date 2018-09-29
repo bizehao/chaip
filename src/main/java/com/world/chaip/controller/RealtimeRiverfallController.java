@@ -33,12 +33,14 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
 			@RequestParam(name="adcd",required=false)String adcd,
 			@RequestParam(name="systemTypes",required=false)String systemTypes,
-			@RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
+			@RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws ParseException {
 
         String benqu="and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -72,6 +74,15 @@ public class RealtimeRiverfallController {
             String[] sytemp = stcdOrStnm.split(",");
             for(int i = 0; i<sytemp.length; i++){
                 stcdlist.add(sytemp[i]);
+            }
+        }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
             }
         }
         Date dateS = null;
@@ -82,7 +93,7 @@ public class RealtimeRiverfallController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist, benqu);
+        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist, benqu,lylist);
         return new JsonResult(a);
 	}
 
@@ -93,11 +104,13 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws ParseException {
         String benqu="and c.dq != 32 and c.jdb in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -131,6 +144,15 @@ public class RealtimeRiverfallController {
             String[] sytemp = stcdOrStnm.split(",");
             for(int i = 0; i<sytemp.length; i++){
                 stcdlist.add(sytemp[i]);
+            }
+        }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
             }
         }
         Date dateS = null;
@@ -144,7 +166,7 @@ public class RealtimeRiverfallController {
         System.out.println("======================");
         System.out.println(dateS);
         System.out.println(dateE);
-        List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         return new JsonResult(a);
     }
 
@@ -155,11 +177,13 @@ public class RealtimeRiverfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws ParseException {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws ParseException {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -195,6 +219,15 @@ public class RealtimeRiverfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {//因为曹哥那边要改
@@ -203,7 +236,7 @@ public class RealtimeRiverfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         return new JsonResult(a);
     }
 

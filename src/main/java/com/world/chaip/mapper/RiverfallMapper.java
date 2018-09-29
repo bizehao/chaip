@@ -26,7 +26,8 @@ public interface RiverfallMapper {
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
             @Param("stcdOrStnm") List<String> stcdOrStnm,
-            @Param("benqu") String benqu);
+            @Param("benqu") String benqu,
+            @Param("ly") List<String> ly);
     /**
      * 河道查询(实时 最新一条数据)
      * @param time
@@ -40,7 +41,8 @@ public interface RiverfallMapper {
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
             @Param("stcdOrStnm") List<String> stcdOrStnm,
-            @Param("benqu") String benqu);
+            @Param("benqu") String benqu,
+            @Param("ly") List<String> ly);
 	/**
 	 * 河道查询(本区 时间不同)
 	 * @param beginTime
@@ -55,7 +57,8 @@ public interface RiverfallMapper {
 			@Param("endTime") Date endTime,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
-			@Param("stcdOrStnm") List<String> stcdOrStnm);
+			@Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
     /**
      * 河道查询(本区 时间相同)
      * @param time
@@ -68,7 +71,8 @@ public interface RiverfallMapper {
             @Param("time") Date time,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
     /**
 	 * 河道查询(外区)
 	 * @param beginTime
@@ -83,7 +87,8 @@ public interface RiverfallMapper {
 			@Param("endTime") Date endTime,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
-			@Param("stcdOrStnm") List<String> stcdOrStnm);
+			@Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
 
     /**
      * 河道查询(外区)
@@ -97,6 +102,7 @@ public interface RiverfallMapper {
             @Param("time") Date time,
             @Param("adcd") List<String> adcd,
             @Param("systemTypes") List<String> systemTypes,
-            @Param("stcdOrStnm") List<String> stcdOrStnm);
+            @Param("stcdOrStnm") List<String> stcdOrStnm,
+            @Param("ly") List<String> ly);
 
 }

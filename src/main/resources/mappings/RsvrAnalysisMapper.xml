@@ -48,6 +48,12 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
@@ -110,6 +116,12 @@
                     and c.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
                         #{systemTypes}
+                    </foreach>
+                </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
                     </foreach>
                 </if>
                 and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
@@ -187,6 +199,12 @@
                 <if test="sign == 3">
                     and RSVRTP IN (4,5)
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
@@ -263,6 +281,12 @@
                 <if test="sign == 3">
                     and RSVRTP IN (4,5)
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
             </trim>
         </where>
@@ -324,6 +348,12 @@
                     and c.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
                         #{systemTypes}
+                    </foreach>
+                </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
                     </foreach>
                 </if>
                 and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)

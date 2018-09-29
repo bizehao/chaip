@@ -20,7 +20,7 @@ public class RiverfallServiceImpl implements RiverfallService {
 
     //实时 河道
     @Override
-    public List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String benqu) throws ParseException {
+    public List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, String benqu, List<String> ly) throws ParseException {
         /*Date beginTime=null;
         Date endTime=null;
         Calendar now = Calendar.getInstance();
@@ -30,9 +30,9 @@ public class RiverfallServiceImpl implements RiverfallService {
         endTime= now.getTime();*/
         List<River> rainfalls;
         if (dateS.equals(dateE)) {
-            rainfalls = riverfallMapper.getRiverByTermNew(dateS, adcd, systemTypes, stcdOrStnm, benqu);
+            rainfalls = riverfallMapper.getRiverByTermNew(dateS, adcd, systemTypes, stcdOrStnm, benqu,ly);
         } else{
-            rainfalls = riverfallMapper.getRiverByTerm(dateS, dateE, adcd, systemTypes, stcdOrStnm, benqu);
+            rainfalls = riverfallMapper.getRiverByTerm(dateS, dateE, adcd, systemTypes, stcdOrStnm, benqu,ly);
         }
         for (River river : rainfalls) {
             river.setTm(ExcepTimeUtil.getExcepTime(river.getTm()));
@@ -45,7 +45,7 @@ public class RiverfallServiceImpl implements RiverfallService {
 
     //本区 河道
     @Override
-    public List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+    public List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
         /*Date beginTime=null;
         Date endTime=null;
         Calendar now = Calendar.getInstance();
@@ -55,10 +55,10 @@ public class RiverfallServiceImpl implements RiverfallService {
         endTime= now.getTime();*/
         List<River> rainfalls;
         if (dateS.equals(dateE)) {
-            rainfalls = riverfallMapper.getRiverByBenNew(dateS, adcd, systemTypes, stcdOrStnm);
+            rainfalls = riverfallMapper.getRiverByBenNew(dateS, adcd, systemTypes, stcdOrStnm,ly);
 
         } else {
-            rainfalls = riverfallMapper.getRiverByBen(dateS, dateE, adcd, systemTypes, stcdOrStnm);
+            rainfalls = riverfallMapper.getRiverByBen(dateS, dateE, adcd, systemTypes, stcdOrStnm,ly);
         }
         River river = null;
         for (int i = 0; i < rainfalls.size(); i++) {
@@ -75,12 +75,12 @@ public class RiverfallServiceImpl implements RiverfallService {
 
     //外区河道
     @Override
-    public List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+    public List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
         List<River> rainfalls;
         if(dateS.equals(dateE)){
-            rainfalls = riverfallMapper.getRiverByWaiNew(dateS, adcd, systemTypes, stcdOrStnm);
+            rainfalls = riverfallMapper.getRiverByWaiNew(dateS, adcd, systemTypes, stcdOrStnm,ly);
         }else {
-            rainfalls = riverfallMapper.getRiverByWai(dateS, dateE, adcd, systemTypes, stcdOrStnm);
+            rainfalls = riverfallMapper.getRiverByWai(dateS, dateE, adcd, systemTypes, stcdOrStnm,ly);
         }
         River river = null;
         for (int i = 0; i < rainfalls.size(); i++) {

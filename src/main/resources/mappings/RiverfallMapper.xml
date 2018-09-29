@@ -117,8 +117,14 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
-                and ZFL = 1 and STTP LIKE '%Z%'
+                and ZFL = 1 and STTP LIKE '%Z%' and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -256,8 +262,14 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
-                and ZFL = 1 and STTP LIKE '%Z%'
+                and ZFL = 1 and STTP LIKE '%Z%' and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -327,10 +339,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=1
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -393,10 +412,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=2
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -459,10 +485,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=3
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -528,10 +561,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=1
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -598,10 +638,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=2
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -668,10 +715,17 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 and c.dq = '31'
                 and ZFL = 1 and STTP LIKE '%Z%'
                 and c.jdb in (2,3)
                 and c.datafrom=3
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -741,7 +795,13 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32'
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32' and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -807,7 +867,13 @@
                         #{systemTypes}
                     </foreach>
                 </if>
-                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32'
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
+                and ZFL = 1 and STTP LIKE '%Z%' and c.dq = '32' and c.viwe = 1
             </trim>
         </where>
         ) st

@@ -26,12 +26,12 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 
     //水库 (实时)
     @Override
-    public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+    public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
         List<Rsvr> rainfalls;
         if(dateS.equals(dateE)){
-            rainfalls=rsvrfallMapper.getRsvrByTermNew(dateS,adcd,systemTypes,stcdOrStnm);
+            rainfalls=rsvrfallMapper.getRsvrByTermNew(dateS,adcd,systemTypes,stcdOrStnm,ly);
         }else{
-            rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm);
+            rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm,ly);
         }
         /*for(Rsvr rsvr : rainfalls){
             rsvr.setTm(ExcepTimeUtil.getExcepTime(rsvr.getTm()));
@@ -44,7 +44,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 
     //水库 (专业)
     @Override
-    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException {
+    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
 
         int fstp =  getRsverXunQi(dateS);
         int fstp1 =  getRsverXunQi(dateE);
@@ -57,9 +57,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
         int jilu = 0;
         List<RsvrZhuanYe> rainfalls;
         if(dateS.equals(dateE)){
-            rainfalls=rsvrfallMapper.getRsvrByZhaunYeNew(dateE, fstp, adcd,systemTypes,stcdOrStnm);
+            rainfalls=rsvrfallMapper.getRsvrByZhaunYeNew(dateE, fstp, adcd,systemTypes,stcdOrStnm,ly);
         }else{
-            rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateS,dateE, fstp, adcd,systemTypes,stcdOrStnm);
+            rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateS,dateE, fstp, adcd,systemTypes,stcdOrStnm,ly);
         }
         List<String> stcdList = rsvrfallMapper.getFsltdzStations(fstp);
 

@@ -26,7 +26,7 @@ public interface RsvrfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
+	List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException;
 
 	/**
 	 * 水库（专业报表）
@@ -37,6 +37,6 @@ public interface RsvrfallService {
 	 * @param stcdOrStnm
 	 * @return
 	 */
-	DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
+	DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException;
 
 }

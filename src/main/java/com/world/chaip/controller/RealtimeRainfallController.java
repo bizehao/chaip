@@ -38,7 +38,7 @@ public class RealtimeRainfallController {
     @Autowired
     private RainfallService rainfallService;
 
-    //时段雨量
+    //逐时降雨量
     @GetMapping("getrainbyhour")
     public JsonResult getRainByHour(
             @RequestParam("date")String dateStr,
@@ -46,14 +46,8 @@ public class RealtimeRainfallController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="column",required=false)String column,
-            @RequestParam(name="sign",required=false)String sign){
-
-        /*String dateStr = "2018-07-11";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "30932650";
-        String column = "24";
-        String sign = "1";*/
+            @RequestParam(name="sign",required=false)String sign,
+            @RequestParam(name="ly",required = false)String ly){
 
         String db = "and c.db in (1,3)";
         System.out.println("时间"+dateStr);
@@ -62,10 +56,12 @@ public class RealtimeRainfallController {
         System.out.println("站号"+stcdOrStnm);
         System.out.println("列名"+column);
         System.out.println("顺序"+sign);
+        System.out.println("流域"+ly);
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist=null;
         }else {
@@ -94,6 +90,15 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
@@ -109,12 +114,12 @@ public class RealtimeRainfallController {
         if(!sign.equals("X")){
             sig=Integer.parseInt(sign);
         }
-        List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig,db);
-        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,db);
+        System.out.println(lylist);
+        List<PptnGson> a = rainfallService.getDaybyHour(date, adcdlist, typelist,stcdlist,col,sig,db,lylist);
+        String b = rainfallService.getDaybyHourJS(date, adcdlist, typelist,stcdlist,db,lylist);
         RainEc arrList = new RainEc();
         arrList.setPptnGsonList(a);
         arrList.setMessage(b);
-        System.out.println("======="+b);
         return new JsonResult(arrList);
     }
     //日雨量
@@ -123,7 +128,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -135,6 +141,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -162,13 +169,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //旬雨量
@@ -177,7 +193,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         String benqu="and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -188,6 +205,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -215,13 +233,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //月雨量
@@ -230,7 +257,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         String benqu="and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -241,6 +269,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -268,13 +297,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //年雨量
@@ -283,7 +321,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         /*dateStr="2017-06-04";
         stcdOrStnm="X";
@@ -299,6 +338,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -326,13 +366,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"ST_PPTN_R","ST_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
 
@@ -343,7 +392,8 @@ public class RealtimeRainfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         String benqu="and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -356,6 +406,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -381,6 +432,15 @@ public class RealtimeRainfallController {
             String[] sytemp = stcdOrStnm.split(",");
             for(int i = 0; i<sytemp.length; i++){
                 stcdlist.add(sytemp[i]);
+            }
+        }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
             }
         }
         Date dateS = null;
@@ -391,7 +451,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"ST_PPTN_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"ST_PPTN_R",benqu,db,lylist);
         return new JsonResult(a);
     }
 
@@ -401,12 +461,9 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
-        /*dateStr="2017-06-04";
-        stcdOrStnm="X";
-        systemTypes="X";
-        adcd="X";*/
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         System.out.println("时间"+dateStr);
@@ -417,6 +474,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -444,13 +502,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyDate(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //旬雨量（专业）
@@ -459,7 +526,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         System.out.println("时间"+dateStr);
@@ -469,6 +537,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -496,13 +565,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyXun(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //月雨量(专业)
@@ -511,7 +589,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         /*dateStr="2017-06-04";
@@ -526,6 +605,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -553,13 +633,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyMonth(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
     //年雨量(专业)
@@ -568,7 +657,8 @@ public class RealtimeRainfallController {
             @RequestParam("date")String dateStr,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         /*dateStr="2017-06-04";
@@ -583,6 +673,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -610,13 +701,22 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date date = null;
         try {
             date = DateUtils.parse(dateStr, "yyyy-MM-dd");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyYear(date, adcdlist, typelist,stcdlist,0,"RP_PPTN_R","RP_PSTAT_R",benqu,db,lylist);
         return new JsonResult(a);
     }
 
@@ -627,7 +727,8 @@ public class RealtimeRainfallController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm){
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly){
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -639,6 +740,7 @@ public class RealtimeRainfallController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
         if(adcd.equals("X")){
             adcdlist = null;
         }else {
@@ -666,6 +768,15 @@ public class RealtimeRainfallController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -674,7 +785,7 @@ public class RealtimeRainfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"RP_PPTN_R",benqu,db);
+        List<Rainfall> a = (List<Rainfall>)rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist,stcdlist,0,"RP_PPTN_R",benqu,db,lylist);
         return new JsonResult(a);
     }
 }

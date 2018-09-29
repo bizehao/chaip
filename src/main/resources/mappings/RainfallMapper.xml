@@ -48,9 +48,16 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                  and c.dx IN
+                  <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                      #{ly}
+                  </foreach>
+                </if>
                 and c.dq = 31
                 ${db}
 				and PFL = 1
+                and c.viwe = 1
 			</trim>
 		</where>
 		) st
@@ -113,9 +120,16 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
                 and PFL = 1
                 ${db}
+                and c.viwe = 1
 			</trim>
 		</where>
 		) st
@@ -178,9 +192,16 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
 				and PFL = 1
                 ${db}
+                and c.viwe = 1
 			</trim>
 		</where>
 		) st
@@ -250,9 +271,16 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
 				and PFL = 1
                 ${db}
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -322,9 +350,16 @@
                         #{systemTypes}
                     </foreach>
                 </if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
 				and PFL = 1
                 ${db}
+                and c.viwe = 1
             </trim>
         </where>
         ) st
@@ -395,9 +430,16 @@
 						#{systemTypes}
 					</foreach>
 				</if>
+                <if test="ly != null and ly.size() > 0">
+                    and c.dx IN
+                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                        #{ly}
+                    </foreach>
+                </if>
                 ${benqu}
 				and PFL = 1
                 ${db}
+                and c.viwe                                       = 1
 			</trim>
 		</where>
 		) st

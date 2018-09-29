@@ -27,8 +27,17 @@ public class StationController {
 	
 	@GetMapping("getall")
 	public List<StationDetail> getAll() {
-		return stationService.getAll();
+        List<StationDetail> list = stationService.getAll();
+        List<StationDetail> lkl =  list.subList(0,20);
+		return lkl;
 	}
+    @GetMapping("getone")
+    public StationDetail getOne() {
+        List<StationDetail> list = stationService.getAll();
+        List<StationDetail> lkl =  list.subList(0,20);
+        StationDetail sd = lkl.get(0);
+        return sd;
+    }
     //获取县域
     @GetMapping("getcity")
     public List<City> getCity() {

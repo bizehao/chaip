@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -283,10 +284,20 @@ public class ExportExcel {
                         }
                     }
                 }
+                System.out.println(colNum);
                 if(colNum == 0){
+                    System.out.println(Arrays.toString(rowName));
                     sheet.setColumnWidth(colNum, (columnWidth-2) * 200);//256
                 }else{
-                    sheet.setColumnWidth(colNum, (columnWidth+4) * 200);
+                    if((title.equals("水库水情统计表") || title.equals("河道水情统计表") || title.equals("")) && rowName[colNum].equals("时间")){
+                        sheet.setColumnWidth(colNum, (columnWidth+12) * 200);
+                    }else if((title.equals("今日水情(河道)") || title.equals("今日外区水情(河道)")) && rowName[colNum].equals("数据时间")){
+                        sheet.setColumnWidth(colNum, (columnWidth+12) * 200);
+                    }else if(title.equals("今日水情(水库)") && shuangName[colNum].equals("数据时间")){
+                        sheet.setColumnWidth(colNum, (columnWidth+12) * 200);
+                    }else{
+                        sheet.setColumnWidth(colNum, (columnWidth+4) * 200);
+                    }
                 }
             }
 /*            String fileName = "Excel-" + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";

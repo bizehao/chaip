@@ -49,7 +49,8 @@ public class RsvrExcelController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws Exception{
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -60,6 +61,7 @@ public class RsvrExcelController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         if(adcd.equals("X")){
             adcdlist=null;
@@ -89,6 +91,15 @@ public class RsvrExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -97,7 +108,7 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         String title = "水库水情统计表";
         String[] rowsName = new String[]{"序号","库名","站号","县域","河流","时间","水位(m)","蓄水量(百万m³)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -148,7 +159,8 @@ public class RsvrExcelController {
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+            @RequestParam(name="ly",required = false)String ly) throws Exception{
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -159,6 +171,7 @@ public class RsvrExcelController {
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         if(adcd.equals("X")){
             adcdlist=null;
@@ -188,6 +201,15 @@ public class RsvrExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -196,7 +218,7 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist);
+        DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         String title = "今日水情(水库)";
         String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际","","","",""};
         String[] shuangName = new String[]{"","","水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};

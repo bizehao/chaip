@@ -41,11 +41,13 @@ public class RiverExcelController {
                        @RequestParam("dateE")String dateEnd,
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
-                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+                                  @RequestParam(name="ly",required = false)String ly) throws Exception{
         String benqu="and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -81,6 +83,15 @@ public class RiverExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -89,7 +100,7 @@ public class RiverExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist,benqu);
+        List<River> a = riverfallService.getRiverByTerm(dateS, dateE, adcdlist, typelist, stcdlist,benqu,lylist);
         String title = "河道水情统计表";
         String[] rowsName = new String[]{"序号","县名","河名","站名","站号","时间","水位(m)","流量(m³/s)","水势"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -140,11 +151,13 @@ public class RiverExcelController {
                                   @RequestParam("dateE")String dateEnd,
                                   @RequestParam(name="adcd",required=false)String adcd,
                                   @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+                                  @RequestParam(name="ly",required = false)String ly) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始000时间"+dateStart);
         System.out.println("结束00时间"+dateEnd);
@@ -180,6 +193,15 @@ public class RiverExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -188,7 +210,7 @@ public class RiverExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         String title = "今日水情(河道)";
         String[] rowsName = new String[]{"河名","站名","水位(m)","流量(m³/s)","数据时间","河名","站名","水位(m)","流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
@@ -300,11 +322,13 @@ public class RiverExcelController {
                                   @RequestParam("dateE")String dateEnd,
                                   @RequestParam(name="adcd",required=false)String adcd,
                                   @RequestParam(name="systemTypes",required=false)String systemTypes,
-                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception{
+                                  @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
+                                  @RequestParam(name="ly",required = false)String ly) throws Exception{
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
+        List<String> lylist = new ArrayList<>();
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
@@ -340,6 +364,15 @@ public class RiverExcelController {
                 stcdlist.add(sytemp[i]);
             }
         }
+        if(ly.equals("X")){
+            lylist = null;
+        }else {
+            ly = ly.substring(0, ly.length() - 1);
+            String[] sytemp = ly.split(",");
+            for(int i = 0; i<sytemp.length; i++){
+                lylist.add(sytemp[i]);
+            }
+        }
         Date dateS = null;
         Date dateE = null;
         try {
@@ -348,7 +381,7 @@ public class RiverExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist);
+        List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         String title = "今日外区水情(河道)";
         String[] rowsName = new String[]{"河名","站名","水位(m)","流量(m³/s)","数据时间","河名","站名","水位(m)","流量(m³/s)","数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();

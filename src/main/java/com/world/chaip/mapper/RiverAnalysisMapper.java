@@ -22,7 +22,8 @@ public interface RiverAnalysisMapper {
                                            @Param("endTime") Date endTime,
                                            @Param("adcd") List<String> adcd,
                                            @Param("systemTypes") List<String> systemTypes,
-                                           @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                           @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                           @Param("ly") List<String> ly);
 
     /**
      * 获取最大水位流量和日期
@@ -32,6 +33,7 @@ public interface RiverAnalysisMapper {
                                         @Param("endTime") Date endTime,
                                         @Param("adcd") List<String> adcd,
                                         @Param("systemTypes") List<String> systemTypes,
-                                        @Param("stcdOrStnm") List<String> stcdOrStnm);
+                                        @Param("stcdOrStnm") List<String> stcdOrStnm,
+                                        @Param("ly") List<String> ly);
 
 }

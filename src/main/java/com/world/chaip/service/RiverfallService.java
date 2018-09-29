@@ -25,7 +25,7 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-	List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String benqu) throws ParseException;
+	List<River> getRiverByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm,String benqu, List<String> ly) throws ParseException;
 	/**
 	 * 河道统计 本区
      * @param dateS
@@ -35,7 +35,7 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-	List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
+	List<River> getRiverByBen(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException;
     /**
      * 河道统计 外区
      * @param dateS
@@ -45,6 +45,6 @@ public interface RiverfallService {
      * @param stcdOrStnm
      * @return
      */
-    List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm) throws ParseException;
+    List<River> getRiverByWai(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException;
 
 }
