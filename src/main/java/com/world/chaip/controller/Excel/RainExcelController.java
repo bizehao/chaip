@@ -296,7 +296,7 @@ public class RainExcelController extends HttpServlet {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 40, 4, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -313,6 +313,12 @@ public class RainExcelController extends HttpServlet {
 					colTitle2.setCellValue("雨量(mm)");
 					colTitle2.setCellStyle(style);
 				}
+				int x = 21000/5;
+				sheet.setColumnWidth(0,x);
+				sheet.setColumnWidth(1,x);
+				sheet.setColumnWidth(2,x);
+				sheet.setColumnWidth(3,x);
+				sheet.setColumnWidth(4,x);
 			}
 		});
 	}

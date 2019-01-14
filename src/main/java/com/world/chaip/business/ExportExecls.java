@@ -1,20 +1,14 @@
 package com.world.chaip.business;
 
-import com.sun.prism.paint.Color;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
-import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
 /**
  * @author 毕泽浩
  * @Description: 导出excel
@@ -27,11 +21,11 @@ public class ExportExecls {
 	private List<Object[]> datas; //表格数据
 	private Direction direction; //方向
 	private String time; //时间
-	private int rows; //行数
+	private int rows; //每页多少行行数
 	private int pages; //页数
 	private Sheet sheet; //当前sheet
 	private ColumnAndHead columnAndHead; //列头和列
-	private int beginContent;
+	private int topRows;
 	private HSSFWorkbook sxssfWorkbook;
 	private OutputStream out = null;
 
@@ -40,14 +34,14 @@ public class ExportExecls {
 		VERTICAL //竖
 	}
 
-	public ExportExecls(HttpServletResponse response, String title, List<Object[]> datas, String time, int rows, int beginContent, Direction direction) {
+	public ExportExecls(HttpServletResponse response, String title, List<Object[]> datas, String time, int rows, int topRows, Direction direction) {
 		this.response = response;
 		this.title = title;
 		this.datas = datas;
 		this.direction = direction;
 		this.time = time;
-		this.rows = rows;
-		this.beginContent = beginContent;
+		this.rows = rows - topRows;
+		this.topRows = topRows;
 		this.sxssfWorkbook = new HSSFWorkbook();
 		if (datas.size() % rows == 0) {
 			this.pages = datas.size() / rows;
@@ -66,7 +60,8 @@ public class ExportExecls {
 			out = response.getOutputStream();
 			for (int i = 0; i < pages; i++) {
 				this.sheet = sxssfWorkbook.createSheet(title + i);
-
+				sheet.setHorizontallyCenter(true);
+				sheet.setVerticallyCenter(true);
 				//标题
 				CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, (datas.get(0).length - 1));
 				sheet.addMergedRegion(titleAddress);
@@ -117,7 +112,7 @@ public class ExportExecls {
 		Row row;
 		Cell cell;
 		for (int i = 0; i < datas.size(); i++) {
-			row = sheet.createRow(i + beginContent);
+			row = sheet.createRow(i + topRows);
 			Object[] objects = datas.get(i);
 			for (int j = 0; j < objects.length; j++) {
 				cell = row.createCell(j);
@@ -133,10 +128,10 @@ public class ExportExecls {
 				cell.setCellStyle(style);
 			}
 		}
-		for (int i=0; i<datas.get(0).length;i++){
+		/*for (int i=0; i<datas.get(0).length;i++){
 			sheet.autoSizeColumn(i, true);
-		}
-		setSizeColumn(sheet,datas.get(0).length);
+		}*/
+		/*setSizeColumn(sheet,datas.get(0).length);*/
 	}
 
 	public interface ColumnAndHead {
