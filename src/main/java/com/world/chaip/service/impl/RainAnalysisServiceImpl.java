@@ -47,7 +47,7 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             xq.setJxqEight(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumEight()/adnmCount)));
             xq.setJxqNine(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getNumNine()/adnmCount)));
             xq.setJxqSix_Nine(Double.parseDouble(new DecimalFormat("#0.0").format(list1.get(i).getZong()/adnmCount)));
-            xq.setJxqSix_Nine_Compare(suan(list1.get(i).getNumNine(), list1.get(i).getNumSix()));
+            xq.setJxqSix_Nine_Compare(suan(xq.getJxqNine(), xq.getJxqSix()));
             xq.setQxqSix(suan(list2.get(i).getNumSix(), list1.get(i).getNumSix()));
             xq.setQxqSeven(suan(list2.get(i).getNumSeven(), list1.get(i).getNumSeven()));
             xq.setQxqEight(suan(list2.get(i).getNumEight(), list1.get(i).getNumEight()));
@@ -104,9 +104,10 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             yearAndMonthRain.setJinYearZong(setXiaoShu(list1.get(i).getZong()/count));
             yearAndMonthRain.setQuYearZong(setXiaoShu(list2.get(i).getZong()/count));
             yearAndMonthRain.setChangYearZong(setXiaoShu(list3.get(i).getZong()/count));
-            yearAndMonthRain.setCompareQu(setXiaoShu((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount()));
-            System.out.println(setXiaoShu(list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount());
-            yearAndMonthRain.setCompareChang(setXiaoShu(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count));
+            //yearAndMonthRain.setCompareQu(setXiaoShu((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount())); //去年比较
+            yearAndMonthRain.setCompareQu(yearAndMonthRain.getJinYearZong()-yearAndMonthRain.getQuYearZong()); //去年比较
+            //yearAndMonthRain.setCompareChang(setXiaoShu(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count)); //常年比较
+            yearAndMonthRain.setCompareChang(yearAndMonthRain.getJinYearZong()-yearAndMonthRain.getChangYearZong()); //常年比较
             yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong()/count, list1.get(i).getZong()/count));
             yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong()/count, list1.get(i).getZong()/count));
             nzylist.add(yearAndMonthRain);
