@@ -1,6 +1,5 @@
 package com.world.chaip.controller.Excel;
 
-import com.sun.jndi.cosnaming.IiopUrl;
 import com.world.chaip.business.ExportExcel;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
