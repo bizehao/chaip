@@ -203,7 +203,6 @@ public class RainExcelController extends HttpServlet {
 		String systemTypes = "X";
 		String stcdOrStnm = "X";
 		String ly = "X";
-		System.out.println("=================================");
 
 		String benqu = "and c.dq=31";
 		String db = "and c.db in (1,3)";
@@ -270,7 +269,6 @@ public class RainExcelController extends HttpServlet {
 
 		for (int i = 0; i < a.getDayRainList().size(); i++) { //5
 			DayRainExcel.DayRain item = a.getDayRainList().get(i);
-			System.out.println(item.getAdnm());
 			objects = new Object[5];
 			for (int j = 0; j < item.getDayRainArray().size(); j++) {
 				if (j == 0) {
@@ -286,10 +284,9 @@ public class RainExcelController extends HttpServlet {
 					objects[3] = item.getDayRainArray().get(j)[0];
 					objects[4] = item.getDayRainArray().get(j)[1];
 				}
-				if (j == item.getDayRainArray().size() - 1 || j  % 2 == 0) {
+				if (j == item.getDayRainArray().size() - 1 || j % 2 == 0) {
 					dataList.add(objects);
 				}
-				System.out.println(Arrays.toString(item.getDayRainArray().get(j)));
 			}
 		}
 		//处理时间
@@ -313,12 +310,10 @@ public class RainExcelController extends HttpServlet {
 					colTitle2.setCellValue("雨量(mm)");
 					colTitle2.setCellStyle(style);
 				}
-				int x = 21000/5;
-				sheet.setColumnWidth(0,x);
-				sheet.setColumnWidth(1,x);
-				sheet.setColumnWidth(2,x);
-				sheet.setColumnWidth(3,x);
-				sheet.setColumnWidth(4,x);
+				int x = 21000 / 5;
+				for (int i = 0; i < 5; i++) {
+					sheet.setColumnWidth(i, x);
+				}
 			}
 		});
 	}
@@ -330,12 +325,19 @@ public class RainExcelController extends HttpServlet {
 
 	//导出逐旬表
 	@GetMapping("getrainbyxunbyexcel")
-	public void exportRainByXun(HttpServletResponse response,
+	public void exportRainByXun(HttpServletResponse response/*,
 	                            @RequestParam("date") String dateStr,
 	                            @RequestParam(name = "adcd", required = false) String adcd,
 	                            @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                            @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStr = "2019-01-10";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
+
 		String benqu = "and c.dq=31";
 		String db = "and c.db in (1,3)";
 		List<String> adcdlist = new ArrayList<String>();
@@ -389,16 +391,37 @@ public class RainExcelController extends HttpServlet {
 		}
 		DayRainExcelX a = (DayRainExcelX) rainfallService.getDaybyXun(date, adcdlist, typelist, stcdlist, 1, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
 		String b = rainfallService.getDaybyXunJS(date, adcdlist, typelist, stcdlist, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
+		List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
+
+		List<Object[]> objectList = new ArrayList<>();
+		Object[] objects;
+		int len = 7;
+		int index;
+		for (DayRainExcelX.DayRainX x : dayRainXES) {
+			index = 0;
+			objects = new Object[7];
+			objects[index] = x.getAdnm();
+			for (int m = 0; m < x.getRainList().size(); m++) {
+				for (int k = 0; k < x.getRainList().get(m).length; k++) {
+					objects[++index] = x.getRainList().get(m)[k];
+				}
+				if (index == len - 1 && m != x.getRainList().size() - 1) {
+					objectList.add(objects);
+					objects = new Object[7];
+					objects[0] = "";
+					index = 0;
+				} else if (m == x.getRainList().size() - 1) {
+					objectList.add(objects);
+				}
+			}
+		}
 		String title = "旬雨量统计报表";
-		String[] rowsName = new String[]{"县名", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数"};
-		//处理List<Object[]>;
-		List<Object[]> dataList = conExcel(a, rowsName);
 		//处理时间
-		Date Time = null;
+		Date Time;
 		Calendar now = Calendar.getInstance();
 		now.setTime(date);
 		int ri = now.get(Calendar.DATE);
-		String xun = null;
+		String xun;
 		if (ri == 11) {
 			xun = "上旬";
 		} else if (ri == 21) {
@@ -411,8 +434,32 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(Time);
 		String time = "时间：" + begin + "" + xun;
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
-		ex.export();
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+		execls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = execls.getContentStyle(sheet.getWorkbook());
+				Row row = sheet.createRow(3);
+				Cell cell = row.createCell(0);
+				cell.setCellValue("县名");
+				cell.setCellStyle(style);
+				for (int i = 0; i < 2; i++) {
+					Cell cell1 = row.createCell(3 * i + 1);
+					cell1.setCellValue("站名");
+					cell1.setCellStyle(style);
+					Cell cell2 = row.createCell(3 * i + 2);
+					cell2.setCellValue("雨量(mm)");
+					cell2.setCellStyle(style);
+					Cell cell3 = row.createCell(3 * i + 3);
+					cell3.setCellValue("站名");
+					cell3.setCellStyle(style);
+				}
+				int x = 21000 / 7;
+				for (int i = 0; i < 7; i++) {
+					sheet.setColumnWidth(i, x);
+				}
+			}
+		});
 	}
 
 	@GetMapping(value = "rainXbyxun")
@@ -422,12 +469,19 @@ public class RainExcelController extends HttpServlet {
 
 	//导出逐月表
 	@GetMapping("getrainbymonthbyexcel")
-	public void exportRainByMonth(HttpServletResponse response,
+	public void exportRainByMonth(HttpServletResponse response/*,
 	                              @RequestParam("date") String dateStr,
 	                              @RequestParam(name = "adcd", required = false) String adcd,
 	                              @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                              @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                              @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                              @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStr = "2019-01-10";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
+
 		String benqu = "and c.dq=31";
 		String db = "and c.db in (1,3)";
 		List<String> adcdlist = new ArrayList<String>();
@@ -488,9 +542,31 @@ public class RainExcelController extends HttpServlet {
 		DayRainExcelX a = (DayRainExcelX) rainfallService.getDaybyMonth(date, adcdlist, typelist, stcdlist, 1, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
 		String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist, stcdlist, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
 		String title = "月雨量统计报表";
-		String[] rowsName = new String[]{"县名", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数"};
 		//处理List<Object[]>;
-		List<Object[]> dataList = conExcel(a, rowsName);
+		List<Object[]> objectList = new ArrayList<>();
+		List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
+		Object[] objects;
+		int len = 7;
+		int index;
+		for (DayRainExcelX.DayRainX x : dayRainXES) {
+			index = 0;
+			objects = new Object[7];
+			objects[index] = x.getAdnm();
+			for (int m = 0; m < x.getRainList().size(); m++) {
+				for (int k = 0; k < x.getRainList().get(m).length; k++) {
+					objects[++index] = x.getRainList().get(m)[k];
+				}
+				if (index == len - 1 && m != x.getRainList().size() - 1) {
+					objectList.add(objects);
+					objects = new Object[7];
+					objects[0] = "";
+					index = 0;
+				} else if (m == x.getRainList().size() - 1) {
+					objectList.add(objects);
+				}
+			}
+		}
+
 		//处理时间
 		Date beginTime = null;
 		Calendar now = Calendar.getInstance();
@@ -502,8 +578,32 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin;
 		System.out.println(time);
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
-		ex.export();
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+		execls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = execls.getContentStyle(sheet.getWorkbook());
+				Row row = sheet.createRow(3);
+				Cell cell = row.createCell(0);
+				cell.setCellValue("县名");
+				cell.setCellStyle(style);
+				for (int i = 0; i < 2; i++) {
+					Cell cell1 = row.createCell(3 * i + 1);
+					cell1.setCellValue("站名");
+					cell1.setCellStyle(style);
+					Cell cell2 = row.createCell(3 * i + 2);
+					cell2.setCellValue("雨量(mm)");
+					cell2.setCellStyle(style);
+					Cell cell3 = row.createCell(3 * i + 3);
+					cell3.setCellValue("站名");
+					cell3.setCellStyle(style);
+				}
+				int x = 21000 / 7;
+				for (int i = 0; i < 7; i++) {
+					sheet.setColumnWidth(i, x);
+				}
+			}
+		});
 	}
 
 	@GetMapping(value = "rainXbymonth")
@@ -513,12 +613,19 @@ public class RainExcelController extends HttpServlet {
 
 	//导出逐年表
 	@GetMapping("getrainbyyearbyexcel")
-	public void exportRainByYear(HttpServletResponse response,
+	public void exportRainByYear(HttpServletResponse response/*,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStr = "2019-01-10";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
+
 		String benqu = "and c.dq=31";
 		String db = "and c.db in (1,3)";
 		List<String> adcdlist = new ArrayList<String>();
@@ -572,19 +679,32 @@ public class RainExcelController extends HttpServlet {
 		}
 		DayRainExcelX a = (DayRainExcelX) rainfallService.getDaybyYear(date, adcdlist, typelist, stcdlist, 1, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
 		String b = rainfallService.getDaybyYearJS(date, adcdlist, typelist, stcdlist, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
-        /*for(int i=0; i<a.getDayRainXList().size(); i++){
-            System.out.println(a.getDayRainXList().get(i).getAdnm());
-            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
-            System.out.println(map.size());
-            for (int p=0; p<map.size();p++){
-                Object[] om = map.get(p);
-                System.out.println(Arrays.toString(om));
-            }
-        }*/
 		String title = "年雨量统计报表";
-		String[] rowsName = new String[]{"县名", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数", "站名", "雨量(mm)", "降水天数"};
 		//处理List<Object[]>;
-		List<Object[]> dataList = conExcel(a, rowsName);
+		List<Object[]> objectList = new ArrayList<>();
+		List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
+		Object[] objects;
+		int len = 7;
+		int index;
+		for (DayRainExcelX.DayRainX x : dayRainXES) {
+			index = 0;
+			objects = new Object[7];
+			objects[index] = x.getAdnm();
+			for (int m = 0; m < x.getRainList().size(); m++) {
+				for (int k = 0; k < x.getRainList().get(m).length; k++) {
+					objects[++index] = x.getRainList().get(m)[k];
+				}
+				if (index == len - 1 && m != x.getRainList().size() - 1) {
+					objectList.add(objects);
+					objects = new Object[7];
+					objects[0] = "";
+					index = 0;
+				} else if (m == x.getRainList().size() - 1) {
+					objectList.add(objects);
+				}
+			}
+		}
+
 		//处理时间
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
 		Calendar tm = Calendar.getInstance();
@@ -594,8 +714,32 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(btm);
 		String time = "时间：" + begin;
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
-		ex.export();
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+		execls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = execls.getContentStyle(sheet.getWorkbook());
+				Row row = sheet.createRow(3);
+				Cell cell = row.createCell(0);
+				cell.setCellValue("县名");
+				cell.setCellStyle(style);
+				for (int i = 0; i < 2; i++) {
+					Cell cell1 = row.createCell(3 * i + 1);
+					cell1.setCellValue("站名");
+					cell1.setCellStyle(style);
+					Cell cell2 = row.createCell(3 * i + 2);
+					cell2.setCellValue("雨量(mm)");
+					cell2.setCellStyle(style);
+					Cell cell3 = row.createCell(3 * i + 3);
+					cell3.setCellValue("站名");
+					cell3.setCellStyle(style);
+				}
+				int x = 21000 / 7;
+				for (int i = 0; i < 7; i++) {
+					sheet.setColumnWidth(i, x);
+				}
+			}
+		});
 	}
 
 	@GetMapping(value = "rainXbyyear")
@@ -605,13 +749,21 @@ public class RainExcelController extends HttpServlet {
 
 	//导出时段表
 	@GetMapping("getrainbytimebyexcel")
-	public void exportRainByTime(HttpServletResponse response,
+	public void exportRainByTime(HttpServletResponse response/*,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStart = "2019-01-02 08:00";
+		String dateEnd = "2019-01-10 08:00";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
+
 		String benqu = "and c.dq=31";
 		String db = "and c.db in (1,3)";
 		List<String> adcdlist = new ArrayList<String>();
@@ -673,19 +825,33 @@ public class RainExcelController extends HttpServlet {
 		}
 		DayRainExcelX a = (DayRainExcelX) rainfallService.getDaybyTime(dateS, dateE, adcdlist, typelist, stcdlist, 1, "ST_PPTN_R", benqu, db, lylist);
 		String b = rainfallService.getDaybyTimeJS(dateS, dateE, adcdlist, typelist, stcdlist, "ST_PPTN_R", benqu, db, lylist);
-        /*for(int i=0; i<a.getDayRainXList().size(); i++){
-            System.out.println(a.getDayRainXList().get(i).getAdnm());
-            List<Object[]> map =  a.getDayRainXList().get(i).getRainList();
-            System.out.println(map.size());
-            for (int p=0; p<map.size();p++){
-                Object[] om = map.get(p);
-                System.out.println(Arrays.toString(om));
-            }
-        }*/
+
 		String title = "时段雨量统计报表";
-		String[] rowsName = new String[]{"县名", "站名", "雨量(mm)", "最近1小时雨量", "站名", "雨量(mm)", "最近1小时雨量", "站名", "雨量(mm)", "最近1小时雨量", "站名", "雨量(mm)", "最近1小时雨量", "站名", "雨量(mm)", "最近1小时雨量"};
 		//处理List<Object[]>;
-		List<Object[]> dataList = conExcel(a, rowsName);
+		//处理List<Object[]>;
+		List<Object[]> objectList = new ArrayList<>();
+		List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
+		Object[] objects;
+		int len = 7;
+		int index;
+		for (DayRainExcelX.DayRainX x : dayRainXES) {
+			index = 0;
+			objects = new Object[7];
+			objects[index] = x.getAdnm();
+			for (int m = 0; m < x.getRainList().size(); m++) {
+				for (int k = 0; k < x.getRainList().get(m).length; k++) {
+					objects[++index] = x.getRainList().get(m)[k];
+				}
+				if (index == len - 1 && m != x.getRainList().size() - 1) {
+					objectList.add(objects);
+					objects = new Object[7];
+					objects[0] = "";
+					index = 0;
+				} else if (m == x.getRainList().size() - 1) {
+					objectList.add(objects);
+				}
+			}
+		}
 		//处理时间
 		Date beginTime = null;
 		Date endTime = null;
@@ -700,8 +866,38 @@ public class RainExcelController extends HttpServlet {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + " ~~" + end + "";
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
-		ex.export();
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+		execls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = execls.getContentStyle(sheet.getWorkbook());
+				Row row = sheet.createRow(3);
+				Cell cell = row.createCell(0);
+				cell.setCellValue("县名");
+				cell.setCellStyle(style);
+				for (int i = 0; i < 2; i++) {
+					Cell cell1 = row.createCell(3 * i + 1);
+					cell1.setCellValue("站名");
+					cell1.setCellStyle(style);
+					Cell cell2 = row.createCell(3 * i + 2);
+					cell2.setCellValue("雨量(mm)");
+					cell2.setCellStyle(style);
+					Cell cell3 = row.createCell(3 * i + 3);
+					cell3.setCellValue("最近1小时雨量");
+					cell3.setCellStyle(style);
+				}
+				int x = 21000 / 7;
+				for (int i = 0; i < 7; i++) {
+					if(i==2 || i==5){
+						sheet.setColumnWidth(i, x-500);
+					}else if(i==3 || i==6){
+						sheet.setColumnWidth(i, x+500);
+					}else {
+						sheet.setColumnWidth(i, x);
+					}
+				}
+			}
+		});
 	}
 
 	@GetMapping(value = "rainXbytime")
