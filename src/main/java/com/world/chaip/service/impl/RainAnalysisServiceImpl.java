@@ -104,9 +104,10 @@ public class RainAnalysisServiceImpl implements RainAnalysisService {
             yearAndMonthRain.setJinYearZong(setXiaoShu(list1.get(i).getZong()/count));
             yearAndMonthRain.setQuYearZong(setXiaoShu(list2.get(i).getZong()/count));
             yearAndMonthRain.setChangYearZong(setXiaoShu(list3.get(i).getZong()/count));
-            yearAndMonthRain.setCompareQu(setXiaoShu((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount()));
-            System.out.println(setXiaoShu(list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount());
-            yearAndMonthRain.setCompareChang(setXiaoShu(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count));
+            //yearAndMonthRain.setCompareQu(setXiaoShu((list1.get(i).getZong()-list2.get(i).getZong())/list1.get(i).getAdnmCount())); //去年比较
+            yearAndMonthRain.setCompareQu(yearAndMonthRain.getJinYearZong()-yearAndMonthRain.getQuYearZong()); //去年比较
+            //yearAndMonthRain.setCompareChang(setXiaoShu(list1.get(i).getZong()/list1.get(i).getAdnmCount()-list3.get(i).getZong()/count)); //常年比较
+            yearAndMonthRain.setCompareChang(yearAndMonthRain.getJinYearZong()-yearAndMonthRain.getChangYearZong()); //常年比较
             yearAndMonthRain.setRelativeQu(suan(list2.get(i).getZong()/count, list1.get(i).getZong()/count));
             yearAndMonthRain.setRelativeChang(suan(list3.get(i).getZong()/count, list1.get(i).getZong()/count));
             nzylist.add(yearAndMonthRain);

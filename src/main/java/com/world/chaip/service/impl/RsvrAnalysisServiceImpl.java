@@ -297,7 +297,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
         changZong = countrsvrStrongeListc3 + countrsvrStrongeListc2 + countrsvrStrongeListc1;
 
         int listLength = jinList.size();
-        System.out.println("长度" + listLength);
         RsvrW rsvrW = null;
         for (int i = 0; i < listLength; i++) {
             rsvrW = new RsvrW();

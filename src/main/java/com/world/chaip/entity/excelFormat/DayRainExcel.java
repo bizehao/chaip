@@ -43,7 +43,7 @@ public class DayRainExcel {
             this.adnm = adnm;
         }
 
-        public List<Object[]> getDayRainList() {
+        public List<Object[]> getDayRainArray() {
             return dayRainList;
         }
 

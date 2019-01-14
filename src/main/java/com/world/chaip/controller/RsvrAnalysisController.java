@@ -20,18 +20,18 @@ import java.util.List;
 @RequestMapping("services/realtime/rsvrfall")
 public class RsvrAnalysisController {
 
-    @Autowired
-    private RsvrAnalysisService rsvrAnalysisService;
+	@Autowired
+	private RsvrAnalysisService rsvrAnalysisService;
 
-    //水库水量分析表
-    @GetMapping("getrsvrexchangewater")
-    public RsvrWaterExcel GetRsvrByAnalysiswater(
-            @RequestParam("dateS")String dateStart,
-            @RequestParam("dateE")String dateEnd,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly){
+	//水库水量分析表
+	@GetMapping("getrsvrexchangewater")
+	public RsvrWaterExcel GetRsvrByAnalysiswater(
+			@RequestParam("dateS") String dateStart,
+			@RequestParam("dateE") String dateEnd,
+			@RequestParam(name = "adcd", required = false) String adcd,
+			@RequestParam(name = "systemTypes", required = false) String systemTypes,
+			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+			@RequestParam(name = "ly", required = false) String ly) {
 
         /*String dateStart = "2018-02-11";
         String dateEnd = "2018-07-20";
@@ -39,139 +39,141 @@ public class RsvrAnalysisController {
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";*/
 
-        List<String> adcdlist = new ArrayList<String>();
-        List<String> typelist = new ArrayList<String>();
-        List<String> stcdlist = new ArrayList<String>();
-        List<String> lylist = new ArrayList<>();
+		List<String> adcdlist = new ArrayList<String>();
+		List<String> typelist = new ArrayList<String>();
+		List<String> stcdlist = new ArrayList<String>();
+		List<String> lylist = new ArrayList<>();
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+		System.out.println("开始时间" + dateStart);
+		System.out.println("结束时间" + dateEnd);
+		System.out.println("县域" + adcd);
+		System.out.println("站类型" + systemTypes);
+		System.out.println("站号" + stcdOrStnm);
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
-            adcd = adcd.substring(0, adcd.length() - 1);
-            String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
-                adcdlist.add(temp[i]);
-            }
-        }
+		if (adcd.equals("X")) {
+			adcdlist = null;
+		} else {
+			adcd = adcd.substring(0, adcd.length() - 1);
+			String[] temp = adcd.split(",");
+			for (int i = 0; i < temp.length; i++) {
+				adcdlist.add(temp[i]);
+			}
+		}
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
-            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
-            String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                typelist.add(sytemp[i]);
-            }
-        }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
-            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                stcdlist.add(sytemp[i]);
-            }
-        }
-        if(ly.equals("X")){
-            lylist = null;
-        }else {
-            ly = ly.substring(0, ly.length() - 1);
-            String[] sytemp = ly.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                lylist.add(sytemp[i]);
-            }
-        }
-        Date dateS = null;
-        Date dateE = null;
-        try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
-        return a;
-    }
-    //水库蓄水量分析对比表
-    @GetMapping("getrsvrexchangestorage")
-    public RsvrStrongeExcel GetRsvrByAnalysisStorage(
-            @RequestParam("date")String date,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly){
+		if (systemTypes.equals("X")) {
+			typelist = null;
+		} else {
+			systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+			String[] sytemp = systemTypes.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				typelist.add(sytemp[i]);
+			}
+		}
+		if (stcdOrStnm.equals("X")) {
+			stcdlist = null;
+		} else {
+			stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+			String[] sytemp = stcdOrStnm.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				stcdlist.add(sytemp[i]);
+			}
+		}
+		if (ly.equals("X")) {
+			lylist = null;
+		} else {
+			ly = ly.substring(0, ly.length() - 1);
+			String[] sytemp = ly.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				lylist.add(sytemp[i]);
+			}
+		}
+		Date dateS = null;
+		Date dateE = null;
+		try {
+			dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
+			dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		RsvrWaterExcel a = rsvrAnalysisService.getRsvrWaterAnalysis(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
+		return a;
+	}
 
-        List<String> adcdlist = new ArrayList<String>();
-        List<String> typelist = new ArrayList<String>();
-        List<String> stcdlist = new ArrayList<String>();
-        List<String> lylist = new ArrayList<>();
+	//水库蓄水量分析对比表
+	@GetMapping("getrsvrexchangestorage")
+	public RsvrStrongeExcel GetRsvrByAnalysisStorage(
+			@RequestParam("date") String date,
+			@RequestParam(name = "adcd", required = false) String adcd,
+			@RequestParam(name = "systemTypes", required = false) String systemTypes,
+			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+			@RequestParam(name = "ly", required = false) String ly) {
 
-        System.out.println("时间"+date);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+		List<String> adcdlist = new ArrayList<String>();
+		List<String> typelist = new ArrayList<String>();
+		List<String> stcdlist = new ArrayList<String>();
+		List<String> lylist = new ArrayList<>();
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
-            adcd = adcd.substring(0, adcd.length() - 1);
-            String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
-                adcdlist.add(temp[i]);
-            }
-        }
+		System.out.println("时间" + date);
+		System.out.println("县域" + adcd);
+		System.out.println("站类型" + systemTypes);
+		System.out.println("站号" + stcdOrStnm);
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
-            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
-            String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                typelist.add(sytemp[i]);
-            }
-        }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
-            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                stcdlist.add(sytemp[i]);
-            }
-        }
-        if(ly.equals("X")){
-            lylist = null;
-        }else {
-            ly = ly.substring(0, ly.length() - 1);
-            String[] sytemp = ly.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                lylist.add(sytemp[i]);
-            }
-        }
-        Date dateTime = null;
-        try {
-            dateTime = DateUtils.parse(date, "yyyy-MM-dd");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        RsvrStrongeExcel a = (RsvrStrongeExcel) rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist,0,lylist);
-        return a;
-    }
-    //水库特征值统计表
-    @GetMapping("getrsvrexchangetongji")
-    public RsvrExchangeExcel GetRsvrByAnalysistongji(
-            @RequestParam("dateS")String dateStart,
-            @RequestParam("dateE")String dateEnd,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws ParseException {
+		if (adcd.equals("X")) {
+			adcdlist = null;
+		} else {
+			adcd = adcd.substring(0, adcd.length() - 1);
+			String[] temp = adcd.split(",");
+			for (int i = 0; i < temp.length; i++) {
+				adcdlist.add(temp[i]);
+			}
+		}
+
+		if (systemTypes.equals("X")) {
+			typelist = null;
+		} else {
+			systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+			String[] sytemp = systemTypes.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				typelist.add(sytemp[i]);
+			}
+		}
+		if (stcdOrStnm.equals("X")) {
+			stcdlist = null;
+		} else {
+			stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+			String[] sytemp = stcdOrStnm.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				stcdlist.add(sytemp[i]);
+			}
+		}
+		if (ly.equals("X")) {
+			lylist = null;
+		} else {
+			ly = ly.substring(0, ly.length() - 1);
+			String[] sytemp = ly.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				lylist.add(sytemp[i]);
+			}
+		}
+		Date dateTime = null;
+		try {
+			dateTime = DateUtils.parse(date, "yyyy-MM-dd");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		RsvrStrongeExcel a = (RsvrStrongeExcel) rsvrAnalysisService.getRsvrStorageAnalysis(dateTime, adcdlist, typelist, stcdlist, 0, lylist);
+		return a;
+	}
+
+	//水库特征值统计表
+	@GetMapping("getrsvrexchangetongji")
+	public RsvrExchangeExcel GetRsvrByAnalysistongji(
+			@RequestParam("dateS") String dateStart,
+			@RequestParam("dateE") String dateEnd,
+			@RequestParam(name = "adcd", required = false) String adcd,
+			@RequestParam(name = "systemTypes", required = false) String systemTypes,
+			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+			@RequestParam(name = "ly", required = false) String ly) throws ParseException {
 
         /*String dateStart = "2017-02-11";
         String dateEnd = "2017-06-12";
@@ -179,64 +181,64 @@ public class RsvrAnalysisController {
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";*/
 
-        List<String> adcdlist = new ArrayList<String>();
-        List<String> typelist = new ArrayList<String>();
-        List<String> stcdlist = new ArrayList<String>();
-        List<String> lylist = new ArrayList<>();
+		List<String> adcdlist = new ArrayList<String>();
+		List<String> typelist = new ArrayList<String>();
+		List<String> stcdlist = new ArrayList<String>();
+		List<String> lylist = new ArrayList<>();
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+		System.out.println("开始时间" + dateStart);
+		System.out.println("结束时间" + dateEnd);
+		System.out.println("县域" + adcd);
+		System.out.println("站类型" + systemTypes);
+		System.out.println("站号" + stcdOrStnm);
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
-            adcd = adcd.substring(0, adcd.length() - 1);
-            String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
-                adcdlist.add(temp[i]);
-            }
-        }
+		if (adcd.equals("X")) {
+			adcdlist = null;
+		} else {
+			adcd = adcd.substring(0, adcd.length() - 1);
+			String[] temp = adcd.split(",");
+			for (int i = 0; i < temp.length; i++) {
+				adcdlist.add(temp[i]);
+			}
+		}
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
-            systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
-            String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                typelist.add(sytemp[i]);
-            }
-        }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
-            stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                stcdlist.add(sytemp[i]);
-            }
-        }
-        if(ly.equals("X")){
-            lylist = null;
-        }else {
-            ly = ly.substring(0, ly.length() - 1);
-            String[] sytemp = ly.split(",");
-            for(int i = 0; i<sytemp.length; i++){
-                lylist.add(sytemp[i]);
-            }
-        }
-        Date dateS = null;
-        Date dateE = null;
-        try {
-            dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
-            dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
-        return a;
-    }
+		if (systemTypes.equals("X")) {
+			typelist = null;
+		} else {
+			systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
+			String[] sytemp = systemTypes.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				typelist.add(sytemp[i]);
+			}
+		}
+		if (stcdOrStnm.equals("X")) {
+			stcdlist = null;
+		} else {
+			stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
+			String[] sytemp = stcdOrStnm.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				stcdlist.add(sytemp[i]);
+			}
+		}
+		if (ly.equals("X")) {
+			lylist = null;
+		} else {
+			ly = ly.substring(0, ly.length() - 1);
+			String[] sytemp = ly.split(",");
+			for (int i = 0; i < sytemp.length; i++) {
+				lylist.add(sytemp[i]);
+			}
+		}
+		Date dateS = null;
+		Date dateE = null;
+		try {
+			dateS = DateUtils.parse(dateStart, "yyyy-MM-dd");
+			dateE = DateUtils.parse(dateEnd, "yyyy-MM-dd");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		RsvrExchangeExcel a = rsvrAnalysisService.getRsvrFeaturesAnalysis(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
+		return a;
+	}
 
 }

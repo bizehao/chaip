@@ -238,7 +238,7 @@ public class RainfallServiceImpl implements RainfallService {
                         objects = new Object[2];
                         objects[0] = list.get(i).getStnm();
                         objects[1] = list.get(i).getDyp();
-                        dayRain.getDayRainList().add(objects);
+                        dayRain.getDayRainArray().add(objects);
 						/*System.out.println(list.get(i).getStnm());*/
                         break;
                     }
@@ -249,7 +249,7 @@ public class RainfallServiceImpl implements RainfallService {
                     objects = new Object[2];
                     objects[0] = list.get(i).getStnm();
                     objects[1] = list.get(i).getDyp();
-                    dayRain.getDayRainList().add(objects);
+                    dayRain.getDayRainArray().add(objects);
 					/*System.out.println(list.get(i).getStnm());*/
                     dayRainExcel.getDayRainList().add(dayRain);
                 }
