@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @Component
 public class ExportExcel {
 
