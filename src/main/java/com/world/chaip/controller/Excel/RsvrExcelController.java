@@ -151,7 +151,7 @@ public class RsvrExcelController {
         String begin = formatter.format(formatter.parse(dateStart));
         String end = formatter.format(formatter.parse(dateEnd));
         String time = "时间：" + begin + "-" + end;
-        System.out.println("===========" + time);
+//        System.out.println("===========" + time);
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
@@ -196,11 +196,14 @@ public class RsvrExcelController {
                 // sheet.setColumnWidth(0, 20000);
                 int x = 29700 / 8;
                 for (int i = 0; i < 8; i++) {
-                  if (i == 5) {
-                        sheet.setColumnWidth(i, x + 500*7);
+                    if (i == 5) {
+                        sheet.setColumnWidth(i, x + 500 * 6);
+                    } else if (i == 7) {
+                        sheet.setColumnWidth(i, x);
                     } else {
                         sheet.setColumnWidth(i, x - 500);
                     }
+
                 }
             }
         });
@@ -218,13 +221,20 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-            @RequestParam(name = "ly", required = false) String ly) throws Exception {
+            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStart = "2017-02-11 12:00";
+        String dateEnd = "2017-06-12 12:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
@@ -315,21 +325,56 @@ public class RsvrExcelController {
         String begin = formatter.format(beginTime);
         String time = "时间：" + begin + "时";
 
-        //列头单元格合并
-        //水库名称
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
-        //总库容
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 4, 1, 1);//起始行,结束行,起始列,结束列
-        //汛期
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 3, 2, 3);//起始行,结束行,起始列,结束列
-        //目前实际
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 4, 8);//起始行,结束行,起始列,结束列
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5,9, ExportExecls.Direction.TRANSVERSE);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
 
-        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4};
+                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(1)", "", "目前实际", "", "", "", ""};
 
-        //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, autograph, head);
-        ex.export();
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                for (int i = 0; i < rowsName.length; i++) {
+                    Cell colTitle0 = colTitleRow.createCell(i);
+                    colTitle0.setCellValue(rowsName[i]);
+                    colTitle0.setCellStyle(style);
+                }
+                String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)", "下泄流量(m³/s)", "数据时间"};
+                Row colTitleRow1 = sheet.createRow(4);
+
+                for (int i = 0; i < shuangName.length; i++) {
+                    Cell colTitle = colTitleRow1.createCell(i);
+                    colTitle.setCellValue(shuangName[i]);
+                    colTitle.setCellStyle(style);
+
+                }
+                CellRangeAddress titleAddress;
+                titleAddress = new CellRangeAddress(3, 4, 0, 0);
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 1, 1);
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 3, 2, 3);
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 3, 4, 8);
+                sheet.addMergedRegion(titleAddress);
+                int x = 29700 / 8;
+                for (int i = 0; i < 8; i++) {
+                    if (i!=1){
+                        sheet.setColumnWidth(i, x-200 );
+                    }else if (i==7){
+                        sheet.setColumnWidth(i, x+200*5 );
+                    }else{
+                        sheet.setColumnWidth(i, x);
+                    }
+
+                }
+            }
+        });
+
+
         rsvrXbyItem();
     }
 

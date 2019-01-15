@@ -27,7 +27,7 @@ public class MyBatisConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource")
-	public DataSource dataSource() {
+	public static DataSource dataSource() {
 		//return new ComboPooledDataSource();
 		return DataSourceBuilder.create().type(ComboPooledDataSource.class).build();
 	}
@@ -46,15 +46,8 @@ public class MyBatisConfig {
 		return sqlSessionFactoryBean.getObject();
 	}
 
-	/*@Bean
-	public MapperScannerConfigurer mapperScannerConfigurer() {
-		MapperScannerConfigurer mapperScannerConfigurer =new MapperScannerConfigurer();
-		mapperScannerConfigurer.setBasePackage("com.world.chaip.mapper");
-		return mapperScannerConfigurer;
-	}*/
-
 	@Bean
-	public DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("dataSource")DataSource dataSource) {
+	public static DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("dataSource")DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 }

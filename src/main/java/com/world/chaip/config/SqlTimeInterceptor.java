@@ -62,6 +62,7 @@ public class SqlTimeInterceptor implements Interceptor {
 		str.append("\n执行耗时");
 		str.append(time);
 		str.append("ms");
+		System.out.println("==============================");
 		return str.toString();
 	}
 

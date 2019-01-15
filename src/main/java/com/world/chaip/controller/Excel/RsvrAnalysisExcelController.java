@@ -158,31 +158,68 @@ public class RsvrAnalysisExcelController {
         }else{
             endtm = (endMonth+1)+"月1日";
         }*/
-        String[] rowsName = new String[]{"序号", "系统", "库名", beginTm, "", endTm, "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(百万m³)", "入库总量(百万m³)"};
-        String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(m³)", "水位(m)", "蓄水量(m³)", "", "", "", ""};
+
+
         //列头单元格合并
         //序号
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
-        //系统
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 4, 1, 1);//起始行,结束行,起始列,结束列
-        //库名
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 4, 2, 2);//起始行,结束行,起始列,结束列
-        //？年？月
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 3, 4);//起始行,结束行,起始列,结束列
-        //？年？月
-        CellRangeAddress callRangeAddress5 = new CellRangeAddress(3, 3, 5, 6);//起始行,结束行,起始列,结束列
-        //序号
-        CellRangeAddress callRangeAddress6 = new CellRangeAddress(3, 4, 7, 7);//起始行,结束行,起始列,结束列
-        //系统
-        CellRangeAddress callRangeAddress7 = new CellRangeAddress(3, 4, 8, 8);//起始行,结束行,起始列,结束列
-        //库名
-        CellRangeAddress callRangeAddress8 = new CellRangeAddress(3, 4, 9, 9);//起始行,结束行,起始列,结束列
-        //？年？月
-        CellRangeAddress callRangeAddress9 = new CellRangeAddress(3, 4, 10, 10);//起始行,结束行,起始列,结束列
-        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4,
-                callRangeAddress5, callRangeAddress6, callRangeAddress7, callRangeAddress8, callRangeAddress9};
-        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, "");
-        ex.export();
+
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5,11, ExportExecls.Direction.TRANSVERSE);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
+
+                String[] rowsName = new String[]{"序号", "系统", "库名", beginTm, "", endTm, "", "蓄水量差(m³)", "出库平均流量(m³/s)", "出库总量(百万m³)", "入库总量(百万m³)"};
+
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                for (int i = 0; i < rowsName.length; i++) {
+                    Cell colTitle0 = colTitleRow.createCell(i);
+                    colTitle0.setCellValue(rowsName[i]);
+                    colTitle0.setCellStyle(style);
+                }
+                String[] shuangName = new String[]{"", "", "", "水位(m)", "蓄水量(m³)", "水位(m)", "蓄水量(m³)", "", "", "", ""};
+                Row colTitleRow1 = sheet.createRow(4);
+                for (int i = 0; i < shuangName.length; i++) {
+                    Cell colTitle = colTitleRow1.createCell(i);
+                    colTitle.setCellValue(shuangName[i]);
+                    colTitle.setCellStyle(style);
+
+                }
+                CellRangeAddress titleAddress;
+
+                titleAddress = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 1, 1);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 2, 2);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 3, 3, 4);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 3, 5, 6);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 7, 7);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 8, 8);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 9, 9);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                titleAddress = new CellRangeAddress(3, 4, 10, 10);//起始行,结束行,起始列,结束列
+                sheet.addMergedRegion(titleAddress);
+
+                int x = 29700 / 10;
+                for (int i = 0; i < 8; i++) {
+                    sheet.setColumnWidth(i, x);
+                }
+            }
+        });
 
     }
 
@@ -313,7 +350,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"库名", "县域", "河流", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4,8, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4, 8,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
