@@ -146,7 +146,7 @@ public class RiverExcelController {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + "-" + end;
 		//导出Excel公共方法调用
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,9, ExportExecls.Direction.TRANSVERSE);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

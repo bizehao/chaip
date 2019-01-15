@@ -155,7 +155,7 @@ public class RsvrExcelController {
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4,8, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
