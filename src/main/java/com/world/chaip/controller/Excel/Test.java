@@ -44,7 +44,7 @@ public class Test {
             datas.add(objects);
         }
 
-        ExportExecls exportExecls = new ExportExecls(response, "学生表", datas, "2018年", 40, 4, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, "学生表", datas, "2018年", 40, 4, 4,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -85,7 +85,7 @@ public class Test {
             }
             datas.add(objects);
         }
-        ExportExecls exportExecls = new ExportExecls(response, "test", datas, "2018年", 40, 5, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, "test", datas, "2018年", 40, 5,4, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
