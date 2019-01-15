@@ -2,6 +2,7 @@ package com.world.chaip.config;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -21,21 +22,23 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  * @author LIUWY
  *
  */
-@Component
 @Configuration
 public class MyBatisConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource")
-	public DataSource dataSource() {
+	public static DataSource dataSource() {
 		//return new ComboPooledDataSource();
 		return DataSourceBuilder.create().type(ComboPooledDataSource.class).build();
 	}
 
 	@Bean
-	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+	public static SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
+		Interceptor[] interceptors =  new Interceptor[1];
+		interceptors[0] = new SqlTimeInterceptor();
+		sqlSessionFactoryBean.setPlugins(interceptors);
 		PathMatchingResourcePatternResolver matchingResourcePatternResolver=new PathMatchingResourcePatternResolver();
 		Resource[] mapperLocations=	matchingResourcePatternResolver.getResources("classpath*:mappings/*Mapper.xml");
 		sqlSessionFactoryBean.setMapperLocations(mapperLocations);
@@ -44,14 +47,7 @@ public class MyBatisConfig {
 	}
 
 	@Bean
-	public MapperScannerConfigurer mapperScannerConfigurer() {
-		MapperScannerConfigurer mapperScannerConfigurer =new MapperScannerConfigurer();
-		mapperScannerConfigurer.setBasePackage("com.world.chaip.mapper");
-		return mapperScannerConfigurer;
-	}
-
-	@Bean
-	public DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("dataSource")DataSource dataSource) {
+	public static DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("dataSource")DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 }

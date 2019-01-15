@@ -198,8 +198,8 @@ public class RainExcelController extends HttpServlet {
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
-		String dateStr = "2019-01-10";
-		String adcd = "X";
+		String dateStr = "2018-01-10";
+		String adcd = "130522,";
 		String systemTypes = "X";
 		String stcdOrStnm = "X";
 		String ly = "X";
