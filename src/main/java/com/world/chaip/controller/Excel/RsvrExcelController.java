@@ -1,6 +1,7 @@
 package com.world.chaip.controller.Excel;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.excelFormat.DayRsvr;
@@ -11,6 +12,10 @@ import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,59 +49,66 @@ public class RsvrExcelController {
     //水库 (实时)
     @GetMapping("getrsvrbyitembyexcel")
     public void exportRsvrByItem(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws Exception{
+            @RequestParam(name="ly",required = false)String ly*/) throws Exception {
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+        String dateStart = "2017-02-11 12:00";
+        String dateEnd = "2017-06-12 12:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
+
+        System.out.println("开始时间" + dateStart);
+        System.out.println("结束时间" + dateEnd);
+        System.out.println("县域" + adcd);
+        System.out.println("站类型" + systemTypes);
+        System.out.println("站号" + stcdOrStnm);
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
+        if (adcd.equals("X")) {
+            adcdlist = null;
+        } else {
             adcd = adcd.substring(0, adcd.length() - 1);
             String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 adcdlist.add(temp[i]);
             }
         }
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
+        if (systemTypes.equals("X")) {
+            typelist = null;
+        } else {
             systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
             String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 typelist.add(sytemp[i]);
             }
         }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
+        if (stcdOrStnm.equals("X")) {
+            stcdlist = null;
+        } else {
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
             String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 stcdlist.add(sytemp[i]);
             }
         }
-        if(ly.equals("X")){
+        if (ly.equals("X")) {
             lylist = null;
-        }else {
+        } else {
             ly = ly.substring(0, ly.length() - 1);
             String[] sytemp = ly.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 lylist.add(sytemp[i]);
             }
         }
@@ -108,15 +120,16 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
+        List<Rsvr> a = rsvrfallService.getRsvrByTerm(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "水库水情统计表";
-        String[] rowsName = new String[]{"序号","库名","站号","县域","河流","时间","水位(m)","蓄水量(百万m³)"};
+        // String[] rowsName = new String[]{"序号","库名","站号","县域","河流","时间","水位(m)","蓄水量(百万m³)"};
         List<Object[]> dataList = new ArrayList<Object[]>();
+        // System.out.println(rowsName.length+"--");
         Object[] objects = null;
-        for (int i=0; i<a.size(); i++){
+        for (int i = 0; i < a.size(); i++) {
             Rsvr item = a.get(i);
-            objects = new Object[rowsName.length];
-            objects[0] = i+1;
+            objects = new Object[8];
+            objects[0] = i + 1;
             objects[1] = item.getStnm();
             objects[2] = item.getStcd();
             objects[3] = item.getAdnm();
@@ -137,76 +150,127 @@ public class RsvrExcelController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String begin = formatter.format(formatter.parse(dateStart));
         String end = formatter.format(formatter.parse(dateEnd));
-        String time ="时间："+ begin+"-"+end;
-        System.out.println("==========="+time);
+        String time = "时间：" + begin + "-" + end;
+        System.out.println("===========" + time);
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
-        ex.export();
+//        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
+//        ex.export();
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4, ExportExecls.Direction.TRANSVERSE);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
+
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                Cell colTitle0 = colTitleRow.createCell(0);
+                colTitle0.setCellValue("序号");
+                colTitle0.setCellStyle(style);
+
+                Cell colTitle1 = colTitleRow.createCell(1);
+                colTitle1.setCellValue("库名");
+                colTitle1.setCellStyle(style);
+
+                Cell colTitle2 = colTitleRow.createCell(2);
+                colTitle2.setCellValue("站号");
+                colTitle2.setCellStyle(style);
+
+                Cell colTitle3 = colTitleRow.createCell(3);
+                colTitle3.setCellValue("县域");
+                colTitle3.setCellStyle(style);
+
+                Cell colTitle4 = colTitleRow.createCell(4);
+                colTitle4.setCellValue("河流");
+                colTitle4.setCellStyle(style);
+
+                Cell colTitle5 = colTitleRow.createCell(5);
+                colTitle5.setCellValue("时间");
+                colTitle5.setCellStyle(style);
+
+                Cell colTitle6 = colTitleRow.createCell(6);
+                colTitle6.setCellValue("水位(m)");
+                colTitle6.setCellStyle(style);
+
+                Cell colTitle7 = colTitleRow.createCell(7);
+                colTitle7.setCellValue("蓄水量(百万m³)");
+                colTitle7.setCellStyle(style);
+                // sheet.setColumnWidth(0, 20000);
+                int x = 29700 / 8;
+                for (int i = 0; i < 8; i++) {
+                  if (i == 5) {
+                        sheet.setColumnWidth(i, x + 500*7);
+                    } else {
+                        sheet.setColumnWidth(i, x - 500);
+                    }
+                }
+            }
+        });
+
+
         rsvrXbyItem();
     }
 
     //水库 (实时)
     @GetMapping("rsvrXbyitem")
-    public JsonResult rsvrXbyItem(){
-        return new JsonResult("http://"+ip+"/services/realtime/rsvrfallexcel/getrsvrbyitembyexcel");
+    public JsonResult rsvrXbyItem() {
+        return new JsonResult("http://" + ip + "/services/realtime/rsvrfallexcel/getrsvrbyitembyexcel");
     }
 
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
             HttpServletResponse response,
-            @RequestParam("dateS")String dateStart,
-            @RequestParam("dateE")String dateEnd,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws Exception{
+            @RequestParam("dateS") String dateStart,
+            @RequestParam("dateE") String dateEnd,
+            @RequestParam(name = "adcd", required = false) String adcd,
+            @RequestParam(name = "systemTypes", required = false) String systemTypes,
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+            @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        System.out.println("开始时间"+dateStart);
-        System.out.println("结束时间"+dateEnd);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+        System.out.println("开始时间" + dateStart);
+        System.out.println("结束时间" + dateEnd);
+        System.out.println("县域" + adcd);
+        System.out.println("站类型" + systemTypes);
+        System.out.println("站号" + stcdOrStnm);
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
+        if (adcd.equals("X")) {
+            adcdlist = null;
+        } else {
             adcd = adcd.substring(0, adcd.length() - 1);
             String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 adcdlist.add(temp[i]);
             }
         }
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
+        if (systemTypes.equals("X")) {
+            typelist = null;
+        } else {
             systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
             String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 typelist.add(sytemp[i]);
             }
         }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
+        if (stcdOrStnm.equals("X")) {
+            stcdlist = null;
+        } else {
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
             String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 stcdlist.add(sytemp[i]);
             }
         }
-        if(ly.equals("X")){
+        if (ly.equals("X")) {
             lylist = null;
-        }else {
+        } else {
             ly = ly.substring(0, ly.length() - 1);
             String[] sytemp = ly.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 lylist.add(sytemp[i]);
             }
         }
@@ -218,15 +282,15 @@ public class RsvrExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
+        DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日水情(水库)";
-        String[] rowsName = new String[]{"水库名称","总库容(百万m³)","汛期("+dayRsvr.getFstp()+")","","目前实际","","","",""};
-        String[] shuangName = new String[]{"","","水位(m)","库容(百万m³)","水位(m)","蓄水量(百万m³)","入库流量(m³/s)","下泄流量(m³/s)","数据时间"};
+        String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(" + dayRsvr.getFstp() + ")", "", "目前实际", "", "", "", ""};
+        String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)", "下泄流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
         String head = dayRsvr.getLevels();
-        for (int i=0; i<a.size(); i++){
+        for (int i = 0; i < a.size(); i++) {
             RsvrZhuanYe item = a.get(i);
             objects = new Object[9];
             objects[0] = item.getStnm();
@@ -240,38 +304,38 @@ public class RsvrExcelController {
             objects[8] = item.getTm();
             dataList.add(objects);
         }
-        Date beginTime=null;
-        Date endTime=null;
+        Date beginTime = null;
+        Date endTime = null;
         Calendar now = Calendar.getInstance();
         now.setTime(dateS);
         now.set(Calendar.HOUR_OF_DAY, 8);
-        beginTime= now.getTime();
-        endTime=now.getTime();
+        beginTime = now.getTime();
+        endTime = now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
-        String time ="时间："+ begin+"时";
+        String time = "时间：" + begin + "时";
 
         //列头单元格合并
         //水库名称
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
         //总库容
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3,4,1,1);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 4, 1, 1);//起始行,结束行,起始列,结束列
         //汛期
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,3,2,3);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 3, 2, 3);//起始行,结束行,起始列,结束列
         //目前实际
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,4,8);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 4, 8);//起始行,结束行,起始列,结束列
 
-        CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
+        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4};
 
         //导出Excel公共方法调用
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, autograph, head);
+        ExportExcel ex = new ExportExcel(title, rowsName, shuangName, titleCell, dataList, response, autograph, head);
         ex.export();
         rsvrXbyItem();
     }
 
     //水库 (专业)
     @GetMapping("rsvrXbyzhuanye")
-    public JsonResult rsvrXbyZhuanYe(){
-        return new JsonResult("http://"+ip+"/services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel");
+    public JsonResult rsvrXbyZhuanYe() {
+        return new JsonResult("http://" + ip + "/services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel");
     }
 }

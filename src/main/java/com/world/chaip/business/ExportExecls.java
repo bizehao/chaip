@@ -60,8 +60,8 @@ public class ExportExecls {
 			out = response.getOutputStream();
 			for (int i = 0; i < pages; i++) {
 				this.sheet = sxssfWorkbook.createSheet(title + i);
-				sheet.setHorizontallyCenter(true);
-				sheet.setVerticallyCenter(true);
+				sheet.setHorizontallyCenter(true);//水平居中
+				//sheet.setVerticallyCenter(true);//垂直居中
 				//标题
 				CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, (datas.get(0).length - 1));
 				sheet.addMergedRegion(titleAddress);
