@@ -8,38 +8,42 @@
         $(function () {
             $("#zhushi").click(function () {
                 //逐时
-               $.ajax({
-                   url: 'services/realtime/rainfall/getrainbyhour',
-                   data: {"date":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                   success:function (result) {
-                       var data = result.data;
-                       var a = JSON.stringify(data);
-                       console.log(a);
+                $.ajax({
+                    url: 'services/realtime/rainfall/getrainbyhour',
+                    data: {
+                        "date": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
+                        var data = result.data;
+                        var a = JSON.stringify(data);
+                        console.log(a);
 
-                       alert('成功');
-                   },
-                   error:function () {
+                        alert('成功');
+                    },
+                    error: function () {
                         alert('失败')
-                   }
-               });
+                    }
+                });
             });
             $("#ri").click(function () {
                 //日
                 $.ajax({
                     url: 'services/realtime/rainfall/getrainbydate',
-                    data: {"date":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "date": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                         console.log(data);
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -48,15 +52,17 @@
                 //旬
                 $.ajax({
                     url: 'services/realtime/rainfall/getrainbyxun',
-                    data: {"date":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "date": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -65,15 +71,17 @@
                 //月
                 $.ajax({
                     url: 'services/realtime/rainfall/getrainbymonth',
-                    data: {"date":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "date": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -82,15 +90,17 @@
                 //年
                 $.ajax({
                     url: 'services/realtime/rainfall/getrainbyyear',
-                    data: {"date":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "date": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -99,16 +109,18 @@
                 //水库实时
                 $.ajax({
                     url: 'services/realtime/riverfall/getriverbyanalysis',
-                    data: {"dateS":0,
-                        "dateE":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "dateS": 0,
+                        "dateE": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -118,16 +130,18 @@
                 //水库实时
                 $.ajax({
                     url: 'services/realtime/riverfall/getriverbyanalysis',
-                    data: {"dateS":0,
-                        "dateE":0,
-                        "adcd":0,
-                        "systemTypes":0,
-                        "stcdOrStnm":0},
-                    success:function (result) {
+                    data: {
+                        "dateS": 0,
+                        "dateE": 0,
+                        "adcd": 0,
+                        "systemTypes": 0,
+                        "stcdOrStnm": 0
+                    },
+                    success: function (result) {
                         var data = result.data;
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -137,13 +151,13 @@
                 $.ajax({
                     url: 'services/realtime/rainanalysisfall/rainxqanalysis',
                     data: {},
-                    success:function (result) {
+                    success: function (result) {
                         var data = result.data;
                         var a = JSON.stringify(data);
                         console.log(a);
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -153,13 +167,13 @@
                 $.ajax({
                     url: 'services/realtime/rsvrfall/getrsvrbyzhuanye',
                     data: {},
-                    success:function (result) {
+                    success: function (result) {
                         //var data = result.data;
                         //var a = JSON.stringify(data);
                         //console.log(a);
                         alert('成功');
                     },
-                    error:function () {
+                    error: function () {
                         alert('失败')
                     }
                 })
@@ -168,36 +182,44 @@
     </script>
 </head>
 <body>
-    <button id="zhushi"> 逐时数据 </button>
-    <button id="ri"> 日数据 </button>
-    <button id="xun"> 旬数据 </button>
-    <button id="yue"> 月数据 </button>
-    <button id="nian"> 年数据 </button>
-    <button id="shishi"> 实时河道 </button>
-    <button id="xunqirain"> 汛期降雨量 </button>
-    <button id="shuikuzhuanye"> 水库专业 </button>
-    <br/><br/><br/>
-    <a  href="services/realtime/rainfallexcel/getrainbyhourbyexcel">逐时数据</a>
-    <a  href="services/realtime/rainfallexcel/getrainbydatebyexcel">日数据</a>
-    <a  href="services/realtime/rainfallexcel/getrainbyxunbyexcel">旬数据</a>
-    <a  href="services/realtime/rainfallexcel/getrainbymonthbyexcel">月数据</a>
-    <a  href="services/realtime/rainfallexcel/getrainbyyearbyexcel">年数据</a>
-    <a  href="services/realtime/rainfallexcel/getrainbytimebyexcel">时段数据</a>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel">水库专业分析</a>
-    <a  href="services/realtime/rainanalysisfallexcel/rainxqanalysisexcel">汛期降雨量分析对比</a>
-    <a  href="services/realtime/rainanalysisfallexcel/rainnzyanalysisexcel">年逐月量分析对比</a>
-    <a  href="services/realtime/rainanalysisfallexcel/rainryanalysisexcel">年逐月量分析对比</a>
-    <br>
-    <br>
-    <br>
-    <a  href="services/realtime/riveranalysisfall/getriverbyanalysisexcel">河道水情分析</a>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrexchangewaterexcel">水库水量分析表</a>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrexchangestorageexcel">水库蓄水量量分析表</a>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrexchangetongjiexcel">水库特征值统计表</a>
-    <a  href="services/realtime/riverfallexcel/getriverbybenbyexcel">本区河道分析表</a>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel">专业水库分析表</a>
-    <button id="skss"> 水库实时 </button>
-    <br>
-    <a  href="services/realtime/rsvrfallexcel/getrsvrexchangetongjiexcel">水库特征值统计表</a>
+<button id="zhushi"> 逐时数据</button>
+<button id="ri"> 日数据</button>
+<button id="xun"> 旬数据</button>
+<button id="yue"> 月数据</button>
+<button id="nian"> 年数据</button>
+<button id="shishi"> 实时河道</button>
+<button id="xunqirain"> 汛期降雨量</button>
+<button id="shuikuzhuanye"> 水库专业</button>
+<br/><br/><br/>
+<a href="services/realtime/rainfallexcel/getrainbyhourbyexcel">逐时数据</a>
+<a href="services/realtime/rainfallexcel/getrainbydatebyexcel">日数据</a>
+<a href="services/realtime/rainfallexcel/getrainbyxunbyexcel">旬数据</a>
+<a href="services/realtime/rainfallexcel/getrainbymonthbyexcel">月数据</a>
+<a href="services/realtime/rainfallexcel/getrainbyyearbyexcel">年数据</a>
+<a href="services/realtime/rainfallexcel/getrainbytimebyexcel">时段数据</a>
+<a href="services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel">水库专业分析</a>
+<a href="services/realtime/rainanalysisfallexcel/rainxqanalysisexcel">汛期降雨量分析对比</a>
+<a href="services/realtime/rainanalysisfallexcel/rainnzyanalysisexcel">年逐月量分析对比</a>
+<a href="services/realtime/rainanalysisfallexcel/rainryanalysisexcel">年逐月量分析对比</a>
+<br>
+<br>
+<br>
+<a href="services/realtime/riveranalysisfall/getriverbyanalysisexcel">河道水情分析</a>
+<a href="services/realtime/rsvrfallexcel/getrsvrexchangewaterexcel">水库水量分析表</a>
+<a href="services/realtime/rsvrfallexcel/getrsvrexchangestorageexcel">水库蓄水量量分析表</a>
+<a href="services/realtime/rsvrfallexcel/getrsvrexchangetongjiexcel">水库特征值统计表</a>
+<a href="services/realtime/riverfallexcel/getriverbybenbyexcel">本区河道分析表</a>
+<a href="services/realtime/rsvrfallexcel/getrsvrbyzhuanyebyexcel">专业水库分析表</a>
+<button id="skss"> 水库实时</button>
+<br>
+<a href="services/realtime/rsvrfallexcel/getrsvrexchangetongjiexcel">水库特征值统计表</a>
+
+
+</br>
+<a href="services/realtime/rainfallexcel/getrainbydatebyexcelzy">导出逐日表(专业)</a>
+<a href="services/realtime/rainfallexcel/getrainbyxunbyexcelzy">导出逐旬表(专业)</a>
+<a href="services/realtime/rainfallexcel/getrainbymonthbyexcelzy">导出月旬表(专业)</a>
+<a href="services/realtime/rainfallexcel/getrainbyyearbyexcelzy">导出逐年表(专业)</a>
+<a href="services/realtime/rainfallexcel/getrainbytimebyexcelzy">导出逐时段表(专业)</a>
 </body>
 </html>
