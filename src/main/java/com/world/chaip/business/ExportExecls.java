@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class ExportExecls {
 
+	public static final int WEIGHT = 21000; //A4纸宽度
+	public static final int HEIGHT = 29400; //A4纸高度
+
 	private HttpServletResponse response;
 	private String title; //表名
 	private List<Object[]> datas; //表格数据
@@ -32,8 +35,14 @@ public class ExportExecls {
 	private int cols; //列的数目
 
 	public enum Direction {
-		TRANSVERSE, //横
-		VERTICAL //竖
+		TRANSVERSE(true), //横
+		VERTICAL(false); //竖
+
+		private boolean state;
+
+		Direction(boolean state) {
+			this.state = state;
+		}
 	}
 
 	public ExportExecls(HttpServletResponse response, String title, List<Object[]> datas, String time, int rows, int topRows,int cols, Direction direction) {
@@ -81,13 +90,14 @@ public class ExportExecls {
 				cellAutograph.setCellStyle(timeStyle);
 				//表头
 				this.columnAndHead.colHeadHandler(sheet);
+				sheet.getPrintSetup().setLandscape(direction.state); //设置打印横向
 			} else {
 				for (int i = 0; i < pages; i++) {
 					this.sheet = sxssfWorkbook.createSheet(title + i);
 					sheet.setHorizontallyCenter(true); //水平居中
 					//sheet.setVerticallyCenter(true); //垂直居中
 					//标题
-					CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, 8);
+					CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, cols-1);
 					sheet.addMergedRegion(titleAddress);
 					Row titleRow = sheet.createRow(0);
 					Cell cell = titleRow.createCell(0);
@@ -95,7 +105,7 @@ public class ExportExecls {
 					HSSFCellStyle titleStyle = this.getTitleStyle(sxssfWorkbook, titleAddress);
 					cell.setCellStyle(titleStyle);
 					//时间
-					CellRangeAddress timeAddress = new CellRangeAddress(2, 2, 0, (datas.get(0).length - 1));//起始行,结束行,起始列,结束列
+					CellRangeAddress timeAddress = new CellRangeAddress(2, 2, 0, cols-1);//起始行,结束行,起始列,结束列
 					sheet.addMergedRegion(timeAddress);
 					Row rowRowAutograph = sheet.createRow(2);
 					Cell cellAutograph = rowRowAutograph.createCell(0);
@@ -115,6 +125,7 @@ public class ExportExecls {
 					}
 					setCellRangeAddressStyle(sheet, titleAddress); //标题栏(合并单元格)样式
 					setCellRangeAddressStyle(sheet, timeAddress); //时间(合并单元格)样式
+					sheet.getPrintSetup().setLandscape(direction.state); //设置打印横向
 				}
 			}
 			response.setContentType("application/x-msdownload");
@@ -180,7 +191,7 @@ public class ExportExecls {
 		//在样式用应用设置的字体;
 		style.setFont(font);
 		//设置自动换行;
-		style.setWrapText(false);
+		style.setWrapText(true);
 		//设置水平对齐的样式为居中对齐;
 		style.setAlignment(HorizontalAlignment.CENTER);
 		//设置垂直对齐的样式为居中对齐;
@@ -201,7 +212,7 @@ public class ExportExecls {
 		//在样式用应用设置的字体;
 		style.setFont(font);
 		//设置自动换行;
-		style.setWrapText(false);
+		style.setWrapText(true);
 		//设置水平对齐的样式为居中对齐;
 		style.setAlignment(HorizontalAlignment.LEFT);
 		//设置垂直对齐的样式为居中对齐;
@@ -239,8 +250,6 @@ public class ExportExecls {
 		style.setTopBorderColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
 		//在样式用应用设置的字体;
 		style.setFont(font);
-		//设置自动换行;
-		style.setWrapText(false);
 		//设置水平对齐的样式为居中对齐;
 		style.setAlignment(HorizontalAlignment.CENTER);
 		//设置垂直对齐的样式为居中对齐;

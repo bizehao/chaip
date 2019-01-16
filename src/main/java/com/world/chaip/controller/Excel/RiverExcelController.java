@@ -49,7 +49,7 @@ public class RiverExcelController {
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
                                   @RequestParam(name="ly",required = false)String ly*/) throws Exception {
 
-		String dateStart = "2018-01-10 08:20";
+		String dateStart = "2018-02-06 08:20";
 		String dateEnd = "2018-02-10 08:20";
 		String adcd = "X";
 		String systemTypes = "X";
@@ -146,7 +146,7 @@ public class RiverExcelController {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + "-" + end;
 		//导出Excel公共方法调用
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4, 9, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 32, 4, 8, ExportExecls.Direction.TRANSVERSE);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -180,9 +180,16 @@ public class RiverExcelController {
 				colTitle8.setCellValue("水势");
 				colTitle8.setCellStyle(style);
 
-				int x = 21000 / 8;
+				int x = ExportExecls.HEIGHT / 8;
 				for (int i = 0; i < 8; i++) {
-					sheet.setColumnWidth(i, x);
+					if (i == 5) {
+						sheet.setColumnWidth(i, x + 320 * 6+1500);
+					} else {
+						sheet.setColumnWidth(i, x - 320);
+					}
+					if (i == 0) {
+						sheet.setColumnWidth(i, x - 1500);
+					}
 				}
 			}
 		});
