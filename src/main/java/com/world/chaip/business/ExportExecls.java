@@ -19,7 +19,7 @@ import java.util.List;
 public class ExportExecls {
 
 	public static final int WEIGHT = 21000; //A4纸宽度
-	public static final int HEIGHT = 29400; //A4纸高度
+	public static final int HEIGHT = 29700; //A4纸高度
 
 	private HttpServletResponse response;
 	private String title; //表名
