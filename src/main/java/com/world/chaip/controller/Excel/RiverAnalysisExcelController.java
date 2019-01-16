@@ -138,7 +138,7 @@ public class RiverAnalysisExcelController {
         String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(百万m³)", "最高水位(m)", "出现日期", "最大流量(m³/s)", "出现日期"};
         //列头单元格合并
         //序号
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(4, 4, 0, 0);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
         //河名
         CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 4, 1, 1);//起始行,结束行,起始列,结束列
         //站名
