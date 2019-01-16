@@ -317,7 +317,7 @@ public class RainExcelController extends HttpServlet {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.VERTICAL);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -458,7 +458,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(Time);
 		String time = "时间：" + begin + "" + xun;
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -602,7 +602,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin;
 		System.out.println(time);
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -738,7 +738,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(btm);
 		String time = "时间：" + begin;
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -890,7 +890,7 @@ public class RainExcelController extends HttpServlet {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + " ~~" + end + "";
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1125,7 +1125,7 @@ public class RainExcelController extends HttpServlet {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.VERTICAL);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1142,7 +1142,7 @@ public class RainExcelController extends HttpServlet {
 					colTitle2.setCellValue("雨量(mm)");
 					colTitle2.setCellStyle(style);
 				}
-				int x = 21000 / 5;
+				int x = ExportExecls.WEIGHT / 5;
 				for (int i = 0; i < 5; i++) {
 					sheet.setColumnWidth(i, x);
 				}
@@ -1289,7 +1289,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(Time);
 		String time = "时间：" + begin + "" + xun;
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1309,7 +1309,7 @@ public class RainExcelController extends HttpServlet {
 					cell3.setCellValue("降水天数");
 					cell3.setCellStyle(style);
 				}
-				int x = 21000 / 7;
+				int x = ExportExecls.WEIGHT / 7;
 				for (int i = 0; i < 7; i++) {
 					sheet.setColumnWidth(i, x);
 				}
@@ -1443,7 +1443,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin;
 		System.out.println(time);
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1463,7 +1463,7 @@ public class RainExcelController extends HttpServlet {
 					cell3.setCellValue("降水天数");
 					cell3.setCellStyle(style);
 				}
-				int x = 21000 / 7;
+				int x = ExportExecls.WEIGHT / 7;
 				for (int i = 0; i < 7; i++) {
 					sheet.setColumnWidth(i, x);
 				}
@@ -1604,7 +1604,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(btm);
 		String time = "时间：" + begin;
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1624,7 +1624,7 @@ public class RainExcelController extends HttpServlet {
 					cell3.setCellValue("降水天数");
 					cell3.setCellStyle(style);
 				}
-				int x = 21000 / 7;
+				int x = ExportExecls.WEIGHT / 7;
 				for (int i = 0; i < 7; i++) {
 					sheet.setColumnWidth(i, x);
 				}
@@ -1787,7 +1787,7 @@ public class RainExcelController extends HttpServlet {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + " ~~" + end + "";
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1807,7 +1807,7 @@ public class RainExcelController extends HttpServlet {
 					cell3.setCellValue("最近1小时雨量");
 					cell3.setCellStyle(style);
 				}
-				int x = 21000 / 7;
+				int x = ExportExecls.WEIGHT / 7;
 				for (int i = 0; i < 7; i++) {
 					if(i==2 || i==5){
 						sheet.setColumnWidth(i, x-500);

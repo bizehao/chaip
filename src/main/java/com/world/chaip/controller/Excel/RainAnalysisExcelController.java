@@ -172,7 +172,7 @@ public class RainAnalysisExcelController {
                 for (int i=0; i<titleCell.length;i++){
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.WEIGHT/17;
+                int x=ExportExecls.HEIGHT/17;
                 for (int i=0;i<17;i++){
                     sheet.setColumnWidth(i,x);
                 }
@@ -327,8 +327,8 @@ public class RainAnalysisExcelController {
                 for (int i=0; i<titleCell.length;i++){
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.WEIGHT/17;
-                for (int i=0;i<17;i++){
+                int x=ExportExecls.HEIGHT/20;
+                for (int i=0;i<20;i++){
                     sheet.setColumnWidth(i,x);
                 }
 
