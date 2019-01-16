@@ -1,6 +1,7 @@
 package com.world.chaip.controller.Excel;
 
 import com.world.chaip.business.ExportExcel;
+import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
@@ -9,6 +10,10 @@ import com.world.chaip.entity.report.River;
 import com.world.chaip.service.RainAnalysisService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -266,13 +271,20 @@ public class RainAnalysisExcelController {
     //任意日降雨量
     @GetMapping(value="rainryanalysisexcel")
     public void getRainAnalysisRYExcel(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name = "adcd",required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm*/) throws Exception {
+
+        String dateStart = "2017-02-11";
+        String dateEnd = "2017-06-12";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
@@ -363,8 +375,35 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,4,5,5);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName, titleCell, dataList, response, "");
-        ex.export();
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 6, ExportExecls.Direction.VERTICAL);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                for (int i = 0; i < rowsName.length; i++) {
+                    System.out.print(rowsName[i] + "\t");
+                    Cell colTitle = colTitleRow.createCell(i);
+                    colTitle.setCellValue(rowsName[i]);
+                    colTitle.setCellStyle(style);
+                }
+                colTitleRow = sheet.createRow(4);
+                for (int i = 0; i < shuangName.length; i++) {
+                    Cell colTitle = colTitleRow.createCell(i);
+                    System.out.print(shuangName[i] + "\t");
+                    colTitle.setCellValue(shuangName[i]);
+                    colTitle.setCellStyle(style);
+                }
+
+                for (int i = 0; i < titleCell.length; i++) {
+                    sheet.addMergedRegion(titleCell[i]);
+                }
+                int x = ExportExecls.WEIGHT / 6;
+                for (int i = 0; i < 6; i++) {
+                    sheet.setColumnWidth(i, x);
+                }
+            }
+        });
     }
 
     @GetMapping(value="rainryXbytime")
