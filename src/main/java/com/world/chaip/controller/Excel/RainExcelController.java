@@ -46,14 +46,22 @@ public class RainExcelController extends HttpServlet {
 
 	//导出逐时表
 	@GetMapping("getrainbyhourbyexcel")
-	public void exportRainByHour(HttpServletResponse response,
+	public void exportRainByHour(HttpServletResponse response/*,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "column", required = false) String column,
 	                             @RequestParam(name = "sign", required = false) String sign,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStr = "2018-09-06";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
+		String column = "1";
+		String sign = "X";
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();
@@ -179,9 +187,25 @@ public class RainExcelController extends HttpServlet {
 		System.out.println(time);
 		//导出Excel公共方法调用
 		System.out.println(b);
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time, b);
-		ex.export();
-		rainXbyHour();
+		//导出Excel公共方法调用
+		ExportExecls execls = new ExportExecls(response, title, dataList, time, 50, 4, 29,ExportExecls.Direction.TRANSVERSE);
+		execls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = execls.getContentStyle(sheet.getWorkbook());
+				Row row = sheet.createRow(3);
+				for (int i = 0; i < rowsName.length; i++) {
+					Cell cell = row.createCell(i);
+					cell.setCellValue(rowsName[i]);
+					cell.setCellStyle(style);
+
+				}
+				int x = ExportExecls.HEIGHT / 29;
+				for (int i = 0; i < 29; i++) {
+					sheet.setColumnWidth(i, x);
+				}
+			}
+		});
 	}
 
 	@GetMapping(value = "rainXbyhour")
