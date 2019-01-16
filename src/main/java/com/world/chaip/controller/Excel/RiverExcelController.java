@@ -196,13 +196,20 @@ public class RiverExcelController {
 
 	//导出河道表(本区)
 	@GetMapping("getriverbybenbyexcel")
-	public void exportRiverByBen(HttpServletResponse response,
+	public void exportRiverByBen(HttpServletResponse response/*,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStart = "2018-01-10 08:20";
+		String dateEnd = "2018-02-10 08:20";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();
@@ -354,8 +361,26 @@ public class RiverExcelController {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + "-" + end;
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
-		ex.export();
+//		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
+//		ex.export();
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 10,ExportExecls.Direction.TRANSVERSE);
+		exportExecls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+				Row colTitleRow = sheet.createRow(3);
+				for (int i=0; i<rowsName.length;i++){
+					Cell colTitle= colTitleRow.createCell(i);
+					colTitle.setCellValue(rowsName[i]);
+					colTitle.setCellStyle(style);
+				}
+				int x=29700/rowsName.length;
+				for (int i=0;i<rowsName.length;i++){
+					sheet.setColumnWidth(i,x);
+				}
+			}
+		});
+
 		riverXbyBen();
 	}
 
@@ -367,13 +392,20 @@ public class RiverExcelController {
 
 	//导出河道表(外区)
 	@GetMapping("getriverbywaibyexcel")
-	public void exportRiverByWai(HttpServletResponse response,
+	public void exportRiverByWai(HttpServletResponse response/*,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+		String dateStart = "2018-01-10 08:20";
+		String dateEnd = "2018-02-10 08:20";
+		String adcd = "X";
+		String systemTypes = "X";
+		String stcdOrStnm = "X";
+		String ly = "X";
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();
@@ -478,8 +510,28 @@ public class RiverExcelController {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + "-" + end;
 		//导出Excel公共方法调用
-		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
-		ex.export();
+//		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
+//		ex.export();
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4,10,ExportExecls.Direction.TRANSVERSE);
+		exportExecls.export(new ExportExecls.ColumnAndHead() {
+			@Override
+			public void colHeadHandler(Sheet sheet) {
+				CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+				Row colTitleRow = sheet.createRow(3);
+				for (int i=0; i<rowsName.length;i++){
+					Cell colTitle= colTitleRow.createCell(i);
+					colTitle.setCellValue(rowsName[i]);
+					colTitle.setCellStyle(style);
+				}
+				int x=29700/rowsName.length;
+				for (int i=0;i<rowsName.length;i++){
+					sheet.setColumnWidth(i,x);
+				}
+			}
+		});
+
+
+
 		riverXbyBen();
 	}
 
