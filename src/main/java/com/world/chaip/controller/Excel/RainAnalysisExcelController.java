@@ -41,12 +41,19 @@ public class RainAnalysisExcelController {
     //汛期降雨量
     @GetMapping(value="rainxqanalysisexcel")
     public void getRainAnalysisXQExcel(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("date")String dateStr,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
+
+
+        String dateStr = "2019-01-10";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -139,9 +146,40 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,3,7,11);//起始行,结束行,起始列,结束列
         //目前实际
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,12,16);//起始行,结束行,起始列,结束列
+
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
-        ex.export();
+//        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
+//        ex.export();
+
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 17,ExportExecls.Direction.TRANSVERSE);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                for (int i=0; i<rowsName.length;i++){
+                    Cell colTitle= colTitleRow.createCell(i);
+                    colTitle.setCellValue(rowsName[i]);
+                    colTitle.setCellStyle(style);
+                }
+                Row colTitleRow1 = sheet.createRow(4);
+                for (int i=0; i<shuangName.length;i++){
+                    Cell colTitle= colTitleRow1.createCell(i);
+                    colTitle.setCellValue(shuangName[i]);
+                    colTitle.setCellStyle(style);
+                }
+
+                for (int i=0; i<titleCell.length;i++){
+                    sheet.addMergedRegion(titleCell[i]);
+                }
+                int x=ExportExecls.WEIGHT/17;
+                for (int i=0;i<17;i++){
+                    sheet.setColumnWidth(i,x);
+                }
+
+
+            }
+        });
     }
 
     @GetMapping(value="rainxqXbytime")
@@ -152,12 +190,18 @@ public class RainAnalysisExcelController {
     //年逐月降雨量
     @GetMapping(value="rainnzyanalysisexcel")
     public void getRainAnalysisNZYExcel(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("date")String dateStr,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
+
+        String dateStr = "2019-01-10";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -259,8 +303,39 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress5 = new CellRangeAddress(3,3,18,19);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4,callRangeAddress5};
-        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
-        ex.export();
+//        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
+//        ex.export();
+
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 20,ExportExecls.Direction.TRANSVERSE);
+        exportExecls.export(new ExportExecls.ColumnAndHead() {
+            @Override
+            public void colHeadHandler(Sheet sheet) {
+                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+                Row colTitleRow = sheet.createRow(3);
+                for (int i=0; i<rowsName.length;i++){
+                    Cell colTitle= colTitleRow.createCell(i);
+                    colTitle.setCellValue(rowsName[i]);
+                    colTitle.setCellStyle(style);
+                }
+                Row colTitleRow1 = sheet.createRow(4);
+                for (int i=0; i<shuangName.length;i++){
+                    Cell colTitle= colTitleRow1.createCell(i);
+                    colTitle.setCellValue(shuangName[i]);
+                    colTitle.setCellStyle(style);
+                }
+
+                for (int i=0; i<titleCell.length;i++){
+                    sheet.addMergedRegion(titleCell[i]);
+                }
+                int x=ExportExecls.WEIGHT/17;
+                for (int i=0;i<17;i++){
+                    sheet.setColumnWidth(i,x);
+                }
+
+
+            }
+        });
+
     }
 
     @GetMapping(value="rainnzyXbytime")
