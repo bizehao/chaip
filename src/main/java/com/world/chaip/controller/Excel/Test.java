@@ -100,87 +100,15 @@ public class Test {
                     colTitle0.setCellValue(rowsName[i]);
                     colTitle0.setCellStyle(style);
                 }
-//                Cell colTitle0 = colTitleRow.createCell(0);
-//                colTitle0.setCellValue("水库名称");
-//                colTitle0.setCellStyle(style);
-//
-//                Cell colTitle1 = colTitleRow.createCell(1);
-//                colTitle1.setCellValue("总库容(百万m³)");
-//                colTitle1.setCellStyle(style);
-//
-//                Cell colTitle2 = colTitleRow.createCell(2);
-//                colTitle2.setCellValue("汛期(1)");
-//                colTitle2.setCellStyle(style);
-//
-//                Cell colTitle3 = colTitleRow.createCell(3);
-//                colTitle3.setCellValue("");
-//                colTitle3.setCellStyle(style);
-//
-//                Cell colTitle4 = colTitleRow.createCell(4);
-//                colTitle4.setCellValue("目前实际");
-//                colTitle4.setCellStyle(style);
-//
-//                Cell colTitle5 = colTitleRow.createCell(5);
-//                colTitle5.setCellValue("");
-//                colTitle5.setCellStyle(style);
-//
-//                Cell colTitle6 = colTitleRow.createCell(6);
-//                colTitle6.setCellValue("");
-//                colTitle6.setCellStyle(style);
-//
-//                Cell colTitle7 = colTitleRow.createCell(7);
-//                colTitle7.setCellValue("");
-//                colTitle7.setCellStyle(style);
-//
-//                Cell colTitle8 = colTitleRow.createCell(8);
-//                colTitle8.setCellValue("");
-//                colTitle8.setCellStyle(style);
-
-
                 String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)", "下泄流量(m³/s)", "数据时间"};
                 Row colTitleRow1 = sheet.createRow(4);
 
-                for (int i=0; i<shuangName.length;i++){
+                for (int i=0; i<shuangName.length;i++) {
                     Cell colTitle = colTitleRow1.createCell(i);
                     colTitle.setCellValue(shuangName[i]);
                     colTitle.setCellStyle(style);
 
                 }
-//                Cell colTitle00 = colTitleRow1.createCell(0);
-//                colTitle00.setCellValue("");
-//                colTitle00.setCellStyle(style);
-//
-//                Cell colTitle01 = colTitleRow1.createCell(1);
-//                colTitle01.setCellValue("");
-//                colTitle01.setCellStyle(style);
-//
-//                Cell colTitle02 = colTitleRow1.createCell(2);
-//                colTitle02.setCellValue("水位(m)");
-//                colTitle02.setCellStyle(style);
-//
-//                Cell colTitle03 = colTitleRow1.createCell(3);
-//                colTitle03.setCellValue("库容(百万m³)");
-//                colTitle03.setCellStyle(style);
-//
-//                Cell colTitle04 = colTitleRow1.createCell(4);
-//                colTitle04.setCellValue("水位(m)");
-//                colTitle04.setCellStyle(style);
-//
-//                Cell colTitle05 = colTitleRow1.createCell(5);
-//                colTitle05.setCellValue("蓄水量(百万m³)");
-//                colTitle05.setCellStyle(style);
-//
-//                Cell colTitle06 = colTitleRow1.createCell(6);
-//                colTitle06.setCellValue("入库流量(m³/s)");
-//                colTitle06.setCellStyle(style);
-//
-//                Cell colTitle07 = colTitleRow1.createCell(7);
-//                colTitle07.setCellValue("下泄流量(m³/s)");
-//                colTitle07.setCellStyle(style);
-//
-//                Cell colTitle08 = colTitleRow1.createCell(8);
-//                colTitle08.setCellValue("数据时间");
-//                colTitle08.setCellStyle(style);
                 CellRangeAddress titleAddress;
                 titleAddress= new CellRangeAddress(3, 4, 0, 0);
                 sheet.addMergedRegion(titleAddress);

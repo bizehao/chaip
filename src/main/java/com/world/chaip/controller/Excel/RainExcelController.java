@@ -162,7 +162,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin + "~~" + end;
 		System.out.println(time);
 		//导出Excel公共方法调用
-		System.out.println(b);
+		//System.out.println(b);
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, dataList, time, 11, 4, 29,ExportExecls.Direction.TRANSVERSE);
 		execls.setLastInfo(b);
@@ -295,6 +295,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
 		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 55, 4,5, ExportExecls.Direction.VERTICAL);
+		execlse.setLastInfo(b);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -436,6 +437,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin + "" + xun;
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -580,6 +582,7 @@ public class RainExcelController extends HttpServlet {
 		System.out.println(time);
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -716,6 +719,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin;
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -868,6 +872,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin + " ~~" + end + "";
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1103,6 +1108,7 @@ public class RainExcelController extends HttpServlet {
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
 		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 52, 4,5, ExportExecls.Direction.VERTICAL);
+		execlse.setLastInfo(b);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1267,6 +1273,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin + "" + xun;
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1421,6 +1428,7 @@ public class RainExcelController extends HttpServlet {
 		System.out.println(time);
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 7,ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1582,6 +1590,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin;
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1765,6 +1774,7 @@ public class RainExcelController extends HttpServlet {
 		String time = "时间：" + begin + " ~~" + end + "";
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4,7, ExportExecls.Direction.VERTICAL);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
