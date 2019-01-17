@@ -33,6 +33,7 @@ public class ExportExecls {
 	private int topRows;
 	private HSSFWorkbook sxssfWorkbook;
 	private int cols; //列的数目
+	private String lastInfo; //最后的信息
 
 	public enum Direction {
 		TRANSVERSE(true), //横
@@ -126,6 +127,14 @@ public class ExportExecls {
 						pageDatas = datas.subList(i * rows, (i + 1) * rows);
 						excelHandler(pageDatas, style);
 					}
+					if(i == pages -1 && lastInfo != null){
+						Row lastRow =sheet.createRow(pageDatas.size()+topRows);
+						Cell lastCell1 = lastRow.createCell(0);
+						CellRangeAddress lastAddress = new CellRangeAddress(pageDatas.size()+topRows, pageDatas.size()+topRows, 0, cols-1);
+						sheet.addMergedRegionUnsafe(lastAddress);
+						lastCell1.setCellValue(lastInfo);
+						lastCell1.setCellStyle(titleStyle);
+					}
 					setCellRangeAddressStyle(sheet, titleAddress); //标题栏(合并单元格)样式
 					setCellRangeAddressStyle(sheet, timeAddress); //时间(合并单元格)样式
 					sheet.getPrintSetup().setLandscape(direction.state); //设置打印横向
@@ -175,6 +184,10 @@ public class ExportExecls {
 
 	public interface ColumnAndHead {
 		void colHeadHandler(Sheet sheet); //处理表头
+	}
+
+	public void setLastInfo(String lastInfo) {
+		this.lastInfo = lastInfo;
 	}
 
 	/**

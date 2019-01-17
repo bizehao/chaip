@@ -145,30 +145,6 @@ public class RainExcelController extends HttpServlet {
 				}
 				objects[j] = map.get(xx);
 			}
-            /*objects[5] = a.get(i).getNineDrp();
-            objects[6] = a.get(i).getTenDrp();
-            objects[7] = a.get(i).getElevenDrp();
-            objects[8] = a.get(i).getTwelveDrp();
-            objects[9] = a.get(i).getThirteenDrp();
-            objects[10] = a.get(i).getFourteenDrp();
-            objects[11] = a.get(i).getFifteenDrp();
-            objects[12] = a.get(i).getSixteenDrp();
-            objects[13] = a.get(i).getSeventeenDrp();
-            objects[14] = a.get(i).getEighteenDrp();
-            objects[15] = a.get(i).getNineteenDrp();
-            objects[16] = a.get(i).getTwentyDrp();
-            objects[17] = a.get(i).getTwenty_oneDrp();
-            objects[18] = a.get(i).getTwenty_twoDrp();
-            objects[19] = a.get(i).getTwenty_threeDrp();
-            objects[20] = a.get(i).getZeroDrp();
-            objects[21] = a.get(i).getOneDrp();
-            objects[22] = a.get(i).getTwoDrp();
-            objects[23] = a.get(i).getThreeDrp();
-            objects[24] = a.get(i).getFourDrp();
-            objects[25] = a.get(i).getFiveDrp();
-            objects[26] = a.get(i).getSixDrp();
-            objects[27] = a.get(i).getSevenDrp();
-            objects[28] = a.get(i).getEightDrp();*/
 			dataList.add(objects);
 		}
 		//处理时间
@@ -189,6 +165,7 @@ public class RainExcelController extends HttpServlet {
 		System.out.println(b);
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, dataList, time, 11, 4, 29,ExportExecls.Direction.TRANSVERSE);
+		execls.setLastInfo(b);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
