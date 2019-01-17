@@ -134,7 +134,7 @@ public class RiverExcelController {
 		}
 		Date beginTime;
 		Date endTime;
-		DaybyHourRainfall daybyHourRainfall = new DaybyHourRainfall();
+		//DaybyHourRainfall daybyHourRainfall = new DaybyHourRainfall();
 		Calendar now = Calendar.getInstance();
 		System.out.println(dateE);
 		now.setTime(dateS);
@@ -146,7 +146,7 @@ public class RiverExcelController {
 		String end = formatter.format(endTime);
 		String time = "时间：" + begin + "-" + end;
 		//导出Excel公共方法调用
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 32, 4, 9, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 43, 4, 9, ExportExecls.Direction.TRANSVERSE);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -180,15 +180,14 @@ public class RiverExcelController {
 				colTitle8.setCellValue("水势");
 				colTitle8.setCellStyle(style);
 
-				int x = ExportExecls.HEIGHT / 8;
-				for (int i = 0; i < 8; i++) {
+				int x = ExportExecls.HEIGHT / 9;
+				for (int i = 0; i < 9; i++) {
 					if (i == 5) {
-						sheet.setColumnWidth(i, x + 320 * 6+1500);
+						sheet.setColumnWidth(i, x + 320 * 6 + 1500);
+					} else if (i == 0) {
+						sheet.setColumnWidth(i, x - 1500);
 					} else {
 						sheet.setColumnWidth(i, x - 320);
-					}
-					if (i == 0) {
-						sheet.setColumnWidth(i, x - 1500);
 					}
 				}
 			}
@@ -370,20 +369,20 @@ public class RiverExcelController {
 		//导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 15, 4, 10,ExportExecls.Direction.VERTICAL);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 10, ExportExecls.Direction.VERTICAL);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
 				CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
 				Row colTitleRow = sheet.createRow(3);
-				for (int i=0; i<rowsName.length;i++){
-					Cell colTitle= colTitleRow.createCell(i);
+				for (int i = 0; i < rowsName.length; i++) {
+					Cell colTitle = colTitleRow.createCell(i);
 					colTitle.setCellValue(rowsName[i]);
 					colTitle.setCellStyle(style);
 				}
-				int x=ExportExecls.WEIGHT/rowsName.length;
-				for (int i=0;i<rowsName.length;i++){
-					sheet.setColumnWidth(i,x);
+				int x = ExportExecls.WEIGHT / rowsName.length;
+				for (int i = 0; i < rowsName.length; i++) {
+					sheet.setColumnWidth(i, x);
 				}
 			}
 		});
@@ -525,18 +524,17 @@ public class RiverExcelController {
 			public void colHeadHandler(Sheet sheet) {
 				CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
 				Row colTitleRow = sheet.createRow(3);
-				for (int i=0; i<rowsName.length;i++){
-					Cell colTitle= colTitleRow.createCell(i);
+				for (int i = 0; i < rowsName.length; i++) {
+					Cell colTitle = colTitleRow.createCell(i);
 					colTitle.setCellValue(rowsName[i]);
 					colTitle.setCellStyle(style);
 				}
-				int x=ExportExecls.WEIGHT/rowsName.length;
-				for (int i=0;i<rowsName.length;i++){
-					sheet.setColumnWidth(i,x);
+				int x = ExportExecls.WEIGHT / rowsName.length;
+				for (int i = 0; i < rowsName.length; i++) {
+					sheet.setColumnWidth(i, x);
 				}
 			}
 		});
-
 
 
 		riverXbyBen();

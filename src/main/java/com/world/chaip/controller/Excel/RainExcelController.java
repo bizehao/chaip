@@ -55,7 +55,7 @@ public class RainExcelController extends HttpServlet {
 	                             @RequestParam(name = "sign", required = false) String sign,
 	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
-		String dateStr = "2018-09-06";
+		String dateStr = "2018-06-06";
 		String adcd = "X";
 		String systemTypes = "X";
 		String stcdOrStnm = "X";
@@ -188,7 +188,7 @@ public class RainExcelController extends HttpServlet {
 		//导出Excel公共方法调用
 		System.out.println(b);
 		//导出Excel公共方法调用
-		ExportExecls execls = new ExportExecls(response, title, dataList, time, 50, 4, 29,ExportExecls.Direction.TRANSVERSE);
+		ExportExecls execls = new ExportExecls(response, title, dataList, time, 11, 4, 29,ExportExecls.Direction.TRANSVERSE);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

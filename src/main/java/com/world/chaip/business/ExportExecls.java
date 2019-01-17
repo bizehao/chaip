@@ -96,8 +96,8 @@ public class ExportExecls {
 					this.sheet = sxssfWorkbook.createSheet(title + i);
 					sheet.setHorizontallyCenter(true); //水平居中
 					sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
-					/*sheet.setMargin(HSSFSheet.LeftMargin,0);
-					sheet.setMargin(HSSFSheet.RightMargin,0);*/
+					sheet.setMargin(HSSFSheet.TopMargin,0.2);
+					sheet.setMargin(HSSFSheet.BottomMargin,0.2);
 					//sheet.setVerticallyCenter(true); //垂直居中
 					//标题
 					CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, cols-1);

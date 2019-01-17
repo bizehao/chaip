@@ -831,8 +831,8 @@ public class RainfallServiceImpl implements RainfallService {
                     if (o2.getDrpMap().get(column) == null || o2.getDrpMap().get(column) == "") {
                         o2.getDrpMap().put(column, 0);
                     }
-                    double ce1 = Double.parseDouble(o1.getDrpMap().get(column).toString());
-                    double ce2 = Double.parseDouble(o2.getDrpMap().get(column).toString());
+                    double ce1 = Double.parseDouble(o1.getDrpMap().get(column).toString().equals(" ")?"0":o1.getDrpMap().get(column).toString());
+                    double ce2 = Double.parseDouble(o2.getDrpMap().get(column).toString().equals(" ")?"0":o2.getDrpMap().get(column).toString());
                     if (sign == 0) { //正序
                         if (ce1 > ce2) {
                             return 1;
