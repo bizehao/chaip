@@ -155,7 +155,7 @@ public class RsvrExcelController {
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4,8, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4,8, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -194,7 +194,7 @@ public class RsvrExcelController {
                 colTitle7.setCellValue("蓄水量(百万m³)");
                 colTitle7.setCellStyle(style);
                 // sheet.setColumnWidth(0, 20000);
-                int x = 29700 / 8;
+                int x = ExportExecls.WEIGHT / 8;
                 for (int i = 0; i < 8; i++) {
                     if (i == 5) {
                         sheet.setColumnWidth(i, x + 500 * 6);
