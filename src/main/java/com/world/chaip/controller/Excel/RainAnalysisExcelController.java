@@ -329,10 +329,12 @@ public class RainAnalysisExcelController {
                 }
                 int x=ExportExecls.HEIGHT/20;
                 for (int i=0;i<20;i++){
-                    sheet.setColumnWidth(i,x);
+                    if (i == 0){
+                        sheet.setColumnWidth(i,x+19*100);
+                    }else {
+                        sheet.setColumnWidth(i,x-100);
+                    }
                 }
-
-
             }
         });
 
