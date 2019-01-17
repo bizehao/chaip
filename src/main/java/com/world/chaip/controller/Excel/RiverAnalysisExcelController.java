@@ -150,7 +150,7 @@ public class RiverAnalysisExcelController {
 //        ex.export();
 
 
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 9, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 25, 5, 9, ExportExecls.Direction.TRANSVERSE);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

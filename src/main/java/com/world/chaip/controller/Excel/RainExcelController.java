@@ -317,7 +317,7 @@ public class RainExcelController extends HttpServlet {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.VERTICAL);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 55, 4,5, ExportExecls.Direction.VERTICAL);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -1125,7 +1125,7 @@ public class RainExcelController extends HttpServlet {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String begin = formatter.format(date);
 		String time = "时间：" + begin;
-		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 50, 4,5, ExportExecls.Direction.VERTICAL);
+		ExportExecls execlse = new ExportExecls(response, title, dataList, time, 52, 4,5, ExportExecls.Direction.VERTICAL);
 		execlse.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

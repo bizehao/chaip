@@ -370,7 +370,7 @@ public class RiverExcelController {
 		//导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 10,ExportExecls.Direction.VERTICAL);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 15, 4, 10,ExportExecls.Direction.VERTICAL);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -519,7 +519,7 @@ public class RiverExcelController {
 		//导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4,10,ExportExecls.Direction.VERTICAL);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 13, 4,10,ExportExecls.Direction.VERTICAL);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

@@ -151,7 +151,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 17,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 32, 5, 17,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -306,7 +306,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 20,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 25, 5, 20,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {

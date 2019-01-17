@@ -350,7 +350,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"库名", "县域", "河流", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4, 8,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 30, 4, 8,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -522,7 +522,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"河名", "站名", year + "年", "", "", "", "", "", "", ""};
 //        String[] shuangName = new String[]{"", "", "最高水位(m)", "出现日期(日)", "最大蓄水量(百万m³)", "出现日期(日)", "最大入库流量(m³/s)", "出现日期(日)", "最大出库流量(m³/s)", "出现日期(日)"};
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 50, 4,10, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 22, 4,10, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -568,7 +568,7 @@ public class RsvrAnalysisExcelController {
                 colTitle9.setCellValue("出现日期(日)");
                 colTitle9.setCellStyle(style);
 
-                int x = 29700 / 10;
+                int x = ExportExecls.HEIGHT / 10;
                 for (int i = 0; i < 10; i++) {
                     sheet.setColumnWidth(i, x);
                 }
