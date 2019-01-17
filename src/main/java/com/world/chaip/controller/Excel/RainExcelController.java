@@ -55,7 +55,7 @@ public class RainExcelController extends HttpServlet {
 	                             @RequestParam(name = "sign", required = false) String sign,
 	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
-		String dateStr = "2018-06-06";
+		String dateStr = "2018-07-07";
 		String adcd = "X";
 		String systemTypes = "X";
 		String stcdOrStnm = "X";
@@ -178,8 +178,9 @@ public class RainExcelController extends HttpServlet {
 
 				}
 				int x = ExportExecls.HEIGHT / 29;
+
 				for (int i = 0; i < 29; i++) {
-					sheet.setColumnWidth(i, x);
+					sheet.setColumnWidth(i,x);
 				}
 			}
 		});
