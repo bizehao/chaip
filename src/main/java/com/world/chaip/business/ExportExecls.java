@@ -106,6 +106,8 @@ public class ExportExecls {
                     sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
                     sheet.setMargin(HSSFSheet.TopMargin, 0.2);
                     sheet.setMargin(HSSFSheet.BottomMargin, 0.2);
+	                sheet.setMargin(HSSFSheet.LeftMargin, 0.2);
+	                sheet.setMargin(HSSFSheet.RightMargin, 0.2);
                     //sheet.setVerticallyCenter(true); //垂直居中
                     //标题
                     CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, cols - 1);
