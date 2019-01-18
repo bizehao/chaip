@@ -166,6 +166,7 @@ public class RainExcelController extends HttpServlet {
 		//导出Excel公共方法调用
 		ExportExecls execls = new ExportExecls(response, title, dataList, time, 11, 4, 29,ExportExecls.Direction.TRANSVERSE);
 		execls.setLastInfo(b);
+		execls.setFontSize(8);
 		execls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {

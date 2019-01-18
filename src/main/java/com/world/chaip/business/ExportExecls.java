@@ -19,7 +19,7 @@ import java.util.List;
 public class ExportExecls {
 
     public static final int WEIGHT = 21000; //A4纸宽度
-    public static final int HEIGHT = 32000; //A4纸高度
+    public static final int HEIGHT = 37000; //A4纸高度
 
     private HttpServletResponse response;
     private String title; //表名
@@ -34,6 +34,13 @@ public class ExportExecls {
     private HSSFWorkbook sxssfWorkbook;
     private int cols; //列的数目
     private String lastInfo; //最后的信息
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    private int fontSize;//字体大小
+
 
     public enum Direction {
         TRANSVERSE(true), //横
@@ -226,6 +233,12 @@ public class ExportExecls {
         Font font = workbook.createFont();
         //设置字体名字
         font.setFontName("Courier New");
+        //设置字体大小
+        if (fontSize!=0){
+            font.setFontHeightInPoints((short)fontSize);
+        }else{
+            font.setFontHeightInPoints((short)10);
+        }
         //设置样式;
         CellStyle style = workbook.createCellStyle();
         //在样式用应用设置的字体;
@@ -247,6 +260,12 @@ public class ExportExecls {
         Font font = workbook.createFont();
         //设置字体名字
         font.setFontName("Courier New");
+        //设置字体大小
+        if (fontSize!=0){
+            font.setFontHeightInPoints((short)8);
+        }else{
+            font.setFontHeightInPoints((short)10);
+        }
         //设置样式;
         CellStyle style = workbook.createCellStyle();
         //设置底边框;
@@ -283,9 +302,13 @@ public class ExportExecls {
         // 设置字体
         Font font = workbook.createFont();
         //设置字体大小
-        //font.setFontHeightInPoints((short)10);
+        if (fontSize!=0){
+            font.setFontHeightInPoints((short)8);
+        }else{
+            font.setFontHeightInPoints((short)10);
+        }
         //字体加粗
-        font.setBold(true);
+       // font.setBold(true);
         //设置字体名字
         font.setFontName("Courier New");
         //设置样式;
@@ -298,6 +321,8 @@ public class ExportExecls {
         style.setAlignment(HorizontalAlignment.CENTER);
         //设置垂直对齐的样式为居中对齐;
         style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+
         return style;
     }
 
