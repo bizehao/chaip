@@ -41,19 +41,15 @@ public class RainAnalysisExcelController {
     //汛期降雨量
     @GetMapping(value="rainxqanalysisexcel")
     public void getRainAnalysisXQExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("date")String dateStr,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
 
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -190,18 +186,12 @@ public class RainAnalysisExcelController {
     //年逐月降雨量
     @GetMapping(value="rainnzyanalysisexcel")
     public void getRainAnalysisNZYExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("date")String dateStr,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm*/) throws Exception {
-
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -348,20 +338,14 @@ public class RainAnalysisExcelController {
     //任意日降雨量
     @GetMapping(value="rainryanalysisexcel")
     public void getRainAnalysisRYExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name="ly",required=false)String ly,
             @RequestParam(name = "adcd",required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm*/) throws Exception {
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
-        String dateStart = "2017-02-11";
-        String dateEnd = "2017-06-12";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";
 
         List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();

@@ -38,21 +38,16 @@ public class RsvrAnalysisExcelController {
     //水库水量分析表
     @GetMapping("getrsvrexchangewaterexcel")
     public void GetRsvrByAnalysiswaterExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly*/) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
 
-        String dateStart = "2017-02-11";
-        String dateEnd = "2017-06-12";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -231,18 +226,14 @@ public class RsvrAnalysisExcelController {
     //水库蓄水量分析对比表
     @GetMapping("getrsvrexchangestorageexcel")
     public void GetRsvrByAnalysisStorageExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("date")String date,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly*/) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
-        String date = "2017-06-12";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -412,20 +403,14 @@ public class RsvrAnalysisExcelController {
     //水库特征值统计表
     @GetMapping("getrsvrexchangetongjiexcel")
     public void GetRsvrByAnalysistongjiExcel(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly*/) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
-        String dateStart = "2017-02-11";
-        String dateEnd = "2017-06-12";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();

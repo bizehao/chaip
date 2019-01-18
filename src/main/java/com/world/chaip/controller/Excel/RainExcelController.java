@@ -46,22 +46,14 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐时表
     @GetMapping("getrainbyhourbyexcel")
-    public void exportRainByHour(HttpServletResponse response/*,
+    public void exportRainByHour(HttpServletResponse response,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "column", required = false) String column,
 	                             @RequestParam(name = "sign", required = false) String sign,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStr = "2018-07-07";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
-        String column = "1";
-        String sign = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -181,14 +173,7 @@ public class RainExcelController extends HttpServlet {
                 int x = ExportExecls.HEIGHT / 29;
 
                 for (int i = 0; i < 29; i++) {
-//                    if (i == 1 || i == 2 || i == 3) {
-                       sheet.setColumnWidth(i, x );
-//                    } else if (i == 4) {
-//                        sheet.setColumnWidth(i, x + 5 * 24);
-//                    } else {
-//                        sheet.setColumnWidth(i, x - 5);
-//                    }
-
+                    sheet.setColumnWidth(i, x);
                 }
             }
         });
@@ -201,18 +186,12 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response/*,
+    public void exportRainByDate(HttpServletResponse response,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStr = "2018-01-10";
-        String adcd = "130522,";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -336,18 +315,12 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表
     @GetMapping("getrainbyxunbyexcel")
-    public void exportRainByXun(HttpServletResponse response/*,
+    public void exportRainByXun(HttpServletResponse response,
 	                            @RequestParam("date") String dateStr,
 	                            @RequestParam(name = "adcd", required = false) String adcd,
 	                            @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                            @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -481,18 +454,12 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表
     @GetMapping("getrainbymonthbyexcel")
-    public void exportRainByMonth(HttpServletResponse response/*,
+    public void exportRainByMonth(HttpServletResponse response,
 	                              @RequestParam("date") String dateStr,
 	                              @RequestParam(name = "adcd", required = false) String adcd,
 	                              @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                              @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                              @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                              @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -626,18 +593,12 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表
     @GetMapping("getrainbyyearbyexcel")
-    public void exportRainByYear(HttpServletResponse response/*,
+    public void exportRainByYear(HttpServletResponse response,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -763,20 +724,13 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表
     @GetMapping("getrainbytimebyexcel")
-    public void exportRainByTime(HttpServletResponse response/*,
+    public void exportRainByTime(HttpServletResponse response,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStart = "2019-01-02 08:00";
-        String dateEnd = "2019-01-10 08:00";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -967,21 +921,17 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐日表(专业)
     @GetMapping("getrainbydatebyexcelzy")
-    public void exportRainByDateZY(HttpServletResponse response
-	                           /*    @RequestParam("date") String dateStr,
+    public void exportRainByDateZY(HttpServletResponse response,
+	                             @RequestParam("date") String dateStr,
 	                               @RequestParam(name = "adcd", required = false) String adcd,
 	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String ly)*/) throws Exception {
+	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
 
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -1149,18 +1099,14 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表(专业)
     @GetMapping("getrainbyxunbyexcelzy")
-    public void exportRainByXunZY(HttpServletResponse response/*,
+    public void exportRainByXunZY(HttpServletResponse response,
 	                              @RequestParam("date") String dateStr,
 	                              @RequestParam(name = "adcd", required = false) String adcd,
 	                              @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                              @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                              @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+	                              @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         List<String> adcdlist = new ArrayList<String>();
@@ -1317,18 +1263,13 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表(专业)
     @GetMapping("getrainbymonthbyexcelzy")
-    public void exportRainByMonthZY(HttpServletResponse response/*,
+    public void exportRainByMonthZY(HttpServletResponse response,
 	                                @RequestParam("date") String dateStr,
 	                                @RequestParam(name = "adcd", required = false) String adcd,
 	                                @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                                @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                                @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+	                                @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         List<String> adcdlist = new ArrayList<String>();
@@ -1472,19 +1413,15 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表(专业)
     @GetMapping("getrainbyyearbyexcelzy")
-    public void exportRainByYearZY(HttpServletResponse response/*,
+    public void exportRainByYearZY(HttpServletResponse response,
 	                               @RequestParam("date") String dateStr,
 	                               @RequestParam(name = "adcd", required = false) String adcd,
 	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
-        String dateStr = "2019-01-10";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         List<String> adcdlist = new ArrayList<String>();
@@ -1636,20 +1573,15 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表(专业)
     @GetMapping("getrainbytimebyexcelzy")
-    public void exportRainByTimeZT(HttpServletResponse response/*,
+    public void exportRainByTimeZT(HttpServletResponse response,
 	                               @RequestParam("dateS") String dateStart,
 	                               @RequestParam("dateE") String dateEnd,
 	                               @RequestParam(name = "adcd", required = false) String adcd,
 	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String lylist*/) throws Exception {
+	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStart = "2019-01-02 08:00";
-        String dateEnd = "2019-01-10 08:00";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
 
         System.out.println("开始" + dateStart);
         System.out.println("结束" + dateEnd);

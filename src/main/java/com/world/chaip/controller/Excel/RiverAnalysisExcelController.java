@@ -39,20 +39,14 @@ public class RiverAnalysisExcelController {
 	//河道水情分析
 	@GetMapping("getriverbyanalysisexcel")
 	public void GetRiverByAnalysisExcel(
-			HttpServletResponse response/*,
+			HttpServletResponse response,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly*/) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) throws Exception {
 
-		String dateStart = "2017-02-11";
-		String dateEnd = "2017-06-12";
-		String adcd = "X";
-		String systemTypes = "11,12,";
-		String stcdOrStnm = "X";
-		String ly = "X";
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();

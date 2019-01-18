@@ -41,20 +41,15 @@ public class RiverExcelController {
 
     //导出河道表(实时库)
     @GetMapping("getriverbyitembyexcel")
-    public void exportRiverByItem(HttpServletResponse response/*,
+    public void exportRiverByItem(HttpServletResponse response,
                        @RequestParam("dateS")String dateStart,
                        @RequestParam("dateE")String dateEnd,
                        @RequestParam(name="adcd",required=false)String adcd,
                        @RequestParam(name="systemTypes",required=false)String systemTypes,
                        @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-                                  @RequestParam(name="ly",required = false)String ly*/) throws Exception {
+                                  @RequestParam(name="ly",required = false)String ly) throws Exception {
 
-        String dateStart = "2018-02-06 08:20";
-        String dateEnd = "2018-02-10 08:20";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+
 
         String benqu = "and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
@@ -202,20 +197,13 @@ public class RiverExcelController {
 
     //导出河道表(本区)
     @GetMapping("getriverbybenbyexcel")
-    public void exportRiverByBen(HttpServletResponse response/*,
+    public void exportRiverByBen(HttpServletResponse response,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStart = "2018-01-10 08:20";
-        String dateEnd = "2018-02-10 08:20";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -415,20 +403,13 @@ public class RiverExcelController {
 
     //导出河道表(外区)
     @GetMapping("getriverbywaibyexcel")
-    public void exportRiverByWai(HttpServletResponse response/*,
+    public void exportRiverByWai(HttpServletResponse response,
 	                             @RequestParam("dateS") String dateStart,
 	                             @RequestParam("dateE") String dateEnd,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
-
-        String dateStart = "2018-01-10 08:20";
-        String dateEnd = "2018-02-10 08:20";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
