@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,7 @@ public class RainExcelController extends HttpServlet {
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "column", required = false) String column,
 	                             @RequestParam(name = "sign", required = false) String sign,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly) {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -181,7 +182,7 @@ public class RainExcelController extends HttpServlet {
 
     @GetMapping(value = "rainXbyhour")
     public JsonResult rainXbyHour() throws IOException {
-        return new JsonResult("http://" + ip + "/services/realtime/rainfallexcel/getrainbyhourbyexcel");
+        return new JsonResult("http://"+ip+"/services/realtime/rainfallexcel/getrainbyhourbyexcel");
     }
 
     //导出逐日表
@@ -310,6 +311,8 @@ public class RainExcelController extends HttpServlet {
 
     @GetMapping(value = "rainXbydate")
     public JsonResult rainXbyDate() {
+        System.out.println("----------------");
+        System.out.println("http://" + ip + "/services/realtime/rainfallexcel/getrainbydatebyexcel");
         return new JsonResult("http://" + ip + "/services/realtime/rainfallexcel/getrainbydatebyexcel");
     }
 

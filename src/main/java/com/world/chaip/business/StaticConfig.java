@@ -50,7 +50,8 @@ public class StaticConfig {
             String value = rb.getString(key);
             duankou = value;
         }*/
-        return ipAddress+duankou;
+        //return ipAddress+duankou;
+        return duankou;
     }
 
     /**

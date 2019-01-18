@@ -138,7 +138,6 @@ public class ExportExecls {
                     }
                     if (i == pages - 1 && lastInfo != null) {
                         int lastno = lastInfo.length() / 40 + (lastInfo.length() % 40 == 0 ? 0 : 1);
-                        System.out.println("输出"+lastno);
                         Row lastRow = sheet.createRow(pageDatas.size() + topRows);
                         Cell lastCell1 = lastRow.createCell(0);
                         CellRangeAddress lastAddress = new CellRangeAddress(pageDatas.size() + topRows, pageDatas.size() + topRows + lastno, 0, cols - 1);
@@ -158,6 +157,7 @@ public class ExportExecls {
             sxssfWorkbook.write(out);
             // 关闭输出流
             out.close();
+            System.out.println("导表成功");
         } catch (IOException e) {
             e.printStackTrace();
         }
