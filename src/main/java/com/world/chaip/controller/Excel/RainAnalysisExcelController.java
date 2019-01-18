@@ -151,7 +151,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 32, 5, 17,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 17,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -306,7 +306,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 25, 5, 20,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 20,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -452,7 +452,7 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,4,5,5);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 6, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 61, 5, 6, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {

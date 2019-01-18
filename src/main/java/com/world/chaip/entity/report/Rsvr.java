@@ -78,7 +78,7 @@ public class Rsvr {
 	}
 
 	public String getTm() {
-		return tm;
+		return  tm.substring(0,tm.length()-2);
 	}
 
 	public void setTm(String tm) {

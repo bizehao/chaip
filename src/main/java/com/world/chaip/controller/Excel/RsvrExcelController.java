@@ -1,33 +1,24 @@
 package com.world.chaip.controller.Excel;
 
-import com.world.chaip.business.ExportExcel;
 import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
-import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.excelFormat.DayRsvr;
-import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;
-import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -155,7 +146,7 @@ public class RsvrExcelController {
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 24, 4,8, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 62, 4, 8, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -197,11 +188,9 @@ public class RsvrExcelController {
                 int x = ExportExecls.WEIGHT / 8;
                 for (int i = 0; i < 8; i++) {
                     if (i == 5) {
-                        sheet.setColumnWidth(i, x + 500 * 6);
-                    } else if (i == 7) {
-                        sheet.setColumnWidth(i, x);
-                    } else {
-                        sheet.setColumnWidth(i, x - 500);
+                        sheet.setColumnWidth(i, x + 400 * 7);
+                    }else {
+                        sheet.setColumnWidth(i, x - 400);
                     }
 
                 }
@@ -325,7 +314,7 @@ public class RsvrExcelController {
         String begin = formatter.format(beginTime);
         String time = "时间：" + begin + "时";
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 27, 5,9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 23, 5, 9, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -360,16 +349,13 @@ public class RsvrExcelController {
 
                 titleAddress = new CellRangeAddress(3, 3, 4, 8);
                 sheet.addMergedRegion(titleAddress);
-                int x = 29700 / 8;
-                for (int i = 0; i < 8; i++) {
-                    if (i!=1){
-                        sheet.setColumnWidth(i, x-200 );
-                    }else if (i==7){
-                        sheet.setColumnWidth(i, x+200*5 );
-                    }else{
-                        sheet.setColumnWidth(i, x);
+                int x = ExportExecls.HEIGHT / 9;
+                for (int i = 0; i < 9; i++) {
+                    if (i != 8) {
+                        sheet.setColumnWidth(i, x - 100);
+                    } else {
+                        sheet.setColumnWidth(i, x + 100*8);
                     }
-
                 }
             }
         });

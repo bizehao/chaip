@@ -150,7 +150,7 @@ public class RiverAnalysisExcelController {
 //        ex.export();
 
 
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 25, 5, 9, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 9, ExportExecls.Direction.TRANSVERSE);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -173,7 +173,7 @@ public class RiverAnalysisExcelController {
 				for (int i = 0; i < titleCell.length; i++) {
 					sheet.addMergedRegion(titleCell[i]);
 				}
-				int x = 29700 / 9;
+				int x = ExportExecls.HEIGHT / 9;
 				for (int i = 0; i < 9; i++) {
 					sheet.setColumnWidth(i, x);
 				}

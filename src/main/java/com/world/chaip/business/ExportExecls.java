@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ExportExecls {
 
-    public static final int WEIGHT = 21000; //A4纸宽度
+    public static final int WEIGHT = 25000; //A4纸宽度
     public static final int HEIGHT = 37000; //A4纸高度
 
     private HttpServletResponse response;
@@ -104,10 +104,10 @@ public class ExportExecls {
                     this.sheet = sxssfWorkbook.createSheet(title + i);
                     sheet.setHorizontallyCenter(true); //水平居中
                     sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
-                    sheet.setMargin(HSSFSheet.TopMargin, 0.2);
-                    sheet.setMargin(HSSFSheet.BottomMargin, 0.2);
-	                sheet.setMargin(HSSFSheet.LeftMargin, 0.2);
-	                sheet.setMargin(HSSFSheet.RightMargin, 0.2);
+                    sheet.setMargin(HSSFSheet.TopMargin, 0.05);
+                    sheet.setMargin(HSSFSheet.BottomMargin, 0.05);
+	                sheet.setMargin(HSSFSheet.LeftMargin, 0.05);
+	                sheet.setMargin(HSSFSheet.RightMargin, 0.05);
                     //sheet.setVerticallyCenter(true); //垂直居中
                     //标题
                     CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, cols - 1);
@@ -266,7 +266,7 @@ public class ExportExecls {
         if (fontSize!=0){
             font.setFontHeightInPoints((short)8);
         }else{
-            font.setFontHeightInPoints((short)10);
+            font.setFontHeightInPoints((short)8);
         }
         //设置样式;
         CellStyle style = workbook.createCellStyle();
@@ -307,7 +307,7 @@ public class ExportExecls {
         if (fontSize!=0){
             font.setFontHeightInPoints((short)8);
         }else{
-            font.setFontHeightInPoints((short)10);
+            font.setFontHeightInPoints((short)8);
         }
         //字体加粗
        // font.setBold(true);
