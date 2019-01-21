@@ -39,6 +39,7 @@ public class ExportExecls {
         this.fontSize = fontSize;
     }
 
+
     private int fontSize;//字体大小
 
 
@@ -59,7 +60,7 @@ public class ExportExecls {
         this.datas = datas;
         this.direction = direction;
         this.time = time;
-        this.rows = rows - topRows;
+        this.rows = rows - topRows-1;
         this.topRows = topRows;
         this.cols = cols;
         this.sxssfWorkbook = new HSSFWorkbook();
@@ -74,6 +75,7 @@ public class ExportExecls {
      * 分页处理数据
      */
     public void export(ColumnAndHead columnAndHead) {
+        System.out.println(pages);
         this.columnAndHead = columnAndHead;
         List<Object[]> pageDatas;
         try {
@@ -96,6 +98,15 @@ public class ExportExecls {
                 cellAutograph.setCellValue(time);
                 CellStyle timeStyle = this.getTimeStyle(sxssfWorkbook);
                 cellAutograph.setCellStyle(timeStyle);
+
+                //页数
+                Row colTitleRow = sheet.createRow(rows + topRows);
+                Cell cellLast = colTitleRow.createCell(0);
+                cellLast.setCellValue("共1页/第1页");
+                cellLast.setCellStyle(timeStyle);
+                cellLast.setCellStyle(getTitleStyle(sheet.getWorkbook()));
+                CellRangeAddress timeAddress1 = new CellRangeAddress(rows + topRows, rows + topRows, 0, cols - 1);
+                sheet.addMergedRegion(timeAddress1);
                 //表头
                 this.columnAndHead.colHeadHandler(sheet);
                 sheet.getPrintSetup().setLandscape(direction.state); //设置打印横向
@@ -106,8 +117,8 @@ public class ExportExecls {
                     sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
                     sheet.setMargin(HSSFSheet.TopMargin, 0.05);
                     sheet.setMargin(HSSFSheet.BottomMargin, 0.05);
-	                sheet.setMargin(HSSFSheet.LeftMargin, 0.05);
-	                sheet.setMargin(HSSFSheet.RightMargin, 0.05);
+                    sheet.setMargin(HSSFSheet.LeftMargin, 0.05);
+                    sheet.setMargin(HSSFSheet.RightMargin, 0.05);
                     //sheet.setVerticallyCenter(true); //垂直居中
                     //标题
                     CellRangeAddress titleAddress = new CellRangeAddress(0, 1, 0, cols - 1);
@@ -126,8 +137,9 @@ public class ExportExecls {
                     CellStyle timeStyle = this.getTimeStyle(sxssfWorkbook);
                     cellAutograph.setCellStyle(timeStyle);
                     //表头
-                    this.columnAndHead.colHeadHandler(sheet);
+                   // this.columnAndHead.colHeadHandler(sheet);
 
+                    this.columnAndHead.colHeadHandler(sheet);
                     CellStyle style = getContentStyle(sxssfWorkbook); //内容样式
                     if (i == pages - 1) {
                         pageDatas = datas.subList(i * rows, datas.size());
@@ -146,10 +158,21 @@ public class ExportExecls {
                         CellStyle lastRowStyle = getLastRowStyle(sheet.getWorkbook());
                         lastCell1.setCellStyle(lastRowStyle);
                     }
+                    //页数
+                    Row colTitleRow = sheet.createRow(rows + topRows);
+                    Cell cellLast = colTitleRow.createCell(0);
+                    cellLast.setCellValue("共" + pages + "页/第" + (i+1) + "页");
+                    cellLast.setCellStyle(timeStyle);
+                    cellLast.setCellStyle(getTitleStyle(sheet.getWorkbook()));
+                    CellRangeAddress timeAddress1 = new CellRangeAddress(rows + topRows, rows + topRows, 0, cols - 1);
+                    sheet.addMergedRegion(timeAddress1);
+
                     setCellRangeAddressStyle(sheet, titleAddress); //标题栏(合并单元格)样式
                     setCellRangeAddressStyle(sheet, timeAddress); //时间(合并单元格)样式
                     sheet.getPrintSetup().setLandscape(direction.state); //设置打印横向
                 }
+
+
             }
             response.setContentType("application/x-msdownload");
             response.setHeader("Content-Disposition", "attachment; filename="
@@ -236,10 +259,10 @@ public class ExportExecls {
         //设置字体名字
         font.setFontName("Courier New");
         //设置字体大小
-        if (fontSize!=0){
-            font.setFontHeightInPoints((short)fontSize);
-        }else{
-            font.setFontHeightInPoints((short)10);
+        if (fontSize != 0) {
+            font.setFontHeightInPoints((short) fontSize);
+        } else {
+            font.setFontHeightInPoints((short) 10);
         }
         //设置样式;
         CellStyle style = workbook.createCellStyle();
@@ -263,10 +286,10 @@ public class ExportExecls {
         //设置字体名字
         font.setFontName("Courier New");
         //设置字体大小
-        if (fontSize!=0){
-            font.setFontHeightInPoints((short)8);
-        }else{
-            font.setFontHeightInPoints((short)8);
+        if (fontSize != 0) {
+            font.setFontHeightInPoints((short) 8);
+        } else {
+            font.setFontHeightInPoints((short) 8);
         }
         //设置样式;
         CellStyle style = workbook.createCellStyle();
@@ -304,13 +327,13 @@ public class ExportExecls {
         // 设置字体
         Font font = workbook.createFont();
         //设置字体大小
-        if (fontSize!=0){
-            font.setFontHeightInPoints((short)8);
-        }else{
-            font.setFontHeightInPoints((short)8);
+        if (fontSize != 0) {
+            font.setFontHeightInPoints((short) 8);
+        } else {
+            font.setFontHeightInPoints((short) 8);
         }
         //字体加粗
-       // font.setBold(true);
+        // font.setBold(true);
         //设置字体名字
         font.setFontName("Courier New");
         //设置样式;
