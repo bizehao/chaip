@@ -44,9 +44,15 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) {
 
 
+        /*String dateStart = "2018-07-28";
+        String dateEnd = "2018-08-01";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -231,9 +237,13 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws Exception {
+            @RequestParam(name="ly",required = false)String ly) {
 
-
+        /*String date = "2018-07-31";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();

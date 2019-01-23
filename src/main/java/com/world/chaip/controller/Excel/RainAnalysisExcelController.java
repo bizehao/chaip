@@ -48,9 +48,6 @@ public class RainAnalysisExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
-
-
-
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);

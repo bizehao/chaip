@@ -215,7 +215,7 @@
         select A.STCD,AVW w from RP_RSVRAV_R A
         <where>
             <![CDATA[
-				IDTM > #{time1} and IDTM <= #{time2}
+				IDTM >= #{time1} and IDTM < #{time2}
 			]]>
             and STTDRCD = 1
         </where>

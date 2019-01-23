@@ -33,12 +33,6 @@ public class RsvrAnalysisController {
 			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 			@RequestParam(name = "ly", required = false) String ly) {
 
-        /*String dateStart = "2018-02-11";
-        String dateEnd = "2018-07-20";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";*/
-
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();
 		List<String> stcdlist = new ArrayList<String>();
@@ -175,8 +169,8 @@ public class RsvrAnalysisController {
 			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 			@RequestParam(name = "ly", required = false) String ly) throws ParseException {
 
-        /*String dateStart = "2017-02-11";
-        String dateEnd = "2017-06-12";
+        /*String dateStart = "2018-07-11";
+        String dateEnd = "2018-07-11";
         String adcd = "X";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";*/
