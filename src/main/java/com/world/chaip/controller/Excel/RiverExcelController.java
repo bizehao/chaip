@@ -42,13 +42,12 @@ public class RiverExcelController {
     //导出河道表(实时库)
     @GetMapping("getriverbyitembyexcel")
     public void exportRiverByItem(HttpServletResponse response,
-                       @RequestParam("dateS")String dateStart,
-                       @RequestParam("dateE")String dateEnd,
-                       @RequestParam(name="adcd",required=false)String adcd,
-                       @RequestParam(name="systemTypes",required=false)String systemTypes,
-                       @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-                                  @RequestParam(name="ly",required = false)String ly) throws Exception {
-
+                                  @RequestParam("dateS") String dateStart,
+                                  @RequestParam("dateE") String dateEnd,
+                                  @RequestParam(name = "adcd", required = false) String adcd,
+                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
         String benqu = "and c.dq=31 and c.db in (2,3)";
@@ -198,12 +197,12 @@ public class RiverExcelController {
     //导出河道表(本区)
     @GetMapping("getriverbybenbyexcel")
     public void exportRiverByBen(HttpServletResponse response,
-	                             @RequestParam("dateS") String dateStart,
-	                             @RequestParam("dateE") String dateEnd,
-	                             @RequestParam(name = "adcd", required = false) String adcd,
-	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam("dateS") String dateStart,
+                                 @RequestParam("dateE") String dateEnd,
+                                 @RequestParam(name = "adcd", required = false) String adcd,
+                                 @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                 @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -263,7 +262,7 @@ public class RiverExcelController {
         }
         List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日水情(河道)";
-        String[] rowsName = new String[]{"河名", "站名", "水位(m)", "流量(m³/s)", "数据时间"};
+        String[] rowsName = new String[]{"站名", "水位(m)", "河名", "流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
 //        for (int i = 0; i < a.size(); i++) {
@@ -345,9 +344,9 @@ public class RiverExcelController {
         for (int i = 0; i < a.size(); i++) {
             objects = new Object[rowsName.length];
             River item = a.get(i);
-            objects[0] = item.getRvnm();
-            objects[1] = item.getStnm();
-            objects[2] = item.getZ();
+            objects[0] = item.getStnm();
+            objects[1] = item.getZ();
+            objects[2] = item.getRvnm();
             objects[3] = item.getQ();
             objects[4] = item.getTm();
             dataList.add(objects);
@@ -381,12 +380,12 @@ public class RiverExcelController {
                 }
                 int x = ExportExecls.WEIGHT / rowsName.length;
                 for (int i = 0; i < rowsName.length; i++) {
-                    if (i==2||i==3) {
+                    if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
-                    }else if (i==4){
-                        sheet.setColumnWidth(i, x + 400*2);
-                    }else{
-                        sheet.setColumnWidth(i, x );
+                    } else if (i == 4) {
+                        sheet.setColumnWidth(i, x + 400 * 2);
+                    } else {
+                        sheet.setColumnWidth(i, x);
                     }
                 }
             }
@@ -404,12 +403,12 @@ public class RiverExcelController {
     //导出河道表(外区)
     @GetMapping("getriverbywaibyexcel")
     public void exportRiverByWai(HttpServletResponse response,
-	                             @RequestParam("dateS") String dateStart,
-	                             @RequestParam("dateE") String dateEnd,
-	                             @RequestParam(name = "adcd", required = false) String adcd,
-	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam("dateS") String dateStart,
+                                 @RequestParam("dateE") String dateEnd,
+                                 @RequestParam(name = "adcd", required = false) String adcd,
+                                 @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                 @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -469,7 +468,7 @@ public class RiverExcelController {
         }
         List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日外区水情(河道)";
-        String[] rowsName = new String[]{"河名", "站名", "水位(m)", "流量(m³/s)", "数据时间"};
+        String[] rowsName = new String[]{"站名", "水位(m)", "河名", "流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
 		/*for (int i = 0; i < a.size(); i++) {
@@ -505,9 +504,9 @@ public class RiverExcelController {
         for (int i = 0; i < a.size(); i++) {
             objects = new Object[rowsName.length];
             River item = a.get(i);
-            objects[0] = item.getRvnm();
-            objects[1] = item.getStnm();
-            objects[2] = item.getZ();
+            objects[0] = item.getStnm();
+            objects[1] = item.getZ();
+            objects[2] = item.getRvnm();
             objects[3] = item.getQ();
             objects[4] = item.getTm();
             dataList.add(objects);
@@ -541,12 +540,12 @@ public class RiverExcelController {
                 }
                 int x = ExportExecls.WEIGHT / rowsName.length;
                 for (int i = 0; i < rowsName.length; i++) {
-                    if (i==2||i==3) {
+                    if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
-                    }else if (i==4){
-                        sheet.setColumnWidth(i, x + 400*2);
-                    }else{
-                        sheet.setColumnWidth(i, x );
+                    } else if (i == 4) {
+                        sheet.setColumnWidth(i, x + 400 * 2);
+                    } else {
+                        sheet.setColumnWidth(i, x);
                     }
                 }
             }
