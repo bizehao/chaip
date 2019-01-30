@@ -1,10 +1,8 @@
 package com.world.chaip.controller.Excel;
 
-import com.world.chaip.business.ExportExcel;
 import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
-import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.excelFormat.DayRainExcel;
 import com.world.chaip.entity.excelFormat.DayRainExcelX;
 import com.world.chaip.entity.report.gson.PptnGson;
@@ -15,23 +13,15 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

@@ -1,6 +1,5 @@
 package com.world.chaip.controller.Excel;
 
-import com.world.chaip.business.ExportExcel;
 import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.DaybyHourRainfall;
@@ -12,15 +11,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

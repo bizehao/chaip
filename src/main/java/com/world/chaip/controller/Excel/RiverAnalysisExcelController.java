@@ -1,10 +1,8 @@
 package com.world.chaip.controller.Excel;
 
-import com.world.chaip.business.ExportExcel;
 import com.world.chaip.business.ExportExecls;
 import com.world.chaip.business.StaticConfig;
 import com.world.chaip.entity.Exchange.RiverExchange;
-import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.service.RiverAnalysisService;
 import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.JsonResult;

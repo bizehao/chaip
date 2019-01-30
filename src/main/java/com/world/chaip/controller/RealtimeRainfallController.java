@@ -1,35 +1,20 @@
 package com.world.chaip.controller;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.*;
 
-import com.world.chaip.business.ExportExcel;
 import com.world.chaip.entity.Rainfall;
-import com.world.chaip.entity.excelFormat.DayRainExcel;
-import com.world.chaip.entity.excelFormat.DayRainExcelX;
 import com.world.chaip.entity.report.gson.PptnGson;
 import com.world.chaip.entity.report.gson.RainEc;
 import com.world.chaip.util.JsonResult;
-import org.apache.juli.logging.Log;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.world.chaip.entity.DaybyHourRainfall;
-import com.world.chaip.entity.baseinfo.SystemType;
 import com.world.chaip.service.RainfallService;
 import com.world.chaip.util.DateUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("services/realtime/rainfall")
