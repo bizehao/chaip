@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.world.chaip.mapper.FlowShowMapper">
+
+	<select id="getFlowSpeed01" resultType="com.world.chaip.entity.FlowSpeed">
+		select row_number() over(order by adnm) serial,adnm,b.stcd,b.stnm,tm,ls1,ls2,ls3,ls4,ls5,z
+		from sq_LS_S
+		inner join ST_STBPRP_B b on sq_LS_S.STCD = b.STCD
+		inner join DJ_AD on b.ADDVCD = DJ_AD.ADCD
+		inner join DJ_EXP c on c.stcd = b.STCD
+		where tm between #{beginTime} and #{endTime}
+		<if test="adcd != null and adcd.size() > 0">
+			and b.addvcd IN
+			<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+				#{adcd}
+			</foreach>
+		</if>
+		<if test="stcdOrStnm!=null">
+			<choose>
+				<when test="stcdOrStnm.size() > 1">
+					and b.stcd IN
+					<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+					         close=")">
+						#{stcdOrStnm}
+					</foreach>
+					or b.stnm IN
+					<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+					         close=")">
+						#{stcdOrStnm}
+					</foreach>
+				</when>
+				<otherwise>
+					and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+				</otherwise>
+			</choose>
+		</if>
+		<if test="systemTypes != null and systemTypes.size() > 0">
+			and c.lx IN
+			<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+				#{systemTypes}
+			</foreach>
+		</if>
+		<if test="ly != null and ly.size() > 0">
+			and c.dx IN
+			<foreach item="ly" index="index" collection="ly" open="(" separator="," close=")">
+				#{ly}
+			</foreach>
+		</if>
+	</select>
+	<select id="getFlowSpeed02" resultType="com.world.chaip.entity.FlowSpeed">
+		select row_number() over(order by adnm) serial,adnm,b.stcd,b.stnm,tm,ls1,ls2,ls3,ls4,ls5,z
+		from
+		(
+		select a.stcd,a.tm,ls1,ls2,ls3,ls4,ls5,z
+		from sq_LS_S inner join (select stcd, Max(tm) tm
+		from (select stcd,tm from sq_LS_S where tm &lt;= #{time}) a
+		group by stcd) a
+		on sq_LS_S.STCD = a.STCD and sq_LS_S.TM = a.tm
+		) a
+		inner join ST_STBPRP_B b on a.STCD = b.STCD
+		inner join DJ_AD on b.ADDVCD = DJ_AD.ADCD
+		inner join DJ_EXP c on c.stcd = b.STCD
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach item="ly" index="index" collection="ly" open="(" separator="," close=")">
+						#{ly}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</select>
+</mapper>

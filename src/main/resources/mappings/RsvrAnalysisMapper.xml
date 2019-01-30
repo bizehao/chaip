@@ -60,12 +60,12 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, sum(AVINQ) AVINQ, sum(AVOTQ) AVOTQ from RP_RSVRAV_R A
+        select A.STCD, sum(INQ) AVINQ, sum(OTQ) AVOTQ from RP_RSVR_R A
         <where>
             <![CDATA[
-				IDTM > #{beginTime} AND IDTM <= #{endTime}
+				TM > #{beginTime} AND TM <= #{endTime}
 			]]>
-            and STTDRCD = 1
+            /*and STTDRCD = 1*/
         </where>
         group by stcd
         )PP
@@ -130,14 +130,14 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD, avrz rz, avw w from RP_RSVRAV_R A
+        select A.STCD, AVG(rz) rz, AVG(w) w from RP_RSVR_R A
         <where>
             <![CDATA[
-				IDTM = #{time}
+				TM >= #{beginTime} and TM < #{endTime}
 			]]>
-            and sttdrcd = '1'
+            /*and sttdrcd = '1'*/
         </where>
-        group by stcd,avrz,avw
+        group by stcd
         )PP
         on ST.STCD=PP.STCD ORDER BY STCD
     </select>
@@ -212,14 +212,13 @@
         ) st
         LEFT JOIN
         (
-        select A.STCD,AVW w from RP_RSVRAV_R A
+        select A.STCD,AVG(W) w from RP_RSVR_R A
         <where>
             <![CDATA[
-				IDTM >= #{time1} and IDTM < #{time2}
+				TM >= #{time1} and TM < #{time2}
 			]]>
-            and STTDRCD = 1
         </where>
-        group by stcd,AVW
+        group by stcd
         )PP
         on ST.STCD=PP.STCD
     </select>

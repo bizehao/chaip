@@ -10,6 +10,11 @@ public class DateUtils {
 		SimpleDateFormat df = new SimpleDateFormat(formatString);
 		return df.parse(dateString);
 	}
+
+	public static String format(Date dateString, String formatString) throws ParseException {
+		SimpleDateFormat df = new SimpleDateFormat(formatString);
+		return df.format(dateString);
+	}
 	
 	public static Date getDateBefore(Date d, int day) {
 		Calendar now = Calendar.getInstance();

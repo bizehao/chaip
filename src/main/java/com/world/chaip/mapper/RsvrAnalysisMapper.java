@@ -33,14 +33,14 @@ public interface RsvrAnalysisMapper {
                                                  @Param("ly") List<String> ly);
 
     /**
-     * 水库水量分析表
-     * @param time
+     * 水库水量分析表 单日
      * @param adcd
      * @param systemTypes
      * @param stcdOrStnm
      * @return
      */
-    List<Rsvr> getRsvrWaterAnalysisRi(@Param("time") Date time,
+    List<Rsvr> getRsvrWaterAnalysisRi(@Param("beginTime") Date beginTime,
+                                      @Param("endTime") Date endTime,
                                       @Param("adcd") List<String> adcd,
                                       @Param("systemTypes") List<String> systemTypes,
                                       @Param("stcdOrStnm") List<String> stcdOrStnm,

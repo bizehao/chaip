@@ -390,8 +390,6 @@ public class RiverExcelController {
                 }
             }
         });
-
-        riverXbyBen();
     }
 
     //河道(本区)
@@ -550,9 +548,6 @@ public class RiverExcelController {
                 }
             }
         });
-
-
-        riverXbyBen();
     }
 
     //河道 (外区)
