@@ -263,110 +263,33 @@ public class RainExcelController extends HttpServlet {
         String b = rainfallService.getDaybyDateJS(date, adcdlist, typelist, stcdlist, "ST_PPTN_R", benqu, db, lylist);
         String title = "日雨量统计报表";
         List<Object[]> dataList = new ArrayList<Object[]>();
-        Object[] objects;
+        Object[] objects = null;
+        int cols1 = 11; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 2; //一行多少个重复的
 
-//        for (int i = 0; i < a.getDayRainList().size(); i++) { //5
-//            DayRainExcel.DayRain item = a.getDayRainList().get(i);
-//            objects = new Object[5];
-//            for (int j = 0; j < item.getDayRainArray().size(); j++) {
-//                if (j == 0) {
-//                    objects[0] = item.getAdnm();
-//                    objects[1] = item.getDayRainArray().get(j)[0];
-//                    objects[2] = item.getDayRainArray().get(j)[1];
-//                } else if (j % 2 == 0) {
-//                    objects = new Object[5];
-//                    objects[0] = "";
-//                    objects[1] = item.getDayRainArray().get(j)[0];
-//                    objects[2] = item.getDayRainArray().get(j)[1];
-//                } else {
-//                    objects[3] = item.getDayRainArray().get(j)[0];
-//                    objects[4] = item.getDayRainArray().get(j)[1];
-//                }
-//                if (j == item.getDayRainArray().size() - 1 || j % 2 == 0) {
-//                    dataList.add(objects);
-//                }
-//            }
-//        }
-        List<String> stringList = new ArrayList<>();
-        for (int i = 0; i < a.getDayRainList().size(); i++) {
+        int index = 0;
+        for (int i = 0; i < a.getDayRainList().size(); i++) { //5
             DayRainExcel.DayRain item = a.getDayRainList().get(i);
-            String manage = "";
-            item.getAdnm();
-            manage += item.getAdnm() + ",";
-            List<Object[]> objectList = item.getDayRainArray();
-            for (int j = 0; j < objectList.size(); j++) {
-                Object[] manage1 = objectList.get(j);
-                Object manage2 = manage1[0];
-                Object manage3 = manage1[1];
-                manage += manage2.toString() + ",";
-                manage += manage3.toString() + ",";
-            }
-            stringList.add(manage);
-        }
+            for (int j = 0; j < item.getDayRainArray().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) dataList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
 
-//        for (int i = 0; i < stringList.size(); i++) {
-//            System.out.println(stringList.get(i));
-//        }
-
-        for (int i = 0; i < stringList.size(); i++) {
-            String[] count = stringList.get(i).split(",");
-            if (count.length == 11) {
-                objects = new Object[11];
-                objects[0] = count[0];
-                objects[1] = count[1];
-                objects[2] = count[2];
-                objects[3] = count[3];
-                objects[4] = count[4];
-                objects[5] = count[5];
-                objects[6] = count[6];
-                objects[7] = count[7];
-                objects[8] = count[8];
-                objects[9] = count[9];
-                objects[10] = count[10];
-                dataList.add(objects);
-            } else if (count.length < 11) {
-                objects = new Object[11];
-                for (int j = 0; j < count.length; j++) {
-                    if (count[j] != null) {
-                        objects[j] = count[j];
-                    }
+                } else if (j % cols3 == 0) {
+                    dataList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
-                dataList.add(objects);
-            } else if (count.length > 11) {
-                objects = new Object[11];
-                objects[0] = count[0];
-                int num=1;
-                for (int j=1;j<count.length-1;j++){
-
-                    if (count[j]!=null){
-                        objects[num]=count[j];
-                        num+=1;
-                    }
-                    if (num>10){
-                        num=1;
-                        dataList.add(objects);
-                        objects = new Object[11];
-                    }
-                    if (j==(count.length-2)){
-                        if (count[j+1]!=null)
-                            objects[num]=count[j+1];
-                       // System.out.println(bb[j+1]);
-                        dataList.add(objects);
-                    }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getDayRainArray().get(j)[k];
                 }
-
+                if (j == item.getDayRainArray().size() - 1) dataList.add(objects);
             }
         }
-
-//        for (int i = 0; i < dataList.size(); i++) {
-//            Object[] bb = dataList.get(i);
-//            for (int j = 0; j < bb.length; j++) {
-//                if (bb[j] != null) {
-//                    System.out.print(bb[j] + "\t");
-//                }
-//            }
-//            System.out.println("");
-//        }
 
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -520,13 +443,6 @@ public class RainExcelController extends HttpServlet {
         for (int i = 0; i < stringList.size(); i++) {
             System.out.println(stringList.get(i));
         }
-
-
-
-
-
-
-
 
 
         String title = "旬雨量统计报表";
