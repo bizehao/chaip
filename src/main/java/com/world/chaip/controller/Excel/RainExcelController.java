@@ -287,7 +287,9 @@ public class RainExcelController extends HttpServlet {
                 for (int k = 0; k < cols4; k++) {
                     objects[++index] = item.getDayRainArray().get(j)[k];
                 }
-                if (j == item.getDayRainArray().size() - 1) dataList.add(objects);
+            }
+            if (i == a.getDayRainList().size() - 1) {
+                dataList.add(objects);
             }
         }
 
@@ -295,7 +297,7 @@ public class RainExcelController extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 40, 4, 11, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 57, 4, 11, ExportExecls.Direction.VERTICAL);
         execlse.setLastInfo(b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -313,7 +315,7 @@ public class RainExcelController extends HttpServlet {
                     colTitle2.setCellValue("雨量(mm)");
                     colTitle2.setCellStyle(style);
                 }
-                int x = ExportExecls.HEIGHT / 12;
+                int x = ExportExecls.WEIGHT / 12;
                 for (int i = 0; i < 12; i++) {
                     sheet.setColumnWidth(i, x);
                 }
@@ -399,52 +401,113 @@ public class RainExcelController extends HttpServlet {
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
 
         List<Object[]> objectList = new ArrayList<>();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
-                    index = 0;
-                } else if (m == x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                }
-            }
-        }
-        List<String> stringList = new ArrayList<>();
-        for (int i = 0; i < dayRainXES.size(); i++) {
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
             DayRainExcelX.DayRainX item = dayRainXES.get(i);
-            String manage = "";
-            item.getAdnm();
-            manage += item.getAdnm() + ",";
-            List<Object[]> objectList2 = item.getRainList();
-            for (int j = 0; j < objectList2.size(); j++) {
-                Object[] manage1 = objectList2.get(j);
-                Object manage2 = manage1[0];
-                Object manage3 = manage1[1];
-                Object manage4 = manage1[2];
-                System.out.println(manage4.toString());
-                manage += manage2.toString() + ",";
-                manage += manage3.toString() + ",";
-                manage += manage4.toString() + ",";
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
+                    objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
+                }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
             }
-            stringList.add(manage);
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
+            }
         }
+//        List<String> stringList = new ArrayList<>();
+//        for (int i = 0; i < dayRainXES.size(); i++) {
+//            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+//            String manage = "";
+//            item.getAdnm();
+//            manage += item.getAdnm() + ",";
+//            List<Object[]> objectList2 = item.getRainList();
+//            for (int j = 0; j < objectList2.size(); j++) {
+//                Object[] manage1 = objectList2.get(j);
+//                Object manage2 = manage1[0];
+//                Object manage3 = manage1[1];
+//                Object manage4 = manage1[2];
+//                System.out.println(manage4.toString());
+//                manage += manage2.toString() + ",";
+//                manage += manage3.toString() + ",";
+//                manage += manage4.toString() + ",";
+//            }
+//            stringList.add(manage);
+//        }
+//
+////        for (int i = 0; i < stringList.size(); i++) {
+////            System.out.println(stringList.get(i));
+////        }
+//
+//        for (int i = 0; i < stringList.size(); i++) {
+//            String[] count = stringList.get(i).split(",");
+//            if (count.length == 16) {
+//                objects = new Object[16];
+//                for(int j=0;j<objects.length;j++){
+//                    objects[j] = count[j];
+//
+//                }
+//
+//                objectList.add(objects);
+//            } else if (count.length < 16) {
+//                objects = new Object[16];
+//                for (int j = 0; j < count.length; j++) {
+//                    if (count[j] != null) {
+//                        objects[j] = count[j];
+//                    }
+//                }
+//                objectList.add(objects);
+//            } else if (count.length > 16) {
+//                objects = new Object[16];
+//                objects[0] = count[0];
+//                int num=1;
+//                for (int j=1;j<count.length-1;j++){
+//
+//                    if (count[j]!=null){
+//                        objects[num]=count[j];
+//                        num+=1;
+//                    }
+//                    if (num>15){
+//                        num=1;
+//                        objectList.add(objects);
+//                        objects = new Object[16];
+//                    }
+//                    if (j==(count.length-2)){
+//                        if (count[j+1]!=null)
+//                            objects[num]=count[j+1];
+//                        // System.out.println(bb[j+1]);
+//                        objectList.add(objects);
+//                    }
+//                }
+//
+//            }
+//        }
 
-        for (int i = 0; i < stringList.size(); i++) {
-            System.out.println(stringList.get(i));
-        }
 
-
+//        for (int i = 0; i < objectList.size(); i++) {
+//            Object[] bb = objectList.get(i);
+//            for (int j = 0; j < bb.length; j++) {
+//                if (bb[j] != null) {
+//                    System.out.print(bb[j] + "\t");
+//                }
+//            }
+//            System.out.println("");
+//        }
         String title = "旬雨量统计报表";
         //处理时间
         Date Time;
@@ -464,7 +527,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(Time);
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -474,7 +537,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -482,11 +545,11 @@ public class RainExcelController extends HttpServlet {
                     cell2.setCellValue("雨量(mm)");
                     cell2.setCellStyle(style);
                     Cell cell3 = row.createCell(3 * i + 3);
-                    cell3.setCellValue("站名");
+                    cell3.setCellValue("降雨天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -500,12 +563,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表
     @GetMapping("getrainbymonthbyexcel")
-    public void exportRainByMonth(HttpServletResponse response,
+    public void exportRainByMonth(HttpServletResponse response/*,
                                   @RequestParam("date") String dateStr,
                                   @RequestParam(name = "adcd", required = false) String adcd,
                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                  @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -513,6 +582,7 @@ public class RainExcelController extends HttpServlet {
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
+
 
         System.out.println("时间" + dateStr);
         System.out.println("县域" + adcd);
@@ -570,25 +640,33 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
 
@@ -603,7 +681,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -613,7 +691,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -621,11 +699,11 @@ public class RainExcelController extends HttpServlet {
                     cell2.setCellValue("雨量(mm)");
                     cell2.setCellStyle(style);
                     Cell cell3 = row.createCell(3 * i + 3);
-                    cell3.setCellValue("站名");
+                    cell3.setCellValue("降雨天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -639,12 +717,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表
     @GetMapping("getrainbyyearbyexcel")
-    public void exportRainByYear(HttpServletResponse response,
+    public void exportRainByYear(HttpServletResponse response/*,
                                  @RequestParam("date") String dateStr,
                                  @RequestParam(name = "adcd", required = false) String adcd,
                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -703,25 +787,33 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
 
@@ -734,7 +826,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(btm);
         String time = "时间：" + begin;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -744,7 +836,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -752,11 +844,11 @@ public class RainExcelController extends HttpServlet {
                     cell2.setCellValue("雨量(mm)");
                     cell2.setCellStyle(style);
                     Cell cell3 = row.createCell(3 * i + 3);
-                    cell3.setCellValue("站名");
+                    cell3.setCellValue("降雨天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -770,13 +862,22 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表
     @GetMapping("getrainbytimebyexcel")
-    public void exportRainByTime(HttpServletResponse response,
+    public void exportRainByTime(HttpServletResponse response/*,
                                  @RequestParam("dateS") String dateStart,
                                  @RequestParam("dateE") String dateEnd,
                                  @RequestParam(name = "adcd", required = false) String adcd,
                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+
+        String dateStart = "2019-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
+
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -845,25 +946,33 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
         //处理时间
@@ -880,7 +989,7 @@ public class RainExcelController extends HttpServlet {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -890,7 +999,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -901,15 +1010,9 @@ public class RainExcelController extends HttpServlet {
                     cell3.setCellValue("最近1小时雨量");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
-                    if (i == 2 || i == 5) {
-                        sheet.setColumnWidth(i, x - 500);
-                    } else if (i == 3 || i == 6) {
-                        sheet.setColumnWidth(i, x + 500);
-                    } else {
-                        sheet.setColumnWidth(i, x);
-                    }
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
+                    sheet.setColumnWidth(i, x);
                 }
             }
         });
@@ -967,12 +1070,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐日表(专业)
     @GetMapping("getrainbydatebyexcelzy")
-    public void exportRainByDateZY(HttpServletResponse response,
+    public void exportRainByDateZY(HttpServletResponse response/*,
                                    @RequestParam("date") String dateStr,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1084,35 +1193,40 @@ public class RainExcelController extends HttpServlet {
 //		ex.export();
         String title = "日雨量统计报表";
         List<Object[]> dataList = new ArrayList<Object[]>();
-        Object[] objects;
+        Object[] objects = null;
+        int cols1 = 11; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 2; //一行多少个重复的
 
+        int index = 0;
         for (int i = 0; i < a.getDayRainList().size(); i++) { //5
             DayRainExcel.DayRain item = a.getDayRainList().get(i);
-            objects = new Object[5];
             for (int j = 0; j < item.getDayRainArray().size(); j++) {
                 if (j == 0) {
-                    objects[0] = item.getAdnm();
-                    objects[1] = item.getDayRainArray().get(j)[0];
-                    objects[2] = item.getDayRainArray().get(j)[1];
-                } else if (j % 2 == 0) {
-                    objects = new Object[5];
-                    objects[0] = "";
-                    objects[1] = item.getDayRainArray().get(j)[0];
-                    objects[2] = item.getDayRainArray().get(j)[1];
-                } else {
-                    objects[3] = item.getDayRainArray().get(j)[0];
-                    objects[4] = item.getDayRainArray().get(j)[1];
-                }
-                if (j == item.getDayRainArray().size() - 1 || j % 2 == 0) {
+                    if (objects != null) dataList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     dataList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getDayRainArray().get(j)[k];
+                }
+            }
+            if (i == a.getDayRainList().size() - 1) {
+                dataList.add(objects);
             }
         }
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 61, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 56, 4, 11, ExportExecls.Direction.VERTICAL);
         execlse.setLastInfo(b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1122,7 +1236,7 @@ public class RainExcelController extends HttpServlet {
                 Cell colTitle0 = colTitleRow.createCell(0);
                 colTitle0.setCellValue("县名");
                 colTitle0.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell colTitle1 = colTitleRow.createCell(2 * i + 1);
                     colTitle1.setCellValue("站名");
                     colTitle1.setCellStyle(style);
@@ -1130,8 +1244,8 @@ public class RainExcelController extends HttpServlet {
                     colTitle2.setCellValue("雨量(mm)");
                     colTitle2.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 5;
-                for (int i = 0; i < 5; i++) {
+                int x = ExportExecls.WEIGHT / 12;
+                for (int i = 0; i < 11; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -1145,12 +1259,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表(专业)
     @GetMapping("getrainbyxunbyexcelzy")
-    public void exportRainByXunZY(HttpServletResponse response,
+    public void exportRainByXunZY(HttpServletResponse response/*,
                                   @RequestParam("date") String dateStr,
                                   @RequestParam(name = "adcd", required = false) String adcd,
                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                  @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
 
         String benqu = "";
@@ -1233,25 +1353,33 @@ public class RainExcelController extends HttpServlet {
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
 
         List<Object[]> objectList = new ArrayList<>();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
         String title = "旬雨量统计报表";
@@ -1273,7 +1401,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(Time);
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1283,7 +1411,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -1294,8 +1422,8 @@ public class RainExcelController extends HttpServlet {
                     cell3.setCellValue("降水天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -1309,12 +1437,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表(专业)
     @GetMapping("getrainbymonthbyexcelzy")
-    public void exportRainByMonthZY(HttpServletResponse response,
+    public void exportRainByMonthZY(HttpServletResponse response/*,
                                     @RequestParam("date") String dateStr,
                                     @RequestParam(name = "adcd", required = false) String adcd,
                                     @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                     @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                    @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                    @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1390,28 +1524,35 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
+                }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
                 }
             }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
+            }
         }
-
         //处理时间
         Date beginTime = null;
         Calendar now = Calendar.getInstance();
@@ -1423,7 +1564,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1433,7 +1574,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -1444,8 +1585,8 @@ public class RainExcelController extends HttpServlet {
                     cell3.setCellValue("降水天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -1459,13 +1600,19 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表(专业)
     @GetMapping("getrainbyyearbyexcelzy")
-    public void exportRainByYearZY(HttpServletResponse response,
+    public void exportRainByYearZY(HttpServletResponse response/*,
                                    @RequestParam("date") String dateStr,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1549,25 +1696,33 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
 
@@ -1580,7 +1735,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(btm);
         String time = "时间：" + begin;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1590,7 +1745,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -1601,8 +1756,8 @@ public class RainExcelController extends HttpServlet {
                     cell3.setCellValue("降水天数");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -1618,15 +1773,21 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表(专业)
     @GetMapping("getrainbytimebyexcelzy")
-    public void exportRainByTimeZT(HttpServletResponse response,
+    public void exportRainByTimeZT(HttpServletResponse response/*,
                                    @RequestParam("dateS") String dateStart,
                                    @RequestParam("dateE") String dateEnd,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
 
+        String dateStart = "2019-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
         System.out.println("开始" + dateStart);
         System.out.println("结束" + dateEnd);
 
@@ -1722,25 +1883,33 @@ public class RainExcelController extends HttpServlet {
         //处理List<Object[]>;
         List<Object[]> objectList = new ArrayList<>();
         List<DayRainExcelX.DayRainX> dayRainXES = a.getDayRainXList();
-        Object[] objects;
-        int len = 7;
-        int index;
-        for (DayRainExcelX.DayRainX x : dayRainXES) {
-            index = 0;
-            objects = new Object[7];
-            objects[index] = x.getAdnm();
-            for (int m = 0; m < x.getRainList().size(); m++) {
-                for (int k = 0; k < x.getRainList().get(m).length; k++) {
-                    objects[++index] = x.getRainList().get(m)[k];
-                }
-                if (index == len - 1 && m != x.getRainList().size() - 1) {
-                    objectList.add(objects);
-                    objects = new Object[7];
-                    objects[0] = "";
+        Object[] objects = null;
+        int cols1 = 16; //总格子数
+        int cols3 = 5; //重复的单个的格子树
+        int cols4 = 3; //一行多少个重复的
+
+        int index = 0;
+        for (int i = 0; i < dayRainXES.size(); i++) { //5
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            for (int j = 0; j < item.getRainList().size(); j++) {
+                if (j == 0) {
+                    if (objects != null) objectList.add(objects);
                     index = 0;
-                } else if (m == x.getRainList().size() - 1) {
+                    objects = new Object[cols1];
+                    objects[index] = item.getAdnm();
+
+                } else if (j % cols3 == 0) {
                     objectList.add(objects);
+                    index = 0;
+                    objects = new Object[cols1];
+                    objects[index] = "";
                 }
+                for (int k = 0; k < cols4; k++) {
+                    objects[++index] = item.getRainList().get(j)[k];
+                }
+            }
+            if (i == dayRainXES.size() - 1) {
+                objectList.add(objects);
             }
         }
         //处理时间
@@ -1757,7 +1926,7 @@ public class RainExcelController extends HttpServlet {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 61, 4, 7, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1767,7 +1936,7 @@ public class RainExcelController extends HttpServlet {
                 Cell cell = row.createCell(0);
                 cell.setCellValue("县名");
                 cell.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell cell1 = row.createCell(3 * i + 1);
                     cell1.setCellValue("站名");
                     cell1.setCellStyle(style);
@@ -1778,15 +1947,9 @@ public class RainExcelController extends HttpServlet {
                     cell3.setCellValue("最近1小时雨量");
                     cell3.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 7;
-                for (int i = 0; i < 7; i++) {
-                    if (i == 2 || i == 5) {
-                        sheet.setColumnWidth(i, x - 500);
-                    } else if (i == 3 || i == 6) {
-                        sheet.setColumnWidth(i, x + 500);
-                    } else {
-                        sheet.setColumnWidth(i, x);
-                    }
+                int x = ExportExecls.WEIGHT / 17;
+                for (int i = 0; i < 16; i++) {
+                    sheet.setColumnWidth(i, x);
                 }
             }
         });
