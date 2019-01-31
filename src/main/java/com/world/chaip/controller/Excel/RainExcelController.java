@@ -13,12 +13,14 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.hibernate.validator.internal.util.CollectionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,14 +39,23 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐时表
     @GetMapping("getrainbyhourbyexcel")
-    public void exportRainByHour(HttpServletResponse response,
+    public void exportRainByHour(HttpServletResponse response/*,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "column", required = false) String column,
 	                             @RequestParam(name = "sign", required = false) String sign,
-	                             @RequestParam(name = "ly", required = false) String ly) {
+	                             @RequestParam(name = "ly", required = false) String ly*/) {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String column = "X";
+        String sign = "X";
+        String ly = "X";
+
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -172,17 +183,24 @@ public class RainExcelController extends HttpServlet {
 
     @GetMapping(value = "rainXbyhour")
     public JsonResult rainXbyHour() throws IOException {
-        return new JsonResult("http://"+ip+"/services/realtime/rainfallexcel/getrainbyhourbyexcel");
+        return new JsonResult("http://" + ip + "/services/realtime/rainfallexcel/getrainbyhourbyexcel");
     }
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response,
+    public void exportRainByDate(HttpServletResponse response/*,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
+
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -247,33 +265,114 @@ public class RainExcelController extends HttpServlet {
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects;
 
-        for (int i = 0; i < a.getDayRainList().size(); i++) { //5
+//        for (int i = 0; i < a.getDayRainList().size(); i++) { //5
+//            DayRainExcel.DayRain item = a.getDayRainList().get(i);
+//            objects = new Object[5];
+//            for (int j = 0; j < item.getDayRainArray().size(); j++) {
+//                if (j == 0) {
+//                    objects[0] = item.getAdnm();
+//                    objects[1] = item.getDayRainArray().get(j)[0];
+//                    objects[2] = item.getDayRainArray().get(j)[1];
+//                } else if (j % 2 == 0) {
+//                    objects = new Object[5];
+//                    objects[0] = "";
+//                    objects[1] = item.getDayRainArray().get(j)[0];
+//                    objects[2] = item.getDayRainArray().get(j)[1];
+//                } else {
+//                    objects[3] = item.getDayRainArray().get(j)[0];
+//                    objects[4] = item.getDayRainArray().get(j)[1];
+//                }
+//                if (j == item.getDayRainArray().size() - 1 || j % 2 == 0) {
+//                    dataList.add(objects);
+//                }
+//            }
+//        }
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < a.getDayRainList().size(); i++) {
             DayRainExcel.DayRain item = a.getDayRainList().get(i);
-            objects = new Object[5];
-            for (int j = 0; j < item.getDayRainArray().size(); j++) {
-                if (j == 0) {
-                    objects[0] = item.getAdnm();
-                    objects[1] = item.getDayRainArray().get(j)[0];
-                    objects[2] = item.getDayRainArray().get(j)[1];
-                } else if (j % 2 == 0) {
-                    objects = new Object[5];
-                    objects[0] = "";
-                    objects[1] = item.getDayRainArray().get(j)[0];
-                    objects[2] = item.getDayRainArray().get(j)[1];
-                } else {
-                    objects[3] = item.getDayRainArray().get(j)[0];
-                    objects[4] = item.getDayRainArray().get(j)[1];
+            String manage = "";
+            item.getAdnm();
+            manage += item.getAdnm() + ",";
+            List<Object[]> objectList = item.getDayRainArray();
+            for (int j = 0; j < objectList.size(); j++) {
+                Object[] manage1 = objectList.get(j);
+                Object manage2 = manage1[0];
+                Object manage3 = manage1[1];
+                manage += manage2.toString() + ",";
+                manage += manage3.toString() + ",";
+            }
+            stringList.add(manage);
+        }
+
+//        for (int i = 0; i < stringList.size(); i++) {
+//            System.out.println(stringList.get(i));
+//        }
+
+        for (int i = 0; i < stringList.size(); i++) {
+            String[] count = stringList.get(i).split(",");
+            if (count.length == 11) {
+                objects = new Object[11];
+                objects[0] = count[0];
+                objects[1] = count[1];
+                objects[2] = count[2];
+                objects[3] = count[3];
+                objects[4] = count[4];
+                objects[5] = count[5];
+                objects[6] = count[6];
+                objects[7] = count[7];
+                objects[8] = count[8];
+                objects[9] = count[9];
+                objects[10] = count[10];
+                dataList.add(objects);
+            } else if (count.length < 11) {
+                objects = new Object[11];
+                for (int j = 0; j < count.length; j++) {
+                    if (count[j] != null) {
+                        objects[j] = count[j];
+                    }
                 }
-                if (j == item.getDayRainArray().size() - 1 || j % 2 == 0) {
-                    dataList.add(objects);
+                dataList.add(objects);
+            } else if (count.length > 11) {
+                objects = new Object[11];
+                objects[0] = count[0];
+                int num=1;
+                for (int j=1;j<count.length-1;j++){
+
+                    if (count[j]!=null){
+                        objects[num]=count[j];
+                        num+=1;
+                    }
+                    if (num>10){
+                        num=1;
+                        dataList.add(objects);
+                        objects = new Object[11];
+                    }
+                    if (j==(count.length-2)){
+                        if (count[j+1]!=null)
+                            objects[num]=count[j+1];
+                       // System.out.println(bb[j+1]);
+                        dataList.add(objects);
+                    }
                 }
+
             }
         }
+
+//        for (int i = 0; i < dataList.size(); i++) {
+//            Object[] bb = dataList.get(i);
+//            for (int j = 0; j < bb.length; j++) {
+//                if (bb[j] != null) {
+//                    System.out.print(bb[j] + "\t");
+//                }
+//            }
+//            System.out.println("");
+//        }
+
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 63, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 40, 4, 11, ExportExecls.Direction.TRANSVERSE);
         execlse.setLastInfo(b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -283,7 +382,7 @@ public class RainExcelController extends HttpServlet {
                 Cell colTitle0 = colTitleRow.createCell(0);
                 colTitle0.setCellValue("县名");
                 colTitle0.setCellStyle(style);
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 5; i++) {
                     Cell colTitle1 = colTitleRow.createCell(2 * i + 1);
                     colTitle1.setCellValue("站名");
                     colTitle1.setCellStyle(style);
@@ -291,8 +390,8 @@ public class RainExcelController extends HttpServlet {
                     colTitle2.setCellValue("雨量(mm)");
                     colTitle2.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / 5;
-                for (int i = 0; i < 5; i++) {
+                int x = ExportExecls.HEIGHT / 12;
+                for (int i = 0; i < 12; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }
@@ -308,12 +407,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表
     @GetMapping("getrainbyxunbyexcel")
-    public void exportRainByXun(HttpServletResponse response,
-	                            @RequestParam("date") String dateStr,
-	                            @RequestParam(name = "adcd", required = false) String adcd,
-	                            @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                            @RequestParam(name = "ly", required = false) String ly) throws Exception {
+    public void exportRainByXun(HttpServletResponse response/*,
+                                @RequestParam("date") String dateStr,
+                                @RequestParam(name = "adcd", required = false) String adcd,
+                                @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStr = "2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -392,6 +497,38 @@ public class RainExcelController extends HttpServlet {
                 }
             }
         }
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < dayRainXES.size(); i++) {
+            DayRainExcelX.DayRainX item = dayRainXES.get(i);
+            String manage = "";
+            item.getAdnm();
+            manage += item.getAdnm() + ",";
+            List<Object[]> objectList2 = item.getRainList();
+            for (int j = 0; j < objectList2.size(); j++) {
+                Object[] manage1 = objectList2.get(j);
+                Object manage2 = manage1[0];
+                Object manage3 = manage1[1];
+                Object manage4 = manage1[2];
+                System.out.println(manage4.toString());
+                manage += manage2.toString() + ",";
+                manage += manage3.toString() + ",";
+                manage += manage4.toString() + ",";
+            }
+            stringList.add(manage);
+        }
+
+        for (int i = 0; i < stringList.size(); i++) {
+            System.out.println(stringList.get(i));
+        }
+
+
+
+
+
+
+
+
+
         String title = "旬雨量统计报表";
         //处理时间
         Date Time;
@@ -448,11 +585,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐月表
     @GetMapping("getrainbymonthbyexcel")
     public void exportRainByMonth(HttpServletResponse response,
-	                              @RequestParam("date") String dateStr,
-	                              @RequestParam(name = "adcd", required = false) String adcd,
-	                              @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                              @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                              @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                  @RequestParam("date") String dateStr,
+                                  @RequestParam(name = "adcd", required = false) String adcd,
+                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -587,11 +724,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐年表
     @GetMapping("getrainbyyearbyexcel")
     public void exportRainByYear(HttpServletResponse response,
-	                             @RequestParam("date") String dateStr,
-	                             @RequestParam(name = "adcd", required = false) String adcd,
-	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam("date") String dateStr,
+                                 @RequestParam(name = "adcd", required = false) String adcd,
+                                 @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                 @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -718,12 +855,12 @@ public class RainExcelController extends HttpServlet {
     //导出时段表
     @GetMapping("getrainbytimebyexcel")
     public void exportRainByTime(HttpServletResponse response,
-	                             @RequestParam("dateS") String dateStart,
-	                             @RequestParam("dateE") String dateEnd,
-	                             @RequestParam(name = "adcd", required = false) String adcd,
-	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                 @RequestParam("dateS") String dateStart,
+                                 @RequestParam("dateE") String dateEnd,
+                                 @RequestParam(name = "adcd", required = false) String adcd,
+                                 @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                 @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -915,11 +1052,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐日表(专业)
     @GetMapping("getrainbydatebyexcelzy")
     public void exportRainByDateZY(HttpServletResponse response,
-	                             @RequestParam("date") String dateStr,
-	                               @RequestParam(name = "adcd", required = false) String adcd,
-	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                   @RequestParam("date") String dateStr,
+                                   @RequestParam(name = "adcd", required = false) String adcd,
+                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1093,11 +1230,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐旬表(专业)
     @GetMapping("getrainbyxunbyexcelzy")
     public void exportRainByXunZY(HttpServletResponse response,
-	                              @RequestParam("date") String dateStr,
-	                              @RequestParam(name = "adcd", required = false) String adcd,
-	                              @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                              @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                              @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                  @RequestParam("date") String dateStr,
+                                  @RequestParam(name = "adcd", required = false) String adcd,
+                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
         String benqu = "";
@@ -1257,11 +1394,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐月表(专业)
     @GetMapping("getrainbymonthbyexcelzy")
     public void exportRainByMonthZY(HttpServletResponse response,
-	                                @RequestParam("date") String dateStr,
-	                                @RequestParam(name = "adcd", required = false) String adcd,
-	                                @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                                @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                                @RequestParam(name = "ly", required = false) String ly) throws Exception {
+                                    @RequestParam("date") String dateStr,
+                                    @RequestParam(name = "adcd", required = false) String adcd,
+                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                    @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1407,12 +1544,11 @@ public class RainExcelController extends HttpServlet {
     //导出逐年表(专业)
     @GetMapping("getrainbyyearbyexcelzy")
     public void exportRainByYearZY(HttpServletResponse response,
-	                               @RequestParam("date") String dateStr,
-	                               @RequestParam(name = "adcd", required = false) String adcd,
-	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
-
+                                   @RequestParam("date") String dateStr,
+                                   @RequestParam(name = "adcd", required = false) String adcd,
+                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
         String benqu = "";
@@ -1567,13 +1703,12 @@ public class RainExcelController extends HttpServlet {
     //导出时段表(专业)
     @GetMapping("getrainbytimebyexcelzy")
     public void exportRainByTimeZT(HttpServletResponse response,
-	                               @RequestParam("dateS") String dateStart,
-	                               @RequestParam("dateE") String dateEnd,
-	                               @RequestParam(name = "adcd", required = false) String adcd,
-	                               @RequestParam(name = "systemTypes", required = false) String systemTypes,
-	                               @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                               @RequestParam(name = "ly", required = false) String ly) throws Exception {
-
+                                   @RequestParam("dateS") String dateStart,
+                                   @RequestParam("dateE") String dateEnd,
+                                   @RequestParam(name = "adcd", required = false) String adcd,
+                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
+                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
         System.out.println("开始" + dateStart);

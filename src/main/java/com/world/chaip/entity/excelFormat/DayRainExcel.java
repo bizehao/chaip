@@ -50,5 +50,20 @@ public class DayRainExcel {
         public void setDayRainList(List<Object[]> dayRainList) {
             this.dayRainList = dayRainList;
         }
+
+        @Override
+        public String toString() {
+            return "DayRain{" +
+                    "adnm='" + adnm + '\'' +
+                    ", dayRainList=" + dayRainList +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "DayRainExcel{" +
+                "dayRainList=" + dayRainList +
+                '}';
     }
 }

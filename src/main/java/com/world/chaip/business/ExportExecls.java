@@ -64,10 +64,10 @@ public class ExportExecls {
         this.topRows = topRows;
         this.cols = cols;
         this.sxssfWorkbook = new HSSFWorkbook();
-        if (datas.size() % rows == 0) {
-            this.pages = datas.size() / rows;
+        if (datas.size() % this.rows  == 0) {
+            this.pages = datas.size() / this.rows ;
         } else {
-            this.pages = datas.size() / rows + 1;
+            this.pages = datas.size() / this.rows  +1;
         }
     }
 
