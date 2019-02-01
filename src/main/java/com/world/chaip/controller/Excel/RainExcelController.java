@@ -634,6 +634,7 @@ public class RainExcelController extends HttpServlet {
             e.printStackTrace();
         }
 
+        System.out.println(date);
         DayRainExcelX a = (DayRainExcelX) rainfallService.getDaybyMonth(date, adcdlist, typelist, stcdlist, 1, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
         String b = rainfallService.getDaybyMonthJS(date, adcdlist, typelist, stcdlist, "ST_PPTN_R", "ST_PSTAT_R", benqu, db, lylist);
         String title = "月雨量统计报表";
@@ -677,7 +678,7 @@ public class RainExcelController extends HttpServlet {
         now.add(Calendar.MONTH, -1);
         beginTime = now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -823,7 +824,7 @@ public class RainExcelController extends HttpServlet {
         tm.setTime(date);
         tm.add(Calendar.YEAR, -1);
         Date btm = tm.getTime();
-        String begin = formatter.format(btm);
+        String begin = formatter.format(date);
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
@@ -1560,7 +1561,7 @@ public class RainExcelController extends HttpServlet {
         now.add(Calendar.MONTH, -1);
         beginTime = now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
-        String begin = formatter.format(beginTime);
+        String begin = formatter.format(date);
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
@@ -1732,7 +1733,7 @@ public class RainExcelController extends HttpServlet {
         tm.setTime(date);
         tm.add(Calendar.YEAR, -1);
         Date btm = tm.getTime();
-        String begin = formatter.format(btm);
+        String begin = formatter.format(date);
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);

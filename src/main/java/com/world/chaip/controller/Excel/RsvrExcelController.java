@@ -206,13 +206,20 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-            @RequestParam(name = "ly", required = false) String ly) throws Exception {
+            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+
+        String dateStart = "2019-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
 
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
@@ -301,7 +308,8 @@ public class RsvrExcelController {
         endTime = now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
-        String time = "时间：" + begin + "时";
+        String end = formatter.format(endTime);
+        String time = "时间：" + begin + "时 - "+end+ "时";
 
         ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 23, 5, 9, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
