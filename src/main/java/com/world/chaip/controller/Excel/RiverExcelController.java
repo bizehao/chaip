@@ -44,6 +44,14 @@ public class RiverExcelController {
                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
+/*
+        String dateStart = "2019-01-28 17:00";
+		String dateEnd = "2019-01-28 17:00";
+		String adcd = "X";
+		String systemTypes = "11,12,";
+		String stcdOrStnm = "X";
+		String ly = "X";*/
+
         String benqu = "and c.dq=31 and c.db in (2,3)";
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -134,7 +142,7 @@ public class RiverExcelController {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + "-" + end;
         //导出Excel公共方法调用
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 42, 4, 9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 40, 4, 9, ExportExecls.Direction.TRANSVERSE);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -168,7 +176,7 @@ public class RiverExcelController {
                 colTitle8.setCellValue("水势");
                 colTitle8.setCellStyle(style);
 
-                int x = ExportExecls.HEIGHT / 9;
+                int x = 36000/ 9;
                 for (int i = 0; i < 9; i++) {
                     if (i == 5) {
                         sheet.setColumnWidth(i, x + 320 * 6 + 1500);
@@ -198,13 +206,21 @@ public class RiverExcelController {
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
+
+     /*   String dateStart = "2018-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
 
-        System.out.println("开始000时间" + dateStart);
-        System.out.println("结束00时间" + dateEnd);
+        System.out.println("开始时间" + dateStart);
+        System.out.println("结束时间" + dateEnd);
         System.out.println("县域" + adcd);
         System.out.println("站类型" + systemTypes);
         System.out.println("站号" + stcdOrStnm);
@@ -361,7 +377,7 @@ public class RiverExcelController {
         //导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 63, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 4, 5, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -372,8 +388,8 @@ public class RiverExcelController {
                     colTitle.setCellValue(rowsName[i]);
                     colTitle.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / rowsName.length;
-                for (int i = 0; i < rowsName.length; i++) {
+                int x = ExportExecls.WEIGHT / (rowsName.length+1);
+                for (int i = 0; i < (rowsName.length+1); i++) {
                     if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
                     } else if (i == 4) {
@@ -402,6 +418,14 @@ public class RiverExcelController {
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
+
+      /*  String dateStart = "2018-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";
+*/
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
@@ -519,7 +543,7 @@ public class RiverExcelController {
         //导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 63, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 4, 5, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -530,8 +554,8 @@ public class RiverExcelController {
                     colTitle.setCellValue(rowsName[i]);
                     colTitle.setCellStyle(style);
                 }
-                int x = ExportExecls.WEIGHT / rowsName.length;
-                for (int i = 0; i < rowsName.length; i++) {
+                int x = ExportExecls.WEIGHT / (rowsName.length+1);
+                for (int i = 0; i < (rowsName.length+1); i++) {
                     if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
                     } else if (i == 4) {

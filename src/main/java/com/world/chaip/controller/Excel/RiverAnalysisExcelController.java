@@ -46,6 +46,13 @@ public class RiverAnalysisExcelController {
             @RequestParam(name="ly",required = false)String ly) throws Exception {
 
 
+	/*	String dateStart = "2019-01-28 17:00";
+		String dateEnd = "2019-01-28 17:00";
+		String adcd = "X";
+		String systemTypes = "11,12,";
+		String stcdOrStnm = "X";
+		String ly = "X";*/
+
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();
 		List<String> stcdlist = new ArrayList<String>();
@@ -157,7 +164,6 @@ public class RiverAnalysisExcelController {
 				colTitleRow = sheet.createRow(4);
 				for (int i = 0; i < shuangName.length; i++) {
 					Cell colTitle = colTitleRow.createCell(i);
-					System.out.print(shuangName[i] + "\t");
 					colTitle.setCellValue(shuangName[i]);
 					colTitle.setCellStyle(style);
 				}
@@ -165,8 +171,8 @@ public class RiverAnalysisExcelController {
 				for (int i = 0; i < titleCell.length; i++) {
 					sheet.addMergedRegion(titleCell[i]);
 				}
-				int x = ExportExecls.HEIGHT / 9;
-				for (int i = 0; i < 9; i++) {
+				int x = 36000 / 10;
+				for (int i = 0; i <  10; i++) {
 					sheet.setColumnWidth(i, x);
 				}
 			}

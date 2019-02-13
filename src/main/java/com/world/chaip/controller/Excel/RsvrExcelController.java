@@ -49,7 +49,12 @@ public class RsvrExcelController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="ly",required = false)String ly) throws Exception {
 
-
+     /*   String dateStart = "2018-7-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "11,12,";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
@@ -142,7 +147,7 @@ public class RsvrExcelController {
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 62, 4, 8, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 58, 4, 8, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -181,14 +186,13 @@ public class RsvrExcelController {
                 colTitle7.setCellValue("蓄水量(百万m³)");
                 colTitle7.setCellStyle(style);
                 // sheet.setColumnWidth(0, 20000);
-                int x = ExportExecls.WEIGHT / 8;
-                for (int i = 0; i < 8; i++) {
-                    if (i == 5) {
-                        sheet.setColumnWidth(i, x + 400 * 7);
-                    }else {
-                        sheet.setColumnWidth(i, x - 400);
-                    }
-
+                int x = ExportExecls.WEIGHT / 9;
+                for (int i = 0; i < 9; i++) {
+                    if (i == 0) sheet.setColumnWidth(i, x - 1300);
+                    else if (i == 1) sheet.setColumnWidth(i, x + 1300);
+                    else if (i == 5) sheet.setColumnWidth(i, x + 250 * 4+1000);
+                    else if (i==7)sheet.setColumnWidth(i, x-1000);
+                    else sheet.setColumnWidth(i, x - 250);
                 }
             }
         });
@@ -206,20 +210,20 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response/*,
+            HttpServletResponse response,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+            @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStart = "2019-01-28 17:00";
+       /* String dateStart = "2018-07-07 17:00";
         String dateEnd = "2019-01-28 17:00";
         String adcd = "X";
-        String systemTypes = "11,12,";
+        String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
@@ -309,9 +313,9 @@ public class RsvrExcelController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
         String begin = formatter.format(beginTime);
         String end = formatter.format(endTime);
-        String time = "时间：" + begin + "时 - "+end+ "时";
+        String time = "时间：" + begin + "时 - " + end + "时";
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 23, 5, 9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 9, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -346,12 +350,14 @@ public class RsvrExcelController {
 
                 titleAddress = new CellRangeAddress(3, 3, 4, 8);
                 sheet.addMergedRegion(titleAddress);
-                int x = ExportExecls.HEIGHT / 9;
-                for (int i = 0; i < 9; i++) {
-                    if (i != 8) {
-                        sheet.setColumnWidth(i, x - 100);
-                    } else {
-                        sheet.setColumnWidth(i, x + 100*8);
+                int x = ExportExecls.HEIGHT / 10;
+                for (int i = 0; i < 10; i++) {
+                    if (i ==0) {
+                        sheet.setColumnWidth(i, x +200+50*8);
+                    }else if (i!= 8){
+                        sheet.setColumnWidth(i, x - 250);
+                    }else {
+                        sheet.setColumnWidth(i, x + 200 * 7);
                     }
                 }
             }

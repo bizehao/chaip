@@ -46,7 +46,7 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="ly",required = false)String ly) {
 
 
-        /*String dateStart = "2018-07-28";
+       /* String dateStart = "2018-07-28";
         String dateEnd = "2018-08-01";
         String adcd = "X";
         String systemTypes = "11,12,";
@@ -163,7 +163,7 @@ public class RsvrAnalysisExcelController {
         //列头单元格合并
         //序号
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 41, 5,11, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 11, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -214,9 +214,12 @@ public class RsvrAnalysisExcelController {
                 titleAddress = new CellRangeAddress(3, 4, 10, 10);//起始行,结束行,起始列,结束列
                 sheet.addMergedRegion(titleAddress);
 
-                int x = ExportExecls.HEIGHT / 10;
-                for (int i = 0; i < 8; i++) {
-                    sheet.setColumnWidth(i, x);
+                int x = ExportExecls.HEIGHT / 12;
+                for (int i = 0; i < 12; i++) {
+                    if (i == 0) sheet.setColumnWidth(i, x - 1300);
+                    else if (i == 2) sheet.setColumnWidth(i, x + 1800);
+                    else if (i == 1) sheet.setColumnWidth(i, x - 500);
+                    else sheet.setColumnWidth(i, x);
                 }
             }
         });
@@ -238,7 +241,7 @@ public class RsvrAnalysisExcelController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="ly",required = false)String ly) {
 
-        /*String date = "2018-07-31";
+       /* String date = "2018-07-31";
         String adcd = "X";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";
@@ -350,7 +353,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"库名", "县域", "河流", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 43, 4, 8,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 8, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -387,16 +390,12 @@ public class RsvrAnalysisExcelController {
                 Cell colTitle7 = colTitleRow.createCell(7);
                 colTitle7.setCellValue("较常年(百万m³)");
                 colTitle7.setCellStyle(style);
-                int x = ExportExecls.HEIGHT / 8;
-                for (int i = 0; i < 8; i++) {
-                    if (i == 1 || i == 2) {
-                        sheet.setColumnWidth(i, x - 150);
-                    } else if (i == 4 || i == 6) {
-                        sheet.setColumnWidth(i, x + 150);
-                    } else {
-                        sheet.setColumnWidth(i, x);
-                    }
-
+                int x = ExportExecls.HEIGHT / 9;
+                for (int i = 0; i < 9; i++) {
+                   if (i==0)sheet.setColumnWidth(i, x+2000);
+                   else if (i==1)sheet.setColumnWidth(i, x-500);
+                   else if (i==1)sheet.setColumnWidth(i, x-500);
+                   else sheet.setColumnWidth(i, x-200);
                 }
             }
         });
@@ -413,13 +412,21 @@ public class RsvrAnalysisExcelController {
     @GetMapping("getrsvrexchangetongjiexcel")
     public void GetRsvrByAnalysistongjiExcel(
             HttpServletResponse response,
-            @RequestParam("dateS")String dateStart,
-            @RequestParam("dateE")String dateEnd,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws Exception {
+            @RequestParam("dateS") String dateStart,
+            @RequestParam("dateE") String dateEnd,
+            @RequestParam(name = "adcd", required = false) String adcd,
+            @RequestParam(name = "systemTypes", required = false) String systemTypes,
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
+            @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
+
+
+       /* String dateStart = "2018-07-07 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
@@ -516,7 +523,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"河名", "站名", year + "年", "", "", "", "", "", "", ""};
 //        String[] shuangName = new String[]{"", "", "最高水位(m)", "出现日期(日)", "最大蓄水量(百万m³)", "出现日期(日)", "最大入库流量(m³/s)", "出现日期(日)", "最大出库流量(m³/s)", "出现日期(日)"};
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 4,10, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 10, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -562,9 +569,12 @@ public class RsvrAnalysisExcelController {
                 colTitle9.setCellValue("出现日期(日)");
                 colTitle9.setCellStyle(style);
 
-                int x = ExportExecls.HEIGHT / 10;
-                for (int i = 0; i < 10; i++) {
-                    sheet.setColumnWidth(i, x);
+                int x = ExportExecls.HEIGHT / 11;
+                for (int i = 0; i < 11; i++) {
+                    if (i==0)sheet.setColumnWidth(i, x-800);
+                    if (i==1)sheet.setColumnWidth(i, x+1400);
+                    if (i==2)sheet.setColumnWidth(i, x-600);
+                    else sheet.setColumnWidth(i, x);
                 }
 
 

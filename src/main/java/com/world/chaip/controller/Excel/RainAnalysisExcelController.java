@@ -46,6 +46,13 @@ public class RainAnalysisExcelController {
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
 
+       /* String dateStr="2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
+
+
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
         System.out.println("站类型"+systemTypes);
@@ -142,7 +149,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 17,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 38, 5, 17,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -163,8 +170,8 @@ public class RainAnalysisExcelController {
                 for (int i=0; i<titleCell.length;i++){
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.HEIGHT/17;
-                for (int i=0;i<17;i++){
+                int x=ExportExecls.HEIGHT/18;
+                for (int i=0;i<18;i++){
                     sheet.setColumnWidth(i,x);
                 }
 
@@ -187,6 +194,12 @@ public class RainAnalysisExcelController {
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+
+       /* String dateStr="2018-7-24";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         System.out.println("时间"+dateStr);
         System.out.println("县域"+adcd);
@@ -291,7 +304,7 @@ public class RainAnalysisExcelController {
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 20,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 38, 5, 20,ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -312,8 +325,8 @@ public class RainAnalysisExcelController {
                 for (int i=0; i<titleCell.length;i++){
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.HEIGHT/20;
-                for (int i=0;i<20;i++){
+                int x=ExportExecls.HEIGHT/21;
+                for (int i=0;i<21;i++){
                     if (i == 0){
                         sheet.setColumnWidth(i,x+19*100);
                     }else {
@@ -341,6 +354,13 @@ public class RainAnalysisExcelController {
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
+
+       /* String dateStart = "2019-01-28 17:00";
+        String dateEnd = "2019-01-28 17:00";
+        String adcd = "X";
+        String systemTypes = "X";
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
         List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
@@ -431,7 +451,7 @@ public class RainAnalysisExcelController {
         CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,4,5,5);//起始行,结束行,起始列,结束列
 
         CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 61, 5, 6, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 5, 6, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -454,8 +474,8 @@ public class RainAnalysisExcelController {
                 for (int i = 0; i < titleCell.length; i++) {
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x = ExportExecls.WEIGHT / 6;
-                for (int i = 0; i < 6; i++) {
+                int x = ExportExecls.WEIGHT / 7;
+                for (int i = 0; i < 7; i++) {
                     sheet.setColumnWidth(i, x);
                 }
             }

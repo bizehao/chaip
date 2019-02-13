@@ -39,22 +39,22 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐时表
     @GetMapping("getrainbyhourbyexcel")
-    public void exportRainByHour(HttpServletResponse response/*,
+    public void exportRainByHour(HttpServletResponse response,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
 	                             @RequestParam(name = "column", required = false) String column,
 	                             @RequestParam(name = "sign", required = false) String sign,
-	                             @RequestParam(name = "ly", required = false) String ly*/) {
+	                             @RequestParam(name = "ly", required = false) String ly) {
 
-        String dateStr = "2018-7-24";
+      /*  String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
         String column = "X";
         String sign = "X";
-        String ly = "X";
+        String ly = "X";*/
 
 
         List<String> adcdlist = new ArrayList<String>();
@@ -158,7 +158,7 @@ public class RainExcelController extends HttpServlet {
         //导出Excel公共方法调用
         //System.out.println(b);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, dataList, time, 26, 4, 29, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls execls = new ExportExecls(response, title, dataList, time, 28, 4, 29, ExportExecls.Direction.TRANSVERSE);
         execls.setLastInfo(b);
         execls.setFontSize(8);
         execls.export(new ExportExecls.ColumnAndHead() {
@@ -172,10 +172,13 @@ public class RainExcelController extends HttpServlet {
                     cell.setCellStyle(style);
 
                 }
-                int x = ExportExecls.HEIGHT / 29;
+                int x = 35800/ 29;
 
                 for (int i = 0; i < 29; i++) {
-                    sheet.setColumnWidth(i, x);
+                    if (i==0)sheet.setColumnWidth(i, x);
+                    else if (i>4)sheet.setColumnWidth(i, x-50);
+                    else sheet.setColumnWidth(i, x+200);
+
                 }
             }
         });
@@ -188,18 +191,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐日表
     @GetMapping("getrainbydatebyexcel")
-    public void exportRainByDate(HttpServletResponse response/*,
+    public void exportRainByDate(HttpServletResponse response,
 	                             @RequestParam("date") String dateStr,
 	                             @RequestParam(name = "adcd", required = false) String adcd,
 	                             @RequestParam(name = "systemTypes", required = false) String systemTypes,
 	                             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-	                             @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+	                             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+       /* String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
 
         String benqu = "and c.dq=31";
@@ -297,7 +300,7 @@ public class RainExcelController extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 57, 4, 11, ExportExecls.Direction.VERTICAL);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 58, 4, 11, ExportExecls.Direction.VERTICAL);
         execlse.setLastInfo(b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -317,7 +320,9 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 12;
                 for (int i = 0; i < 12; i++) {
-                    sheet.setColumnWidth(i, x);
+                    if (i==0)sheet.setColumnWidth(i, x-50);
+                    else if(i%2==0) sheet.setColumnWidth(i, x-600);
+                    else if (i%2!=0) sheet.setColumnWidth(i, x+600);
                 }
             }
         });
@@ -332,18 +337,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表
     @GetMapping("getrainbyxunbyexcel")
-    public void exportRainByXun(HttpServletResponse response/*,
+    public void exportRainByXun(HttpServletResponse response,
                                 @RequestParam("date") String dateStr,
                                 @RequestParam(name = "adcd", required = false) String adcd,
                                 @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                 @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+       /* String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -527,7 +532,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(Time);
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -563,18 +568,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表
     @GetMapping("getrainbymonthbyexcel")
-    public void exportRainByMonth(HttpServletResponse response/*,
+    public void exportRainByMonth(HttpServletResponse response,
                                   @RequestParam("date") String dateStr,
                                   @RequestParam(name = "adcd", required = false) String adcd,
                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                  @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+      /*  String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -682,7 +687,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -718,18 +723,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表
     @GetMapping("getrainbyyearbyexcel")
-    public void exportRainByYear(HttpServletResponse response/*,
+    public void exportRainByYear(HttpServletResponse response,
                                  @RequestParam("date") String dateStr,
                                  @RequestParam(name = "adcd", required = false) String adcd,
                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                 @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+       /* String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -863,21 +868,21 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表
     @GetMapping("getrainbytimebyexcel")
-    public void exportRainByTime(HttpServletResponse response/*,
+    public void exportRainByTime(HttpServletResponse response,
                                  @RequestParam("dateS") String dateStart,
                                  @RequestParam("dateE") String dateEnd,
                                  @RequestParam(name = "adcd", required = false) String adcd,
                                  @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                  @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                 @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                 @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
-        String dateStart = "2019-01-28 17:00";
+      /*  String dateStart = "2019-01-28 17:00";
         String dateEnd = "2019-01-28 17:00";
         String adcd = "X";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
 
         String benqu = "and c.dq=31";
@@ -990,7 +995,7 @@ public class RainExcelController extends HttpServlet {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1071,18 +1076,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐日表(专业)
     @GetMapping("getrainbydatebyexcelzy")
-    public void exportRainByDateZY(HttpServletResponse response/*,
+    public void exportRainByDateZY(HttpServletResponse response,
                                    @RequestParam("date") String dateStr,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+       /* String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1227,7 +1232,7 @@ public class RainExcelController extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 56, 4, 11, ExportExecls.Direction.VERTICAL);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 59, 4, 11, ExportExecls.Direction.VERTICAL);
         execlse.setLastInfo(b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1246,8 +1251,10 @@ public class RainExcelController extends HttpServlet {
                     colTitle2.setCellStyle(style);
                 }
                 int x = ExportExecls.WEIGHT / 12;
-                for (int i = 0; i < 11; i++) {
-                    sheet.setColumnWidth(i, x);
+                for (int i = 0; i < 12; i++) {
+                    if (i==0)sheet.setColumnWidth(i, x-50);
+                    else if(i%2==0) sheet.setColumnWidth(i, x-600);
+                    else if (i%2!=0) sheet.setColumnWidth(i, x+600);
                 }
             }
         });
@@ -1260,18 +1267,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐旬表(专业)
     @GetMapping("getrainbyxunbyexcelzy")
-    public void exportRainByXunZY(HttpServletResponse response/*,
+    public void exportRainByXunZY(HttpServletResponse response,
                                   @RequestParam("date") String dateStr,
                                   @RequestParam(name = "adcd", required = false) String adcd,
                                   @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                  @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                  @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+      /*  String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
 
         String benqu = "";
@@ -1402,7 +1409,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(Time);
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 49, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1438,18 +1445,18 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐月表(专业)
     @GetMapping("getrainbymonthbyexcelzy")
-    public void exportRainByMonthZY(HttpServletResponse response/*,
+    public void exportRainByMonthZY(HttpServletResponse response,
                                     @RequestParam("date") String dateStr,
                                     @RequestParam(name = "adcd", required = false) String adcd,
                                     @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                     @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                    @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                    @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-        String dateStr = "2018-7-24";
+      /*  String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
 
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
@@ -1565,7 +1572,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         System.out.println(time);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1601,20 +1608,20 @@ public class RainExcelController extends HttpServlet {
 
     //导出逐年表(专业)
     @GetMapping("getrainbyyearbyexcelzy")
-    public void exportRainByYearZY(HttpServletResponse response/*,
+    public void exportRainByYearZY(HttpServletResponse response,
                                    @RequestParam("date") String dateStr,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
-        String dateStr = "2018-7-24";
+      /*  String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
         String ly = "X";
-
+*/
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         List<String> adcdlist = new ArrayList<String>();
@@ -1736,7 +1743,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(date);
         String time = "时间：" + begin;
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
@@ -1774,21 +1781,21 @@ public class RainExcelController extends HttpServlet {
 
     //导出时段表(专业)
     @GetMapping("getrainbytimebyexcelzy")
-    public void exportRainByTimeZT(HttpServletResponse response/*,
+    public void exportRainByTimeZT(HttpServletResponse response,
                                    @RequestParam("dateS") String dateStart,
                                    @RequestParam("dateE") String dateEnd,
                                    @RequestParam(name = "adcd", required = false) String adcd,
                                    @RequestParam(name = "systemTypes", required = false) String systemTypes,
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-                                   @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
+                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
-        String dateStart = "2019-01-28 17:00";
+       /* String dateStart = "2019-01-28 17:00";
         String dateEnd = "2019-01-28 17:00";
         String adcd = "X";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";
-        String ly = "X";
+        String ly = "X";*/
         System.out.println("开始" + dateStart);
         System.out.println("结束" + dateEnd);
 
@@ -1927,7 +1934,7 @@ public class RainExcelController extends HttpServlet {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
+        ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
         execls.setLastInfo(b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
