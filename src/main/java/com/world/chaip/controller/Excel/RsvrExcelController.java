@@ -147,7 +147,7 @@ public class RsvrExcelController {
         //导出Excel公共方法调用
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, time);
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 58, 4, 8, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 4, 8, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -189,9 +189,9 @@ public class RsvrExcelController {
                 int x = ExportExecls.WEIGHT / 9;
                 for (int i = 0; i < 9; i++) {
                     if (i == 0) sheet.setColumnWidth(i, x - 1300);
-                    else if (i == 1) sheet.setColumnWidth(i, x + 1300);
-                    else if (i == 5) sheet.setColumnWidth(i, x + 250 * 4+1000);
-                    else if (i==7)sheet.setColumnWidth(i, x-1000);
+                    else if (i == 1) sheet.setColumnWidth(i, x + 2000);
+                    else if (i == 5) sheet.setColumnWidth(i, x + 250 * 4+1000+300);
+                    else if (i==7)sheet.setColumnWidth(i, x-500);
                     else sheet.setColumnWidth(i, x - 250);
                 }
             }
@@ -315,12 +315,12 @@ public class RsvrExcelController {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + "时 - " + end + "时";
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 9, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
 
-                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(1)", "", "目前实际", "", "", "", ""};
+                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(主汛期)", "", "目前实际", "", "", "", ""};
 
                 CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
                 Row colTitleRow = sheet.createRow(3);

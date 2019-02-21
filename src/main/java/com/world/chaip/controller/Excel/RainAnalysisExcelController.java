@@ -37,14 +37,14 @@ public class RainAnalysisExcelController {
     private RainAnalysisService service;
 
     //汛期降雨量
-    @GetMapping(value="rainxqanalysisexcel")
+    @GetMapping(value = "rainxqanalysisexcel")
     public void getRainAnalysisXQExcel(
             HttpServletResponse response,
-            @RequestParam("date")String dateStr,
-            @RequestParam(name="ly",required=false)String ly,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam("date") String dateStr,
+            @RequestParam(name = "ly", required = false) String ly,
+            @RequestParam(name = "adcd", required = false) String adcd,
+            @RequestParam(name = "systemTypes", required = false) String systemTypes,
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
        /* String dateStr="2018-7-24";
         String adcd = "X";
@@ -53,50 +53,50 @@ public class RainAnalysisExcelController {
         String ly = "X";*/
 
 
-        System.out.println("时间"+dateStr);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+        System.out.println("时间" + dateStr);
+        System.out.println("县域" + adcd);
+        System.out.println("站类型" + systemTypes);
+        System.out.println("站号" + stcdOrStnm);
         List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
-        if(ly.equals("X")){
-            lylist=null;
-        }else {
+        if (ly.equals("X")) {
+            lylist = null;
+        } else {
             ly = ly.substring(0, ly.length() - 1);
             String[] temp = ly.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 lylist.add(temp[i]);
             }
         }
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
+        if (adcd.equals("X")) {
+            adcdlist = null;
+        } else {
             adcd = adcd.substring(0, adcd.length() - 1);
             String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 adcdlist.add(temp[i]);
             }
         }
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
+        if (systemTypes.equals("X")) {
+            typelist = null;
+        } else {
             systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
             String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 typelist.add(sytemp[i]);
             }
         }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
+        if (stcdOrStnm.equals("X")) {
+            stcdlist = null;
+        } else {
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
             String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 stcdlist.add(sytemp[i]);
             }
         }
@@ -106,10 +106,10 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<XunQi> xqList = service.getRainXQCompared(date,lylist, adcdlist, typelist,stcdlist);
+        List<XunQi> xqList = service.getRainXQCompared(date, lylist, adcdlist, typelist, stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
-        for (int i=0; i<xqList.size(); i++){
+        for (int i = 0; i < xqList.size(); i++) {
             objects = new Object[17];
             objects[0] = xqList.get(i).getStnm();
             objects[1] = xqList.get(i).getJxqSix();
@@ -132,47 +132,48 @@ public class RainAnalysisExcelController {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
-        String title = time+"年邢台市年降雨量分析比较表";
-        String[] rowsName = new String[]{"县名","汛期降雨量","","","","","","降雨量与去年同期比较","","","","","降雨量与常年同期比较","","","",""};
-        String[] shuangName = new String[]{"","6月","7月","8月","9月","6-9月","6月、9月对比","6月","7月","8月","9月","6-9月","6月","7月","8月","9月","6-9月"};
+        String title = time + "年邢台市年降雨量分析比较表";
+        String[] rowsName = new String[]{"县名", "汛期降雨量", "", "", "", "", "", "降雨量与去年同期比较", "", "", "", "", "降雨量与常年同期比较", "", "", "", ""};
+        String[] shuangName = new String[]{"", "6月", "7月", "8月", "9月", "6-9月", "6月、9月对比", "6月", "7月", "8月", "9月", "6-9月", "6月", "7月", "8月", "9月", "6-9月"};
         //列头单元格合并
         //市名
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
         //总库容
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3,3,1,6);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 3, 1, 6);//起始行,结束行,起始列,结束列
         //汛期
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,3,7,11);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 3, 7, 11);//起始行,结束行,起始列,结束列
         //目前实际
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,12,16);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 12, 16);//起始行,结束行,起始列,结束列
 
-        CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
+        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4};
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 38, 5, 17,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 17, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
                 CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
                 Row colTitleRow = sheet.createRow(3);
-                for (int i=0; i<rowsName.length;i++){
-                    Cell colTitle= colTitleRow.createCell(i);
+                for (int i = 0; i < rowsName.length; i++) {
+                    Cell colTitle = colTitleRow.createCell(i);
                     colTitle.setCellValue(rowsName[i]);
                     colTitle.setCellStyle(style);
                 }
                 Row colTitleRow1 = sheet.createRow(4);
-                for (int i=0; i<shuangName.length;i++){
-                    Cell colTitle= colTitleRow1.createCell(i);
+                for (int i = 0; i < shuangName.length; i++) {
+                    Cell colTitle = colTitleRow1.createCell(i);
                     colTitle.setCellValue(shuangName[i]);
                     colTitle.setCellStyle(style);
                 }
 
-                for (int i=0; i<titleCell.length;i++){
+                for (int i = 0; i < titleCell.length; i++) {
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.HEIGHT/18;
-                for (int i=0;i<18;i++){
-                    sheet.setColumnWidth(i,x);
+                int x = ExportExecls.HEIGHT / 18;
+                for (int i = 0; i < 18; i++) {
+                    if(i==0)sheet.setColumnWidth(i, x+1000);
+                    sheet.setColumnWidth(i, x);
                 }
 
 
@@ -180,20 +181,20 @@ public class RainAnalysisExcelController {
         });
     }
 
-    @GetMapping(value="rainxqXbytime")
-    public JsonResult rainXbyTimeXQ(){
-        return new JsonResult("http://"+ip+"/services/realtime/rainanalysisfallexcel/rainxqanalysisexcel");
+    @GetMapping(value = "rainxqXbytime")
+    public JsonResult rainXbyTimeXQ() {
+        return new JsonResult("http://" + ip + "/services/realtime/rainanalysisfallexcel/rainxqanalysisexcel");
     }
 
     //年逐月降雨量
-    @GetMapping(value="rainnzyanalysisexcel")
+    @GetMapping(value = "rainnzyanalysisexcel")
     public void getRainAnalysisNZYExcel(
             HttpServletResponse response,
-            @RequestParam("date")String dateStr,
-            @RequestParam(name="ly",required=false)String ly,
-            @RequestParam(name="adcd",required=false)String adcd,
-            @RequestParam(name="systemTypes",required=false)String systemTypes,
-            @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm) throws Exception {
+            @RequestParam("date") String dateStr,
+            @RequestParam(name = "ly", required = false) String ly,
+            @RequestParam(name = "adcd", required = false) String adcd,
+            @RequestParam(name = "systemTypes", required = false) String systemTypes,
+            @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
        /* String dateStr="2018-7-24";
         String adcd = "X";
@@ -201,51 +202,51 @@ public class RainAnalysisExcelController {
         String stcdOrStnm = "X";
         String ly = "X";*/
 
-        System.out.println("时间"+dateStr);
-        System.out.println("县域"+adcd);
-        System.out.println("站类型"+systemTypes);
-        System.out.println("站号"+stcdOrStnm);
+        System.out.println("时间" + dateStr);
+        System.out.println("县域" + adcd);
+        System.out.println("站类型" + systemTypes);
+        System.out.println("站号" + stcdOrStnm);
 
         List<String> lylist = new ArrayList<String>();
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
-        if(ly.equals("X")){
-            lylist=null;
-        }else {
+        if (ly.equals("X")) {
+            lylist = null;
+        } else {
             ly = ly.substring(0, ly.length() - 1);
             String[] temp = ly.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 lylist.add(temp[i]);
             }
         }
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
+        if (adcd.equals("X")) {
+            adcdlist = null;
+        } else {
             adcd = adcd.substring(0, adcd.length() - 1);
             String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 adcdlist.add(temp[i]);
             }
         }
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
+        if (systemTypes.equals("X")) {
+            typelist = null;
+        } else {
             systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
             String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 typelist.add(sytemp[i]);
             }
         }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
+        if (stcdOrStnm.equals("X")) {
+            stcdlist = null;
+        } else {
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
             String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 stcdlist.add(sytemp[i]);
             }
         }
@@ -255,10 +256,10 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<YearAndMonthRain> yearAndMonthRains = service.getRainNZYCompared(date,lylist, adcdlist, typelist,stcdlist);
+        List<YearAndMonthRain> yearAndMonthRains = service.getRainNZYCompared(date, lylist, adcdlist, typelist, stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] object = null;
-        for(int i=0; i<yearAndMonthRains.size(); i++){
+        for (int i = 0; i < yearAndMonthRains.size(); i++) {
             object = new Object[20];
             object[0] = yearAndMonthRains.get(i).getAdnm();
             object[1] = yearAndMonthRains.get(i).getNumOne();
@@ -284,53 +285,55 @@ public class RainAnalysisExcelController {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         String time = formatter.format(date);
-        String title = time+"年邢台市逐月及年降雨量分析比较表";
-        String[] rowsName = new String[]{"县名","降雨量(mm)","","","","","","","","","","","","年降雨量","","","比较","","相对值比较(%)",""};
-        String[] shuangName = new String[]{"","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月",
-                "降雨量","去年","常年","去年","常年","去年","常年"};
+        String title = time + "年邢台市逐月及年降雨量分析比较表";
+        String[] rowsName = new String[]{"县名", "降雨量(mm)", "", "", "", "", "", "", "", "", "", "", "", "年降雨量", "", "", "比较", "", "相对值比较(%)", ""};
+        String[] shuangName = new String[]{"", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月",
+                "降雨量", "去年", "常年", "去年", "常年", "去年", "常年"};
         //列头单元格合并
         //市名
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
         //降水量
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3,3,1,12);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 3, 1, 12);//起始行,结束行,起始列,结束列
         //年降雨量
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,3,13,15);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 3, 13, 15);//起始行,结束行,起始列,结束列
         //比较
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,3,16,17);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 3, 16, 17);//起始行,结束行,起始列,结束列
         //相对值
-        CellRangeAddress callRangeAddress5 = new CellRangeAddress(3,3,18,19);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress5 = new CellRangeAddress(3, 3, 18, 19);//起始行,结束行,起始列,结束列
 
-        CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4,callRangeAddress5};
+        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4, callRangeAddress5};
 //        ExportExcel ex = new ExportExcel(title, rowsName,shuangName,titleCell, dataList, response, "");
 //        ex.export();
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 38, 5, 20,ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 20, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
                 CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
                 Row colTitleRow = sheet.createRow(3);
-                for (int i=0; i<rowsName.length;i++){
-                    Cell colTitle= colTitleRow.createCell(i);
+                for (int i = 0; i < rowsName.length; i++) {
+                    Cell colTitle = colTitleRow.createCell(i);
                     colTitle.setCellValue(rowsName[i]);
                     colTitle.setCellStyle(style);
                 }
                 Row colTitleRow1 = sheet.createRow(4);
-                for (int i=0; i<shuangName.length;i++){
-                    Cell colTitle= colTitleRow1.createCell(i);
+                for (int i = 0; i < shuangName.length; i++) {
+                    Cell colTitle = colTitleRow1.createCell(i);
                     colTitle.setCellValue(shuangName[i]);
                     colTitle.setCellStyle(style);
                 }
 
-                for (int i=0; i<titleCell.length;i++){
+                for (int i = 0; i < titleCell.length; i++) {
                     sheet.addMergedRegion(titleCell[i]);
                 }
-                int x=ExportExecls.HEIGHT/21;
-                for (int i=0;i<21;i++){
-                    if (i == 0){
-                        sheet.setColumnWidth(i,x+19*100);
-                    }else {
-                        sheet.setColumnWidth(i,x-100);
+                int x = ExportExecls.HEIGHT / 21;
+                for (int i = 0; i < 21; i++) {
+                    if (i == 0) {
+                        sheet.setColumnWidth(i, x + 19 * 100);
+                    } else if (i == 19|| i==18) {
+                        sheet.setColumnWidth(i, x + 250);
+                    } else {
+                        sheet.setColumnWidth(i, x - 100);
                     }
                 }
             }
@@ -338,19 +341,19 @@ public class RainAnalysisExcelController {
 
     }
 
-    @GetMapping(value="rainnzyXbytime")
-    public JsonResult rainXbyTimeNZY(){
-        return new JsonResult("http://"+ip+"/services/realtime/rainanalysisfallexcel/rainnzyanalysisexcel");
+    @GetMapping(value = "rainnzyXbytime")
+    public JsonResult rainXbyTimeNZY() {
+        return new JsonResult("http://" + ip + "/services/realtime/rainanalysisfallexcel/rainnzyanalysisexcel");
     }
 
     //任意日降雨量
-    @GetMapping(value="rainryanalysisexcel")
+    @GetMapping(value = "rainryanalysisexcel")
     public void getRainAnalysisRYExcel(
             HttpServletResponse response,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
-            @RequestParam(name="ly",required=false)String ly,
-            @RequestParam(name = "adcd",required = false) String adcd,
+            @RequestParam(name = "ly", required = false) String ly,
+            @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) throws Exception {
 
@@ -367,42 +370,42 @@ public class RainAnalysisExcelController {
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
 
-        if(ly.equals("X")){
-            lylist=null;
-        }else {
+        if (ly.equals("X")) {
+            lylist = null;
+        } else {
             ly = ly.substring(0, ly.length() - 1);
             String[] temp = ly.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 lylist.add(temp[i]);
             }
         }
 
-        if(adcd.equals("X")){
-            adcdlist=null;
-        }else {
+        if (adcd.equals("X")) {
+            adcdlist = null;
+        } else {
             adcd = adcd.substring(0, adcd.length() - 1);
             String[] temp = adcd.split(",");
-            for(int i = 0; i<temp.length; i++){
+            for (int i = 0; i < temp.length; i++) {
                 adcdlist.add(temp[i]);
             }
         }
 
-        if(systemTypes.equals("X")){
-            typelist=null;
-        }else{
+        if (systemTypes.equals("X")) {
+            typelist = null;
+        } else {
             systemTypes = systemTypes.substring(0, systemTypes.length() - 1);
             String[] sytemp = systemTypes.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 typelist.add(sytemp[i]);
             }
         }
-        if(stcdOrStnm.equals("X")){
-            stcdlist=null;
-        }else{
+        if (stcdOrStnm.equals("X")) {
+            stcdlist = null;
+        } else {
             stcdOrStnm = stcdOrStnm.substring(0, stcdOrStnm.length() - 1);
-            System.out.println("stcdOrStnm"+stcdOrStnm);
+            System.out.println("stcdOrStnm" + stcdOrStnm);
             String[] sytemp = stcdOrStnm.split(",");
-            for(int i = 0; i<sytemp.length; i++){
+            for (int i = 0; i < sytemp.length; i++) {
                 stcdlist.add(sytemp[i]);
             }
         }
@@ -414,10 +417,10 @@ public class RainAnalysisExcelController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<ArbitrarilyDay> arbitrarilyDays = service.getRainRYCompared(dateS,dateE,lylist,adcdlist, typelist,stcdlist);
+        List<ArbitrarilyDay> arbitrarilyDays = service.getRainRYCompared(dateS, dateE, lylist, adcdlist, typelist, stcdlist);
         List<Object[]> dataList = new ArrayList<>();
         Object[] objects = null;
-        for(int i=0; i<arbitrarilyDays.size(); i++){
+        for (int i = 0; i < arbitrarilyDays.size(); i++) {
             objects = new Object[6];
             objects[0] = arbitrarilyDays.get(i).getAdnm();
             objects[1] = arbitrarilyDays.get(i).getoDay_oDay();
@@ -431,27 +434,27 @@ public class RainAnalysisExcelController {
         String year = formYear.format(dateS);
         Calendar tm = Calendar.getInstance();
         tm.setTime(dateS);
-        int monthS = tm.get(Calendar.MONTH)+1;
+        int monthS = tm.get(Calendar.MONTH) + 1;
         int dayS = tm.get(Calendar.DATE);
         tm.setTime(dateE);
-        int monthE = tm.get(Calendar.MONTH)+1;
+        int monthE = tm.get(Calendar.MONTH) + 1;
         int dayE = tm.get(Calendar.DATE);
-        String time = monthS+"月"+dayS+"日"+""+"至"+""+monthE+"月"+dayE+"日";
-        String title = year+"年邢台市降雨量分析比较表";
-        String[] rowsName = new String[]{"县名","降雨量(mm)","","","去年同期比较","常年同期比较"};
-        String[] shuangName = new String[]{"",time,"去年同期","常年同期","",""};
+        String time = monthS + "月" + dayS + "日" + "" + "至" + "" + monthE + "月" + dayE + "日";
+        String title = year + "年邢台市降雨量分析比较表";
+        String[] rowsName = new String[]{"县名", "降雨量(mm)", "", "", "去年同期比较", "常年同期比较"};
+        String[] shuangName = new String[]{"", time, "去年同期", "常年同期", "", ""};
         //列头单元格合并
         //市名
-        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3,4,0,0);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress1 = new CellRangeAddress(3, 4, 0, 0);//起始行,结束行,起始列,结束列
         //降水量
-        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3,3,1,3);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress2 = new CellRangeAddress(3, 3, 1, 3);//起始行,结束行,起始列,结束列
         //去年同期
-        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3,4,4,4);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress3 = new CellRangeAddress(3, 4, 4, 4);//起始行,结束行,起始列,结束列
         //常年同期
-        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3,4,5,5);//起始行,结束行,起始列,结束列
+        CellRangeAddress callRangeAddress4 = new CellRangeAddress(3, 4, 5, 5);//起始行,结束行,起始列,结束列
 
-        CellRangeAddress[] titleCell = {callRangeAddress1,callRangeAddress2,callRangeAddress3,callRangeAddress4};
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 5, 6, ExportExecls.Direction.VERTICAL);
+        CellRangeAddress[] titleCell = {callRangeAddress1, callRangeAddress2, callRangeAddress3, callRangeAddress4};
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 62, 5, 6, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -482,8 +485,8 @@ public class RainAnalysisExcelController {
         });
     }
 
-    @GetMapping(value="rainryXbytime")
-    public JsonResult rainXbyTimeRY(){
-        return new JsonResult("http://"+ip+"/services/realtime/rainanalysisfallexcel/rainryanalysisexcel");
+    @GetMapping(value = "rainryXbytime")
+    public JsonResult rainXbyTimeRY() {
+        return new JsonResult("http://" + ip + "/services/realtime/rainanalysisfallexcel/rainryanalysisexcel");
     }
 }

@@ -163,7 +163,7 @@ public class RsvrAnalysisExcelController {
         //列头单元格合并
         //序号
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 11, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 43, 5, 11, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -353,7 +353,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"库名", "县域", "河流", "蓄水量(百万m³)", "去年同期(百万m³)", "较去年(百万m³)", "常年同期(百万m³)", "较常年(百万m³)"};
 //        ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, "");
 //        ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 8, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 43, 4, 8, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -421,18 +421,20 @@ public class RsvrAnalysisExcelController {
 
 
 
-       /* String dateStart = "2018-07-07 17:00";
-        String dateEnd = "2019-01-28 17:00";
+      /*  String dateStart = "2017-07-22";
+        String dateEnd = "2017-07-26";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
         String ly = "X";*/
 
+
+
         List<String> adcdlist = new ArrayList<String>();
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
-
+        System.out.println("水库特征值统计表：导表");
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
         System.out.println("县域" + adcd);
@@ -523,7 +525,7 @@ public class RsvrAnalysisExcelController {
 //        String[] rowsName = new String[]{"河名", "站名", year + "年", "", "", "", "", "", "", ""};
 //        String[] shuangName = new String[]{"", "", "最高水位(m)", "出现日期(日)", "最大蓄水量(百万m³)", "出现日期(日)", "最大入库流量(m³/s)", "出现日期(日)", "最大出库流量(m³/s)", "出现日期(日)"};
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 4, 10, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 4, 10, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -572,9 +574,16 @@ public class RsvrAnalysisExcelController {
                 int x = ExportExecls.HEIGHT / 11;
                 for (int i = 0; i < 11; i++) {
                     if (i==0)sheet.setColumnWidth(i, x-800);
-                    if (i==1)sheet.setColumnWidth(i, x+1400);
-                    if (i==2)sheet.setColumnWidth(i, x-600);
-                    else sheet.setColumnWidth(i, x);
+                    else if (i==1)sheet.setColumnWidth(i, x+1600);
+                    else if (i==2)sheet.setColumnWidth(i, x-700);
+                    else if (i==3)sheet.setColumnWidth(i, x+600);
+                    else if (i==4)sheet.setColumnWidth(i, x-150);
+                    else if (i==5)sheet.setColumnWidth(i, x+600);
+                    else if (i==6)sheet.setColumnWidth(i, x-150);
+                    else if (i==7)sheet.setColumnWidth(i, x+600);
+                    else if (i==8)sheet.setColumnWidth(i, x-150);
+                    else if (i==9)sheet.setColumnWidth(i, x+600);
+
                 }
 
 

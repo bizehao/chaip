@@ -142,7 +142,7 @@ public class RiverExcelController {
         String end = formatter.format(endTime);
         String time = "时间：" + begin + "-" + end;
         //导出Excel公共方法调用
-        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 40, 4, 9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls execlse = new ExportExecls(response, title, dataList, time, 42, 4, 9, ExportExecls.Direction.TRANSVERSE);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -377,7 +377,7 @@ public class RiverExcelController {
         //导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 62, 4, 5, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -393,9 +393,9 @@ public class RiverExcelController {
                     if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
                     } else if (i == 4) {
-                        sheet.setColumnWidth(i, x + 400 * 2);
+                        sheet.setColumnWidth(i, x + 400 * 2+300);
                     } else {
-                        sheet.setColumnWidth(i, x);
+                        sheet.setColumnWidth(i, x+300);
                     }
                 }
             }
@@ -543,7 +543,7 @@ public class RiverExcelController {
         //导出Excel公共方法调用
 //		ExportExcel ex = new ExportExcel(title, rowsName, dataList, response, autograph);
 //		ex.export();
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 60, 4, 5, ExportExecls.Direction.VERTICAL);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 62, 4, 5, ExportExecls.Direction.VERTICAL);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -559,9 +559,9 @@ public class RiverExcelController {
                     if (i == 2 || i == 3) {
                         sheet.setColumnWidth(i, x - 400);
                     } else if (i == 4) {
-                        sheet.setColumnWidth(i, x + 400 * 2);
+                        sheet.setColumnWidth(i, x + 400 * 2+300);
                     } else {
-                        sheet.setColumnWidth(i, x);
+                        sheet.setColumnWidth(i, x+300);
                     }
                 }
             }

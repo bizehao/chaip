@@ -115,7 +115,7 @@ public class ExportExecls {
                     this.sheet = sxssfWorkbook.createSheet(title + i);
                     sheet.setHorizontallyCenter(true); //水平居中
                     sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
-                    sheet.setMargin(HSSFSheet.TopMargin, 0.05);
+                    sheet.setMargin(HSSFSheet.TopMargin, 0.5);
                     sheet.setMargin(HSSFSheet.BottomMargin, 0.05);
                     sheet.setMargin(HSSFSheet.LeftMargin, 0.05);
                     sheet.setMargin(HSSFSheet.RightMargin, 0.05);

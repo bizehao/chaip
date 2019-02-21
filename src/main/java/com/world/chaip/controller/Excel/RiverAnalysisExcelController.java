@@ -132,7 +132,7 @@ public class RiverAnalysisExcelController {
 		tm.setTime(dateE);
 		int endMonth = tm.get(Calendar.MONTH) + 1;
 		String time = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月";
-		String title = formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月" + "各主要河道(闸坝)水量统计表";
+		String title ="各主要河道(闸坝)水量统计表";
 		String[] rowsName = new String[]{"序号", "河名", "站名", formatter.format(dateS) + "年" + beginMonth + "-" + endMonth + "月", "", "", "", "", ""};
 		String[] shuangName = new String[]{"", "", "", "平均流量(m³/s)", "径流总量(百万m³)", "最高水位(m)", "出现日期", "最大流量(m³/s)", "出现日期"};
 		//列头单元格合并
@@ -149,7 +149,7 @@ public class RiverAnalysisExcelController {
 //        ex.export();
 
 
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 40, 5, 9, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 9, ExportExecls.Direction.TRANSVERSE);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -172,8 +172,9 @@ public class RiverAnalysisExcelController {
 					sheet.addMergedRegion(titleCell[i]);
 				}
 				int x = 36000 / 10;
-				for (int i = 0; i <  10; i++) {
-					sheet.setColumnWidth(i, x);
+				for (int i = 0; i <  9; i++) {
+					if (i==2){sheet.setColumnWidth(i, x+1000);}
+					else {sheet.setColumnWidth(i, x);}
 				}
 			}
 		});

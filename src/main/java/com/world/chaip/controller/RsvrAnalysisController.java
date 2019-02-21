@@ -180,6 +180,7 @@ public class RsvrAnalysisController {
 		List<String> stcdlist = new ArrayList<String>();
 		List<String> lylist = new ArrayList<>();
 
+		System.out.println("水库特征值统计表:查询");
 		System.out.println("开始时间" + dateStart);
 		System.out.println("结束时间" + dateEnd);
 		System.out.println("县域" + adcd);

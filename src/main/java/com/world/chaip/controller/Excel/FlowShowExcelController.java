@@ -141,7 +141,7 @@ public class FlowShowExcelController {
 			dataList.add(objects);
 		}
 		//导出Excel公共方法调用
-		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 63, 4, 11, ExportExecls.Direction.TRANSVERSE);
+		ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 4, 11, ExportExecls.Direction.TRANSVERSE);
 		exportExecls.export(new ExportExecls.ColumnAndHead() {
 			@Override
 			public void colHeadHandler(Sheet sheet) {
@@ -155,8 +155,9 @@ public class FlowShowExcelController {
 				}
 				int weight = ExportExecls.HEIGHT / 11;
 				for (int i = 0; i < 11; i++) {
-					if (i == 0) sheet.setColumnWidth(i, weight - 1000);
-					else if (i == 4) sheet.setColumnWidth(i, weight + 1000 + 9 * 500);
+					if (i == 0) sheet.setColumnWidth(i, weight - 1500);
+					else if (i==2)sheet.setColumnWidth(i, weight+1000);
+					else if (i == 4) sheet.setColumnWidth(i, weight + 1000 + 8 * 500);
 					else sheet.setColumnWidth(i, weight - 500);
 				}
 			}

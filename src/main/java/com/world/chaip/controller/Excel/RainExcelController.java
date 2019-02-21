@@ -158,7 +158,7 @@ public class RainExcelController extends HttpServlet {
         //导出Excel公共方法调用
         //System.out.println(b);
         //导出Excel公共方法调用
-        ExportExecls execls = new ExportExecls(response, title, dataList, time, 28, 4, 29, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls execls = new ExportExecls(response, title, dataList, time, 35, 4, 29, ExportExecls.Direction.TRANSVERSE);
         execls.setLastInfo(b);
         execls.setFontSize(8);
         execls.export(new ExportExecls.ColumnAndHead() {
@@ -173,12 +173,12 @@ public class RainExcelController extends HttpServlet {
 
                 }
                 int x = 35800/ 29;
-
+                int y=x/5;
                 for (int i = 0; i < 29; i++) {
                     if (i==0)sheet.setColumnWidth(i, x);
-                    else if (i>4)sheet.setColumnWidth(i, x-50);
-                    else sheet.setColumnWidth(i, x+200);
-
+                    else if (i==2)sheet.setColumnWidth(i, x+2*y);
+                    else if (i>4)sheet.setColumnWidth(i, x-10);
+                    else sheet.setColumnWidth(i, x+60+y);
                 }
             }
         });
@@ -555,7 +555,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -575,11 +575,11 @@ public class RainExcelController extends HttpServlet {
                                   @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
                                   @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-      /*  String dateStr = "2018-7-24";
-        String adcd = "X";
-        String systemTypes = "X";
-        String stcdOrStnm = "X";
-        String ly = "X";*/
+//        String dateStr = "2018-7-24";
+//        String adcd = "X";
+//        String systemTypes = "X";
+//        String stcdOrStnm = "X";
+//        String ly = "X";
 
         String benqu = "and c.dq=31";
         String db = "and c.db in (1,3)";
@@ -710,7 +710,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -855,7 +855,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -1018,7 +1018,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -1432,7 +1432,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -1595,7 +1595,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -1615,13 +1615,13 @@ public class RainExcelController extends HttpServlet {
                                    @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
                                    @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-
-      /*  String dateStr = "2018-7-24";
+/*
+        String dateStr = "2018-7-24";
         String adcd = "X";
         String systemTypes = "X";
         String stcdOrStnm = "X";
-        String ly = "X";
-*/
+        String ly = "X";*/
+
         String benqu = "";
         String db = "and c.jdb in (1,3) and c.dq = 31";
         List<String> adcdlist = new ArrayList<String>();
@@ -1766,7 +1766,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
@@ -1790,12 +1790,12 @@ public class RainExcelController extends HttpServlet {
                                    @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
 
-       /* String dateStart = "2019-01-28 17:00";
-        String dateEnd = "2019-01-28 17:00";
-        String adcd = "X";
-        String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";*/
+//        String dateStart = "2019-01-28 17:00";
+//        String dateEnd = "2019-01-28 17:00";
+//        String adcd = "X";
+//        String systemTypes = "11,12,";
+//        String stcdOrStnm = "X";
+//        String ly = "X";
         System.out.println("开始" + dateStart);
         System.out.println("结束" + dateEnd);
 
@@ -1957,7 +1957,7 @@ public class RainExcelController extends HttpServlet {
                 }
                 int x = ExportExecls.WEIGHT / 17;
                 for (int i = 0; i < 16; i++) {
-                    sheet.setColumnWidth(i, x);
+                    sheet.setColumnWidth(i, x+150);
                 }
             }
         });
