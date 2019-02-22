@@ -334,9 +334,9 @@ public class RsvrAnalysisExcelController {
         for (int i = 0; i < a.size(); i++) {
             mm = a.get(i);
             objects = new Object[8];
-            objects[0] = mm.getStnm();
-            objects[1] = mm.getAdnm();
-            objects[2] = mm.getRvnm();
+            objects[0] = mm.getAdnm();
+            objects[1] = mm.getRvnm();
+            objects[2] = mm.getStnm();
             objects[3] = mm.getW();
             objects[4] = mm.getQw();
             objects[5] = mm.getQwCompare();
@@ -360,15 +360,15 @@ public class RsvrAnalysisExcelController {
                 CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
                 Row colTitleRow = sheet.createRow(3);
                 Cell colTitle0 = colTitleRow.createCell(0);
-                colTitle0.setCellValue("库名");
+                colTitle0.setCellValue("县域");
                 colTitle0.setCellStyle(style);
 
                 Cell colTitle1 = colTitleRow.createCell(1);
-                colTitle1.setCellValue("县域");
+                colTitle1.setCellValue("河流");
                 colTitle1.setCellStyle(style);
 
                 Cell colTitle2 = colTitleRow.createCell(2);
-                colTitle2.setCellValue("河流");
+                colTitle2.setCellValue("库名");
                 colTitle2.setCellStyle(style);
 
                 Cell colTitle3 = colTitleRow.createCell(3);
