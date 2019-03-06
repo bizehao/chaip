@@ -446,7 +446,7 @@
 		left join (
 		select sum(drp) num, STCD
 		from ${pptn} where
-		tm between #{beginTime} and #{endTime}
+		tm &gt; #{beginTime} and tm &lt;= #{endTime}
 		group by STCD) pt
 		on st.STCD = pt.STCD
 		left join (select stcd, drp from ${pptn} where tm=#{NowTime}) qt on st.STCD = qt.STCD

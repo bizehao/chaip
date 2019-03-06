@@ -272,7 +272,7 @@ public class RiverExcelController {
         }
         List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日水情(河道)";
-        String[] rowsName = new String[]{"站名", "水位(m)", "河名", "流量(m³/s)", "数据时间"};
+        String[] rowsName = new String[]{ "河名","站名", "水位(m)", "流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
 //        for (int i = 0; i < a.size(); i++) {
@@ -354,9 +354,9 @@ public class RiverExcelController {
         for (int i = 0; i < a.size(); i++) {
             objects = new Object[rowsName.length];
             River item = a.get(i);
-            objects[0] = item.getStnm();
-            objects[1] = item.getZ();
-            objects[2] = item.getRvnm();
+            objects[0] = item.getRvnm();
+            objects[1] = item.getStnm();
+            objects[2] = item.getZ();
             objects[3] = item.getQ();
             objects[4] = item.getTm();
             dataList.add(objects);
@@ -484,7 +484,7 @@ public class RiverExcelController {
         }
         List<River> a = riverfallService.getRiverByWai(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日外区水情(河道)";
-        String[] rowsName = new String[]{"站名", "水位(m)", "河名", "流量(m³/s)", "数据时间"};
+        String[] rowsName = new String[]{"河名","站名", "水位(m)",  "流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
 		/*for (int i = 0; i < a.size(); i++) {
@@ -520,9 +520,9 @@ public class RiverExcelController {
         for (int i = 0; i < a.size(); i++) {
             objects = new Object[rowsName.length];
             River item = a.get(i);
-            objects[0] = item.getStnm();
-            objects[1] = item.getZ();
-            objects[2] = item.getRvnm();
+            objects[0] = item.getRvnm();
+            objects[1] = item.getStnm();
+            objects[2] = item.getZ();
             objects[3] = item.getQ();
             objects[4] = item.getTm();
             dataList.add(objects);

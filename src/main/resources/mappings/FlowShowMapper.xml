@@ -46,6 +46,7 @@
 				#{ly}
 			</foreach>
 		</if>
+		order by b.stnm,tm
 	</select>
 	<select id="getFlowSpeed02" resultType="com.world.chaip.entity.FlowSpeed">
 		select row_number() over(order by adnm) serial,adnm,b.stcd,b.stnm,tm,ls1,ls2,ls3,ls4,ls5,z
@@ -101,5 +102,6 @@
 				</if>
 			</trim>
 		</where>
+		order by b.stnm,tm
 	</select>
 </mapper>
