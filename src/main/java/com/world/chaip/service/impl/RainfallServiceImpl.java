@@ -35,25 +35,25 @@ public class RainfallServiceImpl implements RainfallService {
         now.set(Calendar.HOUR_OF_DAY, 8);
         int requestDay = now.get(Calendar.DATE);//用户请求的日
         int requesMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
-        int requesYear =now.get(Calendar.YEAR);//用户请求年份
-        System.out.println("用户请求--年："+requesYear+"月："+requesMonth+"日："+requestDay);
+        int requesYear = now.get(Calendar.YEAR);//用户请求年份
+        System.out.println("用户请求--年：" + requesYear + "月：" + requesMonth + "日：" + requestDay);
         beginTime = now.getTime();
         endTime = DateUtils.getDateAfter(beginTime, 1);
-        System.out.println("beginTime:"+beginTime.toString());
-        System.out.println("endTime:"+endTime.toString());
+        System.out.println("beginTime:" + beginTime.toString());
+        System.out.println("endTime:" + endTime.toString());
         List<Rainfall> rainfalls = rainfallMapper.selectByTm(beginTime, endTime, adcd, systemTypes, stcdOrStnm, db, ly);
-        System.out.println("从数据库里查询的数据：rainfalls："+rainfalls.size());
+        System.out.println("从数据库里查询的数据：rainfalls：" + rainfalls.size());
         Date currentDate = new Date();
         now.setTime(currentDate);
         int currentHour = now.get(Calendar.HOUR_OF_DAY);//当前时
         int currentDay = now.get(Calendar.DATE);//当前日
         int currentMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
-        int currentYear =now.get(Calendar.YEAR);//用户请求年份
-        System.out.println("当前时间--年："+currentYear+"月："+currentMonth+"日："+currentDay);
+        int currentYear = now.get(Calendar.YEAR);//用户请求年份
+        System.out.println("当前时间--年：" + currentYear + "月：" + currentMonth + "日：" + currentDay);
 
-        if (rainfalls != null && rainfalls.size() > 0) {
+        if (rainfalls.size() > 0) {
             for (int i = 0; i < rainfalls.size(); i++) {
-                System.out.println("rainfalls.get("+i+"):"+rainfalls.get(i));
+                System.out.println("rainfalls.get(" + i + "):" + rainfalls.get(i));
                 DayByHourRainfallItem tempItem = null;
                 for (int j = 0; j < daybyHourRainfall.getData().size(); j++) {
                     DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
@@ -65,14 +65,13 @@ public class RainfallServiceImpl implements RainfallService {
                         } else {
                             tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), String.valueOf(rainfalls.get(i).getDrp()));
                         }
-						/*System.out.println((double) rainfalls.get(i).getTm().getHours()+","+rainfalls.get(i).getDrp());*/
+                        /*System.out.println((double) rainfalls.get(i).getTm().getHours()+","+rainfalls.get(i).getDrp());*/
                         /*System.out.println(rainfalls.get(i).getDrp());
                         dyp+=rainfalls.get(i).getDrp();*/
                         if (i == rainfalls.size() - 1) {
-                            tempItem = tempItemX;
                             double count = tempItem.testValues();
                             tempItem.setCountDrp(count);
-							/*System.out.println("sads"+count);*/
+                            /*System.out.println("sads"+count);*/
                         }
                         break;
                     } else {
@@ -80,12 +79,12 @@ public class RainfallServiceImpl implements RainfallService {
                         double count = tempItem.testValues();
                         tempItem.setCountDrp(count);
                         tempItem = null;
-						/*System.out.println("sads"+count);*/
+                        /*System.out.println("sads"+count);*/
                     }
                 }
-				/*System.out.println(dyp);*/
+                /*System.out.println(dyp);*/
                 if (tempItem == null) {
-                    tempItem = daybyHourRainfall.new DayByHourRainfallItem();
+                    tempItem = new DaybyHourRainfall.DayByHourRainfallItem();
                     tempItem.setStcd(rainfalls.get(i).getStcd());
                     tempItem.setStnm(rainfalls.get(i).getStnm());
                     tempItem.setLgtd(rainfalls.get(i).getLgtd());
@@ -103,18 +102,26 @@ public class RainfallServiceImpl implements RainfallService {
                         /*System.out.println("sads"+count);*/
                     }
                     daybyHourRainfall.getData().add(tempItem);
-					/*tempItem.setDyp(dyp);*/
+                    /*tempItem.setDyp(dyp);*/
                 }
             }
         }
         List<PptnGson> list = new ArrayList<>();
         PptnGson pptnGson = null;
+        PptnGson avgRain = new PptnGson(); //平均降雨量
+        avgRain.setAdnm("平均");
+
+        for (int avi = 0; avi <= 23; avi++) {
+            avgRain.getDrpMap().put(avi, 0);
+        }
+
         for (int i = 0; i < daybyHourRainfall.getData().size(); i++) {
             pptnGson = new PptnGson();
             pptnGson.setAdnm(daybyHourRainfall.getData().get(i).getAdnm());
             pptnGson.setStnm(daybyHourRainfall.getData().get(i).getStnm());
             pptnGson.setName(daybyHourRainfall.getData().get(i).getName());
             pptnGson.setCountDrp(daybyHourRainfall.getData().get(i).getCountDrp());
+            avgRain.setCountDrp(avgRain.getCountDrp() + pptnGson.getCountDrp()); //平均值
             pptnGson.setNineDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(9.0));
             pptnGson.setTenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(10.0));
             pptnGson.setElevenDrp(daybyHourRainfall.getData().get(i).getHourRainfalls().get(11.0));
@@ -142,7 +149,7 @@ public class RainfallServiceImpl implements RainfallService {
 
             Map<Object, Object> map = new LinkedHashMap<>();
             //
-            if (requestDay == currentDay - 1&& requesMonth==currentMonth && requesYear==currentYear ) { //当前日期未发生,将未发生的数据更改  requestDay == currentDay
+            if (requestDay == currentDay - 1 && requesMonth == currentMonth && requesYear == currentYear) { //当前日期未发生,将未发生的数据更改  requestDay == currentDay
                 Double cishi = (double) currentHour;
                 for (Double na = 9.0; na <= 23; na++) {
                     if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
@@ -151,20 +158,20 @@ public class RainfallServiceImpl implements RainfallService {
                         map.put(na, 0);
                     }
                 }
-                for (Double na = 0.0; na <= cishi+1; na++) {
+                for (Double na = 0.0; na <= cishi + 1; na++) {
                     if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
                         map.put(na, daybyHourRainfall.getData().get(i).getHourRainfalls().get(na));
                     } else {
                         map.put(na, 0);
                     }
                 }
-                for (Double nb = cishi+2; nb < 9; nb++) {
+                for (Double nb = cishi + 2; nb < 9; nb++) {
                     map.put(nb, " ");
                 }
                 //&& requesMonth==currentMonth && requesYear==currentYear
-            } else if (requestDay == currentDay && requesMonth==currentMonth && requesYear==currentYear ) {
+            } else if (requestDay == currentDay && requesMonth == currentMonth && requesYear == currentYear) {
                 Double cishi = (double) currentHour;
-                if(cishi == 23){
+                if (cishi == 23) {
                     for (Double na = 9.0; na <= 23; na++) {
                         if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
                             map.put(na, daybyHourRainfall.getData().get(i).getHourRainfalls().get(na));
@@ -181,22 +188,22 @@ public class RainfallServiceImpl implements RainfallService {
                         map.put(na, " ");
                     }
 
-                }else{
-                    for (Double na = 9.0; na <= cishi+1; na++) {
+                } else {
+                    for (Double na = 9.0; na <= cishi + 1; na++) {
                         if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
                             map.put(na, daybyHourRainfall.getData().get(i).getHourRainfalls().get(na));
                         } else {
                             map.put(na, 0);
                         }
                     }
-                    for (Double na = cishi+2; na <= 23; na++) {
+                    for (Double na = cishi + 2; na <= 23; na++) {
                         map.put(na, " ");
                     }
                     for (Double na = 0.0; na < 9; na++) {
                         map.put(na, " ");
                     }
                 }
-            }else{
+            } else {
                 for (Double nd = 0.0; nd <= 23; nd++) {
                     if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(nd)) {
                         map.put(nd, daybyHourRainfall.getData().get(i).getHourRainfalls().get(nd));
@@ -205,15 +212,30 @@ public class RainfallServiceImpl implements RainfallService {
                     }
                 }
             }
+
+
             pptnGson.setDrpMap(map);
 
             list.add(pptnGson);
+
+            //avg map
+            for (int avi = 0; avi <= 23; avi++) {
+                double yuanshi = (double) avgRain.getDrpMap().get(avi);
+                double xintian = pptnGson.getDrpMap().get(avi) == " " ? 0 : (double) pptnGson.getDrpMap().get(avi);
+                avgRain.getDrpMap().replace(avi, yuanshi + xintian);
+            }
 
         }
         if (column != -1) {
             list = getListPX(list, column, sign);
         }
 
+        avgRain.setCountDrp(avgRain.getCountDrp()/list.size());
+
+        for (int avi = 0; avi <= 23; avi++) {
+            avgRain.getDrpMap().replace(avi, (double)avgRain.getDrpMap().get(avi)/list.size());
+        }
+        list.add(avgRain);
         return list;
     }
 
@@ -227,7 +249,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.set(Calendar.HOUR_OF_DAY, 8);
         beginTime = now.getTime();
         endTime = DateUtils.getDateAfter(beginTime, 1);
-        List<Rainfall> list = rainfallMapper.selectByDate(endTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db, ly);
         if (cid == 0) {
             return list;
         }
@@ -248,7 +270,7 @@ public class RainfallServiceImpl implements RainfallService {
                         objects[0] = list.get(i).getStnm();
                         objects[1] = list.get(i).getDyp();
                         dayRain.getDayRainArray().add(objects);
-						/*System.out.println(list.get(i).getStnm());*/
+                        /*System.out.println(list.get(i).getStnm());*/
                         break;
                     }
                 }
@@ -259,12 +281,12 @@ public class RainfallServiceImpl implements RainfallService {
                     objects[0] = list.get(i).getStnm();
                     objects[1] = list.get(i).getDyp();
                     dayRain.getDayRainArray().add(objects);
-					/*System.out.println(list.get(i).getStnm());*/
+                    /*System.out.println(list.get(i).getStnm());*/
                     dayRainExcel.getDayRainList().add(dayRain);
                 }
             }
         }
-		/*System.out.println("=============================");*/
+        /*System.out.println("=============================");*/
 		/*for(int i=0; i<dayRainExcel.getDayRainList().size(); i++){
 			System.out.println(dayRainExcel.getDayRainList().get(i).getAdnm());
 			Map<String, Double> map =  dayRainExcel.getDayRainList().get(i).getDayRainList();
@@ -296,7 +318,7 @@ public class RainfallServiceImpl implements RainfallService {
         }
 
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByXun(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByXun(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         if (cid == 0) {
             return list;
         }
@@ -315,7 +337,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.MONTH, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByMonth(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByMonth(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         if (cid == 0) {
             return list;
         }
@@ -335,7 +357,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.YEAR, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByYear(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByYear(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         if (cid == 0) {
             return list;
         }
@@ -365,7 +387,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.setTime(dateE);
         //now.set(Calendar.MINUTE,0);
         dateE = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db, ly);
         if (cid == 0) {
             return list;
         }
@@ -450,7 +472,7 @@ public class RainfallServiceImpl implements RainfallService {
                     }
                 }
                 if (tempItem == null) {
-                    tempItem = daybyHourRainfall.new DayByHourRainfallItem();
+                    tempItem = new DaybyHourRainfall.DayByHourRainfallItem();
                     tempItem.setStcd(rainfalls.get(i).getStcd());
                     tempItem.setStnm(rainfalls.get(i).getStnm());
                     tempItem.setLgtd(rainfalls.get(i).getLgtd());
@@ -515,7 +537,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.set(Calendar.HOUR_OF_DAY, 8);
         beginTime = now.getTime();
         endTime = DateUtils.getDateAfter(beginTime, 1);
-        List<Rainfall> list = rainfallMapper.selectByDate(endTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByDate(endTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db, ly);
         String xianshi = coonPC(list, 1);
         return xianshi;
     }
@@ -531,7 +553,7 @@ public class RainfallServiceImpl implements RainfallService {
         Date beginTime = null;
         now.add(Calendar.DATE, -9);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByXun(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByXun(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         String xianshi = coonPC(list, 2);
         return xianshi;
     }
@@ -548,7 +570,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.MONTH, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByMonth(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByMonth(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         String xianshi = coonPC(list, 2);
         return xianshi;
     }
@@ -565,7 +587,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.add(Calendar.YEAR, -1);
         now.add(Calendar.DATE, 1);
         beginTime = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByYear(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByYear(Time, beginTime, adcd, systemTypes, stcdOrStnm, pptn, patat, benqu, db, ly);
         String xianshi = coonPC(list, 2);
         return xianshi;
     }
@@ -589,7 +611,7 @@ public class RainfallServiceImpl implements RainfallService {
         now.setTime(dateE);
         now.set(Calendar.MINUTE, 0);
         dateE = now.getTime();
-        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db,ly);
+        List<Rainfall> list = rainfallMapper.selectByTime(dateS, dateE, NowTime, adcd, systemTypes, stcdOrStnm, pptn, benqu, db, ly);
         String xianshi = coonPC(list, 3);
         return xianshi;
     }
@@ -840,8 +862,8 @@ public class RainfallServiceImpl implements RainfallService {
                     if (o2.getDrpMap().get(column) == null || o2.getDrpMap().get(column) == "") {
                         o2.getDrpMap().put(column, 0);
                     }
-                    double ce1 = Double.parseDouble(o1.getDrpMap().get(column).toString().equals(" ")?"0":o1.getDrpMap().get(column).toString());
-                    double ce2 = Double.parseDouble(o2.getDrpMap().get(column).toString().equals(" ")?"0":o2.getDrpMap().get(column).toString());
+                    double ce1 = Double.parseDouble(o1.getDrpMap().get(column).toString().equals(" ") ? "0" : o1.getDrpMap().get(column).toString());
+                    double ce2 = Double.parseDouble(o2.getDrpMap().get(column).toString().equals(" ") ? "0" : o2.getDrpMap().get(column).toString());
                     if (sign == 0) { //正序
                         if (ce1 > ce2) {
                             return 1;

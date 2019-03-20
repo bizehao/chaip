@@ -18,7 +18,7 @@ public class DaybyHourRainfall {
 	
 	List<DayByHourRainfallItem> data;
 	
-	public class DayByHourRainfallItem extends Rainfall{
+	public static class DayByHourRainfallItem extends Rainfall{
 	
 		public DayByHourRainfallItem() {
 			hourRainfalls=new HashMap<Double, String>();
