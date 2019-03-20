@@ -296,12 +296,32 @@ public class RainExcelController extends HttpServlet {
             }
         }
 
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainList().size();i++){
+            DayRainExcel.DayRain item = a.getDayRainList().get(i);
+            for (int j=0;j<item.getDayRainArray().size();j++){
+                countList.add(item.getDayRainArray().get(j)[0]);
+                avgList.add(item.getDayRainArray().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
+
+
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
         ExportExecls execlse = new ExportExecls(response, title, dataList, time, 58, 4, 11, ExportExecls.Direction.VERTICAL);
-        execlse.setLastInfo(b);
+        execlse.setLastInfo("平均值："+avg+"\n(mm)"+b);//
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -513,6 +533,28 @@ public class RainExcelController extends HttpServlet {
 //            }
 //            System.out.println("");
 //        }
+
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                if (avgList.get(i)!=null){
+                    sum += (double) avgList.get(i);
+                }
+            }
+        }
+        double avg=sum/countList.size();
+
         String title = "旬雨量统计报表";
         //处理时间
         Date Time;
@@ -533,7 +575,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -676,6 +718,25 @@ public class RainExcelController extends HttpServlet {
             }
         }
 
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         //处理时间
         Date beginTime = null;
         Calendar now = Calendar.getInstance();
@@ -688,7 +749,7 @@ public class RainExcelController extends HttpServlet {
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);;
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -823,6 +884,24 @@ public class RainExcelController extends HttpServlet {
             }
         }
 
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         Calendar tm = Calendar.getInstance();
@@ -833,7 +912,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -981,6 +1060,25 @@ public class RainExcelController extends HttpServlet {
                 objectList.add(objects);
             }
         }
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         //处理时间
         Date beginTime = null;
         Date endTime = null;
@@ -996,7 +1094,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1228,12 +1326,30 @@ public class RainExcelController extends HttpServlet {
                 dataList.add(objects);
             }
         }
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainList().size();i++){
+            DayRainExcel.DayRain item = a.getDayRainList().get(i);
+            for (int j=0;j<item.getDayRainArray().size();j++){
+                countList.add(item.getDayRainArray().get(j)[0]);
+                avgList.add(item.getDayRainArray().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
         ExportExecls execlse = new ExportExecls(response, title, dataList, time, 59, 4, 11, ExportExecls.Direction.VERTICAL);
-        execlse.setLastInfo(b);
+        execlse.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1390,6 +1506,26 @@ public class RainExcelController extends HttpServlet {
                 objectList.add(objects);
             }
         }
+
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         String title = "旬雨量统计报表";
         //处理时间
         Date Time;
@@ -1410,7 +1546,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1561,6 +1697,25 @@ public class RainExcelController extends HttpServlet {
                 objectList.add(objects);
             }
         }
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         //处理时间
         Date beginTime = null;
         Calendar now = Calendar.getInstance();
@@ -1573,7 +1728,7 @@ public class RainExcelController extends HttpServlet {
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1734,6 +1889,24 @@ public class RainExcelController extends HttpServlet {
             }
         }
 
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
+
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
         Calendar tm = Calendar.getInstance();
@@ -1744,7 +1917,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1920,6 +2093,25 @@ public class RainExcelController extends HttpServlet {
                 objectList.add(objects);
             }
         }
+
+
+        //添加平均值
+        List<Object> countList=new ArrayList<>();
+        List<Object> avgList=new ArrayList<>();
+        for(int i=0;i<a.getDayRainXList().size();i++){
+            DayRainExcelX.DayRainX item = a.getDayRainXList().get(i);
+            for (int j=0;j<item.getRainList().size();j++){
+                countList.add(item.getRainList().get(j)[0]);
+                avgList.add(item.getRainList().get(j)[1]);
+            }
+        }
+        double sum=0;
+        for (int i=0;i<avgList.size();i++){
+            if (avgList.get(i)!=null){
+                sum += (double) avgList.get(i);
+            }
+        }
+        double avg=sum/countList.size();
         //处理时间
         Date beginTime = null;
         Date endTime = null;
@@ -1935,7 +2127,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo(b);
+        execls.setLastInfo("平均值："+avg+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {

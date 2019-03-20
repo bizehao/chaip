@@ -36,26 +36,28 @@ public class RainfallServiceImpl implements RainfallService {
         int requestDay = now.get(Calendar.DATE);//用户请求的日
         int requesMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
         int requesYear =now.get(Calendar.YEAR);//用户请求年份
-        System.out.println("用户请求-*-年："+requesYear+"月："+requesMonth+"日："+requestDay);
+        System.out.println("用户请求--年："+requesYear+"月："+requesMonth+"日："+requestDay);
         beginTime = now.getTime();
         endTime = DateUtils.getDateAfter(beginTime, 1);
-        System.out.println(beginTime + "," + endTime);
+        System.out.println("beginTime:"+beginTime.toString());
+        System.out.println("endTime:"+endTime.toString());
         List<Rainfall> rainfalls = rainfallMapper.selectByTm(beginTime, endTime, adcd, systemTypes, stcdOrStnm, db, ly);
+        System.out.println("从数据库里查询的数据：rainfalls："+rainfalls.size());
         Date currentDate = new Date();
         now.setTime(currentDate);
         int currentHour = now.get(Calendar.HOUR_OF_DAY);//当前时
         int currentDay = now.get(Calendar.DATE);//当前日
         int currentMonth = now.get(Calendar.MONTH) + 1;//用户请求的月
         int currentYear =now.get(Calendar.YEAR);//用户请求年份
-        System.out.println("当前时间-*-年："+currentYear+"月："+currentMonth+"日："+currentDay);
-        System.out.println("数量" + rainfalls.size());
+        System.out.println("当前时间--年："+currentYear+"月："+currentMonth+"日："+currentDay);
 
         if (rainfalls != null && rainfalls.size() > 0) {
             for (int i = 0; i < rainfalls.size(); i++) {
+                System.out.println("rainfalls.get("+i+"):"+rainfalls.get(i));
                 DayByHourRainfallItem tempItem = null;
-                /*System.out.println(i+"这个"+daybyHourRainfall.getData().size());*/
                 for (int j = 0; j < daybyHourRainfall.getData().size(); j++) {
                     DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
+
                     if (tempItemX.getStcd().equals(rainfalls.get(i).getStcd())) {
                         tempItem = tempItemX;
                         if (rainfalls.get(i).getDrp() == null || rainfalls.get(i).getDrp() == 0.0) {

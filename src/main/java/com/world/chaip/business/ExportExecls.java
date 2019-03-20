@@ -343,7 +343,7 @@ public class ExportExecls {
         //设置自动换行;
         style.setWrapText(true);
         //设置水平对齐的样式为居中对齐;
-        style.setAlignment(HorizontalAlignment.CENTER);
+//        style.setAlignment(HorizontalAlignment.CENTER);
         //设置垂直对齐的样式为居中对齐;
         style.setVerticalAlignment(VerticalAlignment.CENTER);
 

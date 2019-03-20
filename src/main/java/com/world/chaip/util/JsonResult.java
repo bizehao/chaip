@@ -11,6 +11,8 @@ public class JsonResult {
 	/** 返回正确时候的数据 */
 	private Object data;
 
+	private String message;
+
 	/*public JsonResult() {
 	}
 	
@@ -23,7 +25,12 @@ public class JsonResult {
 		/*state = SUCCESS;*/
 		this.data = data;
 	}
-	
+
+	public JsonResult setMessage(String message) {
+		this.message = message;
+		return this;
+	}
+
 	/*public JsonResult(Throwable e) {
 		state = ERROR;
 		message = e.getMessage();
