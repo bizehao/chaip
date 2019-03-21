@@ -24,6 +24,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -313,7 +314,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
-
+        String val = new DecimalFormat("#0.00").format(avg);
 
 
         //处理时间
@@ -321,7 +322,7 @@ public class RainExcelController extends HttpServlet {
         String begin = formatter.format(date);
         String time = "时间：" + begin;
         ExportExecls execlse = new ExportExecls(response, title, dataList, time, 58, 4, 11, ExportExecls.Direction.VERTICAL);
-        execlse.setLastInfo("平均值："+avg+"\n(mm)"+b);//
+        execlse.setLastInfo("平均值："+val+"(mm)\n"+b);//
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -554,6 +555,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         String title = "旬雨量统计报表";
         //处理时间
@@ -575,7 +577,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -736,6 +738,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         //处理时间
         Date beginTime = null;
@@ -749,7 +752,7 @@ public class RainExcelController extends HttpServlet {
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);;
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);;
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -901,6 +904,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
@@ -912,7 +916,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1078,6 +1082,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         //处理时间
         Date beginTime = null;
@@ -1094,7 +1099,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 50, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1344,12 +1349,13 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String begin = formatter.format(date);
         String time = "时间：" + begin;
         ExportExecls execlse = new ExportExecls(response, title, dataList, time, 59, 4, 11, ExportExecls.Direction.VERTICAL);
-        execlse.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execlse.setLastInfo("平均值："+val+"(mm)\n"+b);
         execlse.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1525,6 +1531,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         String title = "旬雨量统计报表";
         //处理时间
@@ -1546,7 +1553,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + "" + xun;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1715,6 +1722,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         //处理时间
         Date beginTime = null;
@@ -1728,7 +1736,7 @@ public class RainExcelController extends HttpServlet {
         System.out.println(time);
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -1906,6 +1914,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
 
         //处理时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
@@ -1917,7 +1926,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin;
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"\n(mm)"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
@@ -2112,6 +2121,7 @@ public class RainExcelController extends HttpServlet {
             }
         }
         double avg=sum/countList.size();
+        String val = new DecimalFormat("#0.00").format(avg);
         //处理时间
         Date beginTime = null;
         Date endTime = null;
@@ -2127,7 +2137,7 @@ public class RainExcelController extends HttpServlet {
         String time = "时间：" + begin + " ~~" + end + "";
         //导出Excel公共方法调用
         ExportExecls execls = new ExportExecls(response, title, objectList, time, 51, 4, 16, ExportExecls.Direction.VERTICAL);
-        execls.setLastInfo("平均值："+avg+"(mm)\n"+b);
+        execls.setLastInfo("平均值："+val+"(mm)\n"+b);
         execls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {

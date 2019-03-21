@@ -1,5 +1,6 @@
 package com.world.chaip.controller;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -183,8 +184,9 @@ public class RealtimeRainfallController {
             sum += (double) avgList.get(i);
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //旬雨量
@@ -254,9 +256,7 @@ public class RealtimeRainfallController {
         List<Object> avgList = new ArrayList<>();
         for (int i = 0; i < a.size(); i++) {
             countList.add(a.get(i).getStnm());
-            System.out.println("a.get(i).getStnm():"+a.get(i).getStnm());
             avgList.add(a.get(i).getAccp());
-            System.out.println("a.get(i).getAccp():"+a.get(i).getAccp());
         }
         double sum = 0;
         for (int i = 0; i < avgList.size(); i++) {
@@ -266,8 +266,9 @@ public class RealtimeRainfallController {
 
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //月雨量
@@ -346,8 +347,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //年雨量
@@ -431,8 +433,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //时段雨量
@@ -516,8 +519,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //日雨量（专业）
@@ -597,8 +601,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //旬雨量（专业）
@@ -676,8 +681,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //月雨量(专业)
@@ -760,8 +766,9 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //年雨量(专业)
@@ -844,8 +851,10 @@ public class RealtimeRainfallController {
             }
         }
         double avg = sum / countList.size();
-        System.out.println("avg:"+avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 
     //时段雨量(专业)
@@ -929,6 +938,8 @@ public class RealtimeRainfallController {
         }
         double avg = sum / countList.size();
         System.out.println(avg);
-        return new JsonResult(a).setMessage("平均值为："+avg);
+        String val = new DecimalFormat("#0.00").format(avg);
+        System.out.println("val:"+val);
+        return new JsonResult(a).setMessage("平均值为："+val);
     }
 }

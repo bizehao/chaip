@@ -53,7 +53,6 @@ public class RainfallServiceImpl implements RainfallService {
 
         if (rainfalls.size() > 0) {
             for (int i = 0; i < rainfalls.size(); i++) {
-                System.out.println("rainfalls.get(" + i + "):" + rainfalls.get(i));
                 DayByHourRainfallItem tempItem = null;
                 for (int j = 0; j < daybyHourRainfall.getData().size(); j++) {
                     DayByHourRainfallItem tempItemX = daybyHourRainfall.getData().get(j);
@@ -110,8 +109,8 @@ public class RainfallServiceImpl implements RainfallService {
         PptnGson pptnGson = null;
         PptnGson avgRain = new PptnGson(); //平均降雨量
         avgRain.setAdnm("平均");
-
-        for (int avi = 0; avi <= 23; avi++) {
+        avgRain.setDrpMap(new HashMap<>());
+        for (double avi = 0; avi <= 23; avi++) {
             avgRain.getDrpMap().put(avi, 0);
         }
 
@@ -170,7 +169,7 @@ public class RainfallServiceImpl implements RainfallService {
                 }
                 //&& requesMonth==currentMonth && requesYear==currentYear
             } else if (requestDay == currentDay && requesMonth == currentMonth && requesYear == currentYear) {
-                Double cishi = (double) currentHour;
+                double cishi = (double) currentHour;
                 if (cishi == 23) {
                     for (Double na = 9.0; na <= 23; na++) {
                         if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(na)) {
@@ -205,11 +204,7 @@ public class RainfallServiceImpl implements RainfallService {
                 }
             } else {
                 for (Double nd = 0.0; nd <= 23; nd++) {
-                    if (daybyHourRainfall.getData().get(i).getHourRainfalls().containsKey(nd)) {
-                        map.put(nd, daybyHourRainfall.getData().get(i).getHourRainfalls().get(nd));
-                    } else {
-                        map.put(nd, " ");
-                    }
+                    map.put(nd, daybyHourRainfall.getData().get(i).getHourRainfalls().getOrDefault(nd, " "));
                 }
             }
 
@@ -219,21 +214,35 @@ public class RainfallServiceImpl implements RainfallService {
             list.add(pptnGson);
 
             //avg map
-            for (int avi = 0; avi <= 23; avi++) {
-                double yuanshi = (double) avgRain.getDrpMap().get(avi);
-                double xintian = pptnGson.getDrpMap().get(avi) == " " ? 0 : (double) pptnGson.getDrpMap().get(avi);
+            for (double avi = 0; avi <= 23; avi++) {
+                double yuanshi = Double.parseDouble(String.valueOf(avgRain.getDrpMap().get(avi)));
+                double xintian = 0;
+                if (pptnGson.getDrpMap().get(avi) != null && pptnGson.getDrpMap().get(avi) != " ") {
+                    xintian = Double.parseDouble(String.valueOf(pptnGson.getDrpMap().get(avi)));
+                }
                 avgRain.getDrpMap().replace(avi, yuanshi + xintian);
             }
-
         }
         if (column != -1) {
             list = getListPX(list, column, sign);
         }
 
-        avgRain.setCountDrp(avgRain.getCountDrp()/list.size());
-
-        for (int avi = 0; avi <= 23; avi++) {
-            avgRain.getDrpMap().replace(avi, (double)avgRain.getDrpMap().get(avi)/list.size());
+        if (avgRain.getCountDrp()==0.0 && list.size()==0){
+            avgRain.setCountDrp(0.0);
+        }else{
+            double val = avgRain.getCountDrp() / list.size();
+            String val1 = new DecimalFormat("#0.00").format(val);
+            avgRain.setCountDrp(Double.parseDouble(val1));
+        }
+        for (double avi = 0; avi <= 23; avi++) {
+            double num = Double.parseDouble(String.valueOf(avgRain.getDrpMap().get(avi)));
+            if (num==0.0 && list.size()==0){
+                avgRain.getDrpMap().replace(avi, 0.0);
+            }else{
+                double num1 = num / list.size();
+                String num2 = new DecimalFormat("#0.00").format(num1);
+                avgRain.getDrpMap().replace(avi, Double.parseDouble(num2));
+            }
         }
         list.add(avgRain);
         return list;
