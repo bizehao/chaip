@@ -11,51 +11,12 @@ public class JsonResult {
 	/** 返回正确时候的数据 */
 	private Object data;
 
-	private String message;
 
-	/*public JsonResult() {
-	}
-	
-	public JsonResult(String error){
-		state = ERROR;
-		this.message = error;
-	}*/
-	
 	public JsonResult(Object data){
 		/*state = SUCCESS;*/
 		this.data = data;
 	}
 
-	public JsonResult setMessage(String message) {
-		this.message = message;
-		return this;
-	}
-
-	/*public JsonResult(Throwable e) {
-		state = ERROR;
-		message = e.getMessage();
-	}
-	
-	public JsonResult(int state, Throwable e) {
-		this.state = state;
-		this.message = e.getMessage();
-	}*/
-
-	/*public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
-	}*/
-
-	/*public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}*/
 
 	public Object getData() {
 		return data;
@@ -65,10 +26,11 @@ public class JsonResult {
 		this.data = data;
 	}
 
+
 	@Override
 	public String toString() {
-		/*return "JsonResult [state=" + state + ", message=" + message + ", data=" + data + "]";*/
-        return "JsonResult [data=" + data + "]";
+		return "JsonResult{" +
+				"data=" + data +
+				'}';
 	}
-	
 }

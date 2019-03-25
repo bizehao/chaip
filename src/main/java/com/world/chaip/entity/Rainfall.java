@@ -21,6 +21,8 @@ public class Rainfall extends Station {
 	Double drp;
 	Double accp;
 	Double num;
+	String message;
+
     public Double getAccp() {
         return accp;
     }
@@ -37,8 +39,22 @@ public class Rainfall extends Station {
 		this.num = num;
 	}
 
-    @Override
-    public String toString() {
-        return "Rainfall{" + "tm=" + tm + ", drp=" + drp + ", accp=" + accp + ", num=" + num + '}';
-    }
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	@Override
+	public String toString() {
+		return "Rainfall{" +
+				"tm=" + tm +
+				", drp=" + drp +
+				", accp=" + accp +
+				", num=" + num +
+				", message='" + message + '\'' +
+				'}';
+	}
 }

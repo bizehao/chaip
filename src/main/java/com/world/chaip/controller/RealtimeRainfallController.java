@@ -186,7 +186,12 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+
+
+        return new JsonResult(a);//.setMessage("平均值为："+val);
     }
 
     //旬雨量
@@ -268,7 +273,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //月雨量
@@ -349,7 +357,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //年雨量
@@ -435,7 +446,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //时段雨量
@@ -521,7 +535,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //日雨量（专业）
@@ -603,7 +620,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //旬雨量（专业）
@@ -683,7 +703,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //月雨量(专业)
@@ -768,7 +791,10 @@ public class RealtimeRainfallController {
         double avg = sum / countList.size();
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //年雨量(专业)
@@ -854,7 +880,10 @@ public class RealtimeRainfallController {
 
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 
     //时段雨量(专业)
@@ -940,6 +969,9 @@ public class RealtimeRainfallController {
         System.out.println(avg);
         String val = new DecimalFormat("#0.00").format(avg);
         System.out.println("val:"+val);
-        return new JsonResult(a).setMessage("平均值为："+val);
+        if (a!=null && a.size()!=0){
+            a.get(a.size()-1).setMessage("平均值为："+val);
+        }
+        return new JsonResult(a);
     }
 }
