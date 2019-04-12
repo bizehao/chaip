@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
-    <!--  水库水情分析表 -->
+    <!--  水库水情分析表   and STTDRCD = 1-->
     <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrWaterExchange">
         select st.stcd,st.stnm,name,AVINQ,AVOTQ from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
@@ -65,13 +65,13 @@
             <![CDATA[
 				TM > #{beginTime} AND TM <= #{endTime}
 			]]>
-            /*and STTDRCD = 1*/
+
         </where>
         group by stcd
         )PP
         on ST.STCD=PP.STCD ORDER BY STCD
     </select>
-    <!--  水库水情分析表 查询单日的 -->
+    <!--  水库水情分析表 查询单日的    /*and sttdrcd = '1'*/ -->
     <select id="getRsvrWaterAnalysisRi" resultType="com.world.chaip.entity.report.Rsvr">
         select st.stcd,st.stnm,name,rz,w from
         (select b.* , e.name, ad.adnm from st_stbprp_b b
@@ -135,7 +135,7 @@
             <![CDATA[
 				TM >= #{beginTime} and TM < #{endTime}
 			]]>
-            /*and sttdrcd = '1'*/
+
         </where>
         group by stcd
         )PP

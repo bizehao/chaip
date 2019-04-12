@@ -21,7 +21,8 @@ import java.util.TimerTask;
  * @Date: 19-3-26 上午9:28
  * @Descript
  */
-@Component
+
+//@Component
 public class ActiveListener implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(ActiveListener.class);
