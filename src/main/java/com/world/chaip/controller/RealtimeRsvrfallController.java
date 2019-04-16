@@ -124,7 +124,7 @@ public class RealtimeRsvrfallController {
         List<String> typelist = new ArrayList<String>();
         List<String> stcdlist = new ArrayList<String>();
         List<String> lylist = new ArrayList<>();
-
+        System.out.println("--------------------------------this is a very good");
         if(adcd.equals("X")){
             adcdlist=null;
         }else {

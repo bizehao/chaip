@@ -61,7 +61,7 @@
 			</trim>
 		</where>
 		) st
-        inner join
+		Left join
 		(
 		select * from st_pptn_r m
 		<where>

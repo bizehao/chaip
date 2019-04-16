@@ -91,9 +91,14 @@ public class RainfallServiceImpl implements RainfallService {
                     tempItem.setName(rainfalls.get(i).getName());
                     tempItem.setAdnm(rainfalls.get(i).getAdnm());
                     if (rainfalls.get(i).getDrp() == null || rainfalls.get(i).getDrp() == 0.0) {
-                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), "0");
+                        if (rainfalls.get(i).getTm() != null) {
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), "0");
+                        }
+
                     } else {
-                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), String.valueOf(rainfalls.get(i).getDrp()));
+                        if (rainfalls.get(i).getTm() != null) {
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), String.valueOf(rainfalls.get(i).getDrp()));
+                        }
                     }
                     if (i == rainfalls.size() - 1) {
                         double count = tempItem.testValues();
@@ -227,18 +232,18 @@ public class RainfallServiceImpl implements RainfallService {
             list = getListPX(list, column, sign);
         }
 
-        if (avgRain.getCountDrp()==0.0 && list.size()==0){
+        if (avgRain.getCountDrp() == 0.0 && list.size() == 0) {
             avgRain.setCountDrp(0.0);
-        }else{
+        } else {
             double val = avgRain.getCountDrp() / list.size();
             String val1 = new DecimalFormat("#0.00").format(val);
             avgRain.setCountDrp(Double.parseDouble(val1));
         }
         for (double avi = 0; avi <= 23; avi++) {
             double num = Double.parseDouble(String.valueOf(avgRain.getDrpMap().get(avi)));
-            if (num==0.0 && list.size()==0){
+            if (num == 0.0 && list.size() == 0) {
                 avgRain.getDrpMap().replace(avi, 0.0);
-            }else{
+            } else {
                 double num1 = num / list.size();
                 String num2 = new DecimalFormat("#0.00").format(num1);
                 avgRain.getDrpMap().replace(avi, Double.parseDouble(num2));
@@ -489,10 +494,14 @@ public class RainfallServiceImpl implements RainfallService {
                     tempItem.setName(rainfalls.get(i).getName());
                     tempItem.setAdnm(rainfalls.get(i).getAdnm());
                     if (rainfalls.get(i).getDrp() == null) {
-                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), "0.0");
+                        if (rainfalls.get(i).getTm()!=null){
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), "0.0");
+                        }
                     } else {
-                        tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), String.valueOf(rainfalls.get(i).getDrp()));
-                    }
+                        if (rainfalls.get(i).getTm()!=null){
+                            tempItem.getHourRainfalls().put((double) rainfalls.get(i).getTm().getHours(), String.valueOf(rainfalls.get(i).getDrp()));
+                        }
+                      }
                     daybyHourRainfall.getData().add(tempItem);
                 }
             }
