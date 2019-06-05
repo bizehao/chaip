@@ -1,5 +1,6 @@
 package com.world.chaip.mapper;
 
+import com.world.chaip.entity.newRsvr.RevrXunQi;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrXunQi;
 import com.world.chaip.entity.report.RsvrZhuanYe;
@@ -59,7 +60,7 @@ public interface RsvrfallMapper {
 			@Param("fstp") int fstp,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
-			@Param("stcdOrStnm") List<String> stcdOrStnm,
+			@Param("stcdOrStnm") String stcdOrStnm,
             @Param("ly") List<String> ly);
     /**
      * 水库查询（专业报表 时间相同）
@@ -80,11 +81,9 @@ public interface RsvrfallMapper {
 
 	/**
 	 * 查询汛期
-	 * @param fstp
 	 * @return
 	 */
-	RsvrXunQi getRsvrFS(
-			@Param("fstp") int fstp);
+	List<RevrXunQi> getRsvrFS();
 
 	List<String> getFsltdzStations(@Param("fstp") int fstp);
 }

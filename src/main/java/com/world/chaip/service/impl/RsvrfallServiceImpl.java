@@ -1,16 +1,13 @@
 package com.world.chaip.service.impl;
 
-import com.world.chaip.entity.DaybyHourRainfall;
 import com.world.chaip.entity.excelFormat.DayRsvr;
-import com.world.chaip.entity.report.River;
+import com.world.chaip.entity.newRsvr.RevrXunQi;
+import com.world.chaip.entity.newRsvr.XunQITime;
 import com.world.chaip.entity.report.Rsvr;
-import com.world.chaip.entity.report.RsvrXunQi;
 import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.mapper.RsvrfallMapper;
 import com.world.chaip.service.RsvrfallService;
-import com.world.chaip.util.DateUtils;
 import com.world.chaip.util.ExcepTimeUtil;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,70 +18,103 @@ import java.util.*;
 @Service
 public class RsvrfallServiceImpl implements RsvrfallService {
 
-    @Autowired
-    RsvrfallMapper rsvrfallMapper;
+	@Autowired
+	RsvrfallMapper rsvrfallMapper;
 
-    //水库 (实时)
-    @Override
-    public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
-        List<Rsvr> rainfalls;
-        if(dateS.equals(dateE)){
-            rainfalls=rsvrfallMapper.getRsvrByTermNew(dateS,adcd,systemTypes,stcdOrStnm,ly);
-        }else{
-            rainfalls=rsvrfallMapper.getRsvrByTerm(dateS,dateE,adcd,systemTypes,stcdOrStnm,ly);
-        }
+	//水库 (实时)
+	@Override
+	public List<Rsvr> getRsvrByTerm(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
+		List<Rsvr> rainfalls;
+		if (dateS.equals(dateE)) {
+			rainfalls = rsvrfallMapper.getRsvrByTermNew(dateS, adcd, systemTypes, stcdOrStnm, ly);
+		} else {
+			rainfalls = rsvrfallMapper.getRsvrByTerm(dateS, dateE, adcd, systemTypes, stcdOrStnm, ly);
+		}
         /*for(Rsvr rsvr : rainfalls){
             rsvr.setTm(ExcepTimeUtil.getExcepTime(rsvr.getTm()));
             if(rsvr.getRWCHRCD() == 1){
                 rsvr.setRz("干涸");
             }
         }*/
-        return rainfalls;
-    }
+		return rainfalls;
+	}
 
-    //水库 (专业)
-    @Override
-    public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
+	//水库 (专业)
+	@Override
+	public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
+		List<RsvrZhuanYe> totalRainfalls = new ArrayList<>();
+		List<RevrXunQi> revrXunQis = rsvrfallMapper.getRsvrFS();
+		if (stcdOrStnm == null) {
+			int beginTimeOfInt = getRsverXunQi(dateS);
+			for (RevrXunQi rxq : revrXunQis) {
+				for (XunQITime xunQITime : rxq.getXunQITimeList()) {
+					if (beginTimeOfInt >= xunQITime.getBgmd() && beginTimeOfInt <= xunQITime.getEdmd()) {
+						rxq.setChooseFstp(xunQITime.getFstp());
+						break;
+					}
+				}
+				if (rxq.getChooseFstp() != 0) {
+					List<RsvrZhuanYe> rainfalls;
+					if(dateS.equals(dateE)){
+						rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd,systemTypes,stcdOrStnm,ly);
+					}else {
+						rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
+					}
+					totalRainfalls.addAll(rainfalls);
+				}
+			}
+		}else {
+			for (String stcd : stcdOrStnm){
+				int beginTimeOfInt = getRsverXunQi(dateS);
+				for (RevrXunQi rxq : revrXunQis) {
+					if(stcd.equals(rxq.getStcd()) || stcd.equals(rxq.getStnm())){
+						for (XunQITime xunQITime : rxq.getXunQITimeList()) {
+							if (beginTimeOfInt > xunQITime.getBgmd() && beginTimeOfInt < xunQITime.getEdmd()) {
+								rxq.setChooseFstp(xunQITime.getFstp());
+								break;
+							}
+						}
+						if (rxq.getChooseFstp() != 0) {
+							List<RsvrZhuanYe> rainfalls;
+							if(dateS.equals(dateE)){
+								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd,systemTypes,stcdOrStnm,ly);
+							}else {
+								rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
+							}
+							totalRainfalls.addAll(rainfalls);
+						}
+						break;
+					}
+				}
+			}
+		}
 
-        int fstp =  getRsverXunQi(dateS);
-        int fstp1 =  getRsverXunQi(dateE);
-        if(fstp >= fstp1){
-            fstp = fstp1;
-        }
+
         double level = 0;
         List<String> levelList = new ArrayList<>();
         String levelS = "";
         int jilu = 0;
-        List<RsvrZhuanYe> rainfalls;
-        if(dateS.equals(dateE)){
-            rainfalls=rsvrfallMapper.getRsvrByZhaunYeNew(dateE, fstp, adcd,systemTypes,stcdOrStnm,ly);
-        }else{
-            rainfalls=rsvrfallMapper.getRsvrByZhaunYe(dateS,dateE, fstp, adcd,systemTypes,stcdOrStnm,ly);
-        }
-        List<String> stcdList = rsvrfallMapper.getFsltdzStations(fstp);
 
         List<RsvrZhuanYe> rsvrItem = null; //新增 处理多条
         RsvrZhuanYe rsvrZhuanYe; //新增 处理多条   新增  一个站有多条数据  其中最小的一个超过汛限水位,就算是超汛限水位
         List<RsvrZhuanYe> rsvrChao = new ArrayList<>(); //在汛限水位里包含的
-        for(int i=0; i<rainfalls.size(); i++){
-            rainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(rainfalls.get(i).getTm()));
-            /*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*/
-            rainfalls.get(i).setFsltdz(rainfalls.get(i).getFsltdz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(rainfalls.get(i).getFsltdz())));
-            /*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*/
-            rainfalls.get(i).setRz(rainfalls.get(i).getRz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(rainfalls.get(i).getRz())));
-            rainfalls.get(i).setW(rainfalls.get(i).getW()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getW())));
-            rainfalls.get(i).setInq(rainfalls.get(i).getInq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getInq())));
-            rainfalls.get(i).setOtq(rainfalls.get(i).getOtq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(rainfalls.get(i).getOtq())));
-            //新增
-            if(stcdList.contains(rainfalls.get(i).getStcd())){ //判断该元素是否在集合中
-                rsvrChao.add(rainfalls.get(i));
-            }
-            //干涸
+        for(int i=0; i<totalRainfalls.size(); i++){
+	        totalRainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(totalRainfalls.get(i).getTm()));
+            //*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*//*
+	        totalRainfalls.get(i).setFsltdz(totalRainfalls.get(i).getFsltdz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(totalRainfalls.get(i).getFsltdz())));
+            //*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*//*
+	        totalRainfalls.get(i).setRz(totalRainfalls.get(i).getRz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(totalRainfalls.get(i).getRz())));
+	        totalRainfalls.get(i).setW(totalRainfalls.get(i).getW()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getW())));
+	        totalRainfalls.get(i).setInq(totalRainfalls.get(i).getInq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getInq())));
+	        totalRainfalls.get(i).setOtq(totalRainfalls.get(i).getOtq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getOtq())));
+	        rsvrChao.add(totalRainfalls.get(i));
 
         }
 
         for(int i=0;i<rsvrChao.size();i++){
-            System.out.println(rsvrChao.get(i).getStcd());
+	        if(rsvrChao.get(i).getRWCHRCD() == 1){
+		        rsvrChao.get(i).setRz("干涸");
+	        }
             if(rsvrItem != null){
                 if(rsvrItem.get(0).getStcd().equals(rsvrChao.get(i).getStcd())){  // 111   22222    33  5
                     rsvrZhuanYe = rsvrChao.get(i);
@@ -128,68 +158,43 @@ public class RsvrfallServiceImpl implements RsvrfallService {
             }
         }
 
-        for(int i=0; i<rainfalls.size(); i++){
-            if(rainfalls.get(i).getRWCHRCD() == 1){
-                rainfalls.get(i).setRz("干涸");
-            }
-
-        }
-
-        String head = "目前有"+jilu+"处水库水位超过汛限水位";
+        StringBuilder head = new StringBuilder("目前有" + jilu + "处水库水位超过汛限水位");
         if(levelList.size()>0){
-            for(int i=0; i<levelList.size(); i++){
-                head+="其中"+levelList.get(i)+",";
-            }
+	        for (String s : levelList) {
+		        head.append("其中").append(s).append(",");
+	        }
             head.substring(head.length());
-            head+="。";
+            head.append("。");
         }
-        levelList.add(0,head);
+        levelList.add(0, head.toString());
 
         DayRsvr dayRsvr = new DayRsvr();
-        if(fstp==1){
-            dayRsvr.setFstp("主汛期");
-        }else if(fstp==2){
-            dayRsvr.setFstp("后汛期");
-        }else if(fstp==3){
-            dayRsvr.setFstp("过渡期");
-        }else{
-            dayRsvr.setFstp("其它");
-        }
-        dayRsvr.setRsvrZhuanYeList(rainfalls);
-        dayRsvr.setLevels(head);
-        return dayRsvr;
-    }
+		dayRsvr.setFstp("其它");
+        dayRsvr.setRsvrZhuanYeList(rsvrChao);
+        dayRsvr.setLevels(head.toString());
+		return dayRsvr;
+	}
 
-    public int getRsverXunQi(Date time){
-        String tmString = "";
-        int tmInt = 0;
-        Calendar now = Calendar.getInstance();
-        now.setTime(time);
-        int month = now.get(Calendar.MONTH)+1;
-        int day = now.get(Calendar.DAY_OF_MONTH);
-        if(day<=9){
-            tmString = month+"0"+day;
-        }else{
-            tmString = String.valueOf(month)+String.valueOf(day);
-        }
-        tmInt = Integer.parseInt(tmString);
-        RsvrXunQi rsvrXunQi = null;
-        int xqKS = 0;
-        int xqJS = 0;
-        for(int i=1; i<=4; i++){
-            rsvrXunQi = rsvrfallMapper.getRsvrFS(i);
-            if(rsvrXunQi != null){
-                xqKS = Integer.parseInt(rsvrXunQi.getBGMD());
-                xqJS = Integer.parseInt(rsvrXunQi.getEDMD());
-                if(tmInt >= xqKS && tmInt <= xqJS){
-                    return i;
-                }
-            }
-        }
-        return 4;
-    }
+	/**
+	 * 时间转为int
+	 *
+	 * @param time
+	 * @return
+	 */
+	private int getRsverXunQi(Date time) {
+		String tmString = "";
+		int tmInt = 0;
+		Calendar now = Calendar.getInstance();
+		now.setTime(time);
+		int month = now.get(Calendar.MONTH) + 1;
+		int day = now.get(Calendar.DAY_OF_MONTH);
+		if (day <= 9) {
+			tmString = month + "0" + day;
+		} else {
+			tmString = month + String.valueOf(day);
+		}
+		tmInt = Integer.parseInt(tmString);
+		return tmInt;
+	}
 
-    public static void main(String[] args) {
-        System.out.println(Double.parseDouble("15.46"));
-    }
 }

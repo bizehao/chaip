@@ -2,11 +2,13 @@ package com.world.chaip;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.world.chaip.entity.Rainfall;
+import com.world.chaip.entity.newRsvr.RevrXunQi;
 import com.world.chaip.entity.report.Pptn;
 import com.world.chaip.entity.report.River;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.gson.PptnGson;
 import com.world.chaip.mapper.ReportMapper;
+import com.world.chaip.mapper.RsvrfallMapper;
 import com.world.chaip.service.RainfallService;
 import com.world.chaip.service.ReportService;
 import com.world.chaip.util.DateUtils;
@@ -63,5 +65,14 @@ public class ChaipApplicationTests {
 		}
 		//System.out.println(ipAddrStr);
 		return ipAddrStr;
+	}
+
+	@Autowired
+	RsvrfallMapper rsvrfallMapper;
+
+	@Test
+	public void testSql(){
+		List<RevrXunQi> aa = rsvrfallMapper.getRsvrFS();
+		System.out.println(aa.size());
 	}
 }
