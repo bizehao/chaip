@@ -108,8 +108,8 @@ public class RealtimeRsvrfallController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="ly",required = false)String ly*/) throws ParseException {
 
-        String dateStart = "2018-07-10 8:00";
-        String dateEnd = "2018-07-26 8:00";
+        String dateStart = "2018-08-15 8:00";
+        String dateEnd = "2018-08-17 8:00";
         String adcd = "130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";

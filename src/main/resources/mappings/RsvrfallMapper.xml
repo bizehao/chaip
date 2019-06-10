@@ -234,7 +234,25 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{adcd}
                     </foreach>
                 </if>
-                and a.stcd = #{stcdOrStnm}
+                <if test="stcdOrStnm!=null">
+                    <choose>
+                        <when test="stcdOrStnm.size() > 1">
+                            and a.stcd IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                            or a.stnm IN
+                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+                                     close=")">
+                                #{stcdOrStnm}
+                            </foreach>
+                        </when>
+                        <otherwise>
+                            and (a.stcd like '%${stcdOrStnm[0]}%' or a.stnm like '%${stcdOrStnm[0]}%')
+                        </otherwise>
+                    </choose>
+                </if>
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and c.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
@@ -295,7 +313,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{adcd}
                     </foreach>
                 </if>
-                and a.stcd = #{stcdOrStnm}
+                and a.stcd = #{stcdOrStnm} or a.stnm = #{stcdOrStnm}
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and k.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
@@ -322,11 +340,13 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         on
         b.stcd=e.stcd
         left join
-        (select
+        (select   top(1)
         stcd,FSLTDZ,FSLTDW,FSTP
         from
         RP_RSVRFSR_B
         <where>
+            stcd = #{stcdOrStnm}
+            and
             FSTP = #{fstp}
         </where>
         ) f
@@ -366,25 +386,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                         #{adcd}
                     </foreach>
                 </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and a.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
-                                     close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or a.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
-                                     close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and (a.stcd like '%${stcdOrStnm[0]}%' or a.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                </if>
+                and a.stcd = #{stcdOrStnm} or a.stnm = #{stcdOrStnm}
                 <if test="systemTypes != null and systemTypes.size() > 0">
                     and k.lx IN
                     <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
@@ -422,11 +424,13 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         on
         c.stcd=e.stcd
         left join
-        (select
+        (select  top(1)
         stcd,FSLTDZ,FSLTDW,FSTP
         from
         RP_RSVRFSR_B
         <where>
+            stcd = #{stcdOrStnm}
+            and
             FSTP = #{fstp}
         </where>
         ) f
