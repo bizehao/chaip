@@ -44,7 +44,7 @@ public class FlowShowController {
 			@RequestParam(name = "systemTypes", required = false) String systemTypes,
 			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm) {
 
-		/*String dateStr = "2019-01-22 17:00";
+		/*String dateStr = "2016-01-22 17:00";
         String dateEnd = "2019-01-24 17:00";
         String adcd = "X";
         String systemTypes = "11,12,";
@@ -108,7 +108,7 @@ public class FlowShowController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		System.out.println("==========================");
+
 		List<FlowSpeed> a = mFlowShowService.getFlowSpeed(dateS, dateE, lylist, adcdlist, typelist, stcdlist);
 		return new JsonResult(a);
 	}

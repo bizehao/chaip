@@ -163,9 +163,6 @@ public class RealtimeRiverfallController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println("======================");
-        System.out.println(dateS);
-        System.out.println(dateE);
         List<River> a = riverfallService.getRiverByBen(dateS, dateE, adcdlist, typelist, stcdlist,lylist);
         return new JsonResult(a);
     }
