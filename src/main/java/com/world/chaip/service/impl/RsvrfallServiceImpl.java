@@ -55,19 +55,19 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 				}
 				if (rxq.getChooseFstp() != 0) {
 					List<RsvrZhuanYe> rainfalls;
-					if(dateS.equals(dateE)){
-						rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd,systemTypes,stcdOrStnm,ly);
-					}else {
+					if (dateS.equals(dateE)) {
+						rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, stcdOrStnm, ly);
+					} else {
 						rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
 					}
 					totalRainfalls.addAll(rainfalls);
 				}
 			}
-		}else {
-			for (String stcd : stcdOrStnm){
+		} else {
+			for (String stcd : stcdOrStnm) {
 				int beginTimeOfInt = getRsverXunQi(dateS);
 				for (RevrXunQi rxq : revrXunQis) {
-					if(stcd.equals(rxq.getStcd()) || stcd.equals(rxq.getStnm())){
+					if (stcd.equals(rxq.getStcd()) || stcd.equals(rxq.getStnm())) {
 						for (XunQITime xunQITime : rxq.getXunQITimeList()) {
 							if (beginTimeOfInt > xunQITime.getBgmd() && beginTimeOfInt < xunQITime.getEdmd()) {
 								rxq.setChooseFstp(xunQITime.getFstp());
@@ -76,9 +76,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 						}
 						if (rxq.getChooseFstp() != 0) {
 							List<RsvrZhuanYe> rainfalls;
-							if(dateS.equals(dateE)){
-								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd,systemTypes,stcdOrStnm,ly);
-							}else {
+							if (dateS.equals(dateE)) {
+								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, stcdOrStnm, ly);
+							} else {
 								rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
 							}
 							totalRainfalls.addAll(rainfalls);
@@ -90,88 +90,100 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 		}
 
 
-        double level = 0;
-        List<String> levelList = new ArrayList<>();
-        String levelS = "";
-        int jilu = 0;
+		double level = 0;
+		List<String> levelList = new ArrayList<>();
+		String levelS = "";
+		int jilu = 0;
 
-        List<RsvrZhuanYe> rsvrItem = null; //新增 处理多条
-        RsvrZhuanYe rsvrZhuanYe; //新增 处理多条   新增  一个站有多条数据  其中最小的一个超过汛限水位,就算是超汛限水位
-        List<RsvrZhuanYe> rsvrChao = new ArrayList<>(); //在汛限水位里包含的
-        for(int i=0; i<totalRainfalls.size(); i++){
-	        totalRainfalls.get(i).setTm(ExcepTimeUtil.getExcepTime(totalRainfalls.get(i).getTm()));
-            //*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*//*
-	        totalRainfalls.get(i).setFsltdz(totalRainfalls.get(i).getFsltdz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(totalRainfalls.get(i).getFsltdz())));
-            //*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*//*
-	        totalRainfalls.get(i).setRz(totalRainfalls.get(i).getRz()==null?"":new DecimalFormat("#0.00").format(Double.parseDouble(totalRainfalls.get(i).getRz())));
-	        totalRainfalls.get(i).setW(totalRainfalls.get(i).getW()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getW())));
-	        totalRainfalls.get(i).setInq(totalRainfalls.get(i).getInq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getInq())));
-	        totalRainfalls.get(i).setOtq(totalRainfalls.get(i).getOtq()==null?"":new DecimalFormat("#0.000").format(Double.parseDouble(totalRainfalls.get(i).getOtq())));
-	        rsvrChao.add(totalRainfalls.get(i));
+		List<RsvrZhuanYe> rsvrItem = null; //新增 处理多条
+		RsvrZhuanYe rsvrZhuanYe; //新增 处理多条   新增  一个站有多条数据  其中最小的一个超过汛限水位,就算是超汛限水位
+		List<RsvrZhuanYe> rsvrChao = new ArrayList<>(); //在汛限水位里包含的
+		for (int i = 0; i < totalRainfalls.size(); i++) {
 
-        }
+			RsvrZhuanYe rzy = totalRainfalls.get(i);
 
-        for(int i=0;i<rsvrChao.size();i++){
-	        if(rsvrChao.get(i).getRWCHRCD() == 1){
-		        rsvrChao.get(i).setRz("干涸");
-	        }
-            if(rsvrItem != null){
-                if(rsvrItem.get(0).getStcd().equals(rsvrChao.get(i).getStcd())){  // 111   22222    33  5
-                    rsvrZhuanYe = rsvrChao.get(i);
-                    rsvrItem.add(rsvrZhuanYe);
-                }else {
-                    Collections.sort(rsvrItem, new Comparator<RsvrZhuanYe>(){
-                        @Override
-                        public int compare(RsvrZhuanYe o1, RsvrZhuanYe o2) {
-                            return Double.parseDouble(o1.getRz())>Double.parseDouble(o2.getRz())?-1:1;
-                        }
-                    });
-                    rsvrZhuanYe = rsvrItem.get(0); //处理
-                    double a = rsvrZhuanYe.getRz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
-                    double b = rsvrZhuanYe.getFsltdz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
-                    if(a >= b){
-                        jilu++;
-                        level = a - b;
-                        levelS = rsvrZhuanYe.getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
-                        levelList.add(levelS);
-                    }
+			rzy.setTm(ExcepTimeUtil.getExcepTime(totalRainfalls.get(i).getTm()));
+			//*rainfalls.get(i).setTtcp(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getTtcp())));*//*
+			rzy.setFsltdz(rzy.getFsltdz() == null ? "" : new DecimalFormat("#0.00").format(Double.parseDouble(rzy.getFsltdz())));
+			//*rainfalls.get(i).setFsltdw(Double.parseDouble(new DecimalFormat("#0.00").format(rainfalls.get(i).getFsltdw())));*//*
+			rzy.setRz(rzy.getRz() == null ? "" : new DecimalFormat("#0.00").format(Double.parseDouble(rzy.getRz())));
+			rzy.setW(rzy.getW() == null ? "" : new DecimalFormat("#0.000").format(Double.parseDouble(rzy.getW())));
+			rzy.setInq(rzy.getInq() == null ? "" : new DecimalFormat("#0.000").format(Double.parseDouble(rzy.getInq())));
+			rzy.setOtq(rzy.getOtq() == null ? "" : new DecimalFormat("#0.000").format(Double.parseDouble(rzy.getOtq())));
+			double x1 = 0;
+			if(rzy.getInq() != null && !rzy.getInq().trim().equals("")){
+				x1 = Double.parseDouble(rzy.getInq());
+			}
+			double x2 = 0;
+			if(rzy.getINQDR() != null && !rzy.getINQDR().trim().equals("")){
+				x2 = Double.parseDouble(rzy.getINQDR());
+			}
+			rzy.setInqOfDay(new DecimalFormat("#0.000").format(x1 * x2));
+			rsvrChao.add(rzy);
 
-                    rsvrItem = new ArrayList<>();
-                    rsvrZhuanYe = rsvrChao.get(i);
-                    rsvrItem.add(rsvrZhuanYe);
-                    if(i==rsvrChao.size()-1){
-                        rsvrZhuanYe = rsvrChao.get(i); //处理
-                        double ah = rsvrZhuanYe.getRz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
-                        double bh = rsvrZhuanYe.getFsltdz().trim().length()==0?0:Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
-                        if(ah >= bh){
-                            jilu++;
-                            level = ah - bh;
-                            levelS = rsvrZhuanYe.getStnm()+"水库，超汛限水位"+new DecimalFormat("#0.00").format(level)+"米";
-                            levelList.add(levelS);
-                        }
-                    }
-                }
-            }else{
-                rsvrItem = new ArrayList<>();
-                rsvrZhuanYe = rsvrChao.get(i);
-                rsvrItem.add(rsvrZhuanYe);
-            }
-        }
+		}
 
-        StringBuilder head = new StringBuilder("目前有" + jilu + "处水库水位超过汛限水位");
-        if(levelList.size()>0){
-	        for (String s : levelList) {
-		        head.append("其中").append(s).append(",");
-	        }
-            head.substring(head.length());
-            head.append("。");
-        }
-        levelList.add(0, head.toString());
+		for (int i = 0; i < rsvrChao.size(); i++) {
+			if (rsvrChao.get(i).getRWCHRCD() == 1) {
+				rsvrChao.get(i).setRz("干涸");
+			}
+			if (rsvrItem != null) {
+				if (rsvrItem.get(0).getStcd().equals(rsvrChao.get(i).getStcd())) {  // 111   22222    33  5
+					rsvrZhuanYe = rsvrChao.get(i);
+					rsvrItem.add(rsvrZhuanYe);
+				} else {
+					Collections.sort(rsvrItem, new Comparator<RsvrZhuanYe>() {
+						@Override
+						public int compare(RsvrZhuanYe o1, RsvrZhuanYe o2) {
+							return Double.parseDouble(o1.getRz()) > Double.parseDouble(o2.getRz()) ? -1 : 1;
+						}
+					});
+					rsvrZhuanYe = rsvrItem.get(0); //处理
+					double a = rsvrZhuanYe.getRz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
+					double b = rsvrZhuanYe.getFsltdz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
+					if (a >= b) {
+						jilu++;
+						level = a - b;
+						levelS = rsvrZhuanYe.getStnm() + "水库，超汛限水位" + new DecimalFormat("#0.00").format(level) + "米";
+						levelList.add(levelS);
+					}
 
-        DayRsvr dayRsvr = new DayRsvr();
+					rsvrItem = new ArrayList<>();
+					rsvrZhuanYe = rsvrChao.get(i);
+					rsvrItem.add(rsvrZhuanYe);
+					if (i == rsvrChao.size() - 1) {
+						rsvrZhuanYe = rsvrChao.get(i); //处理
+						double ah = rsvrZhuanYe.getRz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
+						double bh = rsvrZhuanYe.getFsltdz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getFsltdz());//rainfalls.get(i).getFsltdz()
+						if (ah >= bh) {
+							jilu++;
+							level = ah - bh;
+							levelS = rsvrZhuanYe.getStnm() + "水库，超汛限水位" + new DecimalFormat("#0.00").format(level) + "米";
+							levelList.add(levelS);
+						}
+					}
+				}
+			} else {
+				rsvrItem = new ArrayList<>();
+				rsvrZhuanYe = rsvrChao.get(i);
+				rsvrItem.add(rsvrZhuanYe);
+			}
+		}
+
+		StringBuilder head = new StringBuilder("目前有" + jilu + "处水库水位超过汛限水位");
+		if (levelList.size() > 0) {
+			for (String s : levelList) {
+				head.append("其中").append(s).append(",");
+			}
+			head.substring(head.length());
+			head.append("。");
+		}
+		levelList.add(0, head.toString());
+
+		DayRsvr dayRsvr = new DayRsvr();
 		dayRsvr.setFstp("其它");
-        dayRsvr.setRsvrZhuanYeList(rsvrChao);
-        dayRsvr.setLevels(head.toString());
+		dayRsvr.setRsvrZhuanYeList(rsvrChao);
+		dayRsvr.setLevels(head.toString());
 		return dayRsvr;
 	}
 

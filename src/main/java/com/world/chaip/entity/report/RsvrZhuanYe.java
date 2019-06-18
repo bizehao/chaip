@@ -38,21 +38,13 @@ public class RsvrZhuanYe {
     //库水特征码
     private int RWCHRCD;
 
-    public RsvrZhuanYe() {
-    }
+    //入流时段长
+    private String INQDR;
 
-    public RsvrZhuanYe(String stnm, String stcd, String tm, String ttcp, String fsltdz, String fsltdw, String rz, String w, String inq, String otq, int RWCHRCD) {
-        this.stnm = stnm;
-        this.stcd = stcd;
-        this.tm = tm;
-        this.ttcp = ttcp;
-        this.fsltdz = fsltdz;
-        this.fsltdw = fsltdw;
-        this.rz = rz;
-        this.w = w;
-        this.inq = inq;
-        this.otq = otq;
-        this.RWCHRCD = RWCHRCD;
+    //日入库流量
+    private String inqOfDay;
+
+    public RsvrZhuanYe() {
     }
 
     public String getStnm() {
@@ -141,5 +133,21 @@ public class RsvrZhuanYe {
 
     public void setRWCHRCD(int RWCHRCD) {
         this.RWCHRCD = RWCHRCD;
+    }
+
+    public String getINQDR() {
+        return INQDR;
+    }
+
+    public void setINQDR(String INQDR) {
+        this.INQDR = INQDR;
+    }
+
+    public String getInqOfDay() {
+        return inqOfDay;
+    }
+
+    public void setInqOfDay(String inqOfDay) {
+        this.inqOfDay = inqOfDay;
     }
 }

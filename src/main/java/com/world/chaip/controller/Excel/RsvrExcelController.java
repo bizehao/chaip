@@ -210,20 +210,20 @@ public class RsvrExcelController {
     //水库 (专业)
     @GetMapping("getrsvrbyzhuanyebyexcel")
     public void exportRsvrByZhuanYe(
-            HttpServletResponse response,
+            HttpServletResponse response/*,
             @RequestParam("dateS") String dateStart,
             @RequestParam("dateE") String dateEnd,
             @RequestParam(name = "adcd", required = false) String adcd,
             @RequestParam(name = "systemTypes", required = false) String systemTypes,
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-            @RequestParam(name = "ly", required = false) String ly) throws Exception {
+            @RequestParam(name = "ly", required = false) String ly*/) throws Exception {
 
-        /*String dateStart = "2018-07-10 8:00";
+        String dateStart = "2018-07-10 8:00";
         String dateEnd = "2018-07-26 8:00";
         String adcd = "130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";
-        String ly = "X";*/
+        String ly = "X";
 
         System.out.println("开始时间" + dateStart);
         System.out.println("结束时间" + dateEnd);
@@ -288,7 +288,7 @@ public class RsvrExcelController {
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
         for (int i = 0; i < a.size(); i++) {
             RsvrZhuanYe item = a.get(i);
-            objects = new Object[9];
+            objects = new Object[11];
             objects[0] = item.getStnm();
             objects[1] = item.getTtcp();
             objects[2] = item.getFsltdz();
@@ -296,8 +296,10 @@ public class RsvrExcelController {
             objects[4] = item.getRz();
             objects[5] = item.getW();
             objects[6] = item.getInq();
-            objects[7] = item.getOtq();
-            objects[8] = item.getTm();
+            objects[7] = item.getINQDR();
+            objects[8] = item.getInqOfDay();
+            objects[9] = item.getOtq();
+            objects[10] = item.getTm();
             dataList.add(objects);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
@@ -305,12 +307,12 @@ public class RsvrExcelController {
         String end = formatter.format(dateE);
         String time = "时间：" + begin + " - " + end;
 
-        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 9, ExportExecls.Direction.TRANSVERSE);
+        ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 11, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
             @Override
             public void colHeadHandler(Sheet sheet) {
 
-                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(主汛期)", "", "目前实际", "", "", "", ""};
+                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(主汛期)", "", "目前实际", "", "", "", "", "", ""};
 
                 CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
                 Row colTitleRow = sheet.createRow(3);
@@ -319,7 +321,7 @@ public class RsvrExcelController {
                     colTitle0.setCellValue(rowsName[i]);
                     colTitle0.setCellStyle(style);
                 }
-                String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)", "下泄流量(m³/s)", "数据时间"};
+                String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)","时段长(s)","日入库流量(m³)", "下泄流量(m³/s)", "数据时间"};
                 Row colTitleRow1 = sheet.createRow(4);
 
                 for (int i = 0; i < shuangName.length; i++) {
@@ -338,16 +340,16 @@ public class RsvrExcelController {
                 titleAddress = new CellRangeAddress(3, 3, 2, 3);
                 sheet.addMergedRegion(titleAddress);
 
-                titleAddress = new CellRangeAddress(3, 3, 4, 8);
+                titleAddress = new CellRangeAddress(3, 3, 4, 11);
                 sheet.addMergedRegion(titleAddress);
-                int x = ExportExecls.HEIGHT / 10;
-                for (int i = 0; i < 10; i++) {
+                int x = ExportExecls.HEIGHT / 11;
+                for (int i = 0; i < 11; i++) {
                     if (i ==0) {
                         sheet.setColumnWidth(i, x +200+50*8);
-                    }else if (i!= 8){
+                    }else if (i!= 10){
                         sheet.setColumnWidth(i, x - 250);
                     }else {
-                        sheet.setColumnWidth(i, x + 200 * 7);
+                        sheet.setColumnWidth(i, x + 200 * 9);
                     }
                 }
             }
