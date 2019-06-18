@@ -371,40 +371,40 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime, endTime, adcd, systemTypes, stcdOrStnm, ly);
 		RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
 		RsvrTZCount rsvrTZCount = null;
-		for (int i = 0; i < list.size(); i++) {
+		for (RsvrExchange rsvrExchange : list) {
 			RsvrExchangeItem rsvrExchangeItem = null;
-			if (list.get(i).getRvnm() == null) {
-				list.get(i).setRvnm("");
+			if (rsvrExchange.getRvnm() == null) {
+				rsvrExchange.setRvnm("");
 			}
 			for (int j = 0; j < rsvrExchangeExcel.getRsvrPro().size(); j++) {
-				if (rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(list.get(i).getRvnm())) {
+				if (rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(rsvrExchange.getRvnm())) {
 					rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
 					rsvrTZCount = new RsvrTZCount();
-					rsvrTZCount.setStnm(list.get(i).getStnm());
-					rsvrTZCount.setMrz(getBL2(list.get(i).getMrz()));
-					rsvrTZCount.setMrztm(getTm(list.get(i).getMrztm()));
-					rsvrTZCount.setMw(getBL3(list.get(i).getMw()));
-					rsvrTZCount.setMwtm(getTm(list.get(i).getMwtm()));
-					rsvrTZCount.setMinq(getBL3(list.get(i).getMinq()));
-					rsvrTZCount.setMinqtm(getTm(list.get(i).getMinqtm()));
-					rsvrTZCount.setMotq(getBL3(list.get(i).getMotq()));
-					rsvrTZCount.setMotqtm(getTm(list.get(i).getMotqtm()));
+					rsvrTZCount.setStnm(rsvrExchange.getStnm());
+					rsvrTZCount.setMrz(getBL2(rsvrExchange.getMrz()));
+					rsvrTZCount.setMrztm(getTm(rsvrExchange.getMrztm()));
+					rsvrTZCount.setMw(getBL3(rsvrExchange.getMw()));
+					rsvrTZCount.setMwtm(getTm(rsvrExchange.getMwtm()));
+					rsvrTZCount.setMinq(getBL3(rsvrExchange.getMinq()));
+					rsvrTZCount.setMinqtm(getTm(rsvrExchange.getMinqtm()));
+					rsvrTZCount.setMotq(getBL3(rsvrExchange.getMotq()));
+					rsvrTZCount.setMotqtm(getTm(rsvrExchange.getMotqtm()));
 					rsvrExchangeItem.getData().add(rsvrTZCount);
 				}
 			}
 			if (rsvrExchangeItem == null) {
 				rsvrExchangeItem = rsvrExchangeExcel.new RsvrExchangeItem();
-				rsvrExchangeItem.setRvnm(list.get(i).getRvnm());
+				rsvrExchangeItem.setRvnm(rsvrExchange.getRvnm());
 				rsvrTZCount = new RsvrTZCount();
-				rsvrTZCount.setStnm(list.get(i).getStnm());
-				rsvrTZCount.setMrz(getBL2(list.get(i).getMrz()));
-				rsvrTZCount.setMrztm(getTm(list.get(i).getMrztm()));
-				rsvrTZCount.setMw(getBL3(list.get(i).getMw()));
-				rsvrTZCount.setMwtm(getTm(list.get(i).getMwtm()));
-				rsvrTZCount.setMinq(getBL3(list.get(i).getMinq()));
-				rsvrTZCount.setMinqtm(getTm(list.get(i).getMinqtm()));
-				rsvrTZCount.setMotq(getBL3(list.get(i).getMotq()));
-				rsvrTZCount.setMotqtm(getTm(list.get(i).getMotqtm()));
+				rsvrTZCount.setStnm(rsvrExchange.getStnm());
+				rsvrTZCount.setMrz(getBL2(rsvrExchange.getMrz()));
+				rsvrTZCount.setMrztm(getTm(rsvrExchange.getMrztm()));
+				rsvrTZCount.setMw(getBL3(rsvrExchange.getMw()));
+				rsvrTZCount.setMwtm(getTm(rsvrExchange.getMwtm()));
+				rsvrTZCount.setMinq(getBL3(rsvrExchange.getMinq()));
+				rsvrTZCount.setMinqtm(getTm(rsvrExchange.getMinqtm()));
+				rsvrTZCount.setMotq(getBL3(rsvrExchange.getMotq()));
+				rsvrTZCount.setMotqtm(getTm(rsvrExchange.getMotqtm()));
 				rsvrExchangeItem.getData().add(rsvrTZCount);
 				rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
 			}

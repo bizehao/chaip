@@ -131,7 +131,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         (
         select A.STCD, A.YMDHM as TM, A.ZR as rz,Q as w from YY_DATA_WAT A
         <where>
-            DATATYPE='C'
+            DATATYPE='F'
             and
             <![CDATA[
 				A.YMDHM>=#{beginTime} and A.YMDHM<=#{endTime}
@@ -282,7 +282,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 			]]>
         </where>
         group by stcd)
-        B on A.STCD = B.STCD and B.tm = A.YMDHM where DATATYPE='C'
+        B on A.STCD = B.STCD and B.tm = A.YMDHM where DATATYPE='F'
         )PP
         on ST.STCD=PP.STCD
         order by ST.STCD,tm desc

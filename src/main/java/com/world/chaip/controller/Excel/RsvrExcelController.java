@@ -218,10 +218,10 @@ public class RsvrExcelController {
             @RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
             @RequestParam(name = "ly", required = false) String ly) throws Exception {
 
-       /* String dateStart = "2018-07-07 17:00";
-        String dateEnd = "2019-01-28 17:00";
-        String adcd = "X";
-        String systemTypes = "X";
+        /*String dateStart = "2018-07-10 8:00";
+        String dateEnd = "2018-07-26 8:00";
+        String adcd = "130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
+        String systemTypes = "11,12,";
         String stcdOrStnm = "X";
         String ly = "X";*/
 
@@ -283,12 +283,9 @@ public class RsvrExcelController {
         }
         DayRsvr dayRsvr = rsvrfallService.getRsvrByZhuanYe(dateS, dateE, adcdlist, typelist, stcdlist, lylist);
         String title = "今日水情(水库)";
-        String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(" + dayRsvr.getFstp() + ")", "", "目前实际", "", "", "", ""};
-        String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)", "下泄流量(m³/s)", "数据时间"};
         List<Object[]> dataList = new ArrayList<Object[]>();
         Object[] objects = null;
         List<RsvrZhuanYe> a = dayRsvr.getRsvrZhuanYeList();
-        String head = dayRsvr.getLevels();
         for (int i = 0; i < a.size(); i++) {
             RsvrZhuanYe item = a.get(i);
             objects = new Object[9];
@@ -303,17 +300,10 @@ public class RsvrExcelController {
             objects[8] = item.getTm();
             dataList.add(objects);
         }
-        Date beginTime = null;
-        Date endTime = null;
-        Calendar now = Calendar.getInstance();
-        now.setTime(dateS);
-        now.set(Calendar.HOUR_OF_DAY, 8);
-        beginTime = now.getTime();
-        endTime = now.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
-        String begin = formatter.format(beginTime);
-        String end = formatter.format(endTime);
-        String time = "时间：" + begin + "时 - " + end + "时";
+        String begin = formatter.format(dateS);
+        String end = formatter.format(dateE);
+        String time = "时间：" + begin + " - " + end;
 
         ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 9, ExportExecls.Direction.TRANSVERSE);
         exportExecls.export(new ExportExecls.ColumnAndHead() {
@@ -362,7 +352,6 @@ public class RsvrExcelController {
                 }
             }
         });
-
 
         rsvrXbyItem();
     }

@@ -173,7 +173,8 @@ public class RsvrAnalysisController {
         String dateEnd = "2018-07-11";
         String adcd = "X";
         String systemTypes = "11,12,";
-        String stcdOrStnm = "X";*/
+        String stcdOrStnm = "X";
+        String ly = "X";*/
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();

@@ -132,7 +132,7 @@
         (
         select A.STCD,A.YMDHM as TM,A.ZR as Z,Q,A.ZRTEND as wptn  from YY_DATA_WAT A
         <where>
-            DATATYPE='C' and
+            DATATYPE='F' and
             <![CDATA[
 				YMDHM>=#{beginTime} and YMDHM<=#{endTime}
 			]]>
@@ -279,13 +279,13 @@
         INNER JOIN
         (select STCD, max(YMDHM) as TM from YY_DATA_WAT
         <where>
-            DATATYPE='C' and
+            DATATYPE='F' and
             <![CDATA[
 				YMDHM<=#{time}
 			]]>
         </where>
         group by stcd)
-        B on A.STCD = B.STCD and B.tm = A.YMDHM where DATATYPE='C'
+        B on A.STCD = B.STCD and B.tm = A.YMDHM where DATATYPE='F'
         )PP
         on ST.STCD=PP.STCD order by ST.STCD, tm desc
     </select>

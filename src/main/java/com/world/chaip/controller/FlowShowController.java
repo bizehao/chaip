@@ -25,6 +25,16 @@ public class FlowShowController {
 	@Resource
 	FlowShowService mFlowShowService;
 
+	/**
+	 * 流速查询表
+	 * @param dateStr
+	 * @param dateEnd
+	 * @param ly
+	 * @param adcd
+	 * @param systemTypes
+	 * @param stcdOrStnm
+	 * @return
+	 */
 	@RequestMapping("flowspeed")
 	public JsonResult getFlowSpeed(
 			@RequestParam("dateS") String dateStr,
