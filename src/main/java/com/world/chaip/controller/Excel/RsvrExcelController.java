@@ -308,49 +308,45 @@ public class RsvrExcelController {
         String time = "时间：" + begin + " - " + end;
 
         ExportExecls exportExecls = new ExportExecls(response, title, dataList, time, 42, 5, 11, ExportExecls.Direction.TRANSVERSE);
-        exportExecls.export(new ExportExecls.ColumnAndHead() {
-            @Override
-            public void colHeadHandler(Sheet sheet) {
+        exportExecls.export(sheet -> {
+            String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期("+dayRsvr.getFstp()+")", "", "目前实际", "", "", "", "", "", ""};
 
-                String[] rowsName = new String[]{"水库名称", "总库容(百万m³)", "汛期(主汛期)", "", "目前实际", "", "", "", "", "", ""};
+            CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
+            Row colTitleRow = sheet.createRow(3);
+            for (int i = 0; i < rowsName.length; i++) {
+                Cell colTitle0 = colTitleRow.createCell(i);
+                colTitle0.setCellValue(rowsName[i]);
+                colTitle0.setCellStyle(style);
+            }
+            String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "时段入库流量(m³/s)","时段长(s)","日均入库流量(m³)", "下泄流量(m³/s)", "数据时间"};
+            Row colTitleRow1 = sheet.createRow(4);
 
-                CellStyle style = exportExecls.getContentStyle(sheet.getWorkbook());
-                Row colTitleRow = sheet.createRow(3);
-                for (int i = 0; i < rowsName.length; i++) {
-                    Cell colTitle0 = colTitleRow.createCell(i);
-                    colTitle0.setCellValue(rowsName[i]);
-                    colTitle0.setCellStyle(style);
-                }
-                String[] shuangName = new String[]{"", "", "水位(m)", "库容(百万m³)", "水位(m)", "蓄水量(百万m³)", "入库流量(m³/s)","时段长(s)","日入库流量(m³)", "下泄流量(m³/s)", "数据时间"};
-                Row colTitleRow1 = sheet.createRow(4);
+            for (int i = 0; i < shuangName.length; i++) {
+                Cell colTitle = colTitleRow1.createCell(i);
+                colTitle.setCellValue(shuangName[i]);
+                colTitle.setCellStyle(style);
 
-                for (int i = 0; i < shuangName.length; i++) {
-                    Cell colTitle = colTitleRow1.createCell(i);
-                    colTitle.setCellValue(shuangName[i]);
-                    colTitle.setCellStyle(style);
+            }
+            CellRangeAddress titleAddress;
+            titleAddress = new CellRangeAddress(3, 4, 0, 0);
+            sheet.addMergedRegion(titleAddress);
 
-                }
-                CellRangeAddress titleAddress;
-                titleAddress = new CellRangeAddress(3, 4, 0, 0);
-                sheet.addMergedRegion(titleAddress);
+            titleAddress = new CellRangeAddress(3, 4, 1, 1);
+            sheet.addMergedRegion(titleAddress);
 
-                titleAddress = new CellRangeAddress(3, 4, 1, 1);
-                sheet.addMergedRegion(titleAddress);
+            titleAddress = new CellRangeAddress(3, 3, 2, 3);
+            sheet.addMergedRegion(titleAddress);
 
-                titleAddress = new CellRangeAddress(3, 3, 2, 3);
-                sheet.addMergedRegion(titleAddress);
-
-                titleAddress = new CellRangeAddress(3, 3, 4, 11);
-                sheet.addMergedRegion(titleAddress);
-                int x = ExportExecls.HEIGHT / 11;
-                for (int i = 0; i < 11; i++) {
-                    if (i ==0) {
-                        sheet.setColumnWidth(i, x +200+50*8);
-                    }else if (i!= 10){
-                        sheet.setColumnWidth(i, x - 250);
-                    }else {
-                        sheet.setColumnWidth(i, x + 200 * 9);
-                    }
+            titleAddress = new CellRangeAddress(3, 3, 4, 11);
+            sheet.addMergedRegion(titleAddress);
+            int x = ExportExecls.HEIGHT / 11;
+            for (int i = 0; i < 11; i++) {
+                if (i ==0) {
+                    sheet.setColumnWidth(i, x +200+50*8);
+                }else if (i!= 10){
+                    sheet.setColumnWidth(i, x - 250);
+                }else {
+                    sheet.setColumnWidth(i, x + 200 * 9);
                 }
             }
         });

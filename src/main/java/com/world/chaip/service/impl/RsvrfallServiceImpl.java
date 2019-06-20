@@ -181,7 +181,14 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 		levelList.add(0, head.toString());
 
 		DayRsvr dayRsvr = new DayRsvr();
-		dayRsvr.setFstp("其它");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dateS);
+		int month = calendar.get(Calendar.MONTH)+1;
+		if(month >= 6 && month <= 9){ //6-9月属于汛期
+			dayRsvr.setFstp("主汛期");
+		}else {
+			dayRsvr.setFstp("其它");
+		}
 		dayRsvr.setRsvrZhuanYeList(rsvrChao);
 		dayRsvr.setLevels(head.toString());
 		return dayRsvr;
