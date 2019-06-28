@@ -213,12 +213,10 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 			}
 		}*/
 		switch (topFstp){
-			case 1:
-			case 5:
-				dayRsvr.setFstp("其它");break;
-			case 2:dayRsvr.setFstp("主汛期"); break;
+			case 1:dayRsvr.setFstp("主汛期"); break;
+			case 2:dayRsvr.setFstp("后汛期");break;
 			case 3:dayRsvr.setFstp("过渡期"); break;
-			case 4:dayRsvr.setFstp("后汛期"); break;
+			case 4:dayRsvr.setFstp("其他"); break;
 		}
 		//排序 从大到小
 		rsvrChao.sort((o1, o2) -> {

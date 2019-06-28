@@ -380,6 +380,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
 		ExecutorService service = Executors.newFixedThreadPool(4);
 		CallResult callResult = new CallResult(4, () -> {
+			System.out.println("执行完毕");
 			RsvrTZCount rsvrTZCount = null;
 			for (RsvrExchange rsvrExchange : list) {
 				RsvrExchangeItem rsvrExchangeItem = null;
@@ -419,6 +420,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 					rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
 				}
 			}
+			System.out.println("");
 			wancheng = true;
 		});
 		service.submit(() -> { //最高水位
@@ -430,21 +432,21 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		});
 		service.submit(() -> { //最大蓄水量
 			for (RsvrExchange rsvrExchange : list) {
-				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "w", rsvrExchange.getMrz());
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "w", rsvrExchange.getMw());
 				rsvrExchange.setMwtm(tm);
 			}
 			callResult.addResult();
 		});
 		service.submit(() -> { //最大入库流量
 			for (RsvrExchange rsvrExchange : list) {
-				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "inq", rsvrExchange.getMrz());
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "inq", rsvrExchange.getMinq());
 				rsvrExchange.setMinqtm(tm);
 			}
 			callResult.addResult();
 		});
 		service.submit(() -> { //最大出库流量
 			for (RsvrExchange rsvrExchange : list) {
-				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "otq", rsvrExchange.getMrz());
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "otq", rsvrExchange.getMotq());
 				rsvrExchange.setMotqtm(tm);
 			}
 			callResult.addResult();

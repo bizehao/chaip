@@ -463,7 +463,7 @@
 		from RP_RSVR_R group by STCD) RSVR on st.STCD = RSVR.STCD
 	</select>
 	<select id="getRsvrFeaturesAnalysisOptimizationType" resultType="java.lang.String">
-		select TM
+		select Top(1) TM
 		from RP_RSVR_R
 		where STCD = #{stcd}
 		  and ${type} = #{typeValue}
