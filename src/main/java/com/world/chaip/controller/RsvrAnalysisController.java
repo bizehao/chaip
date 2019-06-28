@@ -162,19 +162,19 @@ public class RsvrAnalysisController {
 	//水库特征值统计表
 	@GetMapping("getrsvrexchangetongji")
 	public RsvrExchangeExcel GetRsvrByAnalysistongji(
-			@RequestParam("dateS") String dateStart,
+			/*@RequestParam("dateS") String dateStart,
 			@RequestParam("dateE") String dateEnd,
 			@RequestParam(name = "adcd", required = false) String adcd,
 			@RequestParam(name = "systemTypes", required = false) String systemTypes,
 			@RequestParam(name = "stcdOrStnm", required = false) String stcdOrStnm,
-			@RequestParam(name = "ly", required = false) String ly) throws ParseException {
+			@RequestParam(name = "ly", required = false) String ly*/) throws ParseException {
 
-        /*String dateStart = "2018-07-11";
+        String dateStart = "2018-07-11";
         String dateEnd = "2018-07-11";
         String adcd = "X";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";
-        String ly = "X";*/
+        String ly = "X";
 
 		List<String> adcdlist = new ArrayList<String>();
 		List<String> typelist = new ArrayList<String>();

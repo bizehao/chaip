@@ -6,9 +6,9 @@ package com.world.chaip.entity.newRsvr;
  * @create: 2019-06-05 11:14
  **/
 public class XunQITime {
-	private int bgmd; //开始时间
-	private int edmd; //结束时间
-	private int fstp; //汛期标志
+	private int bgmd = 0; //开始时间
+	private int edmd = 0; //结束时间
+	private int fstp = 0; //汛期标志
 
 	public int getBgmd() {
 		return bgmd;
@@ -32,5 +32,14 @@ public class XunQITime {
 
 	public void setFstp(int fstp) {
 		this.fstp = fstp;
+	}
+
+	@Override
+	public String toString() {
+		return "XunQITime{" +
+				"bgmd=" + bgmd +
+				", edmd=" + edmd +
+				", fstp=" + fstp +
+				'}';
 	}
 }

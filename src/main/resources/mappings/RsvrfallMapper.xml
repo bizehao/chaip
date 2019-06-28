@@ -331,28 +331,43 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         </where>
         ) m
         left join
-        (select
-        b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
-        from
-        RP_RSVR_R b
-        left join
-        RP_RSVRFCCH_B e
-        on
-        b.stcd=e.stcd
-        left join
-        (select   top(1)
-        stcd,FSLTDZ,FSLTDW,FSTP
-        from
-        RP_RSVRFSR_B
-        <where>
-            stcd = #{stcdOrStnm}
-            and
-            FSTP = #{fstp}
-        </where>
-        ) f
-        on
-        b.stcd = f.stcd
-        ) d
+        <choose>
+            <when test="fstp > 0">
+                (select
+                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
+                from
+                RP_RSVR_R b
+                left join
+                RP_RSVRFCCH_B e
+                on
+                b.stcd=e.stcd
+                left join
+                (select top(1)
+                stcd,FSLTDZ,FSLTDW,FSTP
+                from
+                RP_RSVRFSR_B
+                <where>
+                    stcd = #{stcdOrStnm}
+                    and
+                    FSTP = #{fstp}
+                </where>
+                ) f
+                on
+                b.stcd = f.stcd
+                ) d
+            </when>
+            <otherwise>
+                (select
+                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD
+                from
+                RP_RSVR_R b
+                left join
+                RP_RSVRFCCH_B e
+                on
+                b.stcd=e.stcd
+                ) d
+            </otherwise>
+        </choose>
         on
         m.stcd=d.stcd
         <where>
@@ -404,39 +419,43 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
         </where>
         ) m
         left join
-        (select
-        b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
-        from
-        RP_RSVR_R b
-        inner join (
-        select
-        stcd,MAX(TM)TM from RP_RSVR_R
-        <where>
-            TM &lt;= #{time} group by stcd
-        </where>
-        ) c
-        on
-        b.stcd = c.stcd
-        and
-        b.TM = c.TM
-        left join
-        RP_RSVRFCCH_B e
-        on
-        c.stcd=e.stcd
-        left join
-        (select  top(1)
-        stcd,FSLTDZ,FSLTDW,FSTP
-        from
-        RP_RSVRFSR_B
-        <where>
-            stcd = #{stcdOrStnm}
-            and
-            FSTP = #{fstp}
-        </where>
-        ) f
-        on
-        b.stcd = f.stcd
-        ) d
+        <choose>
+            <when test="fstp > 0">
+                (select
+                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
+                from
+                RP_RSVR_R b
+                left join
+                RP_RSVRFCCH_B e
+                on
+                b.stcd=e.stcd
+                left join
+                (select top(1)
+                stcd,FSLTDZ,FSLTDW,FSTP
+                from
+                RP_RSVRFSR_B
+                <where>
+                    stcd = #{stcdOrStnm}
+                    and
+                    FSTP = #{fstp}
+                </where>
+                ) f
+                on
+                b.stcd = f.stcd
+                ) d
+            </when>
+            <otherwise>
+                (select
+                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD
+                from
+                RP_RSVR_R b
+                left join
+                RP_RSVRFCCH_B e
+                on
+                b.stcd=e.stcd
+                ) d
+            </otherwise>
+        </choose>
         on
         m.stcd=d.stcd
         order by m.stnm,d.TM desc
@@ -453,22 +472,18 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 
     <!-- 水库汛期查询 -->
     <select id="getRsvrFS" resultMap="signListResult">
-       select RP_RSVRFSR_B.STCD, ST_STBPRP_B.STNM, convert(int, BGMD) AS BGMD, convert(int, EDMD) as EDMD, FSTP
+    select bb.STCD, bb.STNM, convert(int, BGMD) AS BGMD, convert(int, EDMD) as EDMD, FSTP
        from RP_RSVRFSR_B
-         inner join ST_STBPRP_B on RP_RSVRFSR_B.STCD = ST_STBPRP_B.STCD
-        where FSTP IS NOT NULL
-    and RP_RSVRFSR_B.STCD != ''
-    and RP_RSVRFSR_B.STCD in (
-    select STCD
-    from ST_STBPRP_B
-    where STCD in (
-        select STCD
-        from RP_RSVRFCCH_B)
-      and STTP like '%R%');
+         aa right join (select a.STCD, a.STNM from ST_STBPRP_B a left join ST_STSMTASK_B b on a.stcd=b.stcd left join DJ_EXP c on a.stcd=c.stcd where  STTP like
+'%R%'and b.ZFL='1' and c.dq=31 and c.jdb in (2,3) and c.viwe=1) bb on aa.stcd = bb.stcd;
     </select>
     <!-- 获取汛限站 -->
     <select id="getFsltdzStations" resultType="java.lang.String">
       SELECT DISTINCT stcd FROM RP_RSVRFSR_B WHERE fstp = #{fstp}
+    </select>
+
+    <select id="getXQTime" resultType="com.world.chaip.entity.newRsvr.XunQITime">
+        SELECT TOP(1) BGMD,EDMD,FSTP FROM RP_RSVRFSR_B WHERE STCD = #{stcd}
     </select>
 
 

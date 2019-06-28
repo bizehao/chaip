@@ -1,14 +1,17 @@
 package com.world.chaip.service.impl;
 
+import com.google.gson.Gson;
 import com.world.chaip.entity.excelFormat.DayRsvr;
 import com.world.chaip.entity.newRsvr.RevrXunQi;
 import com.world.chaip.entity.newRsvr.XunQITime;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.entity.report.RsvrZhuanYe;
 import com.world.chaip.mapper.RsvrfallMapper;
+import com.world.chaip.mapper.StationMapper;
 import com.world.chaip.service.RsvrfallService;
 import com.world.chaip.util.ExcepTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -20,6 +23,9 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 
 	@Autowired
 	RsvrfallMapper rsvrfallMapper;
+
+	@Autowired
+	StationMapper stationMapper;
 
 	//水库 (实时)
 	@Override
@@ -44,24 +50,35 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 	public DayRsvr getRsvrByZhuanYe(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
 		List<RsvrZhuanYe> totalRainfalls = new ArrayList<>();
 		List<RevrXunQi> revrXunQis = rsvrfallMapper.getRsvrFS();
+		Gson gson = new Gson();
+		String ss = gson.toJson(revrXunQis);
+		System.out.println(ss);
+		//String topOneStcd = null;
+		int topFstp = 0;
 		if (stcdOrStnm == null) {
 			int beginTimeOfInt = getRsverXunQi(dateS);
 			for (RevrXunQi rxq : revrXunQis) {
-				for (XunQITime xunQITime : rxq.getXunQITimeList()) {
-					if (beginTimeOfInt >= xunQITime.getBgmd() && beginTimeOfInt <= xunQITime.getEdmd()) {
-						rxq.setChooseFstp(xunQITime.getFstp());
-						break;
+				if (rxq.getXunQITimeList() != null && rxq.getXunQITimeList().size() > 0) {
+					for (XunQITime xunQITime : rxq.getXunQITimeList()) {
+						if (beginTimeOfInt >= xunQITime.getBgmd() && beginTimeOfInt <= xunQITime.getEdmd()) {
+							rxq.setChooseFstp(xunQITime.getFstp());
+							break;
+						}
 					}
+					/*if (topOneStcd == null) {
+						topOneStcd = rxq.getStcd();
+					}*/
 				}
-				if (rxq.getChooseFstp() != 0) {
-					List<RsvrZhuanYe> rainfalls;
-					if (dateS.equals(dateE)) {
-						rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, stcdOrStnm, ly);
-					} else {
-						rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
-					}
-					totalRainfalls.addAll(rainfalls);
+				List<RsvrZhuanYe> rainfalls;
+				if(topFstp == 0 && rxq.getChooseFstp() != 0){
+					topFstp = rxq.getChooseFstp();
 				}
+				if (dateS.equals(dateE)) {
+					rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
+				} else {
+					rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
+				}
+				totalRainfalls.addAll(rainfalls);
 			}
 		} else {
 			for (String stcd : stcdOrStnm) {
@@ -77,7 +94,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 						if (rxq.getChooseFstp() != 0) {
 							List<RsvrZhuanYe> rainfalls;
 							if (dateS.equals(dateE)) {
-								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, stcdOrStnm, ly);
+								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
 							} else {
 								rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
 							}
@@ -88,7 +105,6 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 				}
 			}
 		}
-
 
 		double level = 0;
 		List<String> levelList = new ArrayList<>();
@@ -111,11 +127,11 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 			rzy.setInq(rzy.getInq() == null ? "" : new DecimalFormat("#0.000").format(Double.parseDouble(rzy.getInq())));
 			rzy.setOtq(rzy.getOtq() == null ? "" : new DecimalFormat("#0.000").format(Double.parseDouble(rzy.getOtq())));
 			double x1 = 0;
-			if(rzy.getInq() != null && !rzy.getInq().trim().equals("")){
+			if (rzy.getInq() != null && !rzy.getInq().trim().equals("")) {
 				x1 = Double.parseDouble(rzy.getInq());
 			}
 			double x2 = 0;
-			if(rzy.getINQDR() != null && !rzy.getINQDR().trim().equals("")){
+			if (rzy.getINQDR() != null && !rzy.getINQDR().trim().equals("")) {
 				x2 = Double.parseDouble(rzy.getINQDR());
 			}
 			rzy.setInqOfDay(new DecimalFormat("#0.000").format(x1 * x2));
@@ -183,12 +199,35 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 		DayRsvr dayRsvr = new DayRsvr();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateS);
-		int month = calendar.get(Calendar.MONTH)+1;
-		if(month >= 6 && month <= 9){ //6-9月属于汛期
-			dayRsvr.setFstp("主汛期");
-		}else {
+		int beginMonth = calendar.get(Calendar.MONTH) + 1;
+		int beginDay = calendar.get(Calendar.DATE);
+		int beginTM = Integer.parseInt(beginMonth + String.valueOf(beginDay));
+		//XunQITime xunQITime = rsvrfallMapper.getXQTime(topOneStcd);
+		/*if (xunQITime == null) {
 			dayRsvr.setFstp("其它");
+		} else {
+			if (beginTM >= xunQITime.getBgmd() && beginTM <= xunQITime.getEdmd()) { //6-9月属于汛期
+				dayRsvr.setFstp("主汛期");
+			} else {
+				dayRsvr.setFstp("其它");
+			}
+		}*/
+		switch (topFstp){
+			case 1:
+			case 5:
+				dayRsvr.setFstp("其它");break;
+			case 2:dayRsvr.setFstp("主汛期"); break;
+			case 3:dayRsvr.setFstp("过渡期"); break;
+			case 4:dayRsvr.setFstp("后汛期"); break;
 		}
+		//排序 从大到小
+		rsvrChao.sort((o1, o2) -> {
+			if (o1.getTtcp() >= o2.getTtcp()) {
+				return -1;
+			} else {
+				return 0;
+			}
+		});
 		dayRsvr.setRsvrZhuanYeList(rsvrChao);
 		dayRsvr.setLevels(head.toString());
 		return dayRsvr;

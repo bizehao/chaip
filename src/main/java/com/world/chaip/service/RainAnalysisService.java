@@ -5,10 +5,6 @@ import com.world.chaip.entity.Rainfall;
 import com.world.chaip.entity.exchangeRain.ArbitrarilyDay;
 import com.world.chaip.entity.exchangeRain.XunQi;
 import com.world.chaip.entity.exchangeRain.YearAndMonthRain;
-import org.springframework.stereotype.Service;
-
-import javax.jws.Oneway;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

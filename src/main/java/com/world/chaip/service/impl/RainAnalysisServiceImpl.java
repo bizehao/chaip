@@ -9,8 +9,6 @@ import com.world.chaip.service.RainAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jca.cci.CciOperationNotSupportedException;
 import org.springframework.stereotype.Service;
-
-import javax.jws.Oneway;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -10,7 +10,7 @@ import java.util.List;
 public class RevrXunQi {
 	private String stcd; //站号
 	private String stnm; //站名
-	private int chooseFstp; //确定的汛期值
+	private int chooseFstp = 0; //确定的汛期值
 	private List<XunQITime> xunQITimeList; //汛期值列表
 
 	public String getStcd() {
@@ -43,5 +43,15 @@ public class RevrXunQi {
 
 	public void setStnm(String stnm) {
 		this.stnm = stnm;
+	}
+
+	@Override
+	public String toString() {
+		return "RevrXunQi{" +
+				"stcd='" + stcd + '\'' +
+				", stnm='" + stnm + '\'' +
+				", chooseFstp=" + chooseFstp +
+				", xunQITimeList=" + xunQITimeList +
+				'}';
 	}
 }

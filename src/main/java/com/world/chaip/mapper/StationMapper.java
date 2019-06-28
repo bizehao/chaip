@@ -33,4 +33,6 @@ public interface StationMapper {
      * @return
      */
     List<Tyid> getTyid();
+
+    String getStnmByStcd(String stcd);
 }

@@ -1,386 +1,472 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.world.chaip.mapper.RsvrAnalysisMapper">
-    <!--  水库水情分析表   and STTDRCD = 1-->
-    <select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrWaterExchange">
-        select st.stcd,st.stnm,name,AVINQ,AVOTQ from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and c.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select A.STCD, sum(INQ) AVINQ, sum(OTQ) AVOTQ from RP_RSVR_R A
-        <where>
-            <![CDATA[
+	<!--  水库水情分析表   and STTDRCD = 1-->
+	<select id="getRsvrWaterAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrWaterExchange">
+		select st.stcd,st.stnm,name,AVINQ,AVOTQ from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select A.STCD, sum(INQ) AVINQ, sum(OTQ) AVOTQ from RP_RSVR_R A
+		<where>
+			<![CDATA[
 				TM > #{beginTime} AND TM <= #{endTime}
 			]]>
 
-        </where>
-        group by stcd
-        )PP
-        on ST.STCD=PP.STCD ORDER BY STCD
-    </select>
-    <!--  水库水情分析表 查询单日的    /*and sttdrcd = '1'*/ -->
-    <select id="getRsvrWaterAnalysisRi" resultType="com.world.chaip.entity.report.Rsvr">
-        select st.stcd,st.stnm,name,rz,w from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and c.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select A.STCD, AVG(rz) rz, AVG(w) w from RP_RSVR_R A
-        <where>
-            <![CDATA[
+		</where>
+		group by stcd
+		)PP
+		on ST.STCD=PP.STCD ORDER BY STCD
+	</select>
+	<!--  水库水情分析表 查询单日的    /*and sttdrcd = '1'*/ -->
+	<select id="getRsvrWaterAnalysisRi" resultType="com.world.chaip.entity.report.Rsvr">
+		select st.stcd,st.stnm,name,rz,w from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select A.STCD, AVG(rz) rz, AVG(w) w from RP_RSVR_R A
+		<where>
+			<![CDATA[
 				TM >= #{beginTime} and TM < #{endTime}
 			]]>
 
-        </where>
-        group by stcd
-        )PP
-        on ST.STCD=PP.STCD ORDER BY STCD
-    </select>
-    <!--  水库蓄水量分析表 -->
-    <select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
-        select st.adnm, st.rvnm, st.stcd,st.stnm,HNNM,isnull(w,0) w from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN RP_RSVRFCCH_B rc
-        on rc.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and (b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                    )
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="sign == 1">
-                    and RSVRTP IN (1,2,9)
-                </if>
-                <if test="sign == 2">
-                    and RSVRTP IN (3)
-                </if>
-                <if test="sign == 3">
-                    and RSVRTP IN (4,5)
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and c.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select A.STCD,AVG(W) w from RP_RSVR_R A
-        <where>
-            <![CDATA[
+		</where>
+		group by stcd
+		)PP
+		on ST.STCD=PP.STCD ORDER BY STCD
+	</select>
+	<!--  水库蓄水量分析表 -->
+	<select id="getRsvrStorageAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
+		select st.adnm, st.rvnm, st.stcd,st.stnm,HNNM,isnull(w,0) w from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN RP_RSVRFCCH_B rc
+		on rc.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and (b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+					)
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="sign == 1">
+					and RSVRTP IN (1,2,9)
+				</if>
+				<if test="sign == 2">
+					and RSVRTP IN (3)
+				</if>
+				<if test="sign == 3">
+					and RSVRTP IN (4,5)
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select A.STCD,AVG(W) w from RP_RSVR_R A
+		<where>
+			<![CDATA[
 				TM >= #{time1} and TM < #{time2}
 			]]>
-        </where>
-        group by stcd
-        )PP
-        on ST.STCD=PP.STCD
-    </select>
-    <!-- 水库蓄水量常量值表 -->
-    <select id="getRsvrStorageCLAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
-        select st.stcd,st.stnm,HNNM,isnull(w,0) w from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN RP_RSVRFCCH_B rc
-        on rc.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and (b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                    )
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="sign == 1">
-                    and RSVRTP IN (1,2,9)
-                </if>
-                <if test="sign == 2">
-                    and RSVRTP IN (3)
-                </if>
-                <if test="sign == 3">
-                    and RSVRTP IN (4,5)
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and c.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select A.STCD,MYDAVW w from RP_RSVRMYAV_S A
-        <where>
-            <![CDATA[
+		</where>
+		group by stcd
+		)PP
+		on ST.STCD=PP.STCD
+	</select>
+	<!-- 水库蓄水量常量值表 -->
+	<select id="getRsvrStorageCLAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrStronge">
+		select st.stcd,st.stnm,HNNM,isnull(w,0) w from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN RP_RSVRFCCH_B rc
+		on rc.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and (b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and ((b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+					)
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="sign == 1">
+					and RSVRTP IN (1,2,9)
+				</if>
+				<if test="sign == 2">
+					and RSVRTP IN (3)
+				</if>
+				<if test="sign == 3">
+					and RSVRTP IN (4,5)
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select A.STCD,MYDAVW w from RP_RSVRMYAV_S A
+		<where>
+			<![CDATA[
 				MNTH = #{month} and DAY = #{day}
 			]]>
-        </where>
-        group by stcd,MYDAVW
-        )PP
-        on ST.STCD=PP.STCD
-    </select>
-    <!--  水库特征值统计表 -->
-    <select id="getRsvrFeaturesAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrExchange">
-        select st.stcd,st.stnm,st.RVNM,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from
-        (select b.* , e.name, ad.adnm from st_stbprp_b b
-        LEFT JOIN ST_STSMTASK_B s
-        on b.STCD = s.STCD
-        LEFT JOIN
-        DJ_AD ad
-        ON b.ADDVCD = ad.ADCD
-        LEFT join
-        DJ_EXP c
-        on b.STCD = c.stcd
-        LEFT join
-        DJ_TYID e
-        on
-        c.lx = e.typeID
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and b.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                <if test="stcdOrStnm!=null">
-                    <choose>
-                        <when test="stcdOrStnm.size() > 1">
-                            and b.stcd IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                            or b.stnm IN
-                            <foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator="," close=")">
-                                #{stcdOrStnm}
-                            </foreach>
-                        </when>
-                        <otherwise>
-                            and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
-                        </otherwise>
-                    </choose>
-                </if>
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and c.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and c.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-                and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
-            </trim>
-        </where>
-        ) st
-        LEFT JOIN
-        (
-        select x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from RP_RSVR_R x
-        left join(
-        select r.stcd, max(tm) mrztm ,max(a.rz) mrz from RP_RSVR_R r
-        inner join (select max(rz) rz,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) a
-        on r.stcd = a.stcd and r.RZ = a.rz where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) rz on x.STCD = rz.STCD
-        left join(
-        select r.stcd, max(tm) mwtm ,max(b.w) mw from RP_RSVR_R r
-        inner join (select max(w) w,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) b
-        on r.stcd = b.stcd and r.w = b.w where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) w on x.STCD = w.STCD
-        left join(
-        select r.stcd, max(tm) minqtm ,max(c.inq) minq from RP_RSVR_R r
-        inner join (select max(inq) inq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) c
-        on r.stcd = c.stcd and r.INQ = c.inq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) inq on x.STCD = inq.STCD
-        left join(
-        select r.stcd, max(tm) motqtm ,max(d.otq) motq from RP_RSVR_R r
-        inner join (select max(otq) otq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) d
-        on r.stcd = d.stcd and r.OTQ = d.otq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) otq on x.STCD = otq.STCD
-        group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq
-        )PP
-        on ST.STCD=PP.STCD
-    </select>
+		</where>
+		group by stcd,MYDAVW
+		)PP
+		on ST.STCD=PP.STCD
+	</select>
+	<!--  水库特征值统计表 -->
+	<select id="getRsvrFeaturesAnalysis" resultType="com.world.chaip.entity.Exchange.RsvrExchange">
+		select st.stcd,st.stnm,st.RVNM,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT JOIN
+		(
+		select x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq from RP_RSVR_R x
+		left join(
+		select r.stcd, max(tm) mrztm ,max(a.rz) mrz from RP_RSVR_R r
+		inner join (select max(rz) rz,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD)
+		a
+		on r.stcd = a.stcd and r.RZ = a.rz where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) rz on x.STCD
+		= rz.STCD
+		left join(
+		select r.stcd, max(tm) mwtm ,max(b.w) mw from RP_RSVR_R r
+		inner join (select max(w) w,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by STCD) b
+		on r.stcd = b.stcd and r.w = b.w where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) w on x.STCD =
+		w.STCD
+		left join(
+		select r.stcd, max(tm) minqtm ,max(c.inq) minq from RP_RSVR_R r
+		inner join (select max(inq) inq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by
+		STCD) c
+		on r.stcd = c.stcd and r.INQ = c.inq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) inq on
+		x.STCD = inq.STCD
+		left join(
+		select r.stcd, max(tm) motqtm ,max(d.otq) motq from RP_RSVR_R r
+		inner join (select max(otq) otq,stcd from RP_RSVR_R where tm > #{beginTime} and tm &lt;= #{endTime} group by
+		STCD) d
+		on r.stcd = d.stcd and r.OTQ = d.otq where tm > #{beginTime} and tm &lt;= #{endTime} group by r.stcd) otq on
+		x.STCD = otq.STCD
+		group by x.stcd,mrztm,mrz,mwtm,mw,minqtm,minq,motqtm,motq
+		)PP
+		on ST.STCD=PP.STCD
+	</select>
+
+	<select id="getRsvrFeaturesAnalysisOptimization" resultType="com.world.chaip.entity.Exchange.RsvrExchange">
+		select st.stcd,st.stnm,st.RVNM,mrz,mw,minq,motq from
+		(select b.* , e.name, ad.adnm from st_stbprp_b b
+		LEFT JOIN ST_STSMTASK_B s
+		on b.STCD = s.STCD
+		LEFT JOIN
+		DJ_AD ad
+		ON b.ADDVCD = ad.ADCD
+		LEFT join
+		DJ_EXP c
+		on b.STCD = c.stcd
+		LEFT join
+		DJ_TYID e
+		on
+		c.lx = e.typeID
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="adcd != null and adcd.size() > 0">
+					and b.addvcd IN
+					<foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+						#{adcd}
+					</foreach>
+				</if>
+				<if test="stcdOrStnm!=null">
+					<choose>
+						<when test="stcdOrStnm.size() > 1">
+							and b.stcd IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+							or b.stnm IN
+							<foreach item="stcdOrStnm" index="index" collection="stcdOrStnm" open="(" separator=","
+							         close=")">
+								#{stcdOrStnm}
+							</foreach>
+						</when>
+						<otherwise>
+							and (b.stcd like '%${stcdOrStnm[0]}%' or b.stnm like '%${stcdOrStnm[0]}%')
+						</otherwise>
+					</choose>
+				</if>
+				<if test="systemTypes != null and systemTypes.size() > 0">
+					and c.lx IN
+					<foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
+						#{systemTypes}
+					</foreach>
+				</if>
+				<if test="ly != null and ly.size() > 0">
+					and c.dx IN
+					<foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+						#{ly}
+					</foreach>
+				</if>
+				and sttp like '%R%' and ZFL='1' and c.jdb in (2,3)
+			</trim>
+		</where>
+		) st
+		LEFT join (select STCD, MAX(RZ) mrz, MAX(W) mw, MAX(INQ) minq, MAX(OTQ) motq
+		from RP_RSVR_R group by STCD) RSVR on st.STCD = RSVR.STCD
+	</select>
+	<select id="getRsvrFeaturesAnalysisOptimizationType" resultType="java.lang.String">
+		select TM
+		from RP_RSVR_R
+		where STCD = #{stcd}
+		  and ${type} = #{typeValue}
+		  and TM between #{beginTime} and #{endTime};
+	</select>
 </mapper>

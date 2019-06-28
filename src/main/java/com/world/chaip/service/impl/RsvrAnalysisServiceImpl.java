@@ -1,5 +1,6 @@
 package com.world.chaip.service.impl;
 
+import com.google.gson.Gson;
 import com.world.chaip.entity.Exchange.RsvrExchangeExcel.RsvrExchangeItem;
 import com.world.chaip.entity.Exchange.RsvrStrongeExcel.RsvrStrongeItem;
 import com.world.chaip.entity.Exchange.*;
@@ -7,7 +8,9 @@ import com.world.chaip.entity.Exchange.RsvrWaterExcel.RsvrWC;
 import com.world.chaip.entity.report.Rsvr;
 import com.world.chaip.mapper.RsvrAnalysisMapper;
 import com.world.chaip.service.RsvrAnalysisService;
+import com.world.chaip.util.CallResult;
 import com.world.chaip.util.DateUtils;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
@@ -113,7 +119,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		now.setTime(dateE);
 		now.add(Calendar.DATE, 1);
 		time = now.getTime();
-		List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(dateE,time, adcd, systemTypes, stcdOrStnm, ly);
+		List<Rsvr> endiRsvrList = rsvrAnalysisMapper.getRsvrWaterAnalysisRi(dateE, time, adcd, systemTypes, stcdOrStnm, ly);
 		for (int i = 0; i < list.size(); i++) {
 			rsvrWaterExchange = list.get(i);
 			String a = beginRsvrList.get(i).getRz();
@@ -356,10 +362,11 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		rs.setW(w);
 		return rs;
 	}
-
+	boolean wancheng = false; //任务是否完成
 	//水库特征值统计表
 	@Override
-	public RsvrExchangeExcel getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) throws ParseException {
+	public RsvrExchangeExcel getRsvrFeaturesAnalysis(Date dateS, Date dateE, List<String> adcd, List<String> systemTypes, List<String> stcdOrStnm, List<String> ly) {
+		long beginSys = System.currentTimeMillis();
 		Calendar now = Calendar.getInstance();
 		now.setTime(dateS);
 		now.set(Calendar.HOUR_OF_DAY, 8);
@@ -368,7 +375,88 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		now.add(Calendar.DATE, 1);
 		now.set(Calendar.HOUR_OF_DAY, 8);
 		Date endTime = now.getTime();
-		List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime, endTime, adcd, systemTypes, stcdOrStnm, ly);
+
+		List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimization(beginTime, endTime, adcd, systemTypes, stcdOrStnm, ly);
+		RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
+		ExecutorService service = Executors.newFixedThreadPool(4);
+		CallResult callResult = new CallResult(4, () -> {
+			RsvrTZCount rsvrTZCount = null;
+			for (RsvrExchange rsvrExchange : list) {
+				RsvrExchangeItem rsvrExchangeItem = null;
+				if (rsvrExchange.getRvnm() == null) {
+					rsvrExchange.setRvnm("");
+				}
+				for (int j = 0; j < rsvrExchangeExcel.getRsvrPro().size(); j++) {
+					if (rsvrExchangeExcel.getRsvrPro().get(j).getRvnm().equals(rsvrExchange.getRvnm())) {
+						rsvrExchangeItem = rsvrExchangeExcel.getRsvrPro().get(j);
+						rsvrTZCount = new RsvrTZCount();
+						rsvrTZCount.setStnm(rsvrExchange.getStnm());
+						rsvrTZCount.setMrz(getBL2(rsvrExchange.getMrz()));
+						rsvrTZCount.setMrztm(getTm(rsvrExchange.getMrztm()));
+						rsvrTZCount.setMw(getBL3(rsvrExchange.getMw()));
+						rsvrTZCount.setMwtm(getTm(rsvrExchange.getMwtm()));
+						rsvrTZCount.setMinq(getBL3(rsvrExchange.getMinq()));
+						rsvrTZCount.setMinqtm(getTm(rsvrExchange.getMinqtm()));
+						rsvrTZCount.setMotq(getBL3(rsvrExchange.getMotq()));
+						rsvrTZCount.setMotqtm(getTm(rsvrExchange.getMotqtm()));
+						rsvrExchangeItem.getData().add(rsvrTZCount);
+					}
+				}
+				if (rsvrExchangeItem == null) {
+					rsvrExchangeItem = rsvrExchangeExcel.new RsvrExchangeItem();
+					rsvrExchangeItem.setRvnm(rsvrExchange.getRvnm());
+					rsvrTZCount = new RsvrTZCount();
+					rsvrTZCount.setStnm(rsvrExchange.getStnm());
+					rsvrTZCount.setMrz(getBL2(rsvrExchange.getMrz()));
+					rsvrTZCount.setMrztm(getTm(rsvrExchange.getMrztm()));
+					rsvrTZCount.setMw(getBL3(rsvrExchange.getMw()));
+					rsvrTZCount.setMwtm(getTm(rsvrExchange.getMwtm()));
+					rsvrTZCount.setMinq(getBL3(rsvrExchange.getMinq()));
+					rsvrTZCount.setMinqtm(getTm(rsvrExchange.getMinqtm()));
+					rsvrTZCount.setMotq(getBL3(rsvrExchange.getMotq()));
+					rsvrTZCount.setMotqtm(getTm(rsvrExchange.getMotqtm()));
+					rsvrExchangeItem.getData().add(rsvrTZCount);
+					rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
+				}
+			}
+			wancheng = true;
+		});
+		service.submit(() -> { //最高水位
+			for (RsvrExchange rsvrExchange : list) {
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "rz", rsvrExchange.getMrz());
+				rsvrExchange.setMrztm(tm);
+			}
+			callResult.addResult();
+		});
+		service.submit(() -> { //最大蓄水量
+			for (RsvrExchange rsvrExchange : list) {
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "w", rsvrExchange.getMrz());
+				rsvrExchange.setMwtm(tm);
+			}
+			callResult.addResult();
+		});
+		service.submit(() -> { //最大入库流量
+			for (RsvrExchange rsvrExchange : list) {
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "inq", rsvrExchange.getMrz());
+				rsvrExchange.setMinqtm(tm);
+			}
+			callResult.addResult();
+		});
+		service.submit(() -> { //最大出库流量
+			for (RsvrExchange rsvrExchange : list) {
+				String tm = rsvrAnalysisMapper.getRsvrFeaturesAnalysisOptimizationType(rsvrExchange.getStcd(), beginTime, endTime, "otq", rsvrExchange.getMrz());
+				rsvrExchange.setMotqtm(tm);
+			}
+			callResult.addResult();
+		});
+		service.shutdown();
+		while (true){
+			if(wancheng){
+				wancheng = false;
+				break;
+			}
+		}
+		/*List<RsvrExchange> list = rsvrAnalysisMapper.getRsvrFeaturesAnalysis(beginTime, endTime, adcd, systemTypes, stcdOrStnm, ly);
 		RsvrExchangeExcel rsvrExchangeExcel = new RsvrExchangeExcel();
 		RsvrTZCount rsvrTZCount = null;
 		for (RsvrExchange rsvrExchange : list) {
@@ -408,26 +496,28 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 				rsvrExchangeItem.getData().add(rsvrTZCount);
 				rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
 			}
-		}
-        /*for (int i = 0; i < rsvrExchangeExcel.getRsvrPro().size(); i++) {
-            System.out.println(rsvrExchangeExcel.getRsvrPro().get(i).getRvnm());
-        }*/
+		}*/
 		return rsvrExchangeExcel;
 	}
 
-	public String getBL3(double x) {
+	private String getBL3(double x) {
 		return new DecimalFormat("#0.000").format(x);
 	}
 
-	public String getBL2(double x) {
+	private String getBL2(double x) {
 		return new DecimalFormat("#0.00").format(x);
 	}
 
-	public String getTm(String tm) throws ParseException {
+	public String getTm(String tm) {
 		if (tm == null) {
 			return "";
 		}
-		Date date = DateUtils.parse(tm, "yyyy-MM-dd HH:mm");
+		Date date = null;
+		try {
+			date = DateUtils.parse(tm, "yyyy-MM-dd HH:mm");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		Calendar m = Calendar.getInstance();
 		m.setTime(date);
 		int month = m.get(Calendar.MONTH) + 1;

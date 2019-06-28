@@ -38,4 +38,9 @@
         FROM
         DJ_TYID
     </select>
+    <select id="getStnmByStcd" resultType="java.lang.String">
+        SELECT stnm FROM ST_STBPRP_B WHERE STCD = #{stcd}
+    </select>
+
+
 </mapper>
