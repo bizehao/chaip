@@ -98,7 +98,7 @@ public class RealtimeRsvrfallController {
         return new JsonResult(a);
     }
 
-    //水库 (专业)
+    //水库 (专业) 水库水情简报
     @GetMapping("getrsvrbyzhuanye")
     public JsonResult GetRsvrByZhuanYe(
             /*@RequestParam("dateS")String dateStart,
@@ -108,8 +108,8 @@ public class RealtimeRsvrfallController {
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
             @RequestParam(name="ly",required = false)String ly*/) throws ParseException {
 
-        String dateStart = "2019-06-28 8:00";
-        String dateEnd = "2019-06-28 15:00";
+        String dateStart = "2017-08-28 8:00";
+        String dateEnd = "2018-09-28 15:00";
         String adcd = "130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
         String systemTypes = "11,12,";
         String stcdOrStnm = "X";

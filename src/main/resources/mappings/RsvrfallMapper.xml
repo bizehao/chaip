@@ -334,7 +334,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 		<choose>
 			<when test="fstp > 0">
 				(select
-				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
+				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD,INQDR
 				from
 				RP_RSVR_R b
 				left join
@@ -358,7 +358,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 			</when>
 			<otherwise>
 				(select
-				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD
+				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD,INQDR
 				from
 				RP_RSVR_R b
 				left join
@@ -422,7 +422,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 		<choose>
 			<when test="fstp > 0">
 				(select
-				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD
+				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD,INQDR
 				from
 				RP_RSVR_R b
 				left join
@@ -446,7 +446,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 			</when>
 			<otherwise>
 				(select
-				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD
+				b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD,INQDR
 				from
 				RP_RSVR_R b
 				left join

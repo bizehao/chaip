@@ -138,21 +138,35 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 			rsvrChao.add(rzy);
 
 		}
-
+		String firstStcd = null;
 		for (int i = 0; i < rsvrChao.size(); i++) {
 			if (rsvrChao.get(i).getRWCHRCD() == 1) {
 				rsvrChao.get(i).setRz("干涸");
 			}
 			if (rsvrItem != null) {
-				if (rsvrItem.get(0).getStcd().equals(rsvrChao.get(i).getStcd())) {  // 111   22222    33  5
+				if (firstStcd.equals(rsvrChao.get(i).getStcd())) {  // 111   22222    33  5
 					rsvrZhuanYe = rsvrChao.get(i);
 					rsvrItem.add(rsvrZhuanYe);
 				} else {
-					Collections.sort(rsvrItem, new Comparator<RsvrZhuanYe>() {
-						@Override
-						public int compare(RsvrZhuanYe o1, RsvrZhuanYe o2) {
-							return Double.parseDouble(o1.getRz()) > Double.parseDouble(o2.getRz()) ? -1 : 1;
+					rsvrItem.sort((o1, o2) -> {
+						double oo1 = 0;
+						try {
+							oo1 = Double.valueOf(o1.getRz());
 						}
+						catch ( NumberFormatException e) {
+							oo1 = 0;
+						}
+						double oo2 = 0;
+						try {
+							oo2 = Double.valueOf(o2.getRz());
+						}
+						catch ( NumberFormatException e) {
+							oo2 = 0;
+						}
+						if( oo1 > oo2 ){
+							return 0;
+						}
+						return 1;
 					});
 					rsvrZhuanYe = rsvrItem.get(0); //处理
 					double a = rsvrZhuanYe.getRz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
@@ -167,6 +181,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 					rsvrItem = new ArrayList<>();
 					rsvrZhuanYe = rsvrChao.get(i);
 					rsvrItem.add(rsvrZhuanYe);
+					firstStcd = rsvrZhuanYe.getStcd();
 					if (i == rsvrChao.size() - 1) {
 						rsvrZhuanYe = rsvrChao.get(i); //处理
 						double ah = rsvrZhuanYe.getRz().trim().length() == 0 ? 0 : Double.parseDouble(rsvrZhuanYe.getRz());//rainfalls.get(i).getRz()
@@ -182,6 +197,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 			} else {
 				rsvrItem = new ArrayList<>();
 				rsvrZhuanYe = rsvrChao.get(i);
+				firstStcd = rsvrZhuanYe.getStcd();
 				rsvrItem.add(rsvrZhuanYe);
 			}
 		}

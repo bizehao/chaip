@@ -41,7 +41,7 @@ public class RsvrZhuanYe {
     //入流时段长
     private String INQDR;
 
-    //日入库流量
+    //日均入库流量
     private String inqOfDay;
 
     public RsvrZhuanYe() {
