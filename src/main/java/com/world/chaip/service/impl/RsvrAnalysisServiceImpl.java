@@ -381,6 +381,7 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 		ExecutorService service = Executors.newFixedThreadPool(4);
 		CallResult callResult = new CallResult(4, () -> {
 			System.out.println("执行完毕");
+			System.out.println("共有 "+list.size()+" 条数据");
 			RsvrTZCount rsvrTZCount = null;
 			for (RsvrExchange rsvrExchange : list) {
 				RsvrExchangeItem rsvrExchangeItem = null;
@@ -420,7 +421,6 @@ public class RsvrAnalysisServiceImpl implements RsvrAnalysisService {
 					rsvrExchangeExcel.getRsvrPro().add(rsvrExchangeItem);
 				}
 			}
-			System.out.println("");
 			wancheng = true;
 		});
 		service.submit(() -> { //最高水位
