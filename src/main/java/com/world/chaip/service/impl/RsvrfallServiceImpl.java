@@ -93,7 +93,7 @@ public class RsvrfallServiceImpl implements RsvrfallService {
 						}
 						if (rxq.getChooseFstp() != 0) {
 							List<RsvrZhuanYe> rainfalls;
-							if (dateS.equals(dateE)) {
+							if (dateS.getTime() == dateE.getTime()) {
 								rainfalls = rsvrfallMapper.getRsvrByZhaunYeNew(dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);
 							} else {
 								rainfalls = rsvrfallMapper.getRsvrByZhaunYe(dateS, dateE, rxq.getChooseFstp(), adcd, systemTypes, rxq.getStcd(), ly);

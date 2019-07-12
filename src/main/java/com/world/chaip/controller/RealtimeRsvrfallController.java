@@ -101,19 +101,19 @@ public class RealtimeRsvrfallController {
     //水库 (专业) 水库水情简报
     @GetMapping("getrsvrbyzhuanye")
     public JsonResult GetRsvrByZhuanYe(
-            @RequestParam("dateS")String dateStart,
+            /*@RequestParam("dateS")String dateStart,
             @RequestParam("dateE")String dateEnd,
             @RequestParam(name="adcd",required=false)String adcd,
             @RequestParam(name="systemTypes",required=false)String systemTypes,
             @RequestParam(name="stcdOrStnm",required=false)String stcdOrStnm,
-            @RequestParam(name="ly",required = false)String ly) throws ParseException {
+            @RequestParam(name="ly",required = false)String ly*/) throws ParseException {
 
-        /*String dateStart = "2017-08-28 8:00";
-        String dateEnd = "2018-09-28 15:00";
+        String dateStart = "2018-08-28 8:00";
+        String dateEnd = "2018-08-28 8:00";
         String adcd = "130501,130521,130522,130523,130524,130525,130526,130527,130528,130529,130530,130531,130532,130533,130534,130535,130581,130582,";
         String systemTypes = "11,12,";
-        String stcdOrStnm = "X";
-        String ly = "X";*/
+        String stcdOrStnm = "30907201,";
+        String ly = "X";
 
         System.out.println("开始时间"+dateStart);
         System.out.println("结束时间"+dateEnd);
