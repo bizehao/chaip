@@ -9,6 +9,24 @@ public class XunQITime {
 	private int bgmd = 0; //开始时间
 	private int edmd = 0; //结束时间
 	private int fstp = 0; //汛期标志
+    private String FSLTDZ;//汛期水位
+    private String FSLTDW; //汛期
+
+	public String getFSLTDZ() {
+		return FSLTDZ;
+	}
+
+	public void setFSLTDZ(String FSLTDZ) {
+		this.FSLTDZ = FSLTDZ;
+	}
+
+	public String getFSLTDW() {
+		return FSLTDW;
+	}
+
+	public void setFSLTDW(String FSLTDW) {
+		this.FSLTDW = FSLTDW;
+	}
 
 	public int getBgmd() {
 		return bgmd;

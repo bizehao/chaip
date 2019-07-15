@@ -290,90 +290,53 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
 
     <!-- 水库查询 专业报表 时间不同 -->
     <select id="getRsvrByZhaunYe" resultType="com.world.chaip.entity.report.RsvrZhuanYe">
-        select
-        m.stnm,d.*,m.zfl
-        from
-        (select
-        a.stnm,a.sttp,n.ZFL ,k.*
-        from
-        ST_STBPRP_B a
-        left join
-        ST_STSMTASK_B n
-        on
-        a.stcd=n.stcd
-        left join
-        DJ_EXP k
-        on
-        a.stcd=k.stcd
-        <where>
-            <trim prefixOverrides="and|or">
-                <if test="adcd != null and adcd.size() > 0">
-                    and a.addvcd IN
-                    <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
-                        #{adcd}
-                    </foreach>
-                </if>
-                and a.stcd = #{stcdOrStnm} or a.stnm = #{stcdOrStnm}
-                <if test="systemTypes != null and systemTypes.size() > 0">
-                    and k.lx IN
-                    <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator="," close=")">
-                        #{systemTypes}
-                    </foreach>
-                </if>
-                <if test="ly != null and ly.size() > 0">
-                    and k.dx IN
-                    <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
-                        #{ly}
-                    </foreach>
-                </if>
-            </trim>
-            and a.sttp like '%R%' and n.ZFL='1' and k.jdb in (2,3) and k.viwe = 1
-        </where>
-        ) m
-        left join
+        select d.stnm,d.STCD,f.TTCP,e.RZ,e.W,e.INQ,e.INQDR,g.AVINQ inqOfDay,e.otq,e.TM from (
         <choose>
-            <when test="fstp > 0">
-                (select
-                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,FSLTDZ,FSLTDW,FSTP,RWCHRCD,INQDR
-                from
-                RP_RSVR_R b
-                left join
-                RP_RSVRFCCH_B e
-                on
-                b.stcd=e.stcd
-                left join
-                (select top(1)
-                stcd,FSLTDZ,FSLTDW,FSTP
-                from
-                RP_RSVRFSR_B
+            <when test="stcdOrStnm != null">
+                select STCD,STNM from ST_STBPRP_B
                 <where>
-                    stcd = #{stcdOrStnm}
-                    and
-                    FSTP = #{fstp}
+                    STCD IN
+                    <foreach collection="stcdOrStnm" open="(" separator="," close=")" item="stcdOrStnm" index="index">
+                        #{stcdOrStnm}
+                    </foreach>
                 </where>
-                ) f
-                on
-                b.stcd = f.stcd
-                ) d
             </when>
             <otherwise>
-                (select
-                b.stcd,b.TM,b.RZ,b.INQ,b.W,b.OTQ,e.ttcp,RWCHRCD,INQDR
-                from
-                RP_RSVR_R b
-                left join
-                RP_RSVRFCCH_B e
-                on
-                b.stcd=e.stcd
-                ) d
+                select a.STCD STCD,a.STNM STNM from ST_STBPRP_B a left join ST_STSMTASK_B b on
+                a.stcd=b.stcd left join DJ_EXP c on a.stcd=c.stcd
+                <where>
+                    <trim prefixOverrides="and|or">
+                        <if test="adcd != null and adcd.size() > 0">
+                            and a.addvcd IN
+                            <foreach item="adcd" index="index" collection="adcd" open="(" separator="," close=")">
+                                #{adcd}
+                            </foreach>
+                        </if>
+                        <if test="systemTypes != null and systemTypes.size() > 0">
+                            and c.lx IN
+                            <foreach item="systemTypes" index="index" collection="systemTypes" open="(" separator=","
+                                     close=")">
+                                #{systemTypes}
+                            </foreach>
+                        </if>
+                        <if test="ly != null and ly.size() > 0">
+                            and c.dx IN
+                            <foreach collection="ly" open="(" separator="," close=")" item="ly" index="index">
+                                #{ly}
+                            </foreach>
+                        </if>
+                    </trim>
+                    and a.sttp like '%R%' and b.ZFL='1' and c.jdb in (2,3) and c.viwe = 1
+                </where>
             </otherwise>
         </choose>
-        on
-        m.stcd=d.stcd
-        <where>
-            d.TM >= #{beginTime} and d.TM &lt;= #{endTime}
-        </where>
-        order by m.stnm,d.TM desc
+        )
+        d left join RP_RSVRFCCH_B f
+        on d.STCD=f.STCD left join RP_RSVR_R e on d.STCD=e.STCD left join RP_RSVRAV_R g
+        on d.STCD=g.STCD and e.TM = g.IDTM
+        where
+        e.TM >=#{beginTime} and e.TM &lt;=#{endTime}
+        and g.IDTM >=#{beginTime} and g.IDTM &lt;=#{endTime} and STTDRCD = 1
     </select>
 
     <!-- 水库查询 专业报表  时间相同 -->
@@ -470,12 +433,14 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
             <result property="bgmd" column="bgmd"/>
             <result property="edmd" column="edmd"/>
             <result property="fstp" column="fstp"/>
+            <result property="FSLTDZ" column="fsltdz"/>
+            <result property="FSLTDW" column="fsltdw"/>
         </collection>
     </resultMap>
 
     <!-- 水库汛期查询 -->
     <select id="getRsvrFS" resultMap="signListResult">
-        select bb.STCD, bb.STNM, convert(int, BGMD) AS BGMD, convert(int, EDMD) as EDMD, FSTP
+        select bb.STCD, bb.STNM, convert(int, BGMD) AS BGMD, convert(int, EDMD) as EDMD, FSTP, FSLTDZ, FSLTDW
         from RP_RSVRFSR_B aa
                  right join (select a.STCD, a.STNM
                              from ST_STBPRP_B a
@@ -486,7 +451,7 @@ select st.stcd,st.stnm,tm,st.rvnm,adnm,HNNM,RZ,W,OTQ,RWCHRCD from
                                and b.ZFL = '1'
                                and c.dq = 31
                                and c.jdb in (2, 3)
-                               and c.viwe = 1) bb on aa.stcd = bb.stcd;
+                               and c.viwe = 1) bb on aa.stcd = bb.stcd
     </select>
     <!-- 获取汛限站 -->
     <select id="getFsltdzStations" resultType="java.lang.String">

@@ -15,7 +15,7 @@ public class RsvrZhuanYe {
     private String tm;
 
     //总库容
-    private double ttcp;
+    private int ttcp;
 
     //汛期水位
     private String fsltdz;
@@ -76,11 +76,11 @@ public class RsvrZhuanYe {
         this.tm = tm;
     }
 
-    public double getTtcp() {
+    public int getTtcp() {
         return ttcp;
     }
 
-    public void setTtcp(double ttcp) {
+    public void setTtcp(int ttcp) {
         this.ttcp = ttcp;
     }
 

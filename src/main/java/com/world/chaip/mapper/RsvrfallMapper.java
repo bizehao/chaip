@@ -49,7 +49,7 @@ public interface RsvrfallMapper {
 	 * 水库查询（专业报表 时间不同）
 	 * @param beginTime
      * @param endTime
-	 * @param fstp
+	 * @param
 	 * @param adcd
 	 * @param systemTypes
 	 * @param stcdOrStnm
@@ -58,10 +58,9 @@ public interface RsvrfallMapper {
 	List<RsvrZhuanYe> getRsvrByZhaunYe(
             @Param("beginTime") Date beginTime,
 			@Param("endTime") Date endTime,
-			@Param("fstp") int fstp,
 			@Param("adcd") List<String> adcd,
 			@Param("systemTypes") List<String> systemTypes,
-			@Param("stcdOrStnm") String stcdOrStnm,
+			@Param("stcdOrStnm") List<String> stcdOrStnm,
             @Param("ly") List<String> ly);
     /**
      * 水库查询（专业报表 时间相同）
